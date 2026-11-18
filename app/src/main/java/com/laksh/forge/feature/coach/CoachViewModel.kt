@@ -78,7 +78,7 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
 
             val builder = StringBuilder()
             runCatching {
-                repo.anthropic.chatStream(system, history, userTurn).collect { delta ->
+                repo.ai.chatStream(system, history, userTurn).collect { delta ->
                     builder.append(delta)
                     local.update { it.copy(first = builder.toString()) }
                 }

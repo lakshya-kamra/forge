@@ -74,7 +74,7 @@ class SettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
         // Give the settings cache a moment to pick up a key typed a beat ago.
         val current = repo.settingsStore.settings.first()
         repo.updateSettingsCache(current)
-        runCatching { repo.anthropic.testKey() }
+        runCatching { repo.ai.testKey() }
             .onSuccess { transient.update { s -> s.copy(testingKey = false, keyTestResult = "Key works. Running on the ${current.tier.label} tier.") } }
             .onFailure { e -> transient.update { s -> s.copy(testingKey = false, keyTestResult = e.message ?: "Test failed.") } }
     }

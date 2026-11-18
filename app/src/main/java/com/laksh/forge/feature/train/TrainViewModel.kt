@@ -91,13 +91,13 @@ class TrainViewModel(private val repo: ForgeRepository) : ViewModel() {
                     importState.update {
                         Triple(ImportPhase.PARSING, "Reading ${content.pages} pages of training program...", null)
                     }
-                    repo.anthropic.parseProgram(content.text, name) to name
+                    repo.ai.parseProgram(content.text, name) to name
                 }
                 is PdfContent.Pages -> {
                     importState.update {
                         Triple(ImportPhase.PARSING, "Scanned PDF - reading ${content.imagesBase64.size} pages visually...", null)
                     }
-                    repo.anthropic.parseProgramFromImages(content.imagesBase64, name) to name
+                    repo.ai.parseProgramFromImages(content.imagesBase64, name) to name
                 }
             }
         }.onSuccess { (parsed, name) ->

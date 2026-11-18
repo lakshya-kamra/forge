@@ -62,7 +62,8 @@ fun SessionScreen(
     vm: SessionViewModel = viewModel(
         key = "session_$sessionId",
         factory = SessionViewModel.factory(sessionId)
-    )
+    ),
+    onOpenExercise: (String) -> Unit = {}
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     var showFinish by remember { mutableStateOf(false) }

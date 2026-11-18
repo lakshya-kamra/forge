@@ -46,7 +46,7 @@ class ForgeRepository(
 
     @Volatile private var cachedSettings: ForgeSettings = ForgeSettings()
 
-    val anthropic = AnthropicClient(
+    val ai: com.laksh.forge.data.ai.ForgeAi = AnthropicClient(
         apiKeyProvider = { cachedSettings.apiKey },
         modelProvider = { task -> cachedSettings.tier.modelFor(task) }
     )

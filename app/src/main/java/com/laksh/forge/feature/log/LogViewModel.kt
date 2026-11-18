@@ -99,7 +99,7 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
             _state.update { it.copy(photo = prepared.bitmap, statusText = "Estimating calories...") }
 
             val context = buildBodyContext()
-            val raw = repo.anthropic.estimateFoodFromPhoto(
+            val raw = repo.ai.estimateFoodFromPhoto(
                 imageBase64 = prepared.base64,
                 mediaType = prepared.mediaType,
                 userHint = _state.value.hint.takeIf { it.isNotBlank() },
@@ -136,7 +136,7 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
         _state.update { it.copy(phase = Phase.WORKING, statusText = "Estimating...", error = null) }
 
         runCatching {
-            repo.anthropic.estimateFoodFromText(text, buildBodyContext())
+            repo.ai.estimateFoodFromText(text, buildBodyContext())
         }.onSuccess { raw ->
             val padded = repo.withSafetyMargin(raw, settings.safetyMarginPct)
             _state.update {
@@ -204,7 +204,7 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
         runCatching {
             val prepared = ImageUtils.prepare(ForgeApp.instance, uri, ImageUtils.EDGE_LABEL)
             _state.update { it.copy(photo = prepared.bitmap) }
-            repo.anthropic.readNutritionLabel(prepared.base64, prepared.mediaType)
+            repo.ai.readNutritionLabel(prepared.base64, prepared.mediaType)
         }.onSuccess { label ->
             if (label.kcal <= 0.0) {
                 _state.update {

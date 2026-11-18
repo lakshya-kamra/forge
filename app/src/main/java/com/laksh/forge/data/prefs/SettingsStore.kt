@@ -2,6 +2,7 @@ package com.laksh.forge.data.prefs
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
@@ -28,7 +29,22 @@ enum class Sex { MALE, FEMALE }
 
 enum class WeightUnit(val label: String) { KG("kg"), LB("lb") }
 
+enum class TrainingAge(val label: String, val blurb: String) {
+    UNKNOWN("Not set", ""),
+    NOVICE("Beginner", "Under ~1 year of consistent lifting"),
+    INTERMEDIATE("Intermediate", "1-4 years, still progressing month to month"),
+    ADVANCED("Advanced", "4+ years, progress is slow and hard-won");
+}
+
+enum class PregnancyStatus { NONE, PREGNANT, BREASTFEEDING }
+
+enum class ThemeMode { SYSTEM, LIGHT, DARK }
+
 data class ForgeSettings(
+    /**
+     * Legacy plaintext key from v1. The AI layer migrates it into the encrypted secret store
+     * and blanks this field; check [hasApiKey], never this, to know whether AI is usable.
+     */
     val apiKey: String = "",
     val tier: CostTier = CostTier.BALANCED,
     val onboarded: Boolean = false,
@@ -51,9 +67,48 @@ data class ForgeSettings(
     val healthConnectEnabled: Boolean = false,
     val lastHealthSync: Long = 0L,
     /** Adaptive TDEE learned from weight trend vs. intake; 0 until enough data. */
-    val learnedTdee: Double = 0.0
+    val learnedTdee: Double = 0.0,
+
+    // ---------------------------------------------------------------- v2: AI provider
+    /** True once a key is stored in the encrypted secret store (see data/ai). */
+    val aiConfigured: Boolean = false,
+    /** "auto" = detect from the key; otherwise a provider id from the provider registry. */
+    val providerId: String = "auto",
+    /** Base URL for a custom OpenAI-compatible endpoint; blank = provider default. */
+    val customBaseUrl: String = "",
+    /** JSON object {"FOOD_PHOTO": "model-id", ...} overriding the tier's model per task. */
+    val modelOverridesJson: String = "",
+
+    // ---------------------------------------------------------------- v2: profile & safety
+    /** 0 = v1 onboarding only; 2 = completed the v2 photo/measurement onboarding. */
+    val onboardingVersion: Int = 0,
+    val trainingAge: TrainingAge = TrainingAge.UNKNOWN,
+    val pregnancyStatus: PregnancyStatus = PregnancyStatus.NONE,
+    /** Result of the SCOFF eating-disorder screen; positive changes how numbers are shown. */
+    val edScreenPositive: Boolean = false,
+    val edScreenAt: Long = 0L,
+    /** User chose to hide calorie numbers (offered after a positive screen). */
+    val hideNumbers: Boolean = false,
+    val stepsTarget: Int = 8000,
+    /** ISO week start (yyyy-MM-dd) of the last completed weekly check-in. */
+    val lastCheckinWeek: String = "",
+
+    // ---------------------------------------------------------------- v2: appearance
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val dynamicColor: Boolean = false,
+    val amoledBlack: Boolean = false,
+    val haptics: Boolean = true,
+    val reduceMotion: Boolean = false,
+
+    // ---------------------------------------------------------------- v2: wearables & reminders
+    val whoopConnected: Boolean = false,
+    val lastWhoopSync: Long = 0L,
+    val weighInReminder: Boolean = false,
+    val mealReminder: Boolean = false,
+    val workoutReminder: Boolean = false
 ) {
-    val hasApiKey: Boolean get() = apiKey.isNotBlank()
+    val hasApiKey: Boolean get() = aiConfigured || apiKey.isNotBlank()
+    val isMinor: Boolean get() = age < 18
 }
 
 class SettingsStore(private val context: Context) {
@@ -78,15 +133,44 @@ class SettingsStore(private val context: Context) {
         val healthConnectEnabled = booleanPreferencesKey("hc_enabled")
         val lastHealthSync = longPreferencesKey("last_health_sync")
         val learnedTdee = doublePreferencesKey("learned_tdee")
+
+        val aiConfigured = booleanPreferencesKey("ai_configured")
+        val providerId = stringPreferencesKey("provider_id")
+        val customBaseUrl = stringPreferencesKey("custom_base_url")
+        val modelOverrides = stringPreferencesKey("model_overrides")
+
+        val onboardingVersion = intPreferencesKey("onboarding_version")
+        val trainingAge = stringPreferencesKey("training_age")
+        val pregnancy = stringPreferencesKey("pregnancy_status")
+        val edScreenPositive = booleanPreferencesKey("ed_screen_positive")
+        val edScreenAt = longPreferencesKey("ed_screen_at")
+        val hideNumbers = booleanPreferencesKey("hide_numbers")
+        val stepsTarget = intPreferencesKey("steps_target")
+        val lastCheckinWeek = stringPreferencesKey("last_checkin_week")
+
+        val themeMode = stringPreferencesKey("theme_mode")
+        val dynamicColor = booleanPreferencesKey("dynamic_color")
+        val amoled = booleanPreferencesKey("amoled_black")
+        val haptics = booleanPreferencesKey("haptics")
+        val reduceMotion = booleanPreferencesKey("reduce_motion")
+
+        val whoopConnected = booleanPreferencesKey("whoop_connected")
+        val lastWhoopSync = longPreferencesKey("last_whoop_sync")
+        val weighInReminder = booleanPreferencesKey("reminder_weigh_in")
+        val mealReminder = booleanPreferencesKey("reminder_meal")
+        val workoutReminder = booleanPreferencesKey("reminder_workout")
     }
+
+    private inline fun <reified T : Enum<T>> enumOr(raw: String?, default: T): T =
+        runCatching { enumValueOf<T>(raw ?: default.name) }.getOrDefault(default)
 
     val settings: Flow<ForgeSettings> = context.dataStore.data.map { p ->
         ForgeSettings(
             apiKey = p[K.apiKey] ?: "",
-            tier = runCatching { CostTier.valueOf(p[K.tier] ?: "BALANCED") }.getOrDefault(CostTier.BALANCED),
+            tier = enumOr(p[K.tier], CostTier.BALANCED),
             onboarded = p[K.onboarded] ?: false,
-            goal = runCatching { GoalMode.valueOf(p[K.goal] ?: "MAINGAIN") }.getOrDefault(GoalMode.MAINGAIN),
-            sex = runCatching { Sex.valueOf(p[K.sex] ?: "MALE") }.getOrDefault(Sex.MALE),
+            goal = enumOr(p[K.goal], GoalMode.MAINGAIN),
+            sex = enumOr(p[K.sex], Sex.MALE),
             age = p[K.age] ?: 30,
             heightCm = p[K.heightCm] ?: 175.0,
             activityFactor = p[K.activityFactor] ?: 1.45,
@@ -95,12 +179,38 @@ class SettingsStore(private val context: Context) {
             proteinPerKg = p[K.proteinPerKg] ?: 2.0,
             fatPerKg = p[K.fatPerKg] ?: 0.8,
             rateKgPerWeek = p[K.rateKgPerWeek] ?: 0.0,
-            weightUnit = runCatching { WeightUnit.valueOf(p[K.weightUnit] ?: "KG") }.getOrDefault(WeightUnit.KG),
+            weightUnit = enumOr(p[K.weightUnit], WeightUnit.KG),
             safetyMarginPct = p[K.safetyMarginPct] ?: 12,
             storePhotos = p[K.storePhotos] ?: true,
             healthConnectEnabled = p[K.healthConnectEnabled] ?: false,
             lastHealthSync = p[K.lastHealthSync] ?: 0L,
-            learnedTdee = p[K.learnedTdee] ?: 0.0
+            learnedTdee = p[K.learnedTdee] ?: 0.0,
+
+            aiConfigured = p[K.aiConfigured] ?: false,
+            providerId = p[K.providerId] ?: "auto",
+            customBaseUrl = p[K.customBaseUrl] ?: "",
+            modelOverridesJson = p[K.modelOverrides] ?: "",
+
+            onboardingVersion = p[K.onboardingVersion] ?: 0,
+            trainingAge = enumOr(p[K.trainingAge], TrainingAge.UNKNOWN),
+            pregnancyStatus = enumOr(p[K.pregnancy], PregnancyStatus.NONE),
+            edScreenPositive = p[K.edScreenPositive] ?: false,
+            edScreenAt = p[K.edScreenAt] ?: 0L,
+            hideNumbers = p[K.hideNumbers] ?: false,
+            stepsTarget = p[K.stepsTarget] ?: 8000,
+            lastCheckinWeek = p[K.lastCheckinWeek] ?: "",
+
+            themeMode = enumOr(p[K.themeMode], ThemeMode.SYSTEM),
+            dynamicColor = p[K.dynamicColor] ?: false,
+            amoledBlack = p[K.amoled] ?: false,
+            haptics = p[K.haptics] ?: true,
+            reduceMotion = p[K.reduceMotion] ?: false,
+
+            whoopConnected = p[K.whoopConnected] ?: false,
+            lastWhoopSync = p[K.lastWhoopSync] ?: 0L,
+            weighInReminder = p[K.weighInReminder] ?: false,
+            mealReminder = p[K.mealReminder] ?: false,
+            workoutReminder = p[K.workoutReminder] ?: false
         )
     }
 
@@ -124,7 +234,35 @@ class SettingsStore(private val context: Context) {
     suspend fun setLastHealthSync(v: Long) = edit { it[K.lastHealthSync] = v }
     suspend fun setLearnedTdee(v: Double) = edit { it[K.learnedTdee] = v }
 
-    private suspend fun edit(block: (androidx.datastore.preferences.core.MutablePreferences) -> Unit) {
+    suspend fun setAiConfigured(v: Boolean) = edit { it[K.aiConfigured] = v }
+    suspend fun setProviderId(v: String) = edit { it[K.providerId] = v }
+    suspend fun setCustomBaseUrl(v: String) = edit { it[K.customBaseUrl] = v.trim() }
+    suspend fun setModelOverridesJson(v: String) = edit { it[K.modelOverrides] = v }
+
+    suspend fun setOnboardingVersion(v: Int) = edit { it[K.onboardingVersion] = v }
+    suspend fun setTrainingAge(v: TrainingAge) = edit { it[K.trainingAge] = v.name }
+    suspend fun setPregnancyStatus(v: PregnancyStatus) = edit { it[K.pregnancy] = v.name }
+    suspend fun setEdScreen(positive: Boolean, at: Long) = edit {
+        it[K.edScreenPositive] = positive
+        it[K.edScreenAt] = at
+    }
+    suspend fun setHideNumbers(v: Boolean) = edit { it[K.hideNumbers] = v }
+    suspend fun setStepsTarget(v: Int) = edit { it[K.stepsTarget] = v }
+    suspend fun setLastCheckinWeek(v: String) = edit { it[K.lastCheckinWeek] = v }
+
+    suspend fun setThemeMode(v: ThemeMode) = edit { it[K.themeMode] = v.name }
+    suspend fun setDynamicColor(v: Boolean) = edit { it[K.dynamicColor] = v }
+    suspend fun setAmoledBlack(v: Boolean) = edit { it[K.amoled] = v }
+    suspend fun setHaptics(v: Boolean) = edit { it[K.haptics] = v }
+    suspend fun setReduceMotion(v: Boolean) = edit { it[K.reduceMotion] = v }
+
+    suspend fun setWhoopConnected(v: Boolean) = edit { it[K.whoopConnected] = v }
+    suspend fun setLastWhoopSync(v: Long) = edit { it[K.lastWhoopSync] = v }
+    suspend fun setWeighInReminder(v: Boolean) = edit { it[K.weighInReminder] = v }
+    suspend fun setMealReminder(v: Boolean) = edit { it[K.mealReminder] = v }
+    suspend fun setWorkoutReminder(v: Boolean) = edit { it[K.workoutReminder] = v }
+
+    private suspend fun edit(block: (MutablePreferences) -> Unit) {
         context.dataStore.edit(block)
     }
 }

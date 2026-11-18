@@ -48,7 +48,9 @@ import com.laksh.forge.util.Dates
 @Composable
 fun TrainScreen(
     onOpenSession: (Long) -> Unit,
-    vm: TrainViewModel = viewModel(factory = TrainViewModel.Factory)
+    vm: TrainViewModel = viewModel(factory = TrainViewModel.Factory),
+    onOpenLibrary: () -> Unit = {},
+    onOpenExercise: (String) -> Unit = {}
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     var confirmDelete by remember { mutableStateOf<Program?>(null) }

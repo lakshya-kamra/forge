@@ -45,20 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.laksh.forge.feature.coach.CoachScreen
-import com.laksh.forge.feature.log.LogScreen
-import com.laksh.forge.feature.settings.SettingsScreen
-import com.laksh.forge.feature.today.TodayScreen
-import com.laksh.forge.feature.train.SessionScreen
-import com.laksh.forge.feature.train.TrainScreen
-import com.laksh.forge.feature.trends.TrendsScreen
-import com.laksh.forge.ui.OnboardingScreen
 import com.laksh.forge.ui.theme.ForgeTheme
 
 private enum class Dest(val route: String, val label: String, val icon: ImageVector) {
@@ -85,7 +73,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     when {
                         settings == null -> Unit                       // first frame, avoid a flash
-                        !settings!!.onboarded -> OnboardingScreen()
+                        !settings!!.onboarded -> com.laksh.forge.feature.onboarding.OnboardingFlow(onDone = {})
                         else -> ForgeRoot()
                     }
                 }
@@ -100,7 +88,7 @@ private fun ForgeRoot() {
     val backStack by navController.currentBackStackEntryAsState()
     val currentRoute = backStack?.destination?.route
 
-    val isFullScreen = currentRoute == "log" || currentRoute?.startsWith("session/") == true
+    val isFullScreen = !Routes.isTopLevel(currentRoute)
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -150,7 +138,7 @@ private fun ForgeRoot() {
                 exit = fadeOut(tween(150))
             ) {
                 FloatingActionButton(
-                    onClick = { navController.navigate("log") },
+                    onClick = { navController.navigate(Routes.LOG) },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
@@ -159,37 +147,12 @@ private fun ForgeRoot() {
             }
         }
     ) { padding ->
-        NavHost(
-            navController = navController,
-            startDestination = Dest.TODAY.route,
+        ForgeNavHost(
+            nav = navController,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .consumeWindowInsets(padding)
-        ) {
-            composable(Dest.TODAY.route) {
-                TodayScreen(
-                    onAddFood = { navController.navigate("log") },
-                    onOpenEntry = { }
-                )
-            }
-            composable(Dest.TRAIN.route) {
-                TrainScreen(onOpenSession = { id -> navController.navigate("session/$id") })
-            }
-            composable(Dest.TRENDS.route) { TrendsScreen() }
-            composable(Dest.COACH.route) { CoachScreen() }
-            composable(Dest.SETTINGS.route) { SettingsScreen() }
-
-            composable("log") {
-                LogScreen(onDone = { navController.popBackStack() })
-            }
-            composable(
-                route = "session/{sessionId}",
-                arguments = listOf(navArgument("sessionId") { type = NavType.LongType })
-            ) { entry ->
-                val id = entry.arguments?.getLong("sessionId") ?: 0L
-                SessionScreen(sessionId = id, onExit = { navController.popBackStack() })
-            }
-        }
+        )
     }
 }

@@ -57,7 +57,9 @@ import com.laksh.forge.ui.components.SectionHeader
 import kotlin.math.roundToInt
 
 @Composable
-fun SettingsScreen(vm: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory)) {
+fun SettingsScreen(vm: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory),
+    onNavigate: (String) -> Unit = {}
+) {
     val state by vm.state.collectAsStateWithLifecycle()
     val s = state.settings
     val context = LocalContext.current

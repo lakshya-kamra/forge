@@ -106,7 +106,7 @@ class AnthropicException(message: String) : Exception(message)
 class AnthropicClient(
     private val apiKeyProvider: () -> String,
     private val modelProvider: (Task) -> String
-) {
+) : com.laksh.forge.data.ai.ForgeAi {
 
     private val http = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -135,7 +135,7 @@ class AnthropicClient(
         }
     }
 
-    private fun supportsEffort(model: String): Boolean = !model.contains("haiku")
+    private fun supportsEffort(model: String): Boolean = !model.startsWith("claude-haiku-4")
 
     private fun buildRequest(body: JsonObject, stream: Boolean = false): Request =
         Request.Builder()
@@ -171,7 +171,7 @@ class AnthropicClient(
      * silently wrecks a cut, so we ask for the upper end of the plausible range and
      * the caller applies a further fixed margin on top.
      */
-    suspend fun estimateFoodFromPhoto(
+    override suspend fun estimateFoodFromPhoto(
         imageBase64: String,
         mediaType: String,
         userHint: String?,
@@ -253,7 +253,7 @@ class AnthropicClient(
     // ---------------------------------------------------------------- text food
 
     /** Same estimator, but from a text description instead of a photo. */
-    suspend fun estimateFoodFromText(description: String, bodyContext: String): FoodEstimate =
+    override suspend fun estimateFoodFromText(description: String, bodyContext: String): FoodEstimate =
         withContext(Dispatchers.IO) {
             val body = buildJsonObject {
                 modelFor(Task.FOOD_PHOTO, "low")
@@ -292,7 +292,7 @@ class AnthropicClient(
      * Transcribe a nutrition information panel from a photo. This is the fallback when a
      * barcode is not in the database - common for regional and store-brand products.
      */
-    suspend fun readNutritionLabel(imageBase64: String, mediaType: String): LabelReading =
+    override suspend fun readNutritionLabel(imageBase64: String, mediaType: String): LabelReading =
         withContext(Dispatchers.IO) {
             val content = buildJsonArray {
                 addJsonObject {
@@ -342,7 +342,7 @@ class AnthropicClient(
     // ---------------------------------------------------------------- program PDF
 
     /** Turn the raw text of a training PDF into a structured, loggable program. */
-    suspend fun parseProgram(rawText: String, fileName: String): ParsedProgram =
+    override suspend fun parseProgram(rawText: String, fileName: String): ParsedProgram =
         withContext(Dispatchers.IO) {
             val body = buildJsonObject {
                 modelFor(Task.PROGRAM, "medium")
@@ -365,7 +365,7 @@ class AnthropicClient(
         }
 
     /** Same as [parseProgram] but for scanned PDFs, where pages arrive as images. */
-    suspend fun parseProgramFromImages(imagesBase64: List<String>, fileName: String): ParsedProgram =
+    override suspend fun parseProgramFromImages(imagesBase64: List<String>, fileName: String): ParsedProgram =
         withContext(Dispatchers.IO) {
             val content = buildJsonArray {
                 imagesBase64.forEach { b64 ->
@@ -444,7 +444,7 @@ class AnthropicClient(
     // ---------------------------------------------------------------- coach chat
 
     /** Streaming coach reply. Emits incremental text deltas. */
-    fun chatStream(
+    override fun chatStream(
         system: String,
         history: List<Pair<String, String>>,
         userMessage: String
@@ -512,7 +512,7 @@ class AnthropicClient(
     }.flowOn(Dispatchers.IO)
 
     /** One-shot connectivity + key check used by Settings. */
-    suspend fun testKey(): String = withContext(Dispatchers.IO) {
+    override suspend fun testKey(): String = withContext(Dispatchers.IO) {
         val body = buildJsonObject {
             modelFor(Task.PING)
             put("max_tokens", 32)
@@ -525,6 +525,83 @@ class AnthropicClient(
         }
         val obj = execute(body)
         textOf(obj).ifBlank { "ready" }
+    }
+
+
+    // ---------------------------------------------------------------- ForgeAi extras
+
+    override val isConfigured: Boolean get() = apiKeyProvider().isNotBlank()
+
+    override fun describe(task: Task): String = "Anthropic \u00b7 " + modelProvider(task)
+
+    /** JSON output constrained by output_config.format (forced tool_choice 400s on 5.5 models). */
+    override suspend fun structured(
+        task: Task,
+        system: String,
+        parts: List<com.laksh.forge.data.ai.AiPart>,
+        schemaName: String,
+        schema: JsonObject,
+        maxTokens: Int
+    ): JsonObject = withContext(Dispatchers.IO) {
+        val content = buildJsonArray {
+            parts.forEach { part ->
+                when (part) {
+                    is com.laksh.forge.data.ai.AiPart.Image -> addJsonObject {
+                        put("type", "image")
+                        putJsonObject("source") {
+                            put("type", "base64")
+                            put("media_type", part.mediaType)
+                            put("data", part.base64)
+                        }
+                    }
+                    is com.laksh.forge.data.ai.AiPart.Text -> addJsonObject {
+                        put("type", "text")
+                        put("text", part.text)
+                    }
+                }
+            }
+        }
+        val model = modelProvider(task)
+        val body = buildJsonObject {
+            put("model", model)
+            put("max_tokens", maxTokens)
+            putJsonObject("output_config") {
+                if (supportsEffort(model)) put("effort", "medium")
+                putJsonObject("format") {
+                    put("type", "json_schema")
+                    put("schema", schema)
+                }
+            }
+            put("system", system)
+            putJsonArray("messages") {
+                addJsonObject {
+                    put("role", "user")
+                    put("content", content)
+                }
+            }
+        }
+        val obj = execute(body)
+        if (obj["stop_reason"]?.jsonPrimitive?.content == "refusal") {
+            throw AnthropicException("The model declined this request. Try again without the photos.")
+        }
+        jsonFromText(obj) ?: throw AnthropicException("Could not read a structured answer from the response.")
+    }
+
+    override suspend fun listModels(): List<String> = withContext(Dispatchers.IO) {
+        val request = Request.Builder()
+            .url("https://api.anthropic.com/v1/models?limit=100")
+            .addHeader("x-api-key", requireKey())
+            .addHeader("anthropic-version", API_VERSION)
+            .get()
+            .build()
+        runCatching {
+            http.newCall(request).execute().use { r ->
+                val raw = r.body?.string().orEmpty()
+                JSON.parseToJsonElement(raw).jsonObject["data"]?.jsonArray
+                    ?.mapNotNull { it.jsonObject["id"]?.jsonPrimitive?.content }
+                    .orEmpty()
+            }
+        }.getOrDefault(emptyList())
     }
 
     // ---------------------------------------------------------------- plumbing
@@ -581,7 +658,7 @@ class AnthropicClient(
 
     companion object {
         private const val ENDPOINT = "https://api.anthropic.com/v1/messages"
-        private const val API_VERSION = "2023-06-01"
+        private const val API_VERSION = "2026-10-21"
 
         val JSON = kotlinx.serialization.json.Json {
             ignoreUnknownKeys = true

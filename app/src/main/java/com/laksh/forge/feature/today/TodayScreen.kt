@@ -74,7 +74,9 @@ private fun mealLabel(slot: String) = when (slot) {
 fun TodayScreen(
     onAddFood: () -> Unit,
     onOpenEntry: (Long) -> Unit,
-    vm: TodayViewModel = viewModel(factory = TodayViewModel.Factory)
+    vm: TodayViewModel = viewModel(factory = TodayViewModel.Factory),
+    onOpenPlan: () -> Unit = {},
+    onOpenProgress: () -> Unit = {}
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     var showWeightDialog by remember { mutableStateOf(false) }
