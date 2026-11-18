@@ -60,7 +60,7 @@ data class PlanUiState(
         get() {
             val t = trend ?: return null
             val w = t.latestSmoothed ?: return null
-            if (t.points.size < 4 || w <= 0) return null
+            if (t.points.size < 4 || !t.hasRate || w <= 0) return null
             return t.kgPerWeek / w * 100.0
         }
 }

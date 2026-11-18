@@ -122,7 +122,7 @@ fun TrendsContent(
         item(key = "weight", contentType = "chart_card") {
             ForgeCard {
                 val trend = state.trend
-                if (trend == null || state.trendPoints.size < 2) {
+                if (trend == null || state.trendPoints.isEmpty()) {
                     EmptyState(
                         icon = Icons.Outlined.Insights,
                         title = "Log a few weigh-ins",
@@ -138,13 +138,23 @@ fun TrendsContent(
                             ),
                             modifier = Modifier.weight(1f)
                         )
-                        StatTile(
-                            label = "Rate",
-                            value = "%+.2f".format(NutritionMath.kgToDisplay(trend.kgPerWeek, unit)),
-                            sub = "${unit.label}/week",
-                            accent = rateColor(trend.kgPerWeek),
-                            modifier = Modifier.weight(1f)
-                        )
+                        if (trend.hasRate) {
+                            StatTile(
+                                label = "Rate",
+                                value = "%+.2f".format(NutritionMath.kgToDisplay(trend.kgPerWeek, unit)),
+                                sub = "${unit.label}/week",
+                                accent = rateColor(trend.kgPerWeek),
+                                modifier = Modifier.weight(1f)
+                            )
+                        } else {
+                            // One day of readings has no rate; "+0.00" would read as "holding steady".
+                            StatTile(
+                                label = "Rate",
+                                value = "N/A",
+                                sub = "needs 2+ days",
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                         StatTile(
                             label = "Change",
                             value = trend.changeOverWindow?.let {
@@ -155,16 +165,27 @@ fun TrendsContent(
                         )
                     }
                     Spacer(Modifier.height(18.dp))
-                    LineChart(
-                        points = state.trendPoints,
-                        rawPoints = state.rawPoints,
-                        lineColor = MaterialTheme.colorScheme.primary,
-                        yFormatter = { "%.1f".format(it) },
-                        height = 210.dp
-                    )
+                    if (trend.hasRate) {
+                        LineChart(
+                            points = state.trendPoints,
+                            rawPoints = state.rawPoints,
+                            lineColor = MaterialTheme.colorScheme.primary,
+                            yFormatter = { "%.1f".format(it) },
+                            height = 210.dp
+                        )
+                    } else {
+                        // Readings from a single day: show where you are, not a line through it.
+                        LineChart(
+                            points = listOf(state.trendPoints.last()),
+                            lineColor = MaterialTheme.colorScheme.primary,
+                            yFormatter = { "%.1f".format(it) },
+                            height = 210.dp
+                        )
+                    }
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        "Dots are individual weigh-ins; the line is the smoothed trend.",
+                        if (trend.hasRate) "Dots are individual weigh-ins; the line is the smoothed trend."
+                        else "Log weigh-ins on a few more days and your trend line will appear.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

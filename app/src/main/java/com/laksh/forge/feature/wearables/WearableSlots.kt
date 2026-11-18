@@ -139,15 +139,26 @@ private fun ReadinessBody(s: ReadinessUi.Ready) {
         if (estimate.missing.isNotEmpty()) {
             Spacer(Modifier.height(12.dp))
             estimate.missing.forEach { m ->
-                Text(
-                    "• ${m.reason}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                // Hanging indent: wrapped lines align with the text, not under the bullet.
+                Row {
+                    Text(
+                        "•",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.width(14.dp)
+                    )
+                    Text(
+                        m.reason,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
             if (s.noRmssdSource && estimate.missing.any { it.metric == ReadinessMetric.HRV }) {
+                Spacer(Modifier.height(6.dp))
                 Text(
-                    "  RMSSD reaches Forge from Pixel Watch/Fitbit or Oura via Health Connect, or from WHOOP's API. Apple's SDNN can't be used.",
+                    "RMSSD reaches Forge from Pixel Watch/Fitbit or Oura via Health Connect, or from WHOOP's API. Apple's SDNN can't be used.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

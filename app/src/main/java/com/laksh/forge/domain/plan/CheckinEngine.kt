@@ -143,7 +143,7 @@ object CheckinEngine {
         val prevAvg = prev7.takeIf { it.isNotEmpty() }?.map { it.kg }?.average()
 
         val window14 = weights.filter { it.localDate in d14..todayS }
-        val trend = if (window14.size >= 2) NutritionMath.trend(window14).kgPerWeek else null
+        val trend = NutritionMath.trend(window14).takeIf { it.hasRate }?.kgPerWeek
 
         val logged7 = totals.filter { it.localDate in d7..todayS && it.kcal > LOGGED_DAY_KCAL }
         val logged14 = totals.filter { it.localDate in d14..todayS && it.kcal > LOGGED_DAY_KCAL }

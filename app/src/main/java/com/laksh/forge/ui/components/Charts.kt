@@ -160,6 +160,9 @@ fun CalorieRing(
 /**
  * Weight/trend chart. Draws an optional raw scatter behind a smoothed line so the user can
  * see both the noise and the signal - the whole point of trend weighing.
+ *
+ * A single point is drawn as just that point, centred with its label: one reading has no
+ * trend, and stretching it into a full-width flat line would claim one.
  */
 @Composable
 fun LineChart(
@@ -171,7 +174,7 @@ fun LineChart(
     height: androidx.compose.ui.unit.Dp = 200.dp,
     goalLine: Float? = null
 ) {
-    if (points.size < 2) {
+    if (points.isEmpty()) {
         Box(
             modifier
                 .fillMaxWidth()
@@ -217,8 +220,9 @@ fun LineChart(
             val minX = points.first().x
             val maxX = points.last().x
             val spanX = (maxX - minX).takeIf { it != 0f } ?: 1f
+            val single = points.size == 1
 
-            fun px(x: Float) = leftPad + (x - minX) / spanX * chartW
+            fun px(x: Float) = if (single) leftPad + chartW / 2f else leftPad + (x - minX) / spanX * chartW
             fun py(y: Float) = topPad + (1f - (y - minY) / (maxY - minY)) * chartH
 
             // Horizontal grid + y labels
@@ -248,6 +252,15 @@ fun LineChart(
             // Raw scatter behind the trend line.
             rawPoints.forEach { p ->
                 drawCircle(rawColor, radius = 2.5.dp.toPx(), center = Offset(px(p.x), py(p.y)))
+            }
+
+            if (single) {
+                val c = Offset(px(points[0].x), py(points[0].y))
+                drawCircle(lineColor.copy(alpha = 0.25f), radius = 8.dp.toPx() * progress.value, center = c)
+                drawCircle(lineColor, radius = 4.dp.toPx() * progress.value, center = c)
+                val txt = measurer.measure(points[0].label, TextStyle(fontSize = 10.sp, color = axisText))
+                drawText(txt, topLeft = Offset(c.x - txt.size.width / 2f, size.height - 2f - txt.size.height))
+                return@Canvas
             }
 
             val screen = points.map { Offset(px(it.x), py(it.y)) }

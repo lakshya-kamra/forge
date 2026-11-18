@@ -74,7 +74,7 @@ Exact Material 3 Expressive signatures: `docs/research/m3e_api.md` (when present
 
 | Area | Owns (edit/create) | Contract it must keep |
 |---|---|---|
-| **AI providers** | `data/ai/**`, `data/remote/AnthropicClient.kt`, `data/remote/ModelPolicy.kt`, `feature/settings/AiSettingsScreen.kt` (+ its VM file), `res/xml/backup_rules.xml`, `res/xml/data_extraction_rules.xml` | `ForgeAi` interface; `repo.ai` construction may be requested via requests/ |
+| **AI providers** | `data/ai/**`, `data/remote/ModelPolicy.kt`, `feature/settings/AiSettingsScreen.kt` (+ its VM file), `res/xml/backup_rules.xml`, `res/xml/data_extraction_rules.xml` | `ForgeAi` interface; `repo.ai` construction may be requested via requests/ |
 | **Onboarding & plan** | `feature/onboarding/**`, `feature/plan/**`, `feature/progress/**`, `feature/settings/ProfileSettingsScreen.kt` (+VM), `domain/plan/**`, `data/db/BodyDao.kt`, `data/db/PlanDao.kt` | `OnboardingFlow(onDone)`, `PlanScreen`, `CheckinScreen`, `PlanSummaryCard`, `ProgressScreen`, `ProfileSettingsScreen` |
 | **Programs** | `feature/train/**`, `feature/library/**`, `domain/program/**`, `data/db/TrainingDao.kt`, `app/src/main/assets/programs/**` | `TrainScreen`, `SessionScreen`, `LibraryScreen`, `ProgramDetailScreen`, `ProgramLibrary` |
 | **Exercises & 3D** | `feature/exercise/**`, `domain/exercise/**`, `ui/skeleton/**`, `data/db/ExerciseDao.kt`, `app/src/main/assets/exercises/**` | `ExerciseDetailScreen`, `ExerciseBrowserScreen`, `ExerciseCatalog` |

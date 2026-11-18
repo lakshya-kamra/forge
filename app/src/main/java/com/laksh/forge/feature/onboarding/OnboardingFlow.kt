@@ -176,7 +176,7 @@ private fun FlowBottomBar(state: OnboardingUiState, vm: OnboardingViewModel) {
     val haptics = LocalHapticFeedback.current
     val d = state.draft
     val (label, enabled) = when (state.step) {
-        OnboardingStep.WELCOME -> (if (state.isRedo) "Start re-plan" else "Let's start") to true
+        OnboardingStep.WELCOME -> (if (state.hasPlan) "Start re-plan" else "Let's start") to true
         OnboardingStep.PHOTOS -> (if (d.photos.isNotEmpty()) "Continue" else "Continue without photos") to !state.photoBusy
         OnboardingStep.ANALYSIS -> "See my recommendation" to !state.analysing
         OnboardingStep.RECOMMENDATION -> "Review the plan" to (state.proposal != null && !state.planning)

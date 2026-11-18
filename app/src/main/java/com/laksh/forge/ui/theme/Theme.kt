@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
@@ -247,9 +248,13 @@ fun ForgeAppearanceTheme(
             colorScheme = scheme,
             motionScheme = motion,
             shapes = ForgeShapes,
-            typography = ForgeType,
-            content = content
-        )
+            typography = ForgeType
+        ) {
+            // MaterialTheme does not set a content colour; only Surface/Scaffold do. Without
+            // this, text placed straight on the page (top-level screen titles) falls back to
+            // LocalContentColor's default of black, which vanishes on the dark page.
+            CompositionLocalProvider(LocalContentColor provides scheme.onBackground, content = content)
+        }
     }
 }
 

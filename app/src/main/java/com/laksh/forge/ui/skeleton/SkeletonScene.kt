@@ -184,6 +184,80 @@ class SkeletonScene(
         }
     }
 
+    /**
+     * Screen-space box (minX, minY, maxX, maxY, in px) around the current pose and its
+     * equipment, seen by [cam] in a [w] x [h] viewport. Uses the same framing [draw] does.
+     *
+     * The orbit framing centres a sphere around the whole rep at every yaw, which suits the
+     * interactive viewer but leaves a single still off-centre (the bar's sweep and the floor
+     * pull the sphere's centre away from where the key pose actually is). Thumbnails fit
+     * this box instead. Returns false when nothing projected in front of the camera.
+     */
+    fun projectedBounds(cam: OrbitCamera, w: Float, h: Float, out: FloatArray): Boolean {
+        if (w <= 1f || h <= 1f) return false
+        cam.frame(centerX, centerY, centerZ, radius)
+        cam.update(w, h)
+        out[0] = Float.MAX_VALUE; out[1] = Float.MAX_VALUE
+        out[2] = -Float.MAX_VALUE; out[3] = -Float.MAX_VALUE
+
+        fun add(x: Float, y: Float, z: Float, r: Float) {
+            val d = cam.depth(x, y, z)
+            if (d < OrbitCamera.NEAR) return
+            val sx = cam.screenX(x, y, z, d)
+            val sy = cam.screenY(x, y, z, d)
+            val rp = cam.focal * r / d
+            out[0] = min(out[0], sx - rp); out[1] = min(out[1], sy - rp)
+            out[2] = max(out[2], sx + rp); out[3] = max(out[3], sy + rp)
+        }
+
+        val pos = solver.pos
+        for (j in 0 until Joint.COUNT) add(pos[j * 3], pos[j * 3 + 1], pos[j * 3 + 2], Anthro.R_JOINT)
+        val hd = Joint.HEAD * 3
+        add(pos[hd], pos[hd + 1], pos[hd + 2], Anthro.HEAD_RADIUS)
+
+        val p = prims.p
+        for (k in 0 until prims.count) {
+            val o = k * 12
+            val r = prims.radius[k]
+            when (prims.kind[k]) {
+                PrimBuffer.TUBE -> {
+                    add(p[o], p[o + 1], p[o + 2], r)
+                    add(p[o + 3], p[o + 4], p[o + 5], r)
+                }
+                PrimBuffer.DISC -> {
+                    // Sample the rim: a plate seen edge-on is a thin bar, face-on a full circle.
+                    val nx = p[o + 3]; val ny = p[o + 4]; val nz = p[o + 5]
+                    // Any vector not parallel to n gives the first in-plane axis.
+                    var ax: Float; var ay: Float; var az: Float
+                    if (abs(ny) < 0.9f) { ax = nz; ay = 0f; az = -nx } else { ax = 0f; ay = -nz; az = ny }
+                    val al = sqrt(ax * ax + ay * ay + az * az).coerceAtLeast(1e-6f)
+                    ax /= al; ay /= al; az /= al
+                    val bx = ny * az - nz * ay
+                    val by = nz * ax - nx * az
+                    val bz = nx * ay - ny * ax
+                    val half = p[o + 6] * 0.5f
+                    for (i in 0 until 8) {
+                        val t = i * TWO_PI / 8f
+                        val c = cos(t) * r; val s = sin(t) * r
+                        add(p[o] + ax * c + bx * s, p[o + 1] + ay * c + by * s, p[o + 2] + az * c + bz * s, half)
+                    }
+                }
+                else -> for (i in 0 until 8) {
+                    val su = if (i and 1 == 0) -1f else 1f
+                    val sv = if (i and 2 == 0) -1f else 1f
+                    val sw = if (i and 4 == 0) -1f else 1f
+                    add(
+                        p[o] + su * p[o + 3] + sv * p[o + 6] + sw * p[o + 9],
+                        p[o + 1] + su * p[o + 4] + sv * p[o + 7] + sw * p[o + 10],
+                        p[o + 2] + su * p[o + 5] + sv * p[o + 8] + sw * p[o + 11],
+                        0f
+                    )
+                }
+            }
+        }
+        return out[2] > out[0] && out[3] > out[1]
+    }
+
     // ------------------------------------------------------------------ floor
 
     private fun drawGrid(ds: DrawScope, cam: OrbitCamera, c: SkeletonColors) {

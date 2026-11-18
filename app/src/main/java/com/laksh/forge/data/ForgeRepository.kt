@@ -308,7 +308,7 @@ class ForgeRepository(
             appendLine("Profile: ${s.sex.name.lowercase()}, age ${s.age}, height ${s.heightCm.roundToInt()} cm")
             appendLine("Current weight: ${latestWeight?.let { w(it.kg) } ?: "not logged"}")
             trend.latestSmoothed?.let { appendLine("Trend weight (smoothed): ${w(it)}") }
-            if (trend.points.size >= 4) {
+            if (trend.points.size >= 4 && trend.hasRate) {
                 appendLine("Weight trend: %+.2f kg/week over %d weigh-ins".format(trend.kgPerWeek, trend.points.size))
             }
             appendLine()

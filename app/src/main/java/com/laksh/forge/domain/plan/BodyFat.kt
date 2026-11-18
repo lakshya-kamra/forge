@@ -8,13 +8,36 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
-/** Where a body-fat range came from. [dbValue] matches BodyMeasurement.bodyFatMethod. */
-enum class BodyFatMethod(val label: String, val dbValue: String) {
-    NAVY("Tape measure (US Navy formula)", "NAVY"),
-    VISUAL_AI("AI photo estimate - unvalidated", "VISUAL_AI"),
+/**
+ * Where a body-fat range came from. [dbValue] matches BodyMeasurement.bodyFatMethod. [label]
+ * stands alone (a card title, and the string saved in plan details); [phrase] is the same thing
+ * written to sit inside a sentence's parentheses, so it has none of its own and keeps "US".
+ */
+enum class BodyFatMethod(val label: String, val dbValue: String, val phrase: String) {
+    NAVY("Tape measure (US Navy formula)", "NAVY", "tape measure, US Navy formula"),
+    VISUAL_AI("AI photo estimate - unvalidated", "VISUAL_AI", "AI photo estimate, unvalidated"),
     /** Never written to the database; measurements store the raw tape result as NAVY. */
-    COMBINED("Tape and photos combined", "COMBINED")
+    COMBINED("Tape and photos combined", "COMBINED", "tape and photos combined");
+
+    companion object {
+        /** Matches a saved [label] or [dbValue]; null for anything else (older or free text). */
+        fun from(stored: String): BodyFatMethod? =
+            entries.firstOrNull { it.label.equals(stored, true) || it.dbValue.equals(stored, true) }
+    }
 }
+
+/**
+ * The one way a body-fat range is shown: rounded outward to whole percentages so it never looks
+ * narrower than it is. Every screen goes through this, so the same measurement reads the same
+ * on the analysis step and on the saved plan.
+ */
+fun bodyFatRangeLabel(low: Double, high: Double): String = "${floor(low).toInt()}-${ceil(high).toInt()}%"
+
+/** A saved method string as an in-sentence phrase (see [BodyFatMethod.phrase]). */
+fun bodyFatMethodPhrase(stored: String): String =
+    BodyFatMethod.from(stored)?.phrase
+        // Unknown text: flatten its own parentheses so it can still sit inside ours.
+        ?: stored.replace(" (", ", ").replace("(", "").replace(")", "")
 
 /**
  * A body-fat estimate expressed the only honest way: a likely range plus its method.
@@ -30,7 +53,7 @@ data class BodyFatRange(
     fun overlaps(other: BodyFatRange): Boolean = low <= other.high && other.low <= high
 
     /** Rounded outward to whole percentages so the shown range never looks narrower than it is. */
-    val label: String get() = "${floor(low).toInt()}-${ceil(high).toInt()}%"
+    val label: String get() = bodyFatRangeLabel(low, high)
 }
 
 /**

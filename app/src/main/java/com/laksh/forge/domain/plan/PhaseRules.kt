@@ -101,7 +101,7 @@ object PhaseRules {
 
     private fun rawDecision(i: PhaseInputs): PhaseDecision {
         val bf = i.bodyFat
-        val rangeText = bf?.let { "about ${it.label} (${it.method.label.lowercase()}, a likely range rather than an exact figure)" }
+        val rangeText = bf?.let { "about ${it.label} (${it.method.phrase}, a likely range rather than an exact figure)" }
 
         // 1. Safety guard: no deficit and no aggressive surplus.
         if (i.safetyHolds.isNotEmpty()) {
@@ -325,5 +325,5 @@ object PhaseRules {
 
     /** "17-27%"-style midpoint text for logs and prompts. */
     fun describe(range: BodyFatRange?): String =
-        range?.let { "${it.label} (centre ${it.mid.roundToInt()}%, ${it.method.label})" } ?: "no estimate"
+        range?.let { "${it.label} (centre ${it.mid.roundToInt()}%, ${it.method.phrase})" } ?: "no estimate"
 }

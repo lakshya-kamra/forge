@@ -177,7 +177,7 @@ private fun WelcomeStep(state: OnboardingUiState) {
         MorphHero(animate = !state.baseSettings.reduceMotion)
     }
     Text(
-        if (state.isRedo) "Let's rebuild your plan" else "Let's build your plan",
+        if (state.hasPlan) "Let's rebuild your plan" else "Let's build your plan",
         style = MaterialTheme.typography.displaySmall,
         fontWeight = FontWeight.SemiBold,
         textAlign = TextAlign.Center,

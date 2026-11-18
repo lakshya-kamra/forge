@@ -161,6 +161,11 @@ data class OnboardingUiState(
     val step: OnboardingStep = OnboardingStep.WELCOME,
     val draft: OnboardingDraft = OnboardingDraft(),
     val isRedo: Boolean = false,
+    /**
+     * A phase plan (active or past) already exists. Distinct from [isRedo]: a v1 user is
+     * onboarded but has never had a plan, so the copy says "build", not "rebuild".
+     */
+    val hasPlan: Boolean = false,
     val aiConfigured: Boolean = false,
     val bodyModel: String = "",
     val crisisDisclosed: Boolean = false,
@@ -285,10 +290,12 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
             val profile = PlanProfileStore.current()
             val latest = PlanStore.latestWeightKg(repo)
             val redo = s.onboarded
+            val hasPlan = runCatching { PlanStore.planDao.allPlans().isNotEmpty() }.getOrDefault(false)
             _state.update {
                 it.copy(
                     loaded = true,
                     isRedo = redo,
+                    hasPlan = hasPlan,
                     aiConfigured = repo.ai.isConfigured,
                     bodyModel = runCatching { repo.ai.describe(Task.BODY) }.getOrDefault(""),
                     baseSettings = s,

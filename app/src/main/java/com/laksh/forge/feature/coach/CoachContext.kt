@@ -223,7 +223,7 @@ object CoachContext {
             }
             val trend = NutritionMath.trend(weights)
             trend.latestSmoothed?.let { appendLine("- Smoothed trend weight: ${fmtKg(it)} kg") }
-            if (trend.points.size >= 4) {
+            if (trend.points.size >= 4 && trend.hasRate) {
                 val pct = trend.kgPerWeek / (trend.latestSmoothed ?: latest.kg) * 100.0
                 appendLine("- Trend: ${fmtSigned(trend.kgPerWeek)} kg/week (${fmtSigned(pct)}% of bodyweight/week) over ${trend.points.size} weigh-ins in the last 120 days")
             }

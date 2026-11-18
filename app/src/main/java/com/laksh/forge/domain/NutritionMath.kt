@@ -28,12 +28,20 @@ data class TrendPoint(val timestamp: Long, val raw: Double, val smoothed: Double
 
 data class WeightTrend(
     val points: List<TrendPoint>,
-    /** kg per week, from least-squares fit on the smoothed series. Positive = gaining. */
+    /** kg per week, from least-squares fit on the smoothed series. Positive = gaining. 0 without [hasRate]. */
     val kgPerWeek: Double,
     val latestSmoothed: Double?,
     val latestRaw: Double?,
-    val changeOverWindow: Double?
-)
+    val changeOverWindow: Double?,
+    /** Distinct calendar days with a weigh-in. Several readings on one day are still one day. */
+    val days: Int = points.size
+) {
+    /**
+     * A rate needs readings on at least two days: two on the same morning (a manual entry plus
+     * a synced scale reading) would otherwise extrapolate minutes of noise into kg per week.
+     */
+    val hasRate: Boolean get() = days >= 2
+}
 
 /** Targets plus the guardrail reasoning behind them, for screens that explain adjustments. */
 data class CheckedTargets(
@@ -109,8 +117,9 @@ object NutritionMath {
     fun trend(weights: List<WeightEntry>): WeightTrend {
         val sorted = weights.sortedBy { it.timestamp }
         val pts = smooth(sorted)
-        if (pts.size < 2) {
-            return WeightTrend(pts, 0.0, pts.lastOrNull()?.smoothed, pts.lastOrNull()?.raw, null)
+        val days = sorted.distinctBy { it.localDate }.size
+        if (pts.size < 2 || days < 2) {
+            return WeightTrend(pts, 0.0, pts.lastOrNull()?.smoothed, pts.lastOrNull()?.raw, null, days)
         }
 
         // Least squares on (days, smoothed kg).
@@ -133,7 +142,8 @@ object NutritionMath {
             kgPerWeek = slopePerDay * 7,
             latestSmoothed = pts.last().smoothed,
             latestRaw = pts.last().raw,
-            changeOverWindow = pts.last().smoothed - pts.first().smoothed
+            changeOverWindow = pts.last().smoothed - pts.first().smoothed,
+            days = days
         )
     }
 
@@ -262,7 +272,7 @@ object NutritionMath {
      * framed as small changes (no more than 10% of the target, then two weeks to judge).
      */
     fun goalFeedback(goal: GoalMode, trend: WeightTrend, weightKg: Double): String? {
-        if (trend.points.size < 8 || weightKg <= 0) return null
+        if (trend.points.size < 8 || !trend.hasRate || weightKg <= 0) return null
         val actual = trend.kgPerWeek
         val pctPerWeek = actual / weightKg * 100.0
         val intended = defaultRate(goal, weightKg)

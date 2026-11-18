@@ -48,6 +48,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.domain.NutritionMath
 import com.laksh.forge.domain.plan.PhaseCopy
+import com.laksh.forge.domain.plan.bodyFatMethodPhrase
+import com.laksh.forge.domain.plan.bodyFatRangeLabel
 import com.laksh.forge.domain.plan.planSourceLabel
 import com.laksh.forge.ui.components.ChartPoint
 import com.laksh.forge.ui.components.EmptyState
@@ -56,7 +58,6 @@ import com.laksh.forge.ui.components.LineChart
 import com.laksh.forge.ui.components.SectionHeader
 import com.laksh.forge.util.Dates
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 @Composable
 fun PlanScreen(
@@ -210,7 +211,7 @@ private fun PlanContent(
                 if (bf != null && !hide && !s.isMinor) {
                     Spacer(Modifier.height(10.dp))
                     Text(
-                        "Body fat at the start: about ${bf.low.roundToInt()}-${bf.high.roundToInt()}% (${bf.method.lowercase()}). " +
+                        "Body fat at the start: about ${bodyFatRangeLabel(bf.low, bf.high)} (${bodyFatMethodPhrase(bf.method)}). " +
                             "A likely range, not an exact figure.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -380,7 +381,7 @@ private fun ProgressVsPlan(state: PlanUiState, modifier: Modifier = Modifier) {
     ForgeCard(modifier) {
         Text("Progress vs plan", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(10.dp))
-        if (trend == null || trend.points.size < 2) {
+        if (trend == null || !trend.hasRate) {
             Text(
                 "Log a few morning weigh-ins and your trend will appear here.",
                 style = MaterialTheme.typography.bodySmall,

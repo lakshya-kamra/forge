@@ -57,6 +57,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
@@ -86,6 +87,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.floor
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /** Camera presets offered as chips. [BEST] is the per-exercise default from the catalog. */
@@ -642,6 +644,9 @@ private object ThumbnailScenes {
     }
 }
 
+/** Margin around the fitted figure, as a fraction of the tile's shorter side. */
+private const val ThumbnailPadding = 0.08f
+
 /**
  * A still of the exercise's key pose, for lists. Drawn once: nothing it reads changes, so
  * Compose replays the recorded drawing while the list scrolls.
@@ -665,10 +670,29 @@ fun SkeletonThumbnail(
     ) {
         val s = scene
         if (s != null) {
-            val cam = remember(s) { OrbitCamera().apply { setView(s.motion.viewYaw, s.motion.viewPitch, 1.1f) } }
+            val cam = remember(s) { OrbitCamera().apply { setView(s.motion.viewYaw, s.motion.viewPitch) } }
+            val box = remember { FloatArray(4) }
             Canvas(Modifier.fillMaxSize()) {
                 s.pose(s.motion.keyPoseT)
-                s.draw(this, cam, colors, effort = 0.8f, detail = false)
+                if (!s.projectedBounds(cam, size.width, size.height, box)) {
+                    s.draw(this, cam, colors, effort = 0.8f, detail = false)
+                    return@Canvas
+                }
+                // Fit the key pose and its equipment, centred with a margin: the orbit framing
+                // is built for every yaw over the whole rep, not for one still in a small tile.
+                val pad = size.minDimension * ThumbnailPadding
+                val bw = box[2] - box[0]
+                val bh = box[3] - box[1]
+                val fit = min((size.width - 2f * pad) / bw, (size.height - 2f * pad) / bh)
+                    .coerceIn(0.2f, 4f)
+                val dx = size.width * 0.5f - (box[0] + box[2]) * 0.5f
+                val dy = size.height * 0.5f - (box[1] + box[3]) * 0.5f
+                withTransform({
+                    scale(fit, fit, pivot = center)
+                    translate(dx, dy)
+                }) {
+                    s.draw(this, cam, colors, effort = 0.8f, detail = false)
+                }
             }
         }
     }
