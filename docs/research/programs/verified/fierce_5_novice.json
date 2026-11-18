@@ -1,0 +1,253 @@
+{
+  "id": "fierce_5_novice",
+  "name": "Fierce 5 Novice Routine",
+  "author": "davisj3537 (Bodybuilding.com forum)",
+  "isFree": true,
+  "category": "POWERBUILDING",
+  "level": "BEGINNER",
+  "daysPerWeek": 3,
+  "sessionMinutes": 65,
+  "durationWeeks": null,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable"
+  ],
+  "summary": "A 3-day full-body novice routine alternating two short workouts built on five main exercises each, with the small lifts paired as supersets. Weight goes up every week, and the author says to start lighter than you think.",
+  "evidenceNote": "Volume is modest (about 5-9 hard sets per muscle per week across A/B), which is enough for true novices and keeps sessions short; the 3x5 compound work has the same hypertrophy potential as higher reps when taken reasonably close to failure. Weak points: little direct chest and hamstring volume, and weekly fixed jumps stall within months, after which the author says to move to an intermediate program (he suggests his Fierce 5 Upper/Lower routine).",
+  "sources": [
+    {
+      "title": "\"Fierce 5\" Novice Routine (original Bodybuilding.com forum thread by davisj3537, posted Jan 2014, last edited Jan 2019)",
+      "url": "https://forum.bodybuilding.com/showthread.php?t=159678631",
+      "kind": "article"
+    },
+    {
+      "title": "Archived copy of the original thread (Wayback Machine, July 2024)",
+      "url": "https://web.archive.org/web/20240725095140/https://forum.bodybuilding.com/showthread.php?t=159678631",
+      "kind": "article"
+    }
+  ],
+  "schedule": "3 non-consecutive days a week, alternating A and B (author's example: Mon A, Wed B, Fri A, then Mon B, Wed A, Fri B). Do not run it 4 days a week. Author: sessions take just over an hour including stretching and warm-ups. Do at least one warm-up set before each compound lift, adding more warm-up sets as the weights grow; warm-ups should not fatigue you.",
+  "progression": {
+    "type": "LINEAR",
+    "description": "Author's thread as last edited in Jan 2019. Each week add 5 lb (converted to 2.5 kg) to all upper-body lifts and 10 lb (5 kg) to all lower-body lifts; the same weight is used for a lift every session within a week. Exceptions: reverse flies (if subbed) +5 lb (2.5 kg) per month, never over 15 lb (about 7 kg) per hand if using dumbbells; leg curls (if subbed) +5 lb (2.5 kg) per week; ab work adds a few reps each week. If equipment can't make these jumps, add weight every other week for that exercise only and, in the weeks you don't add weight, add 1 rep per set on 5-rep exercises or 2 reps per set on 8-15 rep exercises. Start at 85% of what you think you can lift. Complete first-timers start at 50% and add 10-15% each workout until reaching that 85% level by the start of week 3, then follow normal progression. Cutting males and bulking females: run the normal progression until you stall on bench, squat or RDL, then halve the increments from that point. The author advises cutting females and men wanting to lose 30+ lb to run a different routine (All Pro's) instead.",
+    "incrementKg": {
+      "upper": 2.5,
+      "lower": 5
+    },
+    "deload": "If you fail a lift two sessions in a row, drop that lift 15% (reset) and work back up, focusing on form. A legitimate stall means you still cannot break the plateau after a deload (4-7 days completely off) plus a 15% reset and working back up. Once you legitimately stall on at least 2 major lifts (bench, rows, squat, deadlift) while bulking, move on; 4-6 months is a typical run. The author does not advise moving to an intermediate program if you cut the whole time."
+  },
+  "days": [
+    {
+      "name": "Workout A",
+      "focus": "Full body: squat, bench, row",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Rest 2-3 min on heavy compounds.",
+          "optional": false
+        },
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Subs: decline bench or weighted dips (leaning forward; needs a dip belt to add weight).",
+          "optional": false
+        },
+        {
+          "exerciseId": "pendlay_row",
+          "name": "Pendlay Rows",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Sub: any horizontal pull to the chest, wide grip, elbows at 45 degrees (not a regular bent-over row).",
+          "optional": false
+        },
+        {
+          "exerciseId": "face_pull",
+          "name": "Face Pulls",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 30,
+          "notes": "Isolation rest 30-60 s. Sub: reverse flies.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Calf raises",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset with tricep pressdowns, done back to back.",
+          "optional": false
+        },
+        {
+          "exerciseId": "triceps_pushdown",
+          "name": "Tricep pressdowns",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset with calf raises. Sub: any triceps isolation (overhead extensions, skull crushers, etc.).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Workout B",
+      "focus": "Full body: front squat, overhead press, RDL, pulldown",
+      "exercises": [
+        {
+          "exerciseId": "front_squat",
+          "name": "Front Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Sub: paused back squats. Front squat and RDL can only be swapped together for deadlift plus leg curl.",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "Overhead Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Subs: dumbbell overhead press, landmine press.",
+          "optional": false
+        },
+        {
+          "exerciseId": "romanian_deadlift",
+          "name": "Romanian Deadlift",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Lat Pulldowns (any grip)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Sub: any pull-up or chin-up variation (weighted with a dip belt).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Ab work",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Any ab exercise. Superset with bicep curls.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Bicep curls",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset with ab work.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://web.archive.org/web/20240725095140/https://forum.bodybuilding.com/showthread.php?t=159678631",
+      "https://forum.bodybuilding.com/showthread.php?t=159678631"
+    ],
+    "changes": [
+      "All exercises, sets, reps, supersets, substitutions, schedule, rest guidance, increments, start-weight rules, 15% reset, stall definition and move-on rule checked against the original post and FAQ (archived copy; live forum returned only a stub page) and found correct.",
+      "progression.description: cutting/female rule was wrong. Source says cutting males and bulking females run the normal progression until they stall on bench, squat or RDL and only then halve the increments; it does not say to halve from the start. Also added the author's advice that cutting females and men losing 30+ lb should run a different routine.",
+      "progression.description: reverse-fly cap is 'per hand if using DBs' (added the dumbbell condition); first-timer ramp reaches 85% by the start of week 3, then normal progression; clarified that weight is constant within a week, per the author's progression example.",
+      "Overhead Press notes: removed the claim 'Older versions used incline bench here'; the thread only lists Incline in its warm-up/rest lists and never states what it replaced, so it was unverified.",
+      "deload: added the author's note not to move to an intermediate program if you cut the whole time; reworded stall definition to match source (deload of 4-7 days off, 15% drop, work back up).",
+      "schedule: added the source's explicit warm-up rule (at least one warm-up set before compound lifts) and the author's 'not 4 days per week' rule.",
+      "Sources: first post dated 01-21-2014, last edited 01-07-2019 (title now says posted Jan 2014). Minor note additions: dip belt for weighted dips, triceps sub examples, Fierce 5 Upper/Lower as the author's suggested follow-up.",
+      "isFree confirmed true: the full program is a free public forum post by the author."
+    ]
+  }
+}

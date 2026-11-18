@@ -1,0 +1,467 @@
+{
+  "videos": [
+    {
+      "exerciseId": "back_squat",
+      "items": [
+        {
+          "videoId": "bEv6CCg2BC8",
+          "title": "How To Get A Huge Squat With Perfect Technique (Fix Mistakes)",
+          "author": "Jeff Nippard",
+          "why": "Best all-round squat tutorial: bracing, descent and ascent, plus fixes for common mistakes."
+        },
+        {
+          "videoId": "7v_V6xiA_AA",
+          "title": "How to Perform A Back Squat",
+          "author": "Squat University",
+          "why": "Short, dedicated high-bar back squat walkthrough from Dr. Aaron Horschig."
+        },
+        {
+          "videoId": "J_ekvFybels",
+          "title": "How to Squat: The Definitive Guide",
+          "author": "Calgary Barbell",
+          "why": "Long-form powerlifting coach's definitive guide to squat setup and execution."
+        }
+      ]
+    },
+    {
+      "exerciseId": "low_bar_squat",
+      "items": [
+        {
+          "videoId": "vmNPOjaGrVE",
+          "title": "How To Squat: Low Bar",
+          "author": "Alan Thrall (Untamed Strength)",
+          "why": "The most thorough dedicated low-bar squat coaching video."
+        },
+        {
+          "videoId": "nhoikoUEI8U",
+          "title": "Learning to Squat | The Starting Strength Method",
+          "author": "Starting Strength",
+          "why": "Starting Strength's step-by-step teaching progression for the low-bar squat."
+        },
+        {
+          "videoId": "Po9CDtfcLJI",
+          "title": "How to Perform a Low Bar Back Squat",
+          "author": "Squat University",
+          "why": "Concise low-bar technique overview from Squat University."
+        }
+      ]
+    },
+    {
+      "exerciseId": "front_squat",
+      "items": [
+        {
+          "videoId": "v-mQm_droHg",
+          "title": "HOW TO FRONT SQUAT: Build Bigger Quads & A Stronger Squat",
+          "author": "Jeff Nippard",
+          "why": "Complete front squat tutorial aimed at both quad growth and squat strength."
+        },
+        {
+          "videoId": "G-Vamqoy8qM",
+          "title": "How To Front Squat With Perfect Form (Stop Making These Mistakes)",
+          "author": "Squat University",
+          "why": "Common front squat form mistakes and how to correct them."
+        },
+        {
+          "videoId": "LO79JuUFfvA",
+          "title": "How to Front Squat WITHOUT Wrist Pain!",
+          "author": "Squat University",
+          "why": "Fixing the front rack so front squats do not hurt the wrists."
+        }
+      ]
+    },
+    {
+      "exerciseId": "goblet_squat",
+      "items": [
+        {
+          "videoId": "aEbQO49ru4Q",
+          "title": "Dan John Teaches His \"Goblet Squat Drill\"",
+          "author": "Dan John",
+          "why": "The coach who popularised the goblet squat teaching his core drill."
+        },
+        {
+          "videoId": "ZpljZx_pEno",
+          "title": "Getting MAXIMUM Benefits From Goblet Squats | Dan John",
+          "author": "Dan John",
+          "why": "Dan John on getting the most out of the goblet squat."
+        },
+        {
+          "videoId": "lrqtGXD32FA",
+          "title": "Why Goblet Squats May Be Bad For YOUR Muscle Growth",
+          "author": "Renaissance Periodization",
+          "why": "Dr. Mike Israetel on the goblet squat's limits as a muscle-growth lift."
+        }
+      ]
+    },
+    {
+      "exerciseId": "leg_press",
+      "items": [
+        {
+          "videoId": "B6rGDcfyPto",
+          "title": "How To Leg Press For Best Quad Growth | Targeting The Muscle Series",
+          "author": "Renaissance Periodization",
+          "why": "Best in-depth guide to setting up the leg press for quad growth."
+        },
+        {
+          "videoId": "nDh_BlnLCGc",
+          "title": "How To Leg Press With Perfect Technique",
+          "author": "Jeff Nippard",
+          "why": "One-minute quick-reference leg press technique cues."
+        },
+        {
+          "videoId": "8vk6rWMSxOk",
+          "title": "7 Leg Press Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Seven common leg press mistakes and their fixes."
+        }
+      ]
+    },
+    {
+      "exerciseId": "hack_squat",
+      "items": [
+        {
+          "videoId": "4cxt_Tldugw",
+          "title": "9 Hack Squat Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Nine common hack squat mistakes and their fixes."
+        },
+        {
+          "videoId": "rYgNArpwE7E",
+          "title": "Hack Squat",
+          "author": "Renaissance Periodization",
+          "why": "Short visual demo of a hack squat rep."
+        }
+      ]
+    },
+    {
+      "exerciseId": "bulgarian_split_squat",
+      "items": [
+        {
+          "videoId": "-4LVK1crLSw",
+          "title": "The ULTIMATE Bulgarian Split Squat Tutorial",
+          "author": "Squat University",
+          "why": "Most complete Bulgarian split squat tutorial."
+        },
+        {
+          "videoId": "hPlKPjohFS0",
+          "title": "The PERFECT Bulgarian Split Squat (Avoid These Errors!)",
+          "author": "Squat University",
+          "why": "Common Bulgarian split squat errors and corrections."
+        },
+        {
+          "videoId": "bwhl_9jN_3o",
+          "title": "The BEST Bulgarian Split Squat Tutorial",
+          "author": "Squat University",
+          "why": "60-second quick-reference setup and form cues."
+        }
+      ]
+    },
+    {
+      "exerciseId": "walking_lunge",
+      "items": [
+        {
+          "videoId": "0MZd3iKzzPM",
+          "title": "10 Lunge Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Ten common lunge mistakes and their fixes."
+        },
+        {
+          "videoId": "Z6R8A5tcrTc",
+          "title": "Make Lunging INSANELY EFFECTIVE For Glute Growth | Targeting The Muscle",
+          "author": "Renaissance Periodization",
+          "why": "How to perform lunges to bias the glutes."
+        },
+        {
+          "videoId": "eFWCn5iEbTU",
+          "title": "Dumbbell Walking Lunge",
+          "author": "Renaissance Periodization",
+          "why": "Short visual demo of the dumbbell walking lunge."
+        }
+      ]
+    },
+    {
+      "exerciseId": "step_up",
+      "items": [
+        {
+          "videoId": "RhYwWOd87dI",
+          "title": "Step Ups (High Box)",
+          "author": "E3 Rehab Exercise Library",
+          "why": "Short physical-therapist demo of a high-box step-up."
+        },
+        {
+          "videoId": "ORE0cd7k85c",
+          "title": "Step Ups",
+          "author": "E3 Rehab Exercise Library",
+          "why": "Short physical-therapist demo of a standard step-up."
+        }
+      ]
+    },
+    {
+      "exerciseId": "romanian_deadlift",
+      "items": [
+        {
+          "videoId": "_oyxCn2iSjU",
+          "title": "HOW TO DO ROMANIAN DEADLIFTS (RDLs): Build Beefy Hamstrings With Perfect Technique",
+          "author": "Jeff Nippard",
+          "why": "Dedicated RDL technique tutorial focused on hamstring development."
+        },
+        {
+          "videoId": "5bJEigM5iVg",
+          "title": "FIX Your RDL Form! (Ultimate Romanian Deadlift Tutorial)",
+          "author": "Squat University",
+          "why": "In-depth RDL form guide with common-fault corrections."
+        },
+        {
+          "videoId": "jEy_czb3RKA",
+          "title": "STOP deadlifting until you learn how to do THIS/How To:Romanian DL",
+          "author": "Alan Thrall (Untamed Strength)",
+          "why": "Teaches the RDL hinge as the foundation for deadlifting."
+        }
+      ]
+    },
+    {
+      "exerciseId": "conventional_deadlift",
+      "items": [
+        {
+          "videoId": "VL5Ab0T07e4",
+          "title": "Build A Bigger Deadlift With Perfect Technique (Conventional Form)",
+          "author": "Jeff Nippard",
+          "why": "Complete conventional deadlift technique from setup to lockout."
+        },
+        {
+          "videoId": "MBbyAqvTNkU",
+          "title": "How To Deadlift: 5 Step Deadlift | 2022",
+          "author": "Alan Thrall (Untamed Strength)",
+          "why": "Detailed coaching of the repeatable 5-step deadlift setup."
+        },
+        {
+          "videoId": "p2OPUi4xGrM",
+          "title": "Learning to Deadlift | The Starting Strength Method",
+          "author": "Starting Strength",
+          "why": "Starting Strength's concise method for learning the deadlift."
+        }
+      ]
+    },
+    {
+      "exerciseId": "sumo_deadlift",
+      "items": [
+        {
+          "videoId": "LGIS9vs65Sk",
+          "title": "How To Sumo Deadlift: The Definitive Guide",
+          "author": "Calgary Barbell",
+          "why": "Most thorough dedicated sumo deadlift guide from a powerlifting coach."
+        },
+        {
+          "videoId": "XsrD5y8EIKU",
+          "title": "The Most Effective Way to Deadlift for Muscle and Strength (Sumo Technique Explained)",
+          "author": "Jeff Nippard",
+          "why": "Sumo technique explained, with context on sumo for muscle and strength."
+        },
+        {
+          "videoId": "FLbh7Di2KM8",
+          "title": "The GREATEST Sumo Deadlift Tutorial ft. Ryan Baylark |#AskSquatU Show Ep. 41|",
+          "author": "Squat University",
+          "why": "Squat University sumo tutorial with a guest coach."
+        }
+      ]
+    },
+    {
+      "exerciseId": "good_morning",
+      "items": [
+        {
+          "videoId": "f23vXjoG2e8",
+          "title": "HOW TO DO THE GOOD MORNING EXERCISE: Build Your Glutes, Hamstrings And Squat With Perfect Technique",
+          "author": "Jeff Nippard",
+          "why": "Dedicated good morning technique tutorial for glutes, hamstrings and squat carryover."
+        },
+        {
+          "videoId": "qxNuAQknYQI",
+          "title": "How To Perform Good Mornings (STEP BY STEP TUTORIAL)",
+          "author": "Squat University",
+          "why": "Step-by-step good morning tutorial."
+        },
+        {
+          "videoId": "I9l9WRZ5SWE",
+          "title": "Good Morning Master Class | Targeting The Muscle",
+          "author": "Renaissance Periodization",
+          "why": "How to perform the good morning to target the intended muscles."
+        }
+      ]
+    },
+    {
+      "exerciseId": "hip_thrust",
+      "items": [
+        {
+          "videoId": "xDmFkJxPzeM",
+          "title": "How To Build Great Glutes with Perfect Hip Thrust Technique (Fix Mistakes!)",
+          "author": "Jeff Nippard",
+          "why": "Best dedicated hip thrust technique video, including common mistakes."
+        },
+        {
+          "videoId": "LM8XHLYJoYs",
+          "title": "Proper Hip Thrust Form",
+          "author": "Bret Contreras Glute Guy",
+          "why": "The hip thrust's populariser on glute-focused hip thrust form."
+        },
+        {
+          "videoId": "kqi4_EPpwCk",
+          "title": "How To Do Hip Thrusts The Right Way",
+          "author": "Renaissance Periodization",
+          "why": "Short practical tips for more growth from hip thrusts."
+        }
+      ]
+    },
+    {
+      "exerciseId": "leg_extension",
+      "items": [
+        {
+          "videoId": "ljO4jkwv8wQ",
+          "title": "How To Do Leg Extensions With Perfect Technique (Grow Every Quad Head)",
+          "author": "Jeff Nippard",
+          "why": "Dedicated leg extension technique video for training all quad heads."
+        },
+        {
+          "videoId": "xUZNOR6WP0A",
+          "title": "10 Leg Extension Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Ten common leg extension mistakes and their fixes."
+        },
+        {
+          "videoId": "ztNBgrGy6FQ",
+          "title": "A Better Way To Do Leg Extensions",
+          "author": "Jeff Nippard",
+          "why": "Short on whether to sit upright or reclined on the leg extension for quad growth."
+        }
+      ]
+    },
+    {
+      "exerciseId": "lying_leg_curl",
+      "items": [
+        {
+          "videoId": "jobEeklwrrs",
+          "title": "9 Leg Curl Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Nine common leg curl mistakes and their fixes."
+        },
+        {
+          "videoId": "n5WDXD_mpVY",
+          "title": "Lying Leg Curl",
+          "author": "Renaissance Periodization",
+          "why": "Short visual demo of the lying leg curl."
+        }
+      ]
+    },
+    {
+      "exerciseId": "seated_leg_curl",
+      "items": [
+        {
+          "videoId": "jobEeklwrrs",
+          "title": "9 Leg Curl Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Nine common leg curl mistakes and their fixes."
+        },
+        {
+          "videoId": "Orxowest56U",
+          "title": "Seated Leg Curl",
+          "author": "Renaissance Periodization",
+          "why": "Short visual demo of the seated leg curl."
+        }
+      ]
+    },
+    {
+      "exerciseId": "nordic_curl",
+      "items": [
+        {
+          "videoId": "_e9vFU9-tkc",
+          "title": "How to Set Up, Perform, & Program Nordic Hamstring Curls (Progressions | Regressions | Alternatives)",
+          "author": "E3 Rehab",
+          "why": "Best overall: setup options, progressions, regressions and programming from a physical therapy clinic."
+        },
+        {
+          "videoId": "DAwJCKwMUIg",
+          "title": "BEST Way To Do Nordic Hamstring Curls",
+          "author": "Squat University",
+          "why": "Short demo of correct nordic curl form."
+        },
+        {
+          "videoId": "0ia97P5konQ",
+          "title": "4 Steps to MASTER Nordic Curls!",
+          "author": "Squat University",
+          "why": "Short 4-step progression toward full nordic curls."
+        }
+      ]
+    },
+    {
+      "exerciseId": "standing_calf_raise",
+      "items": [
+        {
+          "videoId": "-qsRtp_PbVM",
+          "title": "How To FORCE YOUR CALVES To Grow With Smarter Training Methods",
+          "author": "Jeff Nippard",
+          "why": "Technique tutorial covering several calf raise variations."
+        },
+        {
+          "videoId": "Xa18jxyeSnM",
+          "title": "8 Calf Raise Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Eight common calf raise mistakes and their fixes."
+        },
+        {
+          "videoId": "baEXLy09Ncc",
+          "title": "Get NOTICEABLY BIGGER Calves With This Technique",
+          "author": "Jeff Nippard",
+          "why": "Short evidence summary: straight-knee (standing) calf raises grew the gastrocnemius far more than seated."
+        }
+      ]
+    },
+    {
+      "exerciseId": "seated_calf_raise",
+      "items": [
+        {
+          "videoId": "-qsRtp_PbVM",
+          "title": "How To FORCE YOUR CALVES To Grow With Smarter Training Methods",
+          "author": "Jeff Nippard",
+          "why": "Technique tutorial covering several calf raise variations."
+        },
+        {
+          "videoId": "Xa18jxyeSnM",
+          "title": "8 Calf Raise Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Eight common calf raise mistakes and their fixes."
+        },
+        {
+          "videoId": "zMAvzOFjkNE",
+          "title": "The Seated Calf Raise Officially Sucks",
+          "author": "Renaissance Periodization",
+          "why": "Research discussion of seated vs standing calf raise growth; explains the seated raise's limited role."
+        }
+      ]
+    },
+    {
+      "exerciseId": "hip_adduction",
+      "items": []
+    },
+    {
+      "exerciseId": "back_extension",
+      "items": [
+        {
+          "videoId": "jh45myksaEs",
+          "title": "Back Extension Instructional Video",
+          "author": "Bret Contreras Glute Guy",
+          "why": "How to do back extensions as a glute and hamstring hip extension."
+        },
+        {
+          "videoId": "H8Swl1N-uis",
+          "title": "STOP Doing Back Extensions Like This!",
+          "author": "Squat University",
+          "why": "45-degree Roman chair: brace the spine and move at the hips, not the low back."
+        },
+        {
+          "videoId": "5_ejbGfdAQE",
+          "title": "45 Degree Back Raise",
+          "author": "Renaissance Periodization",
+          "why": "Short visual demo of the 45-degree back raise."
+        }
+      ]
+    }
+  ]
+}

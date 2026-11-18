@@ -1,0 +1,756 @@
+{
+  "conventions": {
+    "angles": "Degrees, relative to anatomical standing position = 0. trunkFromVertical: forward lean of pelvis-to-neck line from gravity vertical (+ forward, - leaning back); null for SEATED/SUPINE/PRONE exercises, which instead use bodyPlane plus trunkInPlane. hipFlexion: thigh relative to trunk. kneeFlexion: 0 = straight. ankleDorsiflexion: shin forward of perpendicular to foot (negative = plantarflexed). shoulderFlexion: sagittal-plane elevation (negative = extension, elbow behind trunk). shoulderAbduction: frontal-plane elevation. shoulderHorizontalAbduction: used only for fly/face-pull style motions; when non-null, shoulderAbduction is the arm elevation from the trunk and shoulderHorizontalAbduction is the transverse-plane swing (-90 = upper arm pointing straight forward, 0 = in line with the shoulders, + = elbow behind the torso) and shoulderFlexion is null. elbowFlexion: 0 = straight.",
+    "trunkInPlane": "Used when trunkFromVertical is null. Meaning is given by bodyPlane.trunkInPlaneMeaning for each exercise (for SEATED: trunk lean from vertical, + forward, - reclined).",
+    "scapula": "Animation hints, not measured values: scapulaRetractionNorm -1 = fully protracted, 0 = neutral, +1 = fully retracted; scapulaElevationNorm -1 = fully depressed, 0 = neutral, +1 = fully elevated. Use to offset the clavicle/shoulder-girdle bone.",
+    "time": "t runs 0..1 over one rep; t values are placed in proportion to the tempo seconds (phase order given in tempo.order). The rep starts and ends at the same pose.",
+    "widths": "stanceWidth and gripWidth are multiples of biacromial (shoulder) width, measured hand-centre to hand-centre / heel-centre to heel-centre.",
+    "evidence": "Values tagged 'study' in angleBasis are taken from or derived from the cited motion-analysis/EMG papers; all other angles are standard coaching ranges and simple geometric estimates for a typical adult male and should be treated as unverified approximations."
+  },
+  "exercises": [
+    {
+      "id": "pull_up",
+      "name": "Pull-up",
+      "orientation": "HANGING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "BODYWEIGHT",
+        "position": "hands on a fixed overhead bar, pronated grip"
+      },
+      "fixedContacts": ["hands_bar"],
+      "ikChains": ["left_arm -> bar (fixed)", "right_arm -> bar (fixed)", "legs free (FK)"],
+      "rootMotion": "Pelvis/root translates vertically (and slightly backward at the top) while hands stay pinned to the bar; solve arms with 2-bone IK from the moving shoulders to the fixed bar.",
+      "stanceWidth": null,
+      "gripWidth": 1.5,
+      "gripNotes": "Pronated, roughly 1.5x shoulder width (medium-wide). Prinold & Bull 2016 front pull-up used about shoulder width; wide variants place hands on the outer bar.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Pull up in about 1 s, brief chin-over-bar hold, controlled 2 s lower to a full dead hang."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "dead hang", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 10, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 10, "shoulderAbduction": 165, "shoulderHorizontalAbduction": null, "elbowFlexion": 10, "wristNotes": "Neutral wrist, full hook grip around bar, palms facing forward.", "scapulaRetractionNorm": -0.3, "scapulaElevationNorm": 0.9, "implementPosition": "Bar overhead at full arm reach; body at its lowest point."},
+        {"t": 0.11, "label": "scapular depression (initiation)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 10, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 10, "shoulderAbduction": 158, "shoulderHorizontalAbduction": null, "elbowFlexion": 20, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.1, "scapulaElevationNorm": 0.0, "implementPosition": "Body has risen a few cm from shoulder-girdle depression only."},
+        {"t": 0.29, "label": "top: chin over bar", "trunkFromVertical": -15, "trunkInPlane": null, "hipFlexion": 15, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 30, "shoulderAbduction": 50, "shoulderHorizontalAbduction": null, "elbowFlexion": 140, "wristNotes": "Neutral, slight extension under load acceptable.", "scapulaRetractionNorm": 0.8, "scapulaElevationNorm": -0.6, "implementPosition": "Chin level with or just over the bar; bar roughly 10-15 cm above the shoulder joints, just in front of the neck."},
+        {"t": 0.43, "label": "top hold end", "trunkFromVertical": -15, "trunkInPlane": null, "hipFlexion": 15, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 30, "shoulderAbduction": 50, "shoulderHorizontalAbduction": null, "elbowFlexion": 140, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.8, "scapulaElevationNorm": -0.6, "implementPosition": "Chin over the bar, bar in front of the neck."},
+        {"t": 1.0, "label": "dead hang (return)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 10, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 10, "shoulderAbduction": 165, "shoulderHorizontalAbduction": null, "elbowFlexion": 10, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.3, "scapulaElevationNorm": 0.9, "implementPosition": "Bar overhead at full arm reach."}
+      ],
+      "angleBasis": "Geometric estimate (Winter segment proportions, 1.75 m lifter, hands 1.5x biacromial): with the hands fixed on the bar, getting the chin to bar level needs the shoulder-to-grip distance to shrink to about 0.22 m, i.e. about 140 deg elbow flexion at the top. Youdas et al. 2010 (Vicon) report only the elbow excursion (93.4 +/- 14.6 deg for the pull-up), not absolute start/end angles, so their mean excursion is smaller than the 130 deg used here (their subjects may not have reached full extension or full height). Shoulder, trunk and leg angles are coaching/geometric estimates. Prinold & Bull 2016 held legs posteriorly at 90 deg to the thorax; a knees-bent variant (kneeFlexion 90, hipFlexion 0) is equally valid.",
+      "primaryMuscles": ["lats", "upper_back"],
+      "secondaryMuscles": ["biceps", "rear_delts", "traps", "forearms", "chest", "abs"],
+      "muscleBasis": "Youdas 2010: latissimus dorsi 117-130% MVIC, biceps 78-96%, infraspinatus 71-79%, lower trapezius 45-56%, pectoralis major 44-57%; lower trapezius higher in pull-up than chin-up.",
+      "cues": ["Start from a dead hang, then pull the shoulder blades down before bending the elbows.", "Drive the elbows down toward your back pockets.", "Get the chin over the bar with the chest leading, not the neck craning.", "Lower under control all the way to straight arms."],
+      "commonMistakes": ["Half reps that stop short of a full hang or short of chin over bar.", "Kipping or swinging the legs to generate momentum.", "Shrugging the shoulders up toward the ears at the top."],
+      "sources": [
+        {"cite": "Youdas JW et al. Surface EMG activation patterns and elbow joint motion during a pull-up, chin-up, or perfect-pullup rotational exercise. J Strength Cond Res 2010;24(12):3404-14.", "url": "https://pubmed.ncbi.nlm.nih.gov/21068680/", "usedFor": "elbow ROM, muscle activation, activation sequence (lower trap/pec first, then biceps/lats)"},
+        {"cite": "Prinold JA, Bull AM. Scapula kinematics of pull-up techniques: avoiding impingement risk with training changes. J Sci Med Sport 2016;19(8):629-35.", "url": "https://pubmed.ncbi.nlm.nih.gov/26383875/", "usedFor": "grip definitions, leg position during testing, wide-grip impingement note"},
+        {"cite": "Dickie JA et al. Electromyographic analysis of muscle activation during pull-up variations. J Electromyogr Kinesiol 2017;32:30-36.", "url": "https://pubmed.ncbi.nlm.nih.gov/28011412/", "usedFor": "pronated grip higher middle trapezius than neutral grip"}
+      ]
+    },
+    {
+      "id": "chin_up",
+      "name": "Chin-up",
+      "orientation": "HANGING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "BODYWEIGHT",
+        "position": "hands on a fixed overhead bar, supinated grip"
+      },
+      "fixedContacts": ["hands_bar"],
+      "ikChains": ["left_arm -> bar (fixed)", "right_arm -> bar (fixed)", "legs free (FK)"],
+      "rootMotion": "Root translates vertically with a slight backward lean at the top; hands pinned to the bar.",
+      "stanceWidth": null,
+      "gripWidth": 1.0,
+      "gripNotes": "Supinated (palms facing you), about shoulder width, as in the Prinold & Bull 2016 reverse-grip condition.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Same rhythm as the pull-up."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "dead hang", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 10, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 170, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 10, "wristNotes": "Forearms fully supinated, palms toward face, neutral wrist.", "scapulaRetractionNorm": -0.3, "scapulaElevationNorm": 0.9, "implementPosition": "Bar overhead at full reach; body lowest."},
+        {"t": 0.11, "label": "scapular depression", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 10, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 165, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 20, "wristNotes": "Supinated, neutral.", "scapulaRetractionNorm": 0.0, "scapulaElevationNorm": 0.0, "implementPosition": "Body risen a few cm."},
+        {"t": 0.29, "label": "top: chin over bar", "trunkFromVertical": -10, "trunkInPlane": null, "hipFlexion": 15, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 55, "shoulderAbduction": 20, "shoulderHorizontalAbduction": null, "elbowFlexion": 145, "wristNotes": "Supinated, neutral.", "scapulaRetractionNorm": 0.6, "scapulaElevationNorm": -0.6, "implementPosition": "Chin at or just over the bar; bar in front of the neck/upper chest, elbows in front of the ribs."},
+        {"t": 0.43, "label": "top hold end", "trunkFromVertical": -10, "trunkInPlane": null, "hipFlexion": 15, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 55, "shoulderAbduction": 20, "shoulderHorizontalAbduction": null, "elbowFlexion": 145, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.6, "scapulaElevationNorm": -0.6, "implementPosition": "Bar at upper chest."},
+        {"t": 1.0, "label": "dead hang (return)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 10, "kneeFlexion": 15, "ankleDorsiflexion": -20, "shoulderFlexion": 170, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 10, "wristNotes": "Supinated.", "scapulaRetractionNorm": -0.3, "scapulaElevationNorm": 0.9, "implementPosition": "Bar overhead at full reach."}
+      ],
+      "angleBasis": "Geometric estimate (Winter segment proportions, 1.75 m lifter, hands at shoulder width): with the narrow fixed grip, chin to bar needs elbow flexion near the end of its range (about 145 deg) with the elbows forward of the trunk. Youdas et al. 2010 report only elbow excursion (100.6 +/- 14.5 deg for the chin-up), not absolute angles. Doma et al. 2013 found greater shoulder and C7 displacement in chin-ups than lat pulldowns. Shoulder and leg angles are coaching/geometric estimates.",
+      "primaryMuscles": ["lats", "biceps"],
+      "secondaryMuscles": ["upper_back", "chest", "rear_delts", "forearms", "abs"],
+      "muscleBasis": "Youdas 2010: pectoralis major and biceps brachii significantly higher in chin-up than pull-up.",
+      "cues": ["Palms facing you, hands about shoulder width.", "Pull the shoulder blades down, then drive the elbows down and back to your sides.", "Bring the chest toward the bar and the chin over it.", "Lower slowly to a full hang every rep."],
+      "commonMistakes": ["Stopping short of full elbow extension at the bottom.", "Craning the chin up to clear the bar instead of pulling higher.", "Swinging or kicking the legs."],
+      "sources": [
+        {"cite": "Youdas JW et al. J Strength Cond Res 2010;24(12):3404-14.", "url": "https://pubmed.ncbi.nlm.nih.gov/21068680/", "usedFor": "chin-up elbow ROM and EMG"},
+        {"cite": "Doma K, Deakin GB, Ness KF. Kinematic and electromyographic comparisons between chin-ups and lat-pull down exercises. Sports Biomech 2013;12(3):302-13.", "url": "https://pubmed.ncbi.nlm.nih.gov/24245055/", "usedFor": "chin-up shoulder/C7 kinematics greater than lat pulldown"},
+        {"cite": "Prinold JA, Bull AM. J Sci Med Sport 2016;19(8):629-35.", "url": "https://pubmed.ncbi.nlm.nih.gov/26383875/", "usedFor": "reverse (supinated) grip at about shoulder width"}
+      ]
+    },
+    {
+      "id": "lat_pulldown",
+      "name": "Lat pulldown",
+      "orientation": "SEATED",
+      "bodyPlane": {
+        "plane": "SEATED_UPRIGHT",
+        "trunkInPlaneMeaning": "trunk lean from vertical, + forward, - reclined",
+        "notes": "Seated with thighs locked under the knee pad, torso reclined slightly (about 10-15 deg) and held fixed."
+      },
+      "implement": {
+        "type": "CABLE",
+        "position": "hands on a long straight lat bar attached to a high pulley overhead"
+      },
+      "fixedContacts": ["hips_seat", "thighs_pad", "feet_floor"],
+      "ikChains": ["left_arm -> bar (moving, follows cable line)", "right_arm -> bar (moving)", "legs -> floor (fixed)"],
+      "rootMotion": "Root fixed on the seat. Bar travels on a near-vertical line in front of the face from overhead to the upper chest.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.5,
+      "gripNotes": "Pronated, about 1.5x biacromial width (Lehman 2004 used 150% of biacromial distance; Lusk 2010 compared biacromial width with a wider 'carrying width' grip and found grip width did not change lat activity).",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 2.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Lusk et al. 2010 used a 2 s concentric / 2 s eccentric cadence."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "arms extended overhead", "trunkFromVertical": null, "trunkInPlane": -10, "hipFlexion": 80, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 15, "shoulderAbduction": 160, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Pronated, neutral wrist, thumbless or full grip.", "scapulaRetractionNorm": -0.2, "scapulaElevationNorm": 0.8, "implementPosition": "Bar overhead at full reach, slightly in front of the face."},
+        {"t": 0.22, "label": "mid-pull", "trunkFromVertical": null, "trunkInPlane": -12, "hipFlexion": 78, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 10, "shoulderAbduction": 90, "shoulderHorizontalAbduction": null, "elbowFlexion": 120, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": -0.2, "implementPosition": "Bar about at forehead/eye level."},
+        {"t": 0.44, "label": "bottom: bar at upper chest", "trunkFromVertical": null, "trunkInPlane": -15, "hipFlexion": 75, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 0, "shoulderAbduction": 20, "shoulderHorizontalAbduction": null, "elbowFlexion": 145, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.8, "scapulaElevationNorm": -0.7, "implementPosition": "Bar at the top of the chest/clavicles, in front of the body; forearms near vertical."},
+        {"t": 0.56, "label": "bottom hold end", "trunkFromVertical": null, "trunkInPlane": -15, "hipFlexion": 75, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 0, "shoulderAbduction": 20, "shoulderHorizontalAbduction": null, "elbowFlexion": 145, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.8, "scapulaElevationNorm": -0.7, "implementPosition": "Bar at upper chest."},
+        {"t": 1.0, "label": "arms extended (return)", "trunkFromVertical": null, "trunkInPlane": -10, "hipFlexion": 80, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 15, "shoulderAbduction": 160, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.2, "scapulaElevationNorm": 0.8, "implementPosition": "Bar overhead at full reach."}
+      ],
+      "angleBasis": "study: grip width 1.5x biacromial from Lehman et al. 2004. Lehman's isometric hold used 90 deg shoulder flexion and 90 deg elbow flexion with the bar about 1-2 inches above eye level; the mid-pull keyframe here instead uses a frontal-plane (elbows-out) path, and with a 1.5x grip that needs about 120 deg elbow flexion to hold the bar at forehead/eye level. Bringing a 1.5x-biacromial bar to the top of the chest needs about 145 deg elbow flexion (geometric estimate, Winter segment proportions, 1.75 m lifter). Start angles and trunk recline are coaching estimates.",
+      "primaryMuscles": ["lats"],
+      "secondaryMuscles": ["upper_back", "biceps", "rear_delts", "forearms", "traps"],
+      "muscleBasis": "Lehman 2004: highest lat-to-biceps activation ratio in the wide-grip pulldown; Lusk 2010: pronated grip gave greater lat activity than supinated; Di Fonza 2026 review: pulling the bar in front of the head is the configuration most consistently linked to higher lat EMG.",
+      "cues": ["Lock the thighs under the pad and lean back only slightly.", "Start by pulling the shoulders down, then drive the elbows down to your sides.", "Pull the bar to the upper chest, in front of the face, not behind the neck.", "Let the arms straighten fully and the shoulders rise at the top."],
+      "commonMistakes": ["Leaning far back and turning it into a row with momentum.", "Pulling the bar behind the neck.", "Cutting the top short so the lats never stretch."],
+      "sources": [
+        {"cite": "Lehman GJ et al. Variations in muscle activation levels during traditional latissimus dorsi weight training exercises: an experimental study. Dyn Med 2004;3:4.", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC449729/", "usedFor": "grip width 150% biacromial, mid-pull isometric pose, EMG ratios"},
+        {"cite": "Lusk SJ, Hale BD, Russell DM. Grip width and forearm orientation effects on muscle activity during the lat pull-down. J Strength Cond Res 2010;24(7):1895-900.", "url": "https://pubmed.ncbi.nlm.nih.gov/20543740/", "usedFor": "2 s/2 s cadence, pronated grip, grip-width independence"},
+        {"cite": "Snyder BJ, Leech JR. Voluntary increase in latissimus dorsi muscle activity during the lat pull-down following expert instruction. J Strength Cond Res 2009;23(8):2204-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/19826307/", "usedFor": "coaching instruction increases lat activity"},
+        {"cite": "Di Fonza D et al. Electromyographic analysis of latissimus dorsi activation during common resistance training exercises: a narrative review. J Funct Morphol Kinesiol 2026;11(3):315.", "url": "https://pubmed.ncbi.nlm.nih.gov/42647355/", "usedFor": "anterior bar path preference"}
+      ]
+    },
+    {
+      "id": "barbell_row",
+      "name": "Barbell bent-over row",
+      "orientation": "HINGED",
+      "bodyPlane": null,
+      "implement": {
+        "type": "BARBELL",
+        "position": "in hands, hanging below the shoulders at arm's length"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["left_leg -> floor (fixed)", "right_leg -> floor (fixed)", "arms -> bar (bar is driven by the arm FK; both hands share one rigid bar)"],
+      "rootMotion": "Pelvis stays still in the hinge; the bar moves from below the shoulders to the lower ribs/upper abdomen.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.2,
+      "gripNotes": "Double overhand, slightly wider than shoulder width (StrengthLog).",
+      "tempo": {
+        "eccentricSec": 1.5,
+        "pauseSec": 0.5,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Controlled row, short squeeze at the torso, controlled lower without touching the floor."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: arms hanging", "trunkFromVertical": 55, "trunkInPlane": null, "hipFlexion": 91, "kneeFlexion": 36, "ankleDorsiflexion": 0, "shoulderFlexion": 50, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Pronated, neutral wrist.", "scapulaRetractionNorm": -0.6, "scapulaElevationNorm": 0.0, "implementPosition": "Bar hanging just below knee height, just in front of the knees, over mid-foot; arms about 5 deg behind vertical."},
+        {"t": 0.17, "label": "mid-pull", "trunkFromVertical": 55, "trunkInPlane": null, "hipFlexion": 91, "kneeFlexion": 36, "ankleDorsiflexion": 0, "shoulderFlexion": 0, "shoulderAbduction": 15, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Bar halfway, around lower-thigh height, close to the legs."},
+        {"t": 0.33, "label": "top: bar to torso", "trunkFromVertical": 55, "trunkInPlane": null, "hipFlexion": 91, "kneeFlexion": 36, "ankleDorsiflexion": 0, "shoulderFlexion": -37, "shoulderAbduction": 25, "shoulderHorizontalAbduction": null, "elbowFlexion": 120, "wristNotes": "Neutral, do not curl the wrists.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Bar touching the lower ribs/upper abdomen."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": 55, "trunkInPlane": null, "hipFlexion": 91, "kneeFlexion": 36, "ankleDorsiflexion": 0, "shoulderFlexion": -37, "shoulderAbduction": 25, "shoulderHorizontalAbduction": null, "elbowFlexion": 120, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Bar at lower ribs/upper abdomen."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": 55, "trunkInPlane": null, "hipFlexion": 91, "kneeFlexion": 36, "ankleDorsiflexion": 0, "shoulderFlexion": 50, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.6, "scapulaElevationNorm": 0.0, "implementPosition": "Bar hanging below shoulders."}
+      ],
+      "angleBasis": "Coaching ranges: torso between roughly 45 deg above horizontal and parallel (trunkFromVertical about 45-90); 55 chosen as a typical bodybuilding-style row. Leg and arm angles are geometric estimates (Winter segment proportions, 1.75 m lifter) chosen so the hanging bar sits over mid-foot just in front of the knees with the shoulders slightly ahead of it, and so the bar reaches the lower ribs without passing through the torso at the top. No published joint-angle data were found for the free-weight row.",
+      "primaryMuscles": ["lats", "upper_back"],
+      "secondaryMuscles": ["rear_delts", "traps", "biceps", "lower_back", "forearms", "hamstrings", "glutes"],
+      "muscleBasis": "Fenwick 2009: bent-over row gave large, symmetrical activation from upper to lower back and the largest lumbar load of the rows tested. Saeterbakken 2015: free-weight bilateral row produced greater erector spinae activity than machine row.",
+      "cues": ["Push the hips back, soft knees, and hold a flat back the whole set.", "Pull the bar to your lower ribs or belly, elbows driving back.", "Squeeze the shoulder blades together at the top.", "Keep the torso angle fixed: no standing up as you pull."],
+      "commonMistakes": ["Torso rising more upright each rep and using hip extension to swing the bar.", "Rounding the lower back under load.", "Shrugging the bar up instead of driving the elbows back."],
+      "sources": [
+        {"cite": "Fenwick CM, Brown SH, McGill SM. Comparison of different rowing exercises: trunk muscle activation and lumbar spine motion, load, and stiffness. J Strength Cond Res 2009;23(2):350-8.", "url": "https://pubmed.ncbi.nlm.nih.gov/19197209/", "usedFor": "muscle activation and spine load of the bent-over row"},
+        {"cite": "Saeterbakken A et al. The effect of performing bi- and unilateral row exercises on core muscle activation. Int J Sports Med 2015;36(11):900-5.", "url": "https://pubmed.ncbi.nlm.nih.gov/26134664/", "usedFor": "erector spinae activity in free-weight rows"},
+        {"cite": "StrengthLog: Barbell Row technique guide.", "url": "https://www.strengthlog.com/barbell-row/", "usedFor": "grip width, bar touch point, muscles, torso-angle trade-off"}
+      ]
+    },
+    {
+      "id": "pendlay_row",
+      "name": "Pendlay row",
+      "orientation": "HINGED",
+      "bodyPlane": null,
+      "implement": {
+        "type": "BARBELL",
+        "position": "starts on the floor each rep, pulled in hands"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> bar (bar rests on the floor at t=0, t=0.64 and t=1)"],
+      "rootMotion": "Pelvis stays still with the torso near horizontal; bar moves from the floor to the abdomen and back to the floor for a dead-stop reset.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.3,
+      "gripNotes": "Overhand, slightly wider than shoulder width (Coach / Catalyst Athletics describe slightly wider than shoulder width to clean width).",
+      "tempo": {
+        "eccentricSec": 1.0,
+        "pauseSec": 0.0,
+        "concentricSec": 0.75,
+        "bottomPauseSec": 1.0,
+        "order": "concentric_first",
+        "notes": "Explosive pull from a dead stop, lower under control, bar rests fully on the floor before the next rep."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bar on floor, arms straight", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 129, "kneeFlexion": 57, "ankleDorsiflexion": 3, "shoulderFlexion": 70, "shoulderAbduction": 12, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Pronated, neutral wrist.", "scapulaRetractionNorm": -0.7, "scapulaElevationNorm": 0.0, "implementPosition": "Bar on the floor under the shoulders, over mid-foot."},
+        {"t": 0.14, "label": "mid-pull", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 129, "kneeFlexion": 57, "ankleDorsiflexion": 3, "shoulderFlexion": 10, "shoulderAbduction": 20, "shoulderHorizontalAbduction": null, "elbowFlexion": 110, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.4, "scapulaElevationNorm": 0.0, "implementPosition": "Bar around knee height, arcing slightly toward the legs."},
+        {"t": 0.27, "label": "top: bar to abdomen", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 129, "kneeFlexion": 57, "ankleDorsiflexion": 3, "shoulderFlexion": -36, "shoulderAbduction": 30, "shoulderHorizontalAbduction": null, "elbowFlexion": 115, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Bar touching the abdomen/lower sternum area."},
+        {"t": 0.64, "label": "bar back on floor (dead stop)", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 129, "kneeFlexion": 57, "ankleDorsiflexion": 3, "shoulderFlexion": 70, "shoulderAbduction": 12, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.7, "scapulaElevationNorm": 0.0, "implementPosition": "Bar resting on the floor."},
+        {"t": 1.0, "label": "reset complete", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 129, "kneeFlexion": 57, "ankleDorsiflexion": 3, "shoulderFlexion": 70, "shoulderAbduction": 12, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.7, "scapulaElevationNorm": 0.0, "implementPosition": "Bar resting on the floor."}
+      ],
+      "angleBasis": "Coaching: Catalyst Athletics places the torso 'just above horizontal'; Coach magazine gives about 20-30 deg to the floor (trunkFromVertical 60-70). 75 chosen between the two. Knee/hip angles are geometric estimates (Winter segment proportions, 1.75 m lifter) so that straight arms reach a bar resting on 45 cm plates (bar centre about 22.5 cm high) over mid-foot with the shoulders slightly ahead of it. This takes about 57 deg of knee flexion; taller or longer-legged lifters need more knee bend or a block.",
+      "primaryMuscles": ["upper_back", "lats"],
+      "secondaryMuscles": ["rear_delts", "traps", "biceps", "lower_back", "forearms", "hamstrings", "glutes"],
+      "muscleBasis": "Same muscle groups as the bent-over row (Fenwick 2009); the near-horizontal torso increases isometric demand on the lower back and hamstrings.",
+      "cues": ["Set the back flat with the torso just above parallel before every rep.", "Pull explosively from the floor to the belly.", "Squeeze the shoulder blades together at the top.", "Let the bar settle fully on the floor and re-brace before the next rep."],
+      "commonMistakes": ["Lifting the chest and torso as the bar leaves the floor.", "Bouncing the bar off the floor instead of a dead stop.", "Rounding the upper or lower back to reach the bar."],
+      "sources": [
+        {"cite": "Catalyst Athletics exercise library: Pendlay Row.", "url": "https://catalystathletics.com/exercise/867/Pendlay-Row/", "usedFor": "torso just above horizontal, pull to abdomen, return to floor each rep"},
+        {"cite": "Coach magazine: How To Do The Pendlay Row.", "url": "https://www.coachweb.com/back-exercises/7785/how-to-do-the-pendlay-row", "usedFor": "20-30 deg torso-to-floor angle, grip slightly wider than shoulders, floor reset"},
+        {"cite": "Fenwick CM, Brown SH, McGill SM. J Strength Cond Res 2009;23(2):350-8.", "url": "https://pubmed.ncbi.nlm.nih.gov/19197209/", "usedFor": "bent-over row muscle activation and spine load"}
+      ]
+    },
+    {
+      "id": "dumbbell_row",
+      "name": "One-arm dumbbell row",
+      "orientation": "HINGED",
+      "bodyPlane": null,
+      "implement": {
+        "type": "DUMBBELL_SINGLE",
+        "position": "in the working hand, hanging under the shoulder"
+      },
+      "fixedContacts": ["support_hand_bench", "support_knee_bench", "working_foot_floor"],
+      "ikChains": ["support_arm -> bench (fixed, near straight)", "support_leg -> bench (knee and shin on bench)", "working_leg -> floor (fixed)", "working_arm -> dumbbell (FK)"],
+      "rootMotion": "Torso about 15 deg above horizontal (a straight support arm on a standard ~45 cm bench holds the shoulders higher than the hips) and still; only the working arm and scapula move. Angles below describe the WORKING side unless stated.",
+      "supportSide": {
+        "shoulderFlexion": 75,
+        "elbowFlexion": 5,
+        "hipFlexion": 75,
+        "kneeFlexion": 90,
+        "notes": "Support hand on the bench under the shoulder with a straight, vertical arm; same-side knee on the bench under the hip with the thigh vertical and shin flat on the pad."
+      },
+      "stanceWidth": null,
+      "gripWidth": null,
+      "gripNotes": "Neutral grip (palm facing the torso).",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Row up in about 1 s, brief squeeze, 2 s lower to a full stretch."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: arm hanging, scapula protracted", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 80, "kneeFlexion": 15, "ankleDorsiflexion": 10, "shoulderFlexion": 75, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral grip, palm facing torso.", "scapulaRetractionNorm": -0.8, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbell hanging straight below the working shoulder."},
+        {"t": 0.14, "label": "mid-pull", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 80, "kneeFlexion": 15, "ankleDorsiflexion": 10, "shoulderFlexion": 35, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 60, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbell halfway up, moving back toward the hip."},
+        {"t": 0.29, "label": "top: dumbbell to hip", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 80, "kneeFlexion": 15, "ankleDorsiflexion": 10, "shoulderFlexion": -25, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Dumbbell beside the lower ribs/hip pocket."},
+        {"t": 0.43, "label": "top hold end", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 80, "kneeFlexion": 15, "ankleDorsiflexion": 10, "shoulderFlexion": -25, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Dumbbell at hip pocket."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": 75, "trunkInPlane": null, "hipFlexion": 80, "kneeFlexion": 15, "ankleDorsiflexion": 10, "shoulderFlexion": 75, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.8, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbell hanging below shoulder."}
+      ],
+      "angleBasis": "Geometric estimates (Winter segment proportions, 1.75 m lifter, ~45 cm flat bench): knee on the bench with a vertical thigh puts the hip about 0.93 m up, and a straight support arm to the bench puts the shoulder about 1.06 m up, so the torso sits about 15 deg above horizontal (trunkFromVertical 75). The working leg (hip 80, knee 15, ankle 10) reaches the floor from that hip height with the foot slightly behind the hip and out to the side. No published joint-angle data were found.",
+      "primaryMuscles": ["lats", "upper_back"],
+      "secondaryMuscles": ["rear_delts", "biceps", "forearms", "obliques", "traps"],
+      "muscleBasis": "Saeterbakken 2015: unilateral rows increase external oblique activity versus bilateral rows. Fenwick 2009: one-arm (cable) rowing challenges trunk torsional control.",
+      "cues": ["Hand and knee on the bench, back flat and square to the floor.", "Let the dumbbell hang and the shoulder blade reach forward at the bottom.", "Row the elbow back toward the hip, not straight up to the chest.", "Keep the torso from twisting open as you pull."],
+      "commonMistakes": ["Rotating the torso to heave the weight up.", "Shrugging or pulling to the armpit instead of the hip.", "Cutting the stretch short at the bottom."],
+      "sources": [
+        {"cite": "Saeterbakken A et al. Int J Sports Med 2015;36(11):900-5.", "url": "https://pubmed.ncbi.nlm.nih.gov/26134664/", "usedFor": "unilateral rows and oblique activation"},
+        {"cite": "Fenwick CM, Brown SH, McGill SM. J Strength Cond Res 2009;23(2):350-8.", "url": "https://pubmed.ncbi.nlm.nih.gov/19197209/", "usedFor": "one-arm row torsional trunk demand"}
+      ]
+    },
+    {
+      "id": "seated_cable_row",
+      "name": "Seated cable row",
+      "orientation": "SEATED",
+      "bodyPlane": {
+        "plane": "SEATED_UPRIGHT",
+        "trunkInPlaneMeaning": "trunk lean from vertical, + forward, - reclined",
+        "notes": "Seated on a low bench, feet on the foot plate, knees slightly bent; torso moves from slight forward lean to upright."
+      },
+      "implement": {
+        "type": "CABLE",
+        "position": "V-handle (close neutral grip) on a low/mid-height pulley in front"
+      },
+      "fixedContacts": ["hips_seat", "feet_footplate"],
+      "ikChains": ["legs -> footplate (fixed)", "arms -> handle (moving on the cable line, roughly horizontal)"],
+      "rootMotion": "Pelvis fixed on the seat; trunk rocks from about 15 deg forward to upright.",
+      "stanceWidth": 0.8,
+      "gripWidth": 0.4,
+      "gripNotes": "Neutral (mid-pronated) close grip, hands about 15 cm apart as in Lehman 2004 (6 inches).",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 1.0,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Pull in about 1 s, hold the squeeze 1 s, return in 2 s."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "start: arms extended, scapulae protracted", "trunkFromVertical": null, "trunkInPlane": 15, "hipFlexion": 115, "kneeFlexion": 25, "ankleDorsiflexion": 5, "shoulderFlexion": 85, "shoulderAbduction": 0, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral grip, palms facing each other.", "scapulaRetractionNorm": -0.9, "scapulaElevationNorm": 0.1, "implementPosition": "Handle at arm's length in front of the shins/knees, cable taut."},
+        {"t": 0.125, "label": "mid-pull", "trunkFromVertical": null, "trunkInPlane": 5, "hipFlexion": 105, "kneeFlexion": 25, "ankleDorsiflexion": 5, "shoulderFlexion": 40, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 60, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Handle above the knees, halfway to the torso."},
+        {"t": 0.25, "label": "end: handle to abdomen", "trunkFromVertical": null, "trunkInPlane": 0, "hipFlexion": 100, "kneeFlexion": 25, "ankleDorsiflexion": 5, "shoulderFlexion": -30, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 105, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Handle touching the upper/mid abdomen."},
+        {"t": 0.5, "label": "squeeze hold end", "trunkFromVertical": null, "trunkInPlane": 0, "hipFlexion": 100, "kneeFlexion": 25, "ankleDorsiflexion": 5, "shoulderFlexion": -30, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 105, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Handle at abdomen."},
+        {"t": 1.0, "label": "start (return)", "trunkFromVertical": null, "trunkInPlane": 15, "hipFlexion": 115, "kneeFlexion": 25, "ankleDorsiflexion": 5, "shoulderFlexion": 85, "shoulderAbduction": 0, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.9, "scapulaElevationNorm": 0.1, "implementPosition": "Handle at arm's length."}
+      ],
+      "angleBasis": "study: Lehman 2004 seated row started with arms extended and hands 6 inches apart in mid-pronation and pulled to 0 deg shoulder flexion with 90 deg elbow flexion and maximal scapular retraction; the end pose here goes slightly further (handle to abdomen). Trunk rock and leg angles are coaching estimates.",
+      "primaryMuscles": ["upper_back", "lats"],
+      "secondaryMuscles": ["rear_delts", "biceps", "traps", "forearms", "lower_back"],
+      "muscleBasis": "Lehman 2004: highest middle trapezius/rhomboid activity of the four tasks occurred in the seated row; lat activity was higher in the seated row with protracted scapulae than in pulldowns. Di Fonza 2026: narrower grip and lower shoulder abduction each associated with greater lat activity in seated rows.",
+      "cues": ["Sit tall with a slight knee bend and a braced trunk.", "Reach forward and let the shoulder blades spread at the start.", "Pull the handle to your stomach, elbows tucked close to the sides.", "Finish upright with shoulder blades squeezed; don't lean back past vertical."],
+      "commonMistakes": ["Rocking the torso far forward and back to swing the weight.", "Rounding the lower back at the stretch.", "Shrugging the shoulders up during the pull."],
+      "sources": [
+        {"cite": "Lehman GJ et al. Dyn Med 2004;3:4.", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC449729/", "usedFor": "grip spacing, end pose, EMG"},
+        {"cite": "Di Fonza D et al. J Funct Morphol Kinesiol 2026;11(3):315.", "url": "https://pubmed.ncbi.nlm.nih.gov/42647355/", "usedFor": "narrow grip / low abduction in seated row"},
+        {"cite": "Saeterbakken A et al. Int J Sports Med 2015;36(11):900-5.", "url": "https://pubmed.ncbi.nlm.nih.gov/26134664/", "usedFor": "seated cable row core activation compared with free-weight row"}
+      ]
+    },
+    {
+      "id": "chest_supported_row",
+      "name": "Chest-supported row",
+      "orientation": "PRONE",
+      "bodyPlane": {
+        "plane": "PRONE_INCLINE",
+        "trunkInPlaneMeaning": "trunk angle from vertical while lying chest-down on the pad (equals pad angle from vertical)",
+        "notes": "Chest on an incline bench set about 30-45 deg from horizontal; feet on the floor behind. Value below uses a 45 deg bench."
+      },
+      "implement": {
+        "type": "DUMBBELL_PAIR",
+        "position": "one dumbbell in each hand, hanging below the shoulders"
+      },
+      "fixedContacts": ["chest_pad", "feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "trunk -> pad (fixed)", "arms -> dumbbells (FK)"],
+      "rootMotion": "Torso pinned to the pad; only arms and scapulae move.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.0,
+      "gripNotes": "Neutral grip, dumbbells under the shoulders.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 1.0,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Pull in 1 s, 1 s squeeze, 2 s lower."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: arms hanging", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 50, "kneeFlexion": 20, "ankleDorsiflexion": 15, "shoulderFlexion": 45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral grip.", "scapulaRetractionNorm": -0.8, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells hanging straight down below the shoulders."},
+        {"t": 0.125, "label": "mid-pull", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 50, "kneeFlexion": 20, "ankleDorsiflexion": 15, "shoulderFlexion": 5, "shoulderAbduction": 15, "shoulderHorizontalAbduction": null, "elbowFlexion": 60, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells halfway up beside the bench."},
+        {"t": 0.25, "label": "top: dumbbells to lower ribs", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 50, "kneeFlexion": 20, "ankleDorsiflexion": 15, "shoulderFlexion": -40, "shoulderAbduction": 25, "shoulderHorizontalAbduction": null, "elbowFlexion": 100, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Dumbbells beside the lower ribs."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 50, "kneeFlexion": 20, "ankleDorsiflexion": 15, "shoulderFlexion": -40, "shoulderAbduction": 25, "shoulderHorizontalAbduction": null, "elbowFlexion": 100, "wristNotes": "Neutral.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": -0.2, "implementPosition": "Dumbbells beside the lower ribs."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 50, "kneeFlexion": 20, "ankleDorsiflexion": 15, "shoulderFlexion": 45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.8, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells hanging below shoulders."}
+      ],
+      "angleBasis": "Coaching estimates; bottom shoulderFlexion equals the trunk tilt so the arms hang vertically. No published joint-angle data were found. Beaudette 2014 used a chest-supported row as the most effective latissimus dorsi MVIC task, supporting lats as a primary mover.",
+      "primaryMuscles": ["upper_back", "lats"],
+      "secondaryMuscles": ["rear_delts", "biceps", "traps", "forearms"],
+      "muscleBasis": "Beaudette et al. 2014: chest-supported row MVIC was the most effective normalization task for latissimus dorsi.",
+      "cues": ["Chest stays glued to the pad the whole set.", "Let the arms hang and the shoulder blades spread at the bottom.", "Drive the elbows back toward the hips and squeeze the shoulder blades.", "Lower slowly without lifting the chest."],
+      "commonMistakes": ["Lifting the chest off the pad to heave the weight.", "Shrugging the dumbbells toward the ears.", "Shortening the range at the bottom."],
+      "sources": [
+        {"cite": "Beaudette SM, Unni R, Brown SH. Electromyographic assessment of isometric and dynamic activation characteristics of the latissimus dorsi muscle. J Electromyogr Kinesiol 2014;24(3):430-6.", "url": "https://pubmed.ncbi.nlm.nih.gov/24735642/", "usedFor": "chest-supported row as best LD MVIC"}
+      ]
+    },
+    {
+      "id": "face_pull",
+      "name": "Cable face pull",
+      "orientation": "STANDING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "CABLE",
+        "position": "rope attachment on a pulley set at or above head height, held in both hands"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> rope ends (moving on the cable line toward the face; the two rope ends spread apart)"],
+      "rootMotion": "Body static, one or two steps back from the stack; arms move in a high horizontal plane.",
+      "stanceWidth": 0.8,
+      "gripWidth": 0.3,
+      "gripNotes": "Overhand/neutral grip on the rope ends; hands start about 0.3x shoulder width apart and spread to about 1.5x at the face.",
+      "angleNotes": "shoulderHorizontalAbduction is used here: shoulderAbduction = arm elevation from the trunk, horizontal abduction -90 = arm straight ahead, 0 = in line with the shoulders. shoulderFlexion is null.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 1.0,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Pull in 1 s, hold the end position 1 s, return in 2 s."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "start: arms extended toward pulley", "trunkFromVertical": -5, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 10, "ankleDorsiflexion": 5, "shoulderFlexion": null, "shoulderAbduction": 100, "shoulderHorizontalAbduction": -80, "elbowFlexion": 5, "wristNotes": "Neutral grip, thumbs toward you / pointing back.", "scapulaRetractionNorm": -0.6, "scapulaElevationNorm": 0.2, "implementPosition": "Rope at arm's length in front, at or slightly above eye level."},
+        {"t": 0.125, "label": "mid-pull", "trunkFromVertical": -5, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 10, "ankleDorsiflexion": 5, "shoulderFlexion": null, "shoulderAbduction": 95, "shoulderHorizontalAbduction": -35, "elbowFlexion": 70, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Rope halfway to the face, hands starting to separate."},
+        {"t": 0.25, "label": "end: rope to forehead, external rotation", "trunkFromVertical": -5, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 10, "ankleDorsiflexion": 5, "shoulderFlexion": null, "shoulderAbduction": 90, "shoulderHorizontalAbduction": 10, "elbowFlexion": 100, "wristNotes": "Forearms rotated up toward vertical (shoulder external rotation) so hands sit beside the ears/forehead; elbows stay at shoulder height.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": 0.0, "implementPosition": "Rope ends split either side of the head at forehead/eye height."},
+        {"t": 0.5, "label": "end hold", "trunkFromVertical": -5, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 10, "ankleDorsiflexion": 5, "shoulderFlexion": null, "shoulderAbduction": 90, "shoulderHorizontalAbduction": 10, "elbowFlexion": 100, "wristNotes": "Externally rotated, hands beside head.", "scapulaRetractionNorm": 1.0, "scapulaElevationNorm": 0.0, "implementPosition": "Rope at forehead."},
+        {"t": 1.0, "label": "start (return)", "trunkFromVertical": -5, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 10, "ankleDorsiflexion": 5, "shoulderFlexion": null, "shoulderAbduction": 100, "shoulderHorizontalAbduction": -80, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.6, "scapulaElevationNorm": 0.2, "implementPosition": "Rope at arm's length."}
+      ],
+      "angleBasis": "Coaching estimates (StrengthLog: high pulley, pull toward forehead height, upper arms out to the sides with elbows high, rotate forearms up). No published joint-angle data were found for the face pull.",
+      "primaryMuscles": ["rear_delts", "upper_back"],
+      "secondaryMuscles": ["traps", "side_delts"],
+      "muscleBasis": "StrengthLog lists rear delts and rotator cuff as primary, trapezius and lateral delts as secondary. Ekstrom 2003 found horizontal extension with external rotation among the highest middle-trapezius exercises.",
+      "cues": ["Set the rope at about eye level or a little higher.", "Pull toward your forehead with the elbows high and wide.", "Finish by rotating the hands back so they end beside your ears.", "Stay tall; don't lean back to move the weight."],
+      "commonMistakes": ["Elbows dropping so it turns into a row to the chest.", "Leaning back and using body momentum.", "Head pushing forward to meet the rope."],
+      "sources": [
+        {"cite": "StrengthLog: Face Pull guide.", "url": "https://www.strengthlog.com/face-pull/", "usedFor": "setup, end position and muscles"},
+        {"cite": "Ekstrom RA, Donatelli RA, Soderberg GL. Surface electromyographic analysis of exercises for the trapezius and serratus anterior muscles. J Orthop Sports Phys Ther 2003;33(5):247-58.", "url": "https://pubmed.ncbi.nlm.nih.gov/12774999/", "usedFor": "horizontal extension with external rotation activates middle trapezius strongly"}
+      ]
+    },
+    {
+      "id": "rear_delt_fly",
+      "name": "Reverse pec deck / rear delt fly",
+      "orientation": "SEATED",
+      "bodyPlane": {
+        "plane": "SEATED_UPRIGHT",
+        "trunkInPlaneMeaning": "trunk lean from vertical, + forward",
+        "notes": "Seated facing the machine, chest against the pad, handles at shoulder height."
+      },
+      "implement": {
+        "type": "MACHINE",
+        "position": "two machine handles held in front at shoulder height, arms swing on fixed arcs"
+      },
+      "fixedContacts": ["hips_seat", "chest_pad", "feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> machine handles (handles move on arcs about pivots roughly above the shoulders)"],
+      "rootMotion": "Torso pinned to the pad; arms sweep horizontally.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.0,
+      "gripNotes": "Neutral grip (palms facing each other) preferred: Schoenfeld 2013 found higher posterior deltoid activity than pronated. Start handles about shoulder width apart; hands sweep out to full span.",
+      "angleNotes": "shoulderHorizontalAbduction is used here: shoulderAbduction = arm elevation (about 90 = at shoulder height), horizontal abduction -90 = arm straight ahead, 0 = in line with the shoulders. shoulderFlexion is null.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 1.0,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Sweep back in 1 s, hold 1 s, return in 2 s."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "start: arms forward", "trunkFromVertical": null, "trunkInPlane": 5, "hipFlexion": 95, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": null, "shoulderAbduction": 85, "shoulderHorizontalAbduction": -90, "elbowFlexion": 10, "wristNotes": "Neutral grip, wrists straight.", "scapulaRetractionNorm": -0.5, "scapulaElevationNorm": 0.0, "implementPosition": "Handles in front of the chest at shoulder height, close together."},
+        {"t": 0.125, "label": "mid-sweep", "trunkFromVertical": null, "trunkInPlane": 5, "hipFlexion": 95, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": null, "shoulderAbduction": 85, "shoulderHorizontalAbduction": -45, "elbowFlexion": 10, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.0, "scapulaElevationNorm": 0.0, "implementPosition": "Handles halfway out."},
+        {"t": 0.25, "label": "end: arms in line with shoulders", "trunkFromVertical": null, "trunkInPlane": 5, "hipFlexion": 95, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": null, "shoulderAbduction": 85, "shoulderHorizontalAbduction": 5, "elbowFlexion": 10, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.6, "scapulaElevationNorm": 0.0, "implementPosition": "Handles out to the sides, roughly in line with the shoulders."},
+        {"t": 0.5, "label": "end hold", "trunkFromVertical": null, "trunkInPlane": 5, "hipFlexion": 95, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": null, "shoulderAbduction": 85, "shoulderHorizontalAbduction": 5, "elbowFlexion": 10, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.6, "scapulaElevationNorm": 0.0, "implementPosition": "Handles out to the sides."},
+        {"t": 1.0, "label": "start (return)", "trunkFromVertical": null, "trunkInPlane": 5, "hipFlexion": 95, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": null, "shoulderAbduction": 85, "shoulderHorizontalAbduction": -90, "elbowFlexion": 10, "wristNotes": "Neutral.", "scapulaRetractionNorm": -0.5, "scapulaElevationNorm": 0.0, "implementPosition": "Handles in front."}
+      ],
+      "angleBasis": "Coaching estimates; elbows held fixed with a slight bend. Liu et al. 2024 (elastic-band reverse fly) report the reverse fly is characterized by a large shoulder horizontal-abduction angle and small elbow flexion, without numeric values used here.",
+      "primaryMuscles": ["rear_delts"],
+      "secondaryMuscles": ["upper_back", "side_delts", "traps"],
+      "muscleBasis": "Schoenfeld 2013: neutral grip increased posterior deltoid and infraspinatus activity versus pronated on the reverse fly machine; middle deltoid also measured.",
+      "cues": ["Chest against the pad, handles at shoulder height.", "Use a neutral grip and keep a soft, fixed bend in the elbows.", "Sweep the arms out and back until they line up with the shoulders.", "Return slowly without letting the weight stack touch."],
+      "commonMistakes": ["Squeezing the shoulder blades hard and shrugging, turning it into a trap exercise.", "Bending and straightening the elbows to push the handles.", "Swinging the torso off the pad."],
+      "sources": [
+        {"cite": "Schoenfeld B et al. Effect of hand position on EMG activity of the posterior shoulder musculature during a horizontal abduction exercise. J Strength Cond Res 2013;27(10):2644-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/23302754/", "usedFor": "neutral vs pronated grip on reverse fly machine"},
+        {"cite": "Liu M et al. Comparative analysis of biomechanical characteristics between Tai Chi elastic band exercise and elastic band reverse fly. PeerJ 2024;12:e17839.", "url": "https://pubmed.ncbi.nlm.nih.gov/39221286/", "usedFor": "qualitative reverse-fly kinematics (large horizontal abduction, small elbow flexion)"}
+      ]
+    },
+    {
+      "id": "barbell_curl",
+      "name": "Barbell curl",
+      "orientation": "STANDING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "BARBELL",
+        "position": "in hands, supinated, hanging in front of the thighs"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> bar (FK; both hands share one rigid bar)"],
+      "rootMotion": "Body static; only elbows flex. Upper arms stay near vertical.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.0,
+      "gripNotes": "Supinated, about shoulder width.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.5,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Controlled. Oliveira 2009 (self-paced) measured about 3.6 s concentric and 4.1 s eccentric for the dumbbell curl; Pedrosa 2023 trained curls at 2 s / 2 s."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: arms extended", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 8, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Supinated, wrist neutral (not curled).", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar touching the front of the thighs."},
+        {"t": 0.19, "label": "mid: forearms horizontal", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 0, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at elbow height in front of the body."},
+        {"t": 0.375, "label": "top: full flexion", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at upper-chest/shoulder height, elbows slightly forward."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar near the shoulders."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 8, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at thighs."}
+      ],
+      "angleBasis": "study: elbow excursion of 130 deg matches the standing dumbbell-curl elbow ROM of 131.9 +/- 18.3 deg measured by Oliveira et al. 2009. Small end-range shoulder flexion (about 15 deg) is a coaching allowance.",
+      "primaryMuscles": ["biceps"],
+      "secondaryMuscles": ["forearms", "front_delts"],
+      "muscleBasis": "Uysal et al. 2026: brachioradialis activation exceeded biceps during the eccentric phase of the barbell curl, especially with supinated/semi-supinated grips.",
+      "cues": ["Stand tall, elbows by your sides.", "Curl the bar up without letting the elbows drift far forward.", "Squeeze at the top, then lower all the way to straight arms.", "No hip drive or leaning back."],
+      "commonMistakes": ["Swinging the torso to start the bar moving.", "Stopping short of full extension at the bottom.", "Elbows travelling forward so the front delts take over."],
+      "sources": [
+        {"cite": "Oliveira LF et al. Effect of the shoulder position on the biceps brachii EMG in different dumbbell curls. J Sports Sci Med 2009;8(1):24-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/24150552/", "usedFor": "elbow ROM and self-paced phase durations"},
+        {"cite": "Uysal A et al. Effects of grip variation on biceps brachii and brachioradialis EMG during the barbell curl. BMC Sports Sci Med Rehabil 2026;18(1):461.", "url": "https://pubmed.ncbi.nlm.nih.gov/42426831/", "usedFor": "brachioradialis involvement"},
+        {"cite": "Pedrosa GF et al. Training in the initial range of motion promotes greater muscle adaptations than at final in the arm curl. Sports 2023;11(2):39.", "url": "https://pubmed.ncbi.nlm.nih.gov/36828324/", "usedFor": "2 s / 2 s metronome tempo"}
+      ]
+    },
+    {
+      "id": "dumbbell_curl",
+      "name": "Dumbbell curl",
+      "orientation": "STANDING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "DUMBBELL_PAIR",
+        "position": "one dumbbell in each hand at the sides"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> dumbbells (FK)"],
+      "rootMotion": "Body static; both arms curl together (alternate by offsetting one arm by half a rep if desired).",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.1,
+      "gripNotes": "Dumbbells at the sides; forearm rotates from neutral at the bottom to fully supinated by mid-range.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.5,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Oliveira 2009 self-paced: 3.59 s concentric / 4.05 s eccentric; 1.5 / 0.5 / 2 used here as a typical coached rhythm."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: arms at sides", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 0, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral grip (palms facing thighs).", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells beside the thighs."},
+        {"t": 0.19, "label": "mid: forearms horizontal", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 0, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Fully supinated (palms up).", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells at elbow height in front."},
+        {"t": 0.375, "label": "top", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Supinated, neutral wrist.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells at shoulder height."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells at shoulder height."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 0, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Rotates back to neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells beside thighs."}
+      ],
+      "angleBasis": "study: elbow ROM 131.9 +/- 18.3 deg for the standing dumbbell curl (Oliveira et al. 2009, who also noted subjects tended to start from about 20 deg flexion despite instructions to start fully extended).",
+      "primaryMuscles": ["biceps"],
+      "secondaryMuscles": ["forearms", "front_delts"],
+      "muscleBasis": "Oliveira 2009: standing dumbbell curl produced biceps long-head activity up to 95% of max RMS in the final phase of flexion.",
+      "cues": ["Elbows pinned by your sides.", "Turn the palms up as the dumbbells rise.", "Squeeze at the top, lower to fully straight arms.", "Keep the torso still."],
+      "commonMistakes": ["Swinging the body or using a hip thrust.", "Not straightening the arms at the bottom.", "Letting the elbows drift forward and up."],
+      "sources": [
+        {"cite": "Oliveira LF et al. J Sports Sci Med 2009;8(1):24-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/24150552/", "usedFor": "elbow ROM, phase durations, activation profile"}
+      ]
+    },
+    {
+      "id": "incline_dumbbell_curl",
+      "name": "Incline dumbbell curl",
+      "orientation": "SUPINE_INCLINE",
+      "bodyPlane": {
+        "plane": "SUPINE_INCLINE",
+        "trunkInPlaneMeaning": "bench back-rest angle from horizontal",
+        "notes": "Back on a bench inclined about 45 deg (Zabaleta-Korta 2023); arms hang straight down behind the torso line."
+      },
+      "implement": {
+        "type": "DUMBBELL_PAIR",
+        "position": "one dumbbell in each hand, arms hanging vertically"
+      },
+      "fixedContacts": ["back_bench", "hips_seat", "feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "trunk -> bench (fixed)", "arms -> dumbbells (FK; upper arm stays vertical)"],
+      "rootMotion": "Torso pinned to the bench; only elbows flex.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.3,
+      "gripNotes": "Supinated; dumbbells hang just outside the bench.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.5,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Oliveira 2009 self-paced: 3.81 s concentric / 4.67 s eccentric."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: arms hanging behind torso", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 45, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": -45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Supinated, neutral wrist.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells hanging straight down beside the bench."},
+        {"t": 0.19, "label": "mid", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 45, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": -45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Forearms horizontal, dumbbells in front of elbows (peak torque point per Zabaleta-Korta)."},
+        {"t": 0.375, "label": "top", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 45, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": -40, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells near the front of the shoulders."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 45, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": -40, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells near shoulders."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": null, "trunkInPlane": 45, "hipFlexion": 45, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": -45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.3, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells hanging."}
+      ],
+      "angleBasis": "study: 45 deg bench from Zabaleta-Korta et al. 2023; shoulder extended about 45-50 deg (Oliveira 2009 describes the incline setup as about 50 deg of trunk/shoulder hyperextension); elbow ROM 134.3 +/- 19.5 deg (Oliveira 2009).",
+      "primaryMuscles": ["biceps"],
+      "secondaryMuscles": ["forearms"],
+      "muscleBasis": "Kobayashi et al. 2026: incline curl training produced greater biceps brachii hypertrophy than preacher curls (22.1% vs 18.9%), while preacher favoured brachialis and brachioradialis.",
+      "cues": ["Back flat on a roughly 45 deg bench, let the arms hang straight down.", "Keep the upper arms vertical; only the forearms move.", "Curl up with palms facing up, squeeze at the top.", "Lower all the way to a full stretch."],
+      "commonMistakes": ["Bringing the elbows forward, which removes the stretch.", "Lifting the shoulders or head off the bench.", "Partial reps that skip the bottom range."],
+      "sources": [
+        {"cite": "Zabaleta-Korta A et al. Regional hypertrophy: the effect of exercises at long and short muscle lengths in recreationally trained women. J Hum Kinet 2023;87:259-270.", "url": "https://pubmed.ncbi.nlm.nih.gov/37559762/", "usedFor": "45 deg incline bench, resistance profile"},
+        {"cite": "Oliveira LF et al. J Sports Sci Med 2009;8(1):24-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/24150552/", "usedFor": "incline curl elbow ROM and phase durations"},
+        {"cite": "Kobayashi Y et al. Exercise-specific preferential hypertrophy of individual elbow flexor muscles after incline versus preacher dumbbell curl training. J Sports Sci 2026;44(23):3288-3301.", "url": "https://pubmed.ncbi.nlm.nih.gov/42829982/", "usedFor": "muscle emphasis"}
+      ]
+    },
+    {
+      "id": "hammer_curl",
+      "name": "Hammer curl",
+      "orientation": "STANDING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "DUMBBELL_PAIR",
+        "position": "one dumbbell in each hand at the sides, neutral grip"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> dumbbells (FK)"],
+      "rootMotion": "Body static; elbows flex with the forearm kept in neutral rotation.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.1,
+      "gripNotes": "Neutral grip (thumbs up) throughout; no forearm rotation.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.5,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Same rhythm as the dumbbell curl."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 0, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral (thumbs forward/up), wrist straight.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells beside the thighs, vertical."},
+        {"t": 0.19, "label": "mid", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 0, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells at elbow height, handles vertical."},
+        {"t": 0.375, "label": "top", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 130, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells at shoulder height."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 130, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells at shoulder height."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 0, "shoulderAbduction": 5, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Neutral.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Dumbbells beside thighs."}
+      ],
+      "angleBasis": "Elbow range taken from the dumbbell-curl data (Oliveira 2009, about 132 deg); hammer-specific joint-angle data were not found. Coaching estimates otherwise.",
+      "primaryMuscles": ["biceps", "forearms"],
+      "secondaryMuscles": ["front_delts"],
+      "muscleBasis": "Neutral grip shifts load toward brachioradialis and brachialis (mapped to forearms/biceps). Uysal 2026 reports brachioradialis activation comparable to biceps in concentric and higher in eccentric phases of curls.",
+      "cues": ["Thumbs up, palms facing each other the whole rep.", "Elbows stay at your sides.", "Curl to the shoulder and lower to straight arms.", "No swinging."],
+      "commonMistakes": ["Rotating into a regular curl at the top.", "Swinging the torso.", "Curling across the body and letting the shoulder roll forward."],
+      "sources": [
+        {"cite": "Oliveira LF et al. J Sports Sci Med 2009;8(1):24-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/24150552/", "usedFor": "standing dumbbell curl elbow ROM"},
+        {"cite": "Uysal A et al. BMC Sports Sci Med Rehabil 2026;18(1):461.", "url": "https://pubmed.ncbi.nlm.nih.gov/42426831/", "usedFor": "brachioradialis activation with neutral/semi-supinated grips"}
+      ]
+    },
+    {
+      "id": "preacher_curl",
+      "name": "Preacher curl",
+      "orientation": "SEATED",
+      "bodyPlane": {
+        "plane": "SEATED_UPRIGHT",
+        "trunkInPlaneMeaning": "trunk lean from vertical, + forward",
+        "notes": "Seated at a preacher (Scott) bench with the backs of the upper arms on a pad inclined about 50 deg; armpits at the top edge of the pad."
+      },
+      "implement": {
+        "type": "BARBELL",
+        "position": "EZ-curl bar or straight bar in supinated hands, forearms over the pad (single-dumbbell version used in research)"
+      },
+      "fixedContacts": ["hips_seat", "feet_floor", "upper_arms_pad", "chest_pad"],
+      "ikChains": ["legs -> floor (fixed)", "upper arms -> pad (fixed)", "forearms -> bar (FK about elbow)"],
+      "rootMotion": "Torso and upper arms fixed; only the elbows move.",
+      "stanceWidth": 1.0,
+      "gripWidth": 0.9,
+      "gripNotes": "Supinated (EZ bar semi-supinated), about shoulder width.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.5,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Pedrosa 2023 used 2 s concentric / 2 s eccentric; Oliveira 2009 self-paced 4.47 s / 4.65 s. Lower under extra control near full extension."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: arms nearly straight on pad", "trunkFromVertical": null, "trunkInPlane": 10, "hipFlexion": 100, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Supinated, neutral wrist.", "scapulaRetractionNorm": -0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar near the bottom of the pad, arms close to straight."},
+        {"t": 0.19, "label": "mid", "trunkFromVertical": null, "trunkInPlane": 10, "hipFlexion": 100, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 68, "wristNotes": "Supinated.", "scapulaRetractionNorm": -0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar partway up; 68 deg is the boundary Pedrosa 2023 used between initial and final ROM."},
+        {"t": 0.375, "label": "top", "trunkFromVertical": null, "trunkInPlane": 10, "hipFlexion": 100, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 125, "wristNotes": "Supinated.", "scapulaRetractionNorm": -0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar near chin/upper-chest level, forearms past vertical."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": null, "trunkInPlane": 10, "hipFlexion": 100, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 125, "wristNotes": "Supinated.", "scapulaRetractionNorm": -0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar near chin."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": null, "trunkInPlane": 10, "hipFlexion": 100, "kneeFlexion": 90, "ankleDorsiflexion": 0, "shoulderFlexion": 45, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Supinated.", "scapulaRetractionNorm": -0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at bottom of pad."}
+      ],
+      "angleBasis": "study: pad about 50 deg (Zabaleta-Korta 2023 Scott bench); shoulder flexed about 45-50 deg (Oliveira 2009 reports a 50 deg shoulder-flexed setup); full ROM 0-135 deg defined by Pedrosa 2023, while Oliveira 2009 measured a smaller preacher elbow ROM of 115.5 +/- 11.2 deg. 5-125 used here.",
+      "primaryMuscles": ["biceps"],
+      "secondaryMuscles": ["forearms"],
+      "muscleBasis": "Oliveira 2009: preacher curl elicits high biceps activity mainly at the start of flexion (about 80% max RMS). Kobayashi 2026: preacher training favoured brachialis and brachioradialis hypertrophy versus incline curls.",
+      "cues": ["Armpits snug on the top of the pad, upper arms flat on it.", "Curl up without lifting the elbows off the pad.", "Lower slowly to almost straight arms; the bottom is where most of the work is.", "Keep the wrists straight."],
+      "commonMistakes": ["Dropping fast and bouncing out of the bottom, stressing the elbow.", "Lifting the shoulders/elbows off the pad to finish the rep.", "Cutting the bottom half of the range."],
+      "sources": [
+        {"cite": "Pedrosa GF et al. Sports 2023;11(2):39.", "url": "https://pubmed.ncbi.nlm.nih.gov/36828324/", "usedFor": "ROM definition 0-135 deg and 68 deg split, 2 s/2 s tempo"},
+        {"cite": "Zabaleta-Korta A et al. J Hum Kinet 2023;87:259-270.", "url": "https://pubmed.ncbi.nlm.nih.gov/37559762/", "usedFor": "50 deg Scott bench"},
+        {"cite": "Oliveira LF et al. J Sports Sci Med 2009;8(1):24-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/24150552/", "usedFor": "preacher elbow ROM and activation profile"},
+        {"cite": "Kobayashi Y et al. J Sports Sci 2026;44(23):3288-3301.", "url": "https://pubmed.ncbi.nlm.nih.gov/42829982/", "usedFor": "muscle emphasis"}
+      ]
+    },
+    {
+      "id": "cable_curl",
+      "name": "Cable curl",
+      "orientation": "STANDING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "CABLE",
+        "position": "straight or EZ bar on a low pulley, supinated grip, cable runs down and forward to the stack"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> bar (FK; bar follows hands, cable line drawn to the low pulley)"],
+      "rootMotion": "Body static, standing about a foot from the stack.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.0,
+      "gripNotes": "Supinated, about shoulder width.",
+      "tempo": {
+        "eccentricSec": 2.0,
+        "pauseSec": 0.5,
+        "concentricSec": 1.5,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Same rhythm as free-weight curls; keep tension at the bottom."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 5, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Supinated, neutral wrist.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar just in front of the thighs, cable taut toward the low pulley."},
+        {"t": 0.19, "label": "mid", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 5, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 90, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at elbow height."},
+        {"t": 0.375, "label": "top", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at upper-chest height."},
+        {"t": 0.5, "label": "top hold end", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 15, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 135, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at upper chest."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 5, "shoulderAbduction": 8, "shoulderHorizontalAbduction": null, "elbowFlexion": 5, "wristNotes": "Supinated.", "scapulaRetractionNorm": 0.2, "scapulaElevationNorm": 0.0, "implementPosition": "Bar at thighs."}
+      ],
+      "angleBasis": "Elbow range borrowed from standing curl data (Oliveira 2009); cable-specific joint-angle data were not found. Coaching estimates otherwise.",
+      "primaryMuscles": ["biceps"],
+      "secondaryMuscles": ["forearms", "front_delts"],
+      "muscleBasis": "Standard elbow-flexor pattern as in the barbell curl.",
+      "cues": ["Stand tall close to the stack, elbows at your sides.", "Curl the bar up to the chest without leaning back.", "Squeeze at the top.", "Lower until the arms are straight, keeping the cable taut."],
+      "commonMistakes": ["Leaning back to pull with body weight.", "Elbows drifting forward.", "Letting the stack crash at the bottom."],
+      "sources": [
+        {"cite": "Oliveira LF et al. J Sports Sci Med 2009;8(1):24-9.", "url": "https://pubmed.ncbi.nlm.nih.gov/24150552/", "usedFor": "standing curl elbow ROM"}
+      ]
+    },
+    {
+      "id": "shrug",
+      "name": "Barbell shrug",
+      "orientation": "STANDING",
+      "bodyPlane": null,
+      "implement": {
+        "type": "BARBELL",
+        "position": "in hands at arm's length in front of the thighs, pronated grip"
+      },
+      "fixedContacts": ["feet_floor"],
+      "ikChains": ["legs -> floor (fixed)", "arms -> bar (FK; arm chain moves with the shoulder girdle)"],
+      "rootMotion": "Body and arms static; only the shoulder girdle elevates and depresses, carrying the arms and bar straight up and down by a few cm.",
+      "stanceWidth": 1.0,
+      "gripWidth": 1.2,
+      "gripNotes": "Pronated, slightly wider than shoulder width. A wider grip puts the arms in some abduction; Lee 2016 and Ekstrom 2003 studied shrugs with about 30 deg arm abduction.",
+      "tempo": {
+        "eccentricSec": 1.5,
+        "pauseSec": 1.0,
+        "concentricSec": 1.0,
+        "bottomPauseSec": 0.0,
+        "order": "concentric_first",
+        "notes": "Shrug up in 1 s, hold 1 s at the top, lower in about 1.5 s to a full stretch."
+      },
+      "keyframes": [
+        {"t": 0.0, "label": "bottom: shoulders depressed", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 8, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Pronated, straight wrists; straps optional.", "scapulaRetractionNorm": 0.0, "scapulaElevationNorm": -0.6, "implementPosition": "Bar hanging against the front of the thighs."},
+        {"t": 0.14, "label": "mid", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 8, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Pronated.", "scapulaRetractionNorm": 0.0, "scapulaElevationNorm": 0.2, "implementPosition": "Bar sliding up the thighs."},
+        {"t": 0.29, "label": "top: shoulders to ears", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 8, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Pronated.", "scapulaRetractionNorm": 0.1, "scapulaElevationNorm": 1.0, "implementPosition": "Bar raised straight up a few cm, still at arm's length."},
+        {"t": 0.57, "label": "top hold end", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 8, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Pronated.", "scapulaRetractionNorm": 0.1, "scapulaElevationNorm": 1.0, "implementPosition": "Bar at top."},
+        {"t": 1.0, "label": "bottom (return)", "trunkFromVertical": 0, "trunkInPlane": null, "hipFlexion": 0, "kneeFlexion": 5, "ankleDorsiflexion": 5, "shoulderFlexion": 8, "shoulderAbduction": 10, "shoulderHorizontalAbduction": null, "elbowFlexion": 0, "wristNotes": "Pronated.", "scapulaRetractionNorm": 0.0, "scapulaElevationNorm": -0.6, "implementPosition": "Bar against thighs."}
+      ],
+      "angleBasis": "Joint angles are static coaching values; the motion is shoulder-girdle elevation, given as scapulaElevationNorm. No published elevation-distance values were used.",
+      "primaryMuscles": ["traps"],
+      "secondaryMuscles": ["forearms", "upper_back"],
+      "muscleBasis": "Ekstrom 2003: the shoulder shrug produced the greatest upper trapezius EMG of the exercises tested. StrengthLog lists trapezius primary and forearm flexors secondary.",
+      "cues": ["Stand tall with the bar at arm's length, arms straight.", "Shrug straight up toward your ears; no rolling.", "Pause a moment at the top.", "Lower all the way down to feel the stretch."],
+      "commonMistakes": ["Rolling the shoulders forward or backward.", "Bending the elbows to turn it into an upright row.", "Jutting the head forward or bouncing the weight with the knees."],
+      "sources": [
+        {"cite": "Ekstrom RA, Donatelli RA, Soderberg GL. J Orthop Sports Phys Ther 2003;33(5):247-58.", "url": "https://pubmed.ncbi.nlm.nih.gov/12774999/", "usedFor": "shrug gives highest upper trapezius EMG"},
+        {"cite": "Lee JH et al. Various shrug exercises can change scapular kinematics and scapular rotator muscle activities in subjects with scapular downward rotation syndrome. Hum Mov Sci 2016;45:119-29.", "url": "https://pubmed.ncbi.nlm.nih.gov/26625348/", "usedFor": "shrug variants including 30 deg shoulder abduction"},
+        {"cite": "StrengthLog: Barbell Shrug.", "url": "https://www.strengthlog.com/barbell-shrug/", "usedFor": "vertical path, muscles worked"}
+      ]
+    }
+  ],
+  "verification": {
+    "checkedAt": "2026-11-17",
+    "method": "Sagittal and 3D stick-figure geometry using Winter (2009) segment-length proportions for a 1.75 m adult male (upper arm 0.186H, forearm 0.146H, thigh 0.245H, shank 0.246H, hip-to-shoulder 0.288H). For each keyframe the checks were: the hip-knee-ankle chain closes (hipFlexion = trunk lean + thigh angle, kneeFlexion = thigh angle + ankleDorsiflexion); a standing hinge keeps the bar over mid-foot; hands fixed on a bar or bench can be reached; tempo-derived t values match tempo seconds; muscle lists are correct. Tempo t values and muscle lists needed no changes. Geometry depends on individual proportions, so all angles changed here are unverified estimates, not measurements. A planned web search for measured top-of-pull-up elbow angles could not run because the search budget was exhausted.",
+    "changes": ["pull_up: t=0.11 shoulderAbduction 150->158 so a 1.5x-biacromial grip can still reach the fixed bar (150 put the hands about 10 cm too wide).", "pull_up: top and top-hold elbowFlexion 105->140, shoulderFlexion 10->30, shoulderAbduction 35->50. At 105 deg the grip sits about 0.40 m from the shoulder, which leaves the bar near the top of the head, not at the chin. The angleBasis now says Youdas 2010 reports elbow excursion only.", "chin_up: t=0.11 shoulderFlexion 155->165. With the trunk still vertical, 155 would move the hands about 11 cm forward of the fixed bar.", "chin_up: top and top-hold elbowFlexion 112->145, shoulderFlexion 15->55, shoulderAbduction 15->20. At 112 deg the grip is about 0.37 m from the shoulder, which cannot put the chin at a shoulder-width bar. The angleBasis is corrected to match.", "lat_pulldown: mid-pull elbowFlexion 90->120. With the upper arm horizontal out to the side, 90 deg puts the hands about 1.0 m apart and above the head, which contradicts the 1.5x grip and the bar at eye level. The angleBasis now quotes Lehman 2004's actual 90/90 shoulder-flexion pose.", "lat_pulldown: bottom and bottom-hold elbowFlexion 100->145, shoulderFlexion -10->0, shoulderAbduction 25->20. At 100 deg the 1.5x-grip bar cannot reach the upper chest; it stops about 0.4 m from the shoulders.", "barbell_row: hipFlexion 75->91, kneeFlexion 28->36, ankleDorsiflexion 8->0, bottom shoulderFlexion 55->50. The old pose put the shoulders and bar about 0.33 m ahead of the ankle, past the toes, so a loaded lifter would tip forward. The bar now hangs over mid-foot.", "barbell_row: mid-pull shoulderFlexion 10->0 and elbowFlexion 60->90, so the bar no longer passes through the thighs. Top and top-hold shoulderFlexion -45->-37 and elbowFlexion 110->120; the old top put the bar about 5 cm inside the abdomen.", "pendlay_row: hipFlexion 100->129, kneeFlexion 35->57, ankleDorsiflexion 10->3, floor-pose shoulderFlexion 75->70. The old angleBasis claim was wrong: that pose left straight arms about 13 cm short of a bar on 45 cm plates, and about 30 cm in front of mid-foot. The angleBasis is rewritten.", "pendlay_row: mid-pull shoulderFlexion 20->10 and elbowFlexion 60->110, so the bar sits at knee height in front of the knees rather than behind the legs. Top shoulderFlexion -40->-36 and elbowFlexion 100->115, so the bar meets the abdomen instead of passing inside it.", "dumbbell_row: trunkFromVertical 85->75 in every keyframe. A straight support arm on a ~45 cm bench cannot reach with the torso near horizontal; it puts the shoulder about 13 cm above the hip.", "dumbbell_row: supportSide shoulderFlexion 90->75 and hipFlexion 90->75, so the support arm and thigh stay vertical. Working bottom shoulderFlexion 90->75, so the dumbbell hangs straight down. Working ankleDorsiflexion 5->10 to close the leg chain: hip 80 = trunk 75 + thigh 5.", "chest_supported_row: hipFlexion 40->50, kneeFlexion 30->20, ankleDorsiflexion 10->15. With a 45 deg trunk, the old values needed about 35 deg of ankle dorsiflexion for flat feet, which contradicts ankleDorsiflexion 10. The new set closes the hip-knee-ankle chain with feet flat.", "rear_delt_fly: hipFlexion 85->95. With trunk +5 forward, a horizontal thigh and knee 90 / ankle 0, the hip must be 95.", "rear_delt_fly: start/return shoulderHorizontalAbduction -80->-90 and mid -40->-45, to match gripWidth 1.0 (handles shoulder-width apart, arms straight ahead).", "preacher_curl: hipFlexion 80->100. With trunk +10 forward, a horizontal thigh and knee 90 / ankle 0, the hip must be 100.", "barbell_curl, dumbbell_curl, hammer_curl, cable_curl, shrug: ankleDorsiflexion 0->5 in every keyframe. kneeFlexion 5 with an upright trunk and hipFlexion 0 needs the shin tilted 5 deg forward; otherwise the leg chain does not close.", "barbell_curl (bottom/return) and shrug (all keyframes): shoulderFlexion 0->8. A shoulder-width bar hanging straight down from the shoulder joints would sit inside the thighs, so the arms angle slightly forward to rest it against them."]
+  }
+}

@@ -1,0 +1,458 @@
+{
+  "id": "phul_brandon_campbell",
+  "name": "PHUL (Power Hypertrophy Upper Lower)",
+  "author": "Brandon Campbell (Muscle & Strength)",
+  "isFree": true,
+  "category": "POWERBUILDING",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 4,
+  "sessionMinutes": 60,
+  "durationWeeks": 12,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable",
+    "machines"
+  ],
+  "summary": "A 4-day upper/lower split with one heavy power day (3-5 reps on the main lifts) and one higher-rep hypertrophy day (8-15 reps) for each half of the body every week. It is built around the basic barbell lifts plus isolation work.",
+  "evidenceNote": "At 3-4 sets per exercise, chest and back get about 12-16 weekly sets and quads more, trained twice a week with 1 rep in reserve, which fits current hypertrophy evidence. Weak points: the article gives no load-progression or deload rule, hamstrings get comparatively little direct work, and seven 3-4-set exercises often take longer than the stated 45-60 min.",
+  "sources": [
+    {
+      "title": "Power Hypertrophy Upper Lower (P.H.U.L.) Workout (Muscle & Strength, updated May 2021)",
+      "url": "https://www.muscleandstrength.com/workouts/phul-workout",
+      "kind": "article"
+    },
+    {
+      "title": "Wayback Machine snapshot of the same article, 12 Aug 2026 (live site blocks automated access)",
+      "url": "https://web.archive.org/web/20260812130544/https://www.muscleandstrength.com/workouts/phul-workout",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Day 1 Upper Power, Day 2 Lower Power, Day 3 Off, Day 4 Upper Hypertrophy, Day 5 Lower Hypertrophy, Days 6-7 Off. Ab work can be done at the end of training or on off days. Listed time per workout: 45-60 minutes.",
+  "progression": {
+    "type": "CUSTOM",
+    "description": "Article by Brandon Campbell, published 15 Feb 2013, updated 26 May 2021. The author gives no numeric progression rule. His stated rules: all sets end with at least 1 rep left in the tank (struggle on heavy sets but still hit goal reps); start with lower total volume until you adapt; keep the main compounds unchanged but swap other exercises for similar ones if desired. No rest periods are given in the article; Muscle & Strength staff replies in the comments are inconsistent (one suggests 1-2 min between sets, another 2-3 min), and they are not the author text. A staff comment reply (Dec 2024, not the author) suggests adding weight once you reach the top of the set and rep range, e.g. bench 4 x 5. App default: add load when all prescribed sets hit the top of the rep range with 1 rep in reserve.",
+    "incrementKg": {
+      "upper": null,
+      "lower": null
+    },
+    "deload": "Not specified in the article."
+  },
+  "days": [
+    {
+      "name": "Day 1 - Upper Power",
+      "focus": "Heavy bench and row, upper body",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Barbell Bench Press",
+          "sets": 3,
+          "repsLow": 3,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "incline_dumbbell_press",
+          "name": "Incline Dumbbell Bench Press",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "barbell_row",
+          "name": "Bent Over Row",
+          "sets": 3,
+          "repsLow": 3,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Lat Pull Down",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "Overhead Press",
+          "sets": 2,
+          "repsLow": 5,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 2-3 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "barbell_curl",
+          "name": "Barbell Curl",
+          "sets": 2,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 2-3 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "skull_crusher",
+          "name": "Skullcrusher",
+          "sets": 2,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 2-3 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Day 2 - Lower Power",
+      "focus": "Heavy squat and deadlift",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 3,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 3,
+          "repsLow": 3,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_press",
+          "name": "Leg Press",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-5 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Leg Curl",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Calf Exercise",
+          "sets": 4,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Any calf raise variation.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Day 4 - Upper Hypertrophy",
+      "focus": "Upper body volume",
+      "exercises": [
+        {
+          "exerciseId": "incline_bench_press",
+          "name": "Incline Barbell Bench Press",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Flat Bench Dumbbell Flye",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_cable_row",
+          "name": "Seated Cable Row",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_row",
+          "name": "One Arm Dumbbell Row",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "lateral_raise",
+          "name": "Dumbbell Lateral Raise",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "incline_dumbbell_curl",
+          "name": "Seated Incline Dumbbell Curl",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Cable Tricep Extension",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Day 5 - Lower Hypertrophy",
+      "focus": "Lower body volume",
+      "exercises": [
+        {
+          "exerciseId": "front_squat",
+          "name": "Front Squat",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Barbell Lunge",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_extension",
+          "name": "Leg Extension",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Leg Curl",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_calf_raise",
+          "name": "Seated Calf Raise",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Calf Press",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author lists 3-4 sets; use the low end at first (author: start with less volume until accustomed). Calf press on the leg press machine.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://www.muscleandstrength.com/workouts/phul-workout",
+      "https://web.archive.org/web/20250525212822/https://www.muscleandstrength.com/workouts/phul-workout",
+      "https://web.archive.org/web/20260812130544/https://www.muscleandstrength.com/workouts/phul-workout"
+    ],
+    "changes": [
+      "All 25 exercises, set ranges, rep ranges, day order (Upper Power, Lower Power, Off, Upper Hypertrophy, Lower Hypertrophy, Off, Off), 12-week duration, 45-60 min, intermediate level, 1-rep-in-tank rule and free availability checked against the article (May 2025 and Aug 2026 snapshots identical in program text); no errors found in them.",
+      "Progression description: the earlier text said a staff comment suggests 2-3 min rest; staff replies actually give both 1-2 min and 2-3 min, so both are now stated as non-author, inconsistent guidance.",
+      "Progression description: added the staff (non-author) progression suggestion found in comments (add weight after maxing sets and reps) and aligned the app default with it (top of rep range on all sets), still labelled as app default.",
+      "Added publication date (15 Feb 2013) and an archived-snapshot source, since the live page returns 403 to automated fetches."
+    ]
+  }
+}

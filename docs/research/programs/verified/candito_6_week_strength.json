@@ -1,0 +1,3671 @@
+{
+  "id": "candito_6_week_strength",
+  "name": "Candito 6 Week Strength Program",
+  "author": "Jonnie Candito (Candito Training HQ)",
+  "isFree": true,
+  "category": "STRENGTH",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 4,
+  "sessionMinutes": 60,
+  "durationWeeks": 6,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "pullup_bar"
+  ],
+  "summary": "A six-week upper/lower block for squat, bench and deadlift that moves from higher-rep conditioning and hypertrophy weeks to heavy triples and a final near-max test set. Weights come from your 1RMs, and week 6 is used to deload, re-test or start the next cycle.",
+  "evidenceNote": "Volume is front-loaded: weeks 1-2 have 3 bench sessions a week with 12 (week 1) or 9 (week 2) required upper-back and shoulder accessory sets each, then weeks 3-5 cut volume sharply as intensity rises to 95-97.5%. That is a classic block-periodised peaking structure. Squat and deadlift get only 1-2 sessions a week and the only required lower-body accessory is a moderate deadlift variation on some days, so leg hypertrophy volume is modest. It suits intermediates who want a short, structured strength peak; max-rep and 1-4 rep test sets run close to failure.",
+  "sources": [
+    {
+      "title": "Candito 6 Week Strength Program (author PDF, archived from canditotraininghq.com)",
+      "url": "https://web.archive.org/web/20171010194828/http://www.canditotraininghq.com:80/app/download/911765404/Candito%206%20Week%20Strength%20Program.pdf",
+      "kind": "article"
+    },
+    {
+      "title": "Candito 6 Week Program spreadsheet (author .xlsx, archived from canditotraininghq.com)",
+      "url": "https://web.archive.org/web/20170926162302/http://www.canditotraininghq.com:80/app/download/916024204/Candito%206%20Week%20Program.xlsx",
+      "kind": "spreadsheet"
+    },
+    {
+      "title": "Candito Training HQ free programs page (archived; links both files as free downloads)",
+      "url": "https://web.archive.org/web/20170606161821/http://www.canditotraininghq.com/free-programs/",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Upper/lower split with a varying number of sessions per week: week 1 five sessions (lower, upper, upper, lower, upper), week 2 five (lower, upper, lower, upper, upper), weeks 3 and 4 four (lower, upper, lower, upper), week 5 three (lower, upper, lower). Week 6: skip it and start a new cycle with projected maxes, deload by repeating week 1 without the last upper session, or test 1RMs.",
+  "progression": {
+    "type": "CUSTOM",
+    "description": "All main-lift percentages are of your entered 1RM (the spreadsheet rounds to 2.5 kg or 5 lb, and some sets add or subtract 2.5 kg / 5 lb as noted per exercise). Week focus: 1 muscular conditioning, 2 hypertrophy, 3 linear max overload, 4 heavy-weight acclimation/explosiveness, 5 intense strength (1-4 rep sets at 97.5%), 6 deload or max test. For the next cycle, projected 1RM = week-5 weight x 1.03 for 2 reps, x 1.06 for 3 reps, x 1.09 for 4 reps. Accessories have no percentages and should progress gradually.",
+    "incrementKg": {
+      "upper": null,
+      "lower": null
+    },
+    "deload": "Week 6 options: skip it and use projected maxes; deload by repeating week 1 minus the last upper workout; or test 1RMs, then deload or start a new cycle. On a missed required rep the sources disagree: the spreadsheet says reduce that lift's max by 2.5%, while the PDF (11/18/13 update) says drop it by 5%, finish what you can and move on without repeating the workout. Week 2 squat MR10 rules add their own 2.5% cuts."
+  },
+  "days": [
+    {
+      "name": "Day 1 - Lower",
+      "focus": "Squat/Deadlift 6s",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 4,
+          "repsLow": 6,
+          "repsHigh": 6,
+          "setScheme": [
+            {
+              "reps": 6,
+              "percent": 0.8,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.8,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.8,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.8,
+              "of": "1RM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.8
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author: 3-8 min between main sets (bench closer to 3 min, squats/deadlifts possibly longer).",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 2,
+          "repsLow": 6,
+          "repsHigh": 6,
+          "setScheme": [
+            {
+              "reps": 6,
+              "percent": 0.8,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.8,
+              "of": "1RM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.8
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 1 (lower)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+          "optional": true
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 2 (lower)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Day 2 - Upper",
+      "focus": "Bench volume",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press",
+          "sets": 4,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "setScheme": [
+            {
+              "reps": 10,
+              "percent": 0.5,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": 0.675,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.75,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.775,
+              "of": "1RM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.775
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_row",
+          "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+          "sets": 4,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "setScheme": [
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Shoulders (default Standing Dumbbell OHP)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "setScheme": [
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+          "optional": false
+        },
+        {
+          "exerciseId": "pull_up",
+          "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "setScheme": [
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 1 (upper)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+          "optional": true
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 2 (upper)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Day 3 - Upper",
+      "focus": "Bench volume",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press",
+          "sets": 4,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "setScheme": [
+            {
+              "reps": 10,
+              "percent": 0.5,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": 0.675,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.75,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.775,
+              "of": "1RM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.775
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_row",
+          "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+          "sets": 4,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "setScheme": [
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Shoulders (default Standing Dumbbell OHP)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "setScheme": [
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+          "optional": false
+        },
+        {
+          "exerciseId": "pull_up",
+          "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "setScheme": [
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 1 (upper)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+          "optional": true
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 2 (upper)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Day 4 - Lower",
+      "focus": "Squat/Deadlift 8s",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "1RM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.7
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Author: 3-8 min between main sets (bench closer to 3 min, squats/deadlifts possibly longer).",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "1RM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "1RM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.7
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 1 (lower)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+          "optional": true
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 2 (lower)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Day 5 - Upper",
+      "focus": "Bench max reps",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press",
+          "sets": 1,
+          "repsLow": 1,
+          "repsHigh": 20,
+          "setScheme": [
+            {
+              "reps": 1,
+              "percent": 0.8,
+              "of": "1RM",
+              "amrap": true
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.8
+          },
+          "lastSetAmrap": true,
+          "restSeconds": 180,
+          "notes": "One set of max reps (MR) at 80%. No rep cap; repsHigh 20 is a placeholder.",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_row",
+          "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+          "sets": 4,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "setScheme": [
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Shoulders (default Standing Dumbbell OHP)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "setScheme": [
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+          "optional": false
+        },
+        {
+          "exerciseId": "pull_up",
+          "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "setScheme": [
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 10,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 1 (upper)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+          "optional": true
+        },
+        {
+          "exerciseId": null,
+          "name": "Optional Exercise 2 (upper)",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "label": "Muscular conditioning",
+      "days": [
+        {
+          "name": "Day 1 - Lower",
+          "focus": "Squat/Deadlift 6s",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Author: 3-8 min between main sets (bench closer to 3 min, squats/deadlifts possibly longer).",
+              "optional": false
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 2 - Upper",
+          "focus": "Bench volume",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": 0.5,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": 0.675,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.75,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.775,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.775
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 3 - Upper",
+          "focus": "Bench volume",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": 0.5,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": 0.675,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.75,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.775,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.775
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 4 - Lower",
+          "focus": "Squat/Deadlift 8s",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "percent": 0.7,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.7,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.7,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.7,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.7
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Author: 3-8 min between main sets (bench closer to 3 min, squats/deadlifts possibly longer).",
+              "optional": false
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "percent": 0.7,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.7,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.7
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 5 - Upper",
+          "focus": "Bench max reps",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 1,
+              "repsLow": 1,
+              "repsHigh": 20,
+              "setScheme": [
+                {
+                  "reps": 1,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": true
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": true,
+              "restSeconds": 180,
+              "notes": "One set of max reps (MR) at 80%. No rep cap; repsHigh 20 is a placeholder.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "label": "Hypertrophy",
+      "days": [
+        {
+          "name": "Day 1 - Lower",
+          "focus": "Squat MR10 + volume",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 1,
+              "repsLow": 1,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": true
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": true,
+              "restSeconds": null,
+              "notes": "MR10: max reps at 80%, no more than 10. If fewer than 8 reps, reduce your entered max by 2.5% going forward.",
+              "optional": false
+            },
+            {
+              "exerciseId": "back_squat",
+              "name": "Extra Volume Squats",
+              "sets": 5,
+              "repsLow": 3,
+              "repsHigh": 3,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 60,
+              "notes": "Add 2.5 kg (5 lb) to the MR10 weight, then 5 sets x 3 with 60 s rest. Do these even if the MR10 set was under 8 reps.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Deadlift Variation",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Stiff-legged, snatch-grip, deficit or pause deadlift at moderate intensity.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 2 - Upper",
+          "focus": "Bench hypertrophy",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": 0.725,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.775,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Third set is 80% + 2.5 kg (5 lb) for 6-8 reps.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 3 - Lower",
+          "focus": "Squat MR10 + back-offs",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 1,
+              "repsLow": 1,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": true
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": true,
+              "restSeconds": null,
+              "notes": "MR10 at 80% + 2.5 kg (5 lb).",
+              "optional": false
+            },
+            {
+              "exerciseId": "back_squat",
+              "name": "Back Off Squats",
+              "sets": 10,
+              "repsLow": 3,
+              "repsHigh": 3,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 60,
+              "notes": "Drop 5 kg (10 lb) from the MR10 weight. 10 reps on MR10: 10 sets of 3; 8-9 reps: 8x3; 7 reps: 5x3; under 7: skip back-offs and cut your entered max by at least 2.5%. 60 s rest.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Deadlift Variation",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Stiff-legged, snatch-grip, deficit or pause deadlift at moderate intensity.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 4 - Upper",
+          "focus": "Bench hypertrophy",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": 0.725,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": 0.775,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Third set is 80% + 2.5 kg (5 lb) for 6-8 reps.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 5 - Upper",
+          "focus": "Bench max reps",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 1,
+              "repsLow": 1,
+              "repsHigh": 20,
+              "setScheme": [
+                {
+                  "reps": 1,
+                  "percent": 0.8,
+                  "of": "1RM",
+                  "amrap": true
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.8
+              },
+              "lastSetAmrap": true,
+              "restSeconds": 180,
+              "notes": "One set of max reps at 80% minus 2.5 kg (5 lb). No rep cap; repsHigh 20 is a placeholder.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "label": "Linear max overload",
+      "days": [
+        {
+          "name": "Day 1 - Lower",
+          "focus": "Linear max overload",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 3,
+              "repsLow": 4,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.85
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "3 sets of 4-6 at 85% + 2.5 kg (5 lb). Author: 3-8 min between main sets (bench closer to 3 min, squats/deadlifts possibly longer).",
+              "optional": false
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift",
+              "sets": 2,
+              "repsLow": 3,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 3,
+                  "percent": 0.875,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 3,
+                  "percent": 0.875,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.875
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2 sets of 3-6 at 87.5%. No accessory lifts this day.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Day 2 - Upper",
+          "focus": "Bench 4-6s",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 3,
+              "repsLow": 4,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.85
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "3 sets of 4-6 at 85%. No optional exercises this week.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 6/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 6/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 6/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Day 3 - Lower",
+          "focus": "Squat heavy set",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 1,
+              "repsLow": 4,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.85
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "1 set of 4-6 at about 85% + 5 kg (10 lb) (sheet formula: 85% + 2.5, rounded, + 2.5 in kg).",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Deadlift Variation",
+              "sets": 1,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Stiff-legged, snatch-grip, deficit or pause deadlift at moderate intensity.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Day 4 - Upper",
+          "focus": "Bench 4-6s heavier",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 3,
+              "repsLow": 4,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 4,
+                  "percent": 0.85,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.85
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "3 sets of 4-6 at Day 2 weight + 2.5 kg (5 lb).",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 6/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 6/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "setScheme": [
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 6/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "label": "Heavy weight acclimation",
+      "days": [
+        {
+          "name": "Day 1 - Lower",
+          "focus": "Heavy triples",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 3,
+              "setScheme": [
+                {
+                  "reps": 3,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 3,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 3,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.9
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Triples at 90% - 2.5 kg, 90%, 90% + 2.5 kg (5 lb in lb).",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Deadlift Variation",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Stiff-legged, snatch-grip, deficit or pause deadlift at moderate intensity.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 2 - Upper",
+          "focus": "Bench triples",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 3,
+              "setScheme": [
+                {
+                  "reps": 3,
+                  "percent": 0.875,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 3,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 3,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.9
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Sheet: (87.5% - 5) x3, (90% - 5) x3, 90% x3; the -5 is applied in whatever unit you use.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 3 - Lower",
+          "focus": "Heavy acclimation",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 2,
+              "repsLow": 1,
+              "repsHigh": 3,
+              "setScheme": [
+                {
+                  "reps": 3,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 1,
+                  "percent": 0.95,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.95
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "90% + 2.5 kg (5 lb) x3, then 95% x1-2.",
+              "optional": false
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift",
+              "sets": 2,
+              "repsLow": 1,
+              "repsHigh": 3,
+              "setScheme": [
+                {
+                  "reps": 3,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 1,
+                  "percent": 0.95,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.95
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "90% + 2.5 kg (5 lb) x3, then 95% x1-2.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 4 - Upper",
+          "focus": "Bench heavy",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 3,
+              "repsLow": 1,
+              "repsHigh": 4,
+              "setScheme": [
+                {
+                  "reps": 3,
+                  "percent": 0.875,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 2,
+                  "percent": 0.9,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 1,
+                  "percent": 0.95,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.95
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "87.5% x3, 90% x2-4, 95% x1-2.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 10/10/8/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "setScheme": [
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 12/12/10/8. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "label": "Intense strength",
+      "days": [
+        {
+          "name": "Day 1 - Lower",
+          "focus": "Squat test set",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat",
+              "sets": 1,
+              "repsLow": 1,
+              "repsHigh": 4,
+              "setScheme": [
+                {
+                  "reps": 1,
+                  "percent": 0.975,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.975
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "1 set of 1-4 reps at 97.5%.",
+              "optional": false
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift",
+              "sets": 3,
+              "repsLow": 2,
+              "repsHigh": 4,
+              "setScheme": [
+                {
+                  "reps": 4,
+                  "percent": 0.675,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 4,
+                  "percent": 0.7,
+                  "of": "1RM",
+                  "amrap": false
+                },
+                {
+                  "reps": 2,
+                  "percent": 0.725,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.725
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "67.5% x4, 70% x4, 72.5% x2.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 2 - Upper",
+          "focus": "Bench test set",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press",
+              "sets": 1,
+              "repsLow": 1,
+              "repsHigh": 4,
+              "setScheme": [
+                {
+                  "reps": 1,
+                  "percent": 0.975,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.975
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "1 set of 1-4 reps at 97.5%.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Upper Back #1 (horizontal pull, default Dumbbell Row)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 8/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Dumbbell Row, Barbell Row, Machine Row.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Shoulders (default Standing Dumbbell OHP)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 8/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Seated or Standing Dumbbell OHP, Military Press, Lateral Raise.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Upper Back #2 (vertical pull, default Weighted Pull-up)",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                },
+                {
+                  "reps": 6,
+                  "percent": null,
+                  "of": null,
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Required accessory, reps per set 8/6/6. No percentages: increase weight gradually over the weeks at moderate intensity, not to failure. Options: Weighted Pull-up, Weighted Chin-up, Lat Pulldown.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (upper)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (upper)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Low-impact isolation, 8-12 reps, about 1-2 min rest, e.g. lateral raise, incline fly, triceps extension, curls, skull crushers.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Day 3 - Lower",
+          "focus": "Deadlift test set",
+          "exercises": [
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift",
+              "sets": 1,
+              "repsLow": 1,
+              "repsHigh": 4,
+              "setScheme": [
+                {
+                  "reps": 1,
+                  "percent": 0.975,
+                  "of": "1RM",
+                  "amrap": false
+                }
+              ],
+              "intensity": {
+                "type": "PERCENT_1RM",
+                "value": 0.975
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "1 set of 1-4 reps at 97.5%.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 1 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Optional Exercise 2 (lower)",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Hypertrophy option 8-12 reps (calf raise, leg curl, leg extension, glute work), or explosive option in sets of 4 reps (box jumps, jump squats, power cleans, med-ball throws). Four sets including the warm-up set.",
+              "optional": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": "Percentages, reps, day order and accessory slots come from the author's spreadsheet (archived .xlsx, 2013 version, downloaded and read cell by cell); the method, rest periods, accessory choices, optional-exercise set counts and the failure rule come from the author's PDF. The PDF text says the three required upper accessories are upper back, shoulders and biceps, but the spreadsheet's slots are Upper Back #1 (horizontal pull), Shoulders and Upper Back #2 (vertical pull); this template follows the spreadsheet, and a biceps curl is a reasonable swap for slot 3 if you follow the PDF. Week 5 1-4 rep sets: the reps you get (2, 3 or 4) set the projected max, so take them as far as you can within 4. The spreadsheet's week 1 day 4 formulas reference an empty unit cell, so in kg mode those 70% weights round to 5 kg instead of 2.5 kg; round to 2.5 kg like every other set. Rest periods: 3-8 min on main lifts, 1-2 min on optional exercises, 60 s on week 2 volume/back-off squats. Week 6 has no fixed workouts so it is not listed. sessionMinutes reflects the author's '45 minutes to an hour'.",
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://web.archive.org/web/20170926162302/http://www.canditotraininghq.com:80/app/download/916024204/Candito%206%20Week%20Program.xlsx",
+      "https://web.archive.org/web/20171010194828/http://www.canditotraininghq.com:80/app/download/911765404/Candito%206%20Week%20Strength%20Program.pdf",
+      "https://web.archive.org/web/20170606161821/http://www.canditotraininghq.com/free-programs/"
+    ],
+    "changes": [
+      "Week 4 Day 3 (lower): added the two optional lower-body exercises; the spreadsheet lists Optional Exercise 1 and 2 on that day and the template had none.",
+      "Sources: added the archived author spreadsheet (.xlsx) itself, which is downloadable and was checked cell by cell; the template previously cited only the free-programs page for it.",
+      "evidenceNote: week 2 has 9 (not about 12) required upper accessory sets per session, and the deadlift variation is a required lower-body accessory on some days (PDF 11/18/13 update), so 'no required leg accessories' was reworded.",
+      "notes: recorded that the PDF names biceps as the third required upper accessory while the spreadsheet uses a second upper-back (vertical pull) slot; template keeps the spreadsheet slot.",
+      "notes: added that week 5 1-4 rep sets feed the projected-max formula (x1.03/1.06/1.09 for 2/3/4 reps) and that the sheet's week 1 day 4 kg rounding is a formula bug.",
+      "Everything else checked and matching the spreadsheet/PDF: day rotation per week (L,U,U,L,U / L,U,L,U,U / L,U,L,U / L,U,L,U / L,U,L), every percentage and +/- 2.5 kg (5 lb) adjustment, reps, set counts, MR/MR10 AMRAP flags, week 2 extra-volume and back-off rules with 60 s rest, accessory rep schemes, rest guidance, week 6 options, projected-max multipliers, and the 2.5% (sheet) vs 5% (PDF) failure rule. isFree true: both files were free downloads on the author's free-programs page."
+    ]
+  }
+}

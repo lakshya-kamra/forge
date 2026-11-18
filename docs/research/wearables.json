@@ -1,0 +1,775 @@
+{
+  "meta": {
+    "researchedOn": "2026-11-17",
+    "context": "Forge: personal Android app (Kotlin + Compose), one user in India, vivo X200 Pro. Goal: pull wearable data from many brands onto one Android phone.",
+    "method": "Official docs fetched where reachable. Where an official page was JS-rendered or blocked (HTTP 403), the claim is taken from a secondary source and flagged in 'caveats'. Google's own 'Google Health' help page (support.google.com/googlehealth/answer/14236613) lists, per partner brand, which metrics Google Health receives from that brand via Health Connect; it is used as a cross-check and is cited as such. It reflects what Google Health reads, so it can under-report what a brand writes.",
+    "typeVocabulary": "healthConnect.types uses androidx.health.connect.client record class names. 'calories (record unspecified)' means the vendor says calories but not whether Active or Total."
+  },
+  "brands": [
+    {
+      "brand": "WHOOP",
+      "devices": [
+        "WHOOP 4.0",
+        "WHOOP 5.0 / MG (membership tiers One, Peak, Life)"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "ExerciseSessionRecord",
+          "calories (record unspecified)",
+          "StepsRecord",
+          "SleepSessionRecord",
+          "RestingHeartRateRecord",
+          "RespiratoryRateRecord",
+          "OxygenSaturationRecord"
+        ],
+        "notWritten": [
+          "HeartRateVariabilityRmssdRecord (HRV)",
+          "Vo2MaxRecord",
+          "SkinTemperatureRecord",
+          "Recovery / Strain / Sleep scores (no HC type)",
+          "continuous HeartRateRecord samples (Google Health only shows exercise heart rate)"
+        ],
+        "reads": [
+          "ExerciseSessionRecord",
+          "DistanceRecord",
+          "calories",
+          "WeightRecord",
+          "HeightRecord",
+          "BodyFatRecord",
+          "LeanBodyMassRecord"
+        ],
+        "howToEnable": "WHOOP app (Android): during onboarding, or later in the app's Health Connect integration settings: open Health Connect, choose 'Allow all' or pick types, tap Set up, then Allow. Reinstalling WHOOP removes the permissions, so you have to turn it on again.",
+        "verifiedBy": "https://support.whoop.com/s/article/Google-Health-Integration-For-Android?language=en_US",
+        "caveats": "The WHOOP support page is JS-rendered and still could not be read directly on 2026-11-17. The type lists are WHOOP's own article text (last published 2025-10-06) as quoted by https://www.sensai.fit/blog/apps-that-work-with-whoop (re-read 2026-11-17: writes Exercise, Calories, Steps, Sleep, Resting Heart Rate, Respiratory Rate, Blood Oxygen; reads Exercise, Distance, Calories, Weight, Height, Body Fat, Lean Body Mass). Primary confirmation that WHOOP writes to HC: the Play Store listing says 'WHOOP integrates with Health Connect to sync activities, health data, and more', and com.whoop.android is in Google Play's Health Connect app collection. Cross-check: Google Health (Android only, via HC) lists exercise HR, steps, calories, distance, sleep, exercise summaries, resting HR, breathing rate, SpO2 and body weight as key metrics from WHOOP, and HRV, skin temp, VO2 max, routes, laps and non-exercise HR as not shared. Google Health's 'body weight' and 'distance' are not on WHOOP's own write list, so WeightRecord/DistanceRecord from WHOOP are unverified. The article says resting HR and respiratory rate need the Peak tier's Health Monitor. An older community claim that WHOOP does not write steps is contradicted by Google Health's current page, which lists steps.",
+        "additionalSources": [
+          "https://play.google.com/store/apps/details?id=com.whoop.android",
+          "https://play.google.com/store/apps/collection/promotion_all__health_connect (Google Play 'Health Connect' app collection, gl=IN, fetched 2026-11-17)",
+          "https://support.google.com/googlehealth/answer/14236613"
+        ]
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": true,
+        "auth": "OAuth 2.0 authorization code. Authorize: https://api.prod.whoop.com/oauth/oauth2/auth ; Token: https://api.prod.whoop.com/oauth/oauth2/token ; client secret required ; scope 'offline' for refresh tokens. See whoopApi.",
+        "docs": "https://developer.whoop.com/api/",
+        "notes": "Apps start on the Sandbox tier, which allows up to 10 WHOOP members to connect without approval, so one person can use it. Default limits: 100 requests/minute and 10,000/day. This API is the only source of HRV (hrv_rmssd_milli), recovery score, strain and skin temperature."
+      },
+      "recommendation": "Use both. Health Connect gives sleep, workouts, resting HR, respiratory rate and SpO2 for free. Recovery, HRV, strain and skin temperature are only available from the WHOOP Developer API: register a Sandbox app and use OAuth with the 'offline' scope. The client secret should not ship in the APK; for a single user, a small personal backend or the PC bridge can do the token exchange."
+    },
+    {
+      "brand": "Amazfit / Zepp",
+      "devices": [
+        "Amazfit Balance, Active, GTR/GTS 4 and later, T-Rex, Cheetah, Helio Ring/Strap (Zepp app)"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "StepsRecord",
+          "DistanceRecord",
+          "TotalCaloriesBurnedRecord or ActiveCaloriesBurnedRecord (energy burned)",
+          "SleepSessionRecord",
+          "ExerciseSessionRecord (with route)",
+          "HeartRateRecord",
+          "RestingHeartRateRecord",
+          "WeightRecord",
+          "RespiratoryRateRecord",
+          "Vo2MaxRecord",
+          "OxygenSaturationRecord"
+        ],
+        "notWritten": [
+          "HeartRateVariabilityRmssdRecord",
+          "SkinTemperatureRecord",
+          "FloorsClimbedRecord",
+          "lap splits"
+        ],
+        "howToEnable": "Zepp app > Profile > Link third-party accounts (3rd Party Account Linking) > Health Connect > authorize and choose all data or specific types. On Android 14+ Health Connect is part of the system.",
+        "verifiedBy": "https://support.google.com/googlehealth/answer/14236613",
+        "caveats": "No official Zepp page listing the types was found. The list above is what Google Health says it receives from Amazfit via Health Connect. Third-party reports (gadgetsandwearables.com, 2025-01-24, citing Reddit) say Zepp writes only (one way) and supports about 26 types. Some older models (Bip 3, GTR 3, GTS 2) reportedly cannot sync this way (third-party claim, unverified). 2026-11-17: Google Health list re-confirmed unchanged (it also says floors, HRV, skin temp and laps are not shared). com.huami.watch.hmwatchmanager (Zepp) is in Google Play's Health Connect collection. A Play Store user review describes Zepp importing nutrition from Health Connect, which suggests Zepp may now also read from HC; this contradicts the older 'one way' claim and is unverified.",
+        "additionalSources": [
+          "https://play.google.com/store/apps/collection/promotion_all__health_connect (Google Play 'Health Connect' app collection, gl=IN, fetched 2026-11-17)"
+        ]
+      },
+      "officialApi": {
+        "exists": false,
+        "personalUseFeasible": false,
+        "auth": "No public self-serve cloud API was found. Zepp OS has an on-watch app SDK (developer.zepp.com), which is not cloud access to health history.",
+        "docs": "https://developer.zepp.com/",
+        "notes": "Aggregators such as Terra and Thryve hold partner credentials. Reports describe a 'Zepp Open Platform' for partners, which is unverified for individual access. The EU Data Act route (eu.amazfit.com/pages/eu-data-act) is email-based and EU-only."
+      },
+      "recommendation": "Use Health Connect only. It covers steps, sleep, heart rate, resting HR, SpO2, VO2 max and respiratory rate. HRV and skin temperature cannot be had."
+    },
+    {
+      "brand": "Apple Watch / Apple Health",
+      "devices": [
+        "Apple Watch (all models)",
+        "iPhone Health app"
+      ],
+      "healthConnect": {
+        "writes": false,
+        "types": [],
+        "howToEnable": "Not possible. Apple Watch must be paired with an iPhone (Apple's compatibility table lists only iPhone/iOS/watchOS pairs), and there is no Apple Health app for Android.",
+        "verifiedBy": "https://support.apple.com/en-in/118490",
+        "caveats": "Apple publishes no Android SDK and no cloud API for HealthKit data. HealthKit is on-device only (iOS, iPadOS, watchOS)."
+      },
+      "officialApi": {
+        "exists": false,
+        "personalUseFeasible": false,
+        "auth": "None. HealthKit is an on-device iOS framework with per-type user authorization, and no cloud or REST endpoint exists.",
+        "docs": "https://developer.apple.com/documentation/healthkit",
+        "notes": "The only ways out are (1) a manual 'Export All Health Data' zip (see appleHealthExport) or (2) an iOS app on an iPhone that re-exports HealthKit data. Example: 'Health Auto Export - JSON+CSV' (App Store id1115567069) can export to a REST endpoint, Google Drive or Dropbox on a schedule as a premium feature; it is third party and needs iOS 17+."
+      },
+      "recommendation": "Be honest with the user: Apple Watch data cannot reach an Android phone live. Support a one-off or occasional import of export.zip (stream-parse export.xml), which suits migrating history from an old iPhone/Apple Watch. If the user still has an iPhone, an iOS exporter app posting JSON to a URL Forge controls is the only automated route."
+    },
+    {
+      "brand": "Google Pixel Watch / Fitbit (Google Health app)",
+      "devices": [
+        "Pixel Watch 1-4",
+        "Fitbit Charge, Inspire, Versa, Sense, Luxe"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "StepsRecord",
+          "SpeedRecord",
+          "StepsCadenceRecord",
+          "Vo2MaxRecord",
+          "FloorsClimbedRecord",
+          "DistanceRecord",
+          "ElevationGainedRecord",
+          "ExerciseSessionRecord (with ExerciseRoute)",
+          "TotalCaloriesBurnedRecord",
+          "BodyTemperatureRecord",
+          "SleepSessionRecord (with stages)",
+          "SkinTemperatureRecord",
+          "BloodGlucoseRecord",
+          "HeartRateRecord",
+          "HeartRateVariabilityRmssdRecord",
+          "RespiratoryRateRecord",
+          "RestingHeartRateRecord",
+          "WeightRecord",
+          "BodyFatRecord",
+          "HydrationRecord",
+          "NutritionRecord"
+        ],
+        "notWritten": [
+          "OxygenSaturationRecord (listed as read-only)",
+          "ActiveCaloriesBurnedRecord (listed as read-only)"
+        ],
+        "howToEnable": "Google Health app (the former Fitbit app) > Connections > Partner apps > Add connections > sync with Health Connect > Set up > choose data > also allow historic-data and background access > Done. Check under Connections > Partner apps > Manage Health Connect ('Synced' plus time). Needs Android 9+.",
+        "verifiedBy": "https://support.google.com/fitbit/answer/14506680?hl=en",
+        "caveats": "Re-read 2026-11-17: Google's help page lists the same write set, with active calories, oxygen saturation, mindfulness session duration, cervical mucus, ovulation test and sexual activity as read-only; it also writes cycle data (periods, flow, intermenstrual bleeding) and medical records. Requirements stated: an Android phone on Android 9 or higher and an adult Google Account; no phone-brand restriction. Older third-party claims that the HC write was Pixel-only are not supported by Google's page. Check on the vivo."
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": true,
+        "auth": "Google OAuth 2.0. Create a Google Cloud project, enable the 'Google Health API', create a Web-server OAuth client, leave the consent screen in 'Testing' and add your own Google account as a test user. Scopes take the form https://www.googleapis.com/auth/googlehealth.<group>.readonly (e.g. activity_and_fitness, health_metrics_and_measurements, sleep).",
+        "docs": "https://developers.google.com/health",
+        "notes": "This is the successor to the Fitbit Web API. The legacy Fitbit Web API is being retired, so do not build on api.fitbit.com. Google Health's help page says 'Starting October 30, 2026, Fitbit Web APIs will no longer be supported'; the 2026-11-02 shutdown date previously recorded here was not re-verified. Base URL: https://health.googleapis.com, versions v4 and v4beta, e.g. GET /v4/users/*/dataTypes/*/dataPoints, POST ...:rollUp / :dailyRollUp. Data types include heart-rate-variability, daily-heart-rate-variability, daily-resting-heart-rate, sleep, daily-oxygen-saturation, daily-respiratory-rate, vo2-max, daily-vo2-max, body-fat, weight, exercise, steps, active-zone-minutes and skin-temperature-sensors (v4beta only). Unverified apps are capped at 100 users. In Testing mode, refresh tokens expire after 7 days. The user must first link their Google Account in the Google Health mobile app."
+      },
+      "recommendation": "Health Connect is the main path; it is the richest of all brands and includes HRV and skin temperature. Add the Google Health API only if you need Fitbit-only metrics such as Active Zone Minutes or daily summaries; the 7-day refresh-token expiry in Testing mode makes it a chore for one user."
+    },
+    {
+      "brand": "Samsung Galaxy Watch / Samsung Health",
+      "devices": [
+        "Galaxy Watch 4 and later (Wear OS)",
+        "Galaxy Ring",
+        "Galaxy Fit"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "StepsRecord",
+          "BloodGlucoseRecord",
+          "OxygenSaturationRecord",
+          "BloodPressureRecord",
+          "ExerciseSessionRecord",
+          "TotalCaloriesBurnedRecord (exercise calories)",
+          "DistanceRecord",
+          "HeartRateRecord",
+          "PowerRecord",
+          "SpeedRecord",
+          "Vo2MaxRecord (exercise VO2max)",
+          "NutritionRecord",
+          "SleepSessionRecord (with stages)",
+          "WeightRecord",
+          "BodyFatRecord",
+          "BasalMetabolicRateRecord",
+          "HeightRecord"
+        ],
+        "notWritten": [
+          "HeartRateVariabilityRmssdRecord",
+          "RestingHeartRateRecord",
+          "SkinTemperatureRecord",
+          "RespiratoryRateRecord",
+          "Energy score / Antioxidant index (no HC type)",
+          "FloorsClimbedRecord (Google Health: floors not shared; not in Samsung's mapping)"
+        ],
+        "howToEnable": "Samsung Health > (three-dot menu) Settings > Health Connect > Get started > choose types and grant read/write separately. Check Settings > Health Connect > Data and access > Browse data. Samsung recommends the latest Samsung Health and Galaxy Wearable/watch plugin and 'Sync with Samsung Cloud' turned on. Google Health additionally requires consenting to the processing of health and wellness data in the S Health app. The menu path above was not re-checked against the current app on 2026-11-17.",
+        "verifiedBy": "https://developer.samsung.com/health/blog/en/accessing-samsung-health-data-through-health-connect",
+        "caveats": "The mapping table is from Samsung's developer blog of 2025-02-18 (re-read 2026-11-17, unchanged). The blog describes sync as two-way in general with read and write permissions granted separately, but gives no per-type direction, and says Samsung Health's activity tracker data are not synchronized with Health Connect (steps are mapped as 'Steps (all)'). Google Health (current page) receives steps, distance, energy, sleep, exercise, HR, SpO2, VO2 max and weight from Samsung and lists floors, skin temp, resting HR, HRV, breathing rate, routes and laps as not shared. com.sec.android.app.shealth is in Google Play's Health Connect collection; its Play description does not mention HC. Continuous watch heart rate reaches the phone with a delay.",
+        "additionalSources": [
+          "https://support.google.com/googlehealth/answer/14236613",
+          "https://play.google.com/store/apps/collection/promotion_all__health_connect (Google Play 'Health Connect' app collection, gl=IN, fetched 2026-11-17)",
+          "https://developer.samsung.com/health/data/guide/features/data-types.html"
+        ]
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": true,
+        "auth": "On-device Android SDK (Samsung Health Data SDK), not a cloud API. Reading your own data without a partner request is possible with Samsung Health 'Developer mode': Samsung Health > Settings > About Samsung Health > tap the version line 10+ times > Developer mode (Samsung Health Data SDK) > accept > 'Developer Mode for Data Read' on. Writing data or distributing the app needs a Samsung partner request.",
+        "docs": "https://developer.samsung.com/health/data/guide/developer-mode.html",
+        "notes": "Samsung says developer mode is ONLY for testing or debugging and must not be given to end users; for a one-person app that is acceptable but fragile. The SDK exposes types that HC lacks: skin temperature, energy score, sleep score, irregular heart rhythm notifications and sleep apnea (read-only), plus heart rate, sleep, exercise, body composition and blood oxygen. HRV is not listed (https://developer.samsung.com/health/data/guide/features/data-types.html). Samsung Health runs on non-Samsung Android phones, but whether every watch feature works on a vivo phone is unverified."
+      },
+      "recommendation": "Use Health Connect first. If the user really owns a Galaxy Watch and wants skin temperature or energy score, add an optional Samsung Health Data SDK reader behind developer mode."
+    },
+    {
+      "brand": "Garmin",
+      "devices": [
+        "Forerunner, Fenix, Epix, Venu, Vivoactive, Instinct, Edge, Index scale (via Garmin Connect)"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "ActiveCaloriesBurnedRecord",
+          "TotalCaloriesBurnedRecord",
+          "CyclingPedalingCadenceRecord",
+          "DistanceRecord",
+          "ElevationGainedRecord",
+          "HeartRateRecord",
+          "SpeedRecord",
+          "StepsRecord",
+          "swimming strokes (Garmin's wording; matching androidx record class not confirmed)",
+          "BodyFatRecord",
+          "FloorsClimbedRecord",
+          "SleepSessionRecord (with stages)",
+          "WeightRecord",
+          "ExerciseSessionRecord (implied by Google Health 'exercise summaries'; not named in Garmin's FAQ)",
+          "RestingHeartRateRecord (Google Health lists resting HR; not named in Garmin's FAQ, unverified)"
+        ],
+        "notWritten": [
+          "HeartRateVariabilityRmssdRecord (HRV status)",
+          "Vo2MaxRecord",
+          "OxygenSaturationRecord",
+          "RespiratoryRateRecord",
+          "SkinTemperatureRecord",
+          "Body Battery, training load, training effect, intensity minutes, endurance score (proprietary)",
+          "exercise routes"
+        ],
+        "howToEnable": "Garmin's FAQ gives no in-app menu path: it says the feature is only available on Android 14 and above, that setup varies by phone model, and points to Android Help 'Get started with Health Connect' (https://support.google.com/android/answer/12201227). Once enabled, Garmin Connect syncs to HC after each successful device sync. One way only: Garmin will not read any data from HC. A path such as Garmin Connect > More/Settings > Connected Apps > Health Connect is unverified.",
+        "verifiedBy": "https://support.garmin.com/en-US/?faq=JToBEy0jfe6pIygark2Ui5",
+        "caveats": "Garmin FAQ 'Sharing Your Garmin Connect Data With Health Connect' (KM1845700, content version 5.0, no date shown) was read on 2026-11-17 from the data embedded in the page (WebFetch gets HTTP 403; a normal browser request works). Garmin lists Activity data: active and total calories, cycling pedal cadence, distance, elevation gained, heart rate, speed, steps, swimming strokes; Wellness data: body fat, total calories, floors climbed, heart rate, sleep stages, steps and step distance, weight. Garmin does not list resting HR, exercise sessions or routes; Google Health additionally receives resting HR and exercise summaries from Garmin and lists HRV, breathing rate, SpO2, skin temp, VO2 max, routes and laps as not shared. Requires Android 14+ (the vivo X200 Pro ships Android 15).",
+        "additionalSources": [
+          "https://support.google.com/googlehealth/answer/14236613",
+          "https://play.google.com/store/apps/collection/promotion_all__health_connect (Google Play 'Health Connect' app collection, gl=IN, fetched 2026-11-17)",
+          "https://www.androidcentral.com/wearables/garmin/heres-everything-garmin-will-and-wont-share-with-google-health-connect (secondary, 2025-06-30, superseded)"
+        ]
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": true,
+        "auth": "Garmin Connect Developer Program 'Personal' tier, reopened October 2026. Create a Personal API key in Garmin Connect Web with 30, 90 or 180 days or 1 year expiry; it is shown only once. Exchange it for an OAuth2 access token: POST https://personal.connectapi.garmin.com/personalapitoken-service/personal-api/personal-api-key/token with header 'Authorization: ApiKey <key>'. Tokens last 24 h, with no refresh token; call the endpoint again.",
+        "docs": "https://developer.garmin.com/gc-developer-program/personal/personal-faq/",
+        "notes": "Pull-only and read-only: Activity data (JSON and .FIT), Health data (JSON) and Women's Health. Not for commercial or multi-user apps. Endpoint list, rate limits and history window are in Garmin's Personal API Swagger docs, which were not reviewed here (unverified). The health JSON likely includes HRV, stress, Body Battery and VO2 max, but this is unverified until checked against the Swagger docs."
+      },
+      "recommendation": "Use Health Connect for the basics. For HRV, VO2 max, Body Battery and full .FIT workouts, use the new Garmin Personal API. The API key is a long-lived secret: keep it on the PC bridge or in EncryptedSharedPreferences, never in the repo."
+    },
+    {
+      "brand": "Oura",
+      "devices": [
+        "Oura Ring Gen3",
+        "Oura Ring 4"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "HeartRateRecord (1-min)",
+          "HeartRateVariabilityRmssdRecord",
+          "HeightRecord",
+          "WeightRecord",
+          "SleepSessionRecord (with stages)",
+          "StepsRecord",
+          "DistanceRecord",
+          "TotalCaloriesBurnedRecord",
+          "ActiveCaloriesBurnedRecord",
+          "ExerciseSessionRecord"
+        ],
+        "notWritten": [
+          "Readiness / Sleep scores",
+          "OxygenSaturationRecord",
+          "SkinTemperatureRecord (temperature deviation)",
+          "Vo2MaxRecord",
+          "RespiratoryRateRecord (per Google Health)"
+        ],
+        "reads": [
+          "ExerciseSessionRecord (route, calories, distance, type)",
+          "HeartRateRecord",
+          "HeartRateVariabilityRmssdRecord",
+          "StepsRecord",
+          "TotalCaloriesBurnedRecord",
+          "ActiveCaloriesBurnedRecord",
+          "DistanceRecord",
+          "PowerRecord"
+        ],
+        "howToEnable": "Oura app > menu > Settings > Health Connect > choose read/write data types.",
+        "verifiedBy": "https://ouraring.com/blog/data-sharing-partner-integrations/",
+        "caveats": "Oura's blog (2025-09-30) says sleep detail includes nighttime resting HR but does not name the HC record. Google Health lists resting HR, breathing rate, SpO2, skin temp and VO2 max as not shared from Oura. Re-read 2026-11-17: Oura blog lists unchanged; Google Health page unchanged."
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": true,
+        "auth": "OAuth2 authorization code. Authorize: https://cloud.ouraring.com/oauth/authorize ; Token: https://api.ouraring.com/oauth/token. Scopes: email, personal, daily, heartrate, workout, tag, session, spo2, heart_health. Personal access tokens were deprecated in December 2025 and no longer work.",
+        "docs": "https://cloud.ouraring.com/v2/docs",
+        "notes": "Register an API application at https://cloud.ouraring.com/oauth/applications. Apps are limited to 10 users before Oura approval, which is fine for one person. Base URL: https://api.ouraring.com. Endpoints include /v2/usercollection/{daily_sleep, sleep, daily_readiness, daily_activity, heartrate, workout, daily_spo2, daily_stress, daily_resilience, daily_cardiovascular_age, vO2_max, sleep_time, session, personal_info}. Rate limits apply per token and per app (429 plus X-RateLimit-Tier header); webhooks are recommended. Every request needs a User-Agent. A lapsed Oura membership returns 403."
+      },
+      "recommendation": "Health Connect gives HR, HRV and sleep stages. Add the Oura API for readiness, temperature deviation, SpO2 and sleep scores."
+    },
+    {
+      "brand": "Polar",
+      "devices": [
+        "Vantage, Grit X, Pacer, Ignite, Polar Loop, H10 (via Polar Flow)"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "ActiveCaloriesBurnedRecord",
+          "DistanceRecord",
+          "ExerciseSessionRecord (with laps)",
+          "ExerciseRoute",
+          "HeartRateRecord (during workouts)",
+          "HeightRecord",
+          "OxygenSaturationRecord",
+          "RestingHeartRateRecord (from physical settings)",
+          "SleepSessionRecord (with stages)",
+          "SpeedRecord",
+          "StepsRecord",
+          "TotalCaloriesBurnedRecord",
+          "Vo2MaxRecord (from physical settings)",
+          "WeightRecord"
+        ],
+        "notWritten": [
+          "HeartRateVariabilityRmssdRecord (Nightly Recharge HRV not listed)",
+          "SkinTemperatureRecord",
+          "RespiratoryRateRecord",
+          "Training Load / Recovery (proprietary)"
+        ],
+        "howToEnable": "Polar Flow app (Android) > General settings > Health Connect on > choose data > Allow. 'Manage permissions' to change later.",
+        "verifiedBy": "https://support.polar.com/en/flow-app-health-connect",
+        "caveats": "Polar describes only Flow-to-HC (one way). Resting HR and VO2 max come from 'physical settings', so they may be user-entered values rather than measurements. Re-read 2026-11-17: the 14 items are unchanged (page shows no date). The Play listing says Flow can share some wellness data with Health Connect, including training, heart rate and steps. Polar is not covered by Google Health's partner page.",
+        "additionalSources": [
+          "https://play.google.com/store/apps/details?id=fi.polar.polarflow"
+        ]
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": true,
+        "auth": "OAuth2. Authorize: https://flow.polar.com/oauth2/authorization ; Token: POST https://polarremote.com/v2/oauth2/token (codes expire in 10 min). After authorizing, register the user with POST https://www.polaraccesslink.com/v3/users before any data access.",
+        "docs": "https://www.polar.com/accesslink-api/",
+        "notes": "'Any registered Polar Flow user can create API client' at https://admin.polaraccesslink.com. Base URL: https://www.polaraccesslink.com. Endpoints: /v3/exercises, /v3/users/activities, /v3/users/continuous-heart-rate/{date}, /v3/users/cardio-load, /v3/users/sleep, /v3/users/nightly-recharge (includes HRV), /v3/users/sleepwise/*, /v3/users/biosensing/{bodytemperature, skintemperature, spo2, ecg}, /v3/users/physical-info. Most daily endpoints cover the last 28 days only. Rate limits: 500 + users x 20 per 15 min, and 5000 + users x 100 per 24 h."
+      },
+      "recommendation": "Health Connect for workouts and sleep. Polar AccessLink is easy for one person and the only source of Nightly Recharge HRV and skin temperature."
+    },
+    {
+      "brand": "COROS",
+      "devices": [
+        "Pace, Apex, Vertix, Dura"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [],
+        "howToEnable": "COROS app > Profile > Settings > 3rd Party Apps > Data Sync (path documented for Apple Health; HC path assumed similar, unverified) > choose types.",
+        "verifiedBy": "https://support.coros.com/hc/en-us/articles/360040256531-Supported-3rd-Party-Apps",
+        "caveats": "COROS's own 'Supported 3rd Party Apps' article (updated 2026-11-17) lists 'Health Connect (for Android users)' but gives no data types and no setup steps; no dedicated COROS Health Connect article was found in COROS's help-center search. A HeiaHeia guide gives steps, sleep, heart rate and weight as examples (secondary). COROS is not covered by Google Health's partner page. Treat the types as unverified and check Health Connect > App permissions > COROS on the device.",
+        "additionalSources": [
+          "https://androidauthority.com/google-health-connect-3164755 (secondary)"
+        ]
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": false,
+        "auth": "Partner API (OAuth credentials, webhooks) by application to COROS (api@coros.com / application form). Docs are private.",
+        "docs": "https://support.coros.com/hc/en-us/articles/17085887816340-Submit-an-API-Application",
+        "notes": "A COROS help article (https://support.coros.com/hc/en-us/articles/53181766856724, HTTP 403 to fetch, seen only in a search snippet) reportedly offers an 'MCP with OAuth 2.0' route that needs no application, for builders who do not meet Partner API requirements. Unverified."
+      },
+      "recommendation": "Use Health Connect only. Do not plan on the COROS Partner API for a personal app."
+    },
+    {
+      "brand": "Withings",
+      "devices": [
+        "ScanWatch, Body/Body+/Body Comp/Body Scan scales, BPM cuffs, Sleep Analyzer"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [],
+        "howToEnable": "Withings app > Profile > Settings (gear) > Export health data to Health Connect > Next > phone Settings > Edit Permissions > Withings > toggle categories > Allow > Done. Importing from HC is separate: Share tab > Apps > Health Connect.",
+        "verifiedBy": "https://support.withings.com/hc/en-us/articles/27322856325905-Partner-Apps-Sharing-data-with-Health-Connect",
+        "caveats": "Withings' article 'Partner Apps - Health Connect: Exporting Withings data into Health Connect' (updated 2026-11-12, read 2026-11-17 via the help-center API) confirms the export but does not list the types; the Android Developers blog post it links (2023-03-10) does not list HC types either. Expect weight and body composition, activity, sleep and HR, but this is unverified; check the HC permission screen. Withings notes steps manually entered in HC are not imported into the Withings app. Google Health says Withings blood-pressure data is not yet supported on its side.",
+        "additionalSources": [
+          "https://support.withings.com/hc/articles/47487495293585 (import from HC, updated 2026-10-17)",
+          "https://play.google.com/store/apps/details?id=com.withings.wiscale2"
+        ]
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": true,
+        "auth": "OAuth2. Authorize: https://account.withings.com/oauth2_user/authorize2 ; Token: POST https://wbsapi.withings.net/v2/oauth2 with action=requesttoken. Scopes: user.info, user.metrics, user.activity, user.sleepevents. The auth code expires in 30 s, the access token in 3 h, and the refresh token in 1 year (rotated).",
+        "docs": "https://developer.withings.com/llms.md",
+        "notes": "Public Health Data API, 'no contract required', app created at https://developer.withings.com/dashboard/. Measures: POST https://wbsapi.withings.net/measure action=getmeas (meastype 1 weight, 6 fat ratio, 5 fat-free mass, 8 fat mass, 76 muscle mass, 88 bone mass, 77 hydration, 11 pulse). Sleep: /v2/sleep action=getsummary. Activity: /v2/measure action=getactivity. Withings says do not poll more than once every 10 minutes per user."
+      },
+      "recommendation": "For a lifter, a Withings scale is the best body-composition source. Read it from HC (WeightRecord, BodyFatRecord, LeanBodyMassRecord if present). Use the Withings API only if you want muscle and bone mass breakdown."
+    },
+    {
+      "brand": "Huawei",
+      "devices": [
+        "Huawei Watch GT, Watch, Fit, Band (Huawei Health app)"
+      ],
+      "healthConnect": {
+        "writes": false,
+        "types": [],
+        "howToEnable": "No native option. A third-party bridge app, Health Sync (healthsync.app, paid), lists HUAWEI Health as a source and Health Connect as a destination on Android.",
+        "verifiedBy": "https://healthsync.app/about/",
+        "caveats": "No official Huawei statement either way was found. Multiple third-party sources (2026) say Huawei Health does not write to Health Connect. Health Sync's coverage of individual data types is not documented here. 2026-11-17: still no official Huawei source found. Health Sync's about page lists HUAWEI Health as an Android source and Health Connect as a destination. Huawei is not covered by Google Health's partner page."
+      },
+      "officialApi": {
+        "exists": true,
+        "personalUseFeasible": false,
+        "auth": "HMS Health Service Kit (Android SDK and REST) with Huawei ID OAuth. Apps must apply for access and 'should have been released on AppGallery', and advanced-openness data is not open to individual developers.",
+        "docs": "https://developer.huawei.com/consumer/en/doc/HMSCore-Guides/application-qualification-description-0000001425636570",
+        "notes": "Data categories include steps, calories, distance, heart rate, stress, sleep, SpO2, body temperature, blood pressure and HRV, but the AppGallery-release requirement makes it impractical for a sideloaded personal app."
+      },
+      "recommendation": "Support Huawei only through Health Sync writing to Health Connect, and tell the user the data will be partial and delayed."
+    },
+    {
+      "brand": "Xiaomi / Mi Fitness",
+      "devices": [
+        "Xiaomi Smart Band 8/9/10, Redmi Watch, Xiaomi Watch S series (Mi Fitness app)"
+      ],
+      "healthConnect": {
+        "writes": true,
+        "types": [
+          "HeartRateRecord (exercise)",
+          "StepsRecord",
+          "DistanceRecord",
+          "TotalCaloriesBurnedRecord or ActiveCaloriesBurnedRecord (energy burned)",
+          "SleepSessionRecord",
+          "ExerciseSessionRecord (with route)",
+          "WeightRecord"
+        ],
+        "notWritten": [
+          "HeartRateVariabilityRmssdRecord",
+          "RespiratoryRateRecord",
+          "OxygenSaturationRecord",
+          "SkinTemperatureRecord",
+          "Vo2MaxRecord"
+        ],
+        "howToEnable": "Mi Fitness > Profile > Third-party data (third-party data access) > Health Connect > enable and pick types. Mi Fitness cloud sync must be on, and the band must sync to the phone over Bluetooth first.",
+        "verifiedBy": "https://support.google.com/googlehealth/answer/14236613",
+        "caveats": "The type list is what Google Health receives from Xiaomi via HC. Xiaomi's own FAQs (mi.com, HTTP 403 to fetch) describe the Third-party data menu but were not read in full. Some third-party guides claim resting HR or SpO2 on some models, which is unverified. Zepp Life (older Mi Bands) is a different app. 2026-11-17: Mi Fitness's Play listing permission text says 'Health Connect: Synchronize your fitness and health data to Google Health Connect', and com.xiaomi.wearable is in Google Play's Health Connect collection. Google Health's list re-confirmed. A Play review reports HR writes stopping after an update (user report, unverified).",
+        "additionalSources": [
+          "https://play.google.com/store/apps/details?id=com.xiaomi.wearable",
+          "https://play.google.com/store/apps/collection/promotion_all__health_connect (Google Play 'Health Connect' app collection, gl=IN, fetched 2026-11-17)"
+        ]
+      },
+      "officialApi": {
+        "exists": false,
+        "personalUseFeasible": false,
+        "auth": "None public.",
+        "docs": "https://www.mi.com/global/support/faq/details/KA-517372/",
+        "notes": "No developer API for Mi Fitness health data was found."
+      },
+      "recommendation": "Use Health Connect only, for steps, sleep, workouts and HR. Expect nothing beyond that."
+    }
+  ],
+  "healthConnect": {
+    "library": "androidx.health.connect:connect-client",
+    "latestStable": "1.1.0 (2025-10-08)",
+    "latestAlpha": "1.2.0-alpha06 (2026-08-26)",
+    "releaseNotes": "https://developer.android.com/jetpack/androidx/releases/health-connect",
+    "alphaHighlights": [
+      "1.2.0-alpha01: backward-compat support for SkinTemperature and Mindfulness; Activity Intensity API (Android 14+)",
+      "1.2.0-alpha03: new ExerciseSessionRecord / ExerciseSegment fields for richer exercise tracking (reference shows ExerciseSessionRecord.rateOfPerceivedExertion; ExerciseSegment repetitions/setIndex/rateOfPerceivedExertion annotated in alpha05); getChanges(token, pageSize)",
+      "1.2.0-alpha04: Matchmaking APIs (checkIfMatchmakingIsPossible, createMatchmakingIntent) that let the user discover and connect apps/devices that write the types you read",
+      "1.2.0-alpha05: minSdk 24; 1.2.0-alpha06: updated HC signing certificates"
+    ],
+    "testingLibrary": "androidx.health.connect:connect-testing:1.0.0-alpha04 (2026-08-12), FakeHealthConnectClient",
+    "platform": "Health Connect is part of the Android framework on Android 14+ (the vivo X200 Pro ships Android 15, unverified for OriginOS specifics); Android 9-13 use the Play Store app.",
+    "records": {
+      "HeartRateVariabilityRmssdRecord": {
+        "fields": "time, zoneOffset, heartRateVariabilityMillis: Double",
+        "aggregates": [],
+        "permission": "android.permission.health.READ_HEART_RATE_VARIABILITY",
+        "note": "RMSSD in ms. No aggregate metrics; average it yourself. Apple exports SDNN, which is not comparable."
+      },
+      "Vo2MaxRecord": {
+        "fields": "time, zoneOffset, vo2MillilitersPerMinuteKilogram: Double, measurementMethod: Int",
+        "aggregates": [],
+        "permission": "android.permission.health.READ_VO2_MAX"
+      },
+      "BodyFatRecord": {
+        "fields": "time, zoneOffset, percentage: Percentage",
+        "aggregates": [],
+        "permission": "android.permission.health.READ_BODY_FAT"
+      },
+      "LeanBodyMassRecord": {
+        "fields": "time, zoneOffset, mass: Mass",
+        "aggregates": [],
+        "permission": "android.permission.health.READ_LEAN_BODY_MASS"
+      },
+      "BasalMetabolicRateRecord": {
+        "fields": "time, zoneOffset, basalMetabolicRate: Power",
+        "aggregates": [
+          "BASAL_CALORIES_TOTAL (Energy)"
+        ],
+        "permission": "android.permission.health.READ_BASAL_METABOLIC_RATE"
+      },
+      "SkinTemperatureRecord": {
+        "fields": "startTime, endTime, zone offsets, baseline: Temperature?, deltas: List<Delta>, measurementLocation (WRIST, FINGER, TOE, UNKNOWN)",
+        "aggregates": [
+          "TEMPERATURE_DELTA_AVG",
+          "TEMPERATURE_DELTA_MIN",
+          "TEMPERATURE_DELTA_MAX"
+        ],
+        "permission": "android.permission.health.READ_SKIN_TEMPERATURE",
+        "note": "Gate on HealthConnectFeatures.FEATURE_SKIN_TEMPERATURE."
+      },
+      "RespiratoryRateRecord": {
+        "fields": "time, zoneOffset, rate: Double (breaths/min)",
+        "aggregates": [],
+        "permission": "android.permission.health.READ_RESPIRATORY_RATE"
+      },
+      "OxygenSaturationRecord": {
+        "fields": "time, zoneOffset, percentage: Percentage",
+        "aggregates": [],
+        "permission": "android.permission.health.READ_OXYGEN_SATURATION"
+      },
+      "RestingHeartRateRecord": {
+        "aggregates": [
+          "BPM_AVG",
+          "BPM_MIN",
+          "BPM_MAX"
+        ],
+        "permission": "android.permission.health.READ_RESTING_HEART_RATE"
+      },
+      "HeartRateRecord": {
+        "aggregates": [
+          "BPM_AVG",
+          "BPM_MIN",
+          "BPM_MAX",
+          "MEASUREMENTS_COUNT"
+        ],
+        "permission": "android.permission.health.READ_HEART_RATE"
+      },
+      "StepsRecord": {
+        "aggregates": [
+          "COUNT_TOTAL"
+        ],
+        "permission": "android.permission.health.READ_STEPS",
+        "note": "Always aggregate (dedups across sources). Since the June 2026 HC update, on-device phone steps carry a per-app Synthetic Package Name instead of 'android'."
+      },
+      "ActiveCaloriesBurnedRecord": {
+        "aggregates": [
+          "ACTIVE_CALORIES_TOTAL"
+        ],
+        "permission": "android.permission.health.READ_ACTIVE_CALORIES_BURNED"
+      },
+      "TotalCaloriesBurnedRecord": {
+        "aggregates": [
+          "ENERGY_TOTAL"
+        ],
+        "permission": "android.permission.health.READ_TOTAL_CALORIES_BURNED"
+      },
+      "WeightRecord": {
+        "aggregates": [
+          "WEIGHT_AVG",
+          "WEIGHT_MIN",
+          "WEIGHT_MAX"
+        ],
+        "permission": "android.permission.health.READ_WEIGHT"
+      },
+      "SleepSessionRecord": {
+        "fields": "startTime, endTime, title, notes, stages: List<Stage>",
+        "aggregates": [
+          "SLEEP_DURATION_TOTAL"
+        ],
+        "permission": "android.permission.health.READ_SLEEP"
+      },
+      "ExerciseSessionRecord": {
+        "fields": "startTime, endTime, exerciseType, title, notes, segments, laps, exerciseRouteResult, plannedExerciseSessionId, rateOfPerceivedExertion (1.2 alpha)",
+        "aggregates": [
+          "EXERCISE_DURATION_TOTAL"
+        ],
+        "permission": "android.permission.health.READ_EXERCISE",
+        "note": "Routes need separate consent (READ_EXERCISE_ROUTES / ExerciseRouteRequestContract)."
+      }
+    },
+    "dataOrigin": "Every record has metadata: Metadata with dataOrigin.packageName (the app that wrote it, e.g. com.whoop.android, com.sec.android.app.shealth, com.garmin.android.apps.connectmobile; these package names are unverified), device (manufacturer, model, type), recordingMethod (ACTIVELY_RECORDED, AUTOMATICALLY_RECORDED, MANUAL_ENTRY, UNKNOWN), id, lastModifiedTime, clientRecordId. Filter with ReadRecordsRequest(dataOriginFilter = setOf(DataOrigin(pkg))) or AggregateRequest(dataOriginFilter=...). AggregationResult.dataOrigins lists the contributors.",
+    "permissions": {
+      "READ_HEALTH_DATA_HISTORY": "android.permission.health.READ_HEALTH_DATA_HISTORY (HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY). Without it, reads do not return data older than 30 days before the app's FIRST HC permission grant, and readRecord of such a point errors. Gate with HealthConnectFeatures.FEATURE_READ_HEALTH_DATA_HISTORY.",
+      "READ_HEALTH_DATA_IN_BACKGROUND": "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND (HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND). Needed for WorkManager reads; request it while in the foreground. Gate with FEATURE_READ_HEALTH_DATA_IN_BACKGROUND.",
+      "historyLimitDefault": "Android 14+: no limit on reading your own app's data, 30 days for other apps' data. Android 13 and lower: 30 days for all data. Uninstalling resets the window to 30 days before the new grant.",
+      "playPolicy": "Apps published on Play must declare each HC data type in the Health apps declaration form. A sideloaded personal build still needs the manifest permissions and the permissions-rationale activity/intent filter."
+    },
+    "otherFeatureFlags": [
+      "FEATURE_ACTIVITY_INTENSITY",
+      "FEATURE_EXERCISE_SESSION_IMPROVEMENTS",
+      "FEATURE_EXTENDED_DEVICE_TYPES",
+      "FEATURE_MATCHMAKING",
+      "FEATURE_MINDFULNESS_SESSION",
+      "FEATURE_PERSONAL_HEALTH_RECORD",
+      "FEATURE_PLANNED_EXERCISE",
+      "FEATURE_SKIN_TEMPERATURE"
+    ],
+    "docs": [
+      "https://developer.android.com/health-and-fitness/health-connect/read-data",
+      "https://developer.android.com/reference/kotlin/androidx/health/connect/client/permission/HealthPermission",
+      "https://developer.android.com/reference/kotlin/androidx/health/connect/client/HealthConnectFeatures",
+      "https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/metadata/Metadata",
+      "https://developer.android.com/health-and-fitness/health-connect/data-types"
+    ]
+  },
+  "whoopApi": {
+    "docs": "https://developer.whoop.com/api/",
+    "oauthDocs": "https://developer.whoop.com/docs/developing/oauth/",
+    "dashboard": "https://developer-dashboard.whoop.com (sign in with your WHOOP account via id.whoop.com; create a Team, then an App; max 5 apps)",
+    "authorizeUrl": "https://api.prod.whoop.com/oauth/oauth2/auth",
+    "tokenUrl": "https://api.prod.whoop.com/oauth/oauth2/token",
+    "baseUrl": "https://api.prod.whoop.com/developer",
+    "scopes": [
+      "read:recovery",
+      "read:cycles",
+      "read:workout",
+      "read:sleep",
+      "read:profile",
+      "read:body_measurement",
+      "offline"
+    ],
+    "redirectUriRules": "Each redirect URI must be registered on the app in the Developer Dashboard (at least one is required). WHOOP's examples include https URLs and custom schemes (https://whoop.com/example/redirect, whoop://example/redirect), so an Android deep link such as forge://whoop/callback is allowed in form.",
+    "state": "Required for CSRF protection; if you generate it yourself it must be 8 characters long.",
+    "tokens": "Access token lifetime is in expires_in (example 3600 s); a 401 means refresh. A refresh token is issued only if 'offline' is in the scope. Refresh: POST token URL with grant_type=refresh_token, refresh_token, client_id, client_secret, scope=offline. Every refresh invalidates BOTH the old access token and the old refresh token, so store the new pair atomically. Concurrent refreshes: only the first succeeds, so serialize refresh (single Mutex or a single WorkManager job).",
+    "endpoints": {
+      "cycles": "GET /v2/cycle, GET /v2/cycle/{cycleId}, GET /v2/cycle/{cycleId}/sleep",
+      "recovery": "GET /v2/recovery, GET /v2/cycle/{cycleId}/recovery",
+      "sleep": "GET /v2/activity/sleep, GET /v2/activity/sleep/{sleepId}",
+      "workouts": "GET /v2/activity/workout, GET /v2/activity/workout/{workoutId}",
+      "bodyMeasurement": "GET /v2/user/measurement/body",
+      "profile": "GET /v2/user/profile/basic",
+      "revoke": "DELETE /v2/user/access",
+      "v1Utility": "GET /v1/activity-mapping/{activityV1Id} (maps v1 ids to v2 UUIDs; v1 webhooks removed)"
+    },
+    "pagination": "Collections: limit (max 25, default 10), start (inclusive ISO date-time), end (exclusive, default now), nextToken (from previous next_token). Sorted by start time descending.",
+    "keyFields": {
+      "recovery.score": [
+        "recovery_score",
+        "resting_heart_rate",
+        "hrv_rmssd_milli",
+        "spo2_percentage",
+        "skin_temp_celsius",
+        "user_calibrating"
+      ],
+      "sleep.score": [
+        "respiratory_rate",
+        "sleep_performance_percentage",
+        "sleep_consistency_percentage",
+        "sleep_efficiency_percentage",
+        "stage_summary{total_light_sleep_time_milli, total_slow_wave_sleep_time_milli, total_rem_sleep_time_milli, total_awake_time_milli, total_in_bed_time_milli, total_no_data_time_milli, sleep_cycle_count, disturbance_count}"
+      ],
+      "cycle.score": [
+        "strain",
+        "kilojoule",
+        "average_heart_rate",
+        "max_heart_rate"
+      ],
+      "workout.score": [
+        "strain",
+        "kilojoule",
+        "zone_durations",
+        "average_heart_rate",
+        "max_heart_rate",
+        "distance_meter",
+        "altitude_gain_meter",
+        "altitude_change_meter",
+        "percent_recorded"
+      ],
+      "workout": [
+        "sport_name (top-level)"
+      ],
+      "bodyMeasurement": [
+        "height_meter",
+        "weight_kilogram",
+        "max_heart_rate"
+      ],
+      "score_state": "Only 'SCORED' appears in the examples; handle other values and a null score defensively."
+    },
+    "rateLimits": "100 requests/minute and 10,000/day per client. Headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset; HTTP 429 when exceeded. Source: https://developer.whoop.com/docs/developing/rate-limiting/",
+    "approvalTiers": "Sandbox 10 members (no request needed), Build 100, Growth 1,000, Scale 5,000, Production unlimited. Source: https://developer.whoop.com/docs/developing/app-approval/",
+    "webhooks": "Supported (v2). Delivery stops for a user whose access is revoked; setup details not reviewed here.",
+    "androidNotes": "The token exchange needs client_secret. Options for a one-user app: (a) do the exchange and refresh on the existing PC bridge or a tiny server, or (b) embed the secret in a private, never-published build (accepting the risk). Use Custom Tabs (AppAuth) for the authorize step, not a WebView."
+  },
+  "appleHealthExport": {
+    "howToExport": "iPhone Health app > Summary > tap profile picture/initials > Export All Health Data > share the zip (e.g. to Google Drive, then pick it in Forge with the Storage Access Framework).",
+    "verifiedBy": "https://support.apple.com/guide/iphone/share-your-health-data-iph5ede58c3d/ios",
+    "zipLayout": [
+      "apple_health_export/export.xml (main data)",
+      "apple_health_export/export_cda.xml (HL7 CDA version)",
+      "apple_health_export/workout-routes/*.gpx",
+      "apple_health_export/electrocardiograms/*.csv"
+    ],
+    "zipLayoutCaveat": "Apple publishes no schema for the export files. The layout above comes from community parsers and an inline DTD at the top of export.xml, and has changed between iOS versions.",
+    "xmlElements": {
+      "_caveat": "Attribute names below come from community parsers and the DTD embedded in export.xml (e.g. github.com/jshrake/healthkit-to-sqlite, pkg.go.dev/github.com/opendroid/hk/export), not an Apple spec. HeartRateVariabilityMetadataList and the ActivitySummary attribute names are unverified, so check them against a real export's DTD before coding.",
+      "Record": "attributes type, sourceName, sourceVersion, device, unit, creationDate, startDate, endDate, value; optional MetadataEntry children (key, value) and HeartRateVariabilityMetadataList with InstantaneousBeatsPerMinute",
+      "Workout": "attributes workoutActivityType (e.g. HKWorkoutActivityTypeTraditionalStrengthTraining), duration, durationUnit, sourceName, startDate, endDate; children WorkoutStatistics (type, sum/average/min/max, unit), WorkoutEvent, WorkoutRoute (FileReference path to the .gpx), MetadataEntry",
+      "ActivitySummary": "daily rings: dateComponents, activeEnergyBurned, activeEnergyBurnedGoal, appleExerciseTime, appleStandHours",
+      "dateFormat": "'yyyy-MM-dd HH:mm:ss Z', e.g. 2026-11-17 06:30:00 +0530"
+    },
+    "recordTypesWorthImporting": {
+      "HKQuantityTypeIdentifierStepCount": "StepsRecord",
+      "HKQuantityTypeIdentifierHeartRate": "HeartRateRecord (count/min)",
+      "HKQuantityTypeIdentifierRestingHeartRate": "RestingHeartRateRecord",
+      "HKQuantityTypeIdentifierHeartRateVariabilitySDNN": "NOT RMSSD. Apple's HRV is SDNN in ms (verified: developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn). Store separately or label as SDNN; do not write it into HeartRateVariabilityRmssdRecord.",
+      "HKQuantityTypeIdentifierVO2Max": "Vo2MaxRecord (mL/min/kg)",
+      "HKQuantityTypeIdentifierBodyMass": "WeightRecord",
+      "HKQuantityTypeIdentifierBodyFatPercentage": "BodyFatRecord (value is a 0-1 fraction)",
+      "HKQuantityTypeIdentifierLeanBodyMass": "LeanBodyMassRecord",
+      "HKQuantityTypeIdentifierOxygenSaturation": "OxygenSaturationRecord (0-1 fraction)",
+      "HKQuantityTypeIdentifierRespiratoryRate": "RespiratoryRateRecord",
+      "HKQuantityTypeIdentifierAppleSleepingWristTemperature": "nightly wrist temperature, absolute degC (Series 8+/Ultra); not the same as an HC SkinTemperatureRecord delta",
+      "HKQuantityTypeIdentifierActiveEnergyBurned": "ActiveCaloriesBurnedRecord",
+      "HKQuantityTypeIdentifierBasalEnergyBurned": "TotalCalories = active + basal",
+      "HKQuantityTypeIdentifierDistanceWalkingRunning": "DistanceRecord",
+      "HKCategoryTypeIdentifierSleepAnalysis": "SleepSessionRecord stages. Values: HKCategoryValueSleepAnalysisInBed, ...Awake, ...AsleepCore (light), ...AsleepDeep, ...AsleepREM, ...AsleepUnspecified (older exports may say ...Asleep). Stage samples overlap the InBed sample, and the stage samples do not overlap each other.",
+      "Workout": "ExerciseSessionRecord (map workoutActivityType; strength = HKWorkoutActivityTypeTraditionalStrengthTraining / FunctionalStrengthTraining)"
+    },
+    "parsingAdvice": "Exports can be hundreds of MB to GBs; one report saw about 500 MB of XML use about 3 GB of RAM in R. Use a streaming parser (XmlPullParser) over a ZipInputStream entry, never DOM. Deduplicate by (type, sourceName, startDate, endDate, value). Keep sourceName so you can prefer Apple Watch over iPhone for overlapping steps.",
+    "bridgeApps": [
+      {
+        "name": "Health Auto Export - JSON+CSV (iOS)",
+        "url": "https://apps.apple.com/app/id1115567069",
+        "what": "Runs on the iPhone; scheduled export of 100+ metrics to a REST API, Google Drive, Dropbox, MQTT or Home Assistant (premium). Requires iOS 17+. Third party."
+      },
+      {
+        "name": "Health Sync (healthsync.app)",
+        "url": "https://healthsync.app/about/",
+        "what": "Lists Apple Health as a source and destination on iOS only; it does not move Apple data to an Android phone by itself (unverified whether any cross-platform path exists)."
+      }
+    ],
+    "limits": "No live sync to Android. Apple Watch cannot pair with an Android phone. No Apple cloud API. Data is only as fresh as the last export, and HRV is SDNN, not RMSSD."
+  },
+  "verification": {
+    "checkedAt": "2026-11-17",
+    "method": "Primary sources re-fetched where reachable (brand help centers, Google Health and Google Fitbit help, Play Store listings, Google Play Health Connect collection). WebSearch budget was exhausted, so no new sources were discovered by search; WHOOP's help article remained unreadable (JS-only) and Xiaomi's FAQ was not readable.",
+    "changes": [
+      "WHOOP: write claim confirmed by Play Store listing and Google Play Health Connect collection; WHOOP article itself still unreadable (JS). Steps-not-written community claim marked contradicted by Google Health. Flagged Google Health's weight/distance as not on WHOOP's own write list (unverified). No type removed.",
+      "Garmin: replaced Android Central list with Garmin's own FAQ (KM1845700). Added swimming strokes; marked ExerciseSessionRecord and RestingHeartRateRecord as Google-Health-only (not in Garmin's FAQ); sleep now 'with stages'. howToEnable corrected: Garmin requires Android 14+ and gives no in-app path, old Connected Apps path marked unverified. verifiedBy switched to Garmin FAQ.",
+      "Samsung Health: mapping re-confirmed against Samsung blog (2025-02-18) and current Google Health page; added FloorsClimbedRecord to notWritten; noted 'activity tracker data not synchronized' and Google Health's S Health consent requirement; howToEnable path flagged as not re-checked.",
+      "Amazfit/Zepp: Google Health types re-confirmed; added Play HC collection; flagged that a Play review suggests Zepp now reads (nutrition) from HC, so 'one way' is unverified.",
+      "Google/Fitbit: HC write list re-confirmed (support.google.com/fitbit/answer/14506680); added Android 9+ / adult account requirement and read-only list. officialApi notes: Fitbit Web API end date corrected to Google Health's 'Starting October 30, 2026' wording; 2026-11-02 flagged as not re-verified.",
+      "Oura: write/read lists re-confirmed against Oura blog (2025-09-30) and Google Health; no change.",
+      "Polar: Polar support page re-read, 14 written types unchanged; Play listing confirms HC sharing; no change.",
+      "COROS: verifiedBy switched from Android Authority to COROS's own Supported 3rd Party Apps article (lists Health Connect for Android); types still unverified.",
+      "Withings: export article re-read (updated 2026-11-12); confirmed write, still no type list; added import article and Play listing.",
+      "Huawei: no primary source either way; Health Sync listing re-confirmed; writes=false kept.",
+      "Xiaomi/Mi Fitness: write confirmed by Play listing and Play HC collection; Google Health types re-confirmed; no type change."
+    ]
+  }
+}

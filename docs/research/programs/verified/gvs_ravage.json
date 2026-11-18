@@ -1,0 +1,665 @@
+{
+  "id": "gvs_ravage",
+  "name": "RAVAGE (6x/week Legs-Torso-Bro)",
+  "author": "Geoffrey Verity Schofield",
+  "isFree": true,
+  "category": "HYPERTROPHY",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 6,
+  "sessionMinutes": 60,
+  "durationWeeks": 10,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable",
+    "machines"
+  ],
+  "summary": "A six-day Legs / Torso / Bro (arms and delts) split run twice a week, described by the author as a toned-down version of his own training. Sets are low (2-3) and taken very close to or beyond failure, with many press/pull and arm supersets. It is the example program from his ebook Resurrecting Your Gains; the full 10-week prescription and his programming notes are published free on Boostcamp.",
+  "evidenceNote": "Every muscle is trained twice a week with roughly 8-14 hard sets per muscle per week at the minimum listed set counts, including about 8 direct sets each for biceps, triceps and side delts from the two Bro days; that is consistent with hypertrophy evidence. Heavy use of RPE 9-10 and failure-plus-partials sets makes recovery the limiting factor, and the author explicitly says it is not for lifters without 1-2 years of solid training. Six sessions a week is a big time commitment for modest extra benefit over 4-5 well-built days.",
+  "sources": [
+    {
+      "title": "RAVAGE by Geoffrey Verity Schofield (Boostcamp, free program page, updated Oct 2026)",
+      "url": "https://www.boostcamp.app/geoffrey-schofield/ravage",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Mon Legs 1, Tue Torso 1, Wed Bro Day 1, Thu Legs 2, Fri Torso 2, Sat Bro Day 2, Sun rest. Exercises labelled as pairs are supersets; the author prefers resting between the two movements to keep set quality.",
+  "progression": {
+    "type": "DOUBLE_PROGRESSION",
+    "description": "Author: use a double progression ('evolving rep range') whenever you can: when you get the top of the rep range on all sets, add the smallest amount of weight you can, which should reduce your reps, and repeat. Step loading (staying at a weight longer before jumping) can be used for small movements such as lateral raises, or progress range of motion on chest-supported rows. Sets: start at 2 per exercise and do the third when recovering well; 3-4 or 3-5 sets may suit lifters who respond to higher volume. Failure + partials: pick a weight you fail with a few reps short of the target, then add 2-3 partial reps. Increment is 'the smallest amount you can'; 2.5 kg here is an app default, not from the source.",
+    "incrementKg": {
+      "upper": 2.5,
+      "lower": 2.5
+    },
+    "deload": "Built-in deload in week 5 and week 10: 'Deload week. Just 1 set per exercise at the same intensity.' (the Smith Machine Hack Squat keeps only its 5-10 rep top set). Weeks 1-4 and 6-9 are identical prescriptions; load progresses by the double progression above. No other stall rule is stated."
+  },
+  "days": [
+    {
+      "name": "Legs 1",
+      "focus": "Quads, hamstrings, glutes",
+      "exercises": [
+        {
+          "exerciseId": null,
+          "name": "Smith Machine Hack Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 7.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "RPE 7-8. 1 top set of 5-10 reps, then 1-3 back-down sets of 10-15. Controlled lowering; weight will be lower than a back squat.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 5,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "back_extension",
+          "name": "Back Extension (Weighted)",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 8.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "RPE 8-9. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "walking_lunge",
+          "name": "Walking Lunge",
+          "sets": 2,
+          "repsLow": 20,
+          "repsHigh": 30,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2-3 sets. Dumbbells preferred; descend under control.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_leg_curl",
+          "name": "Seated Hamstring Curl",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2-3 sets, failure + partials: fail at 8-12 full reps, then 2-3 partials.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Torso 1",
+      "focus": "Chest, lats, upper back",
+      "exercises": [
+        {
+          "exerciseId": null,
+          "name": "Close Grip Larsen Press",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RPE",
+            "value": 9.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Narrow Neutral Pulldown. RPE 9-10. 3-4 sets. Hands around shoulder width, control the lowering, pause slightly at the bottom, explode up.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Narrow Neutral Pulldown",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 3-4 sets. Full ROM, control the eccentric.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Smith Reverse Grip Bench",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 8.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Wide Overhand Pulldown. RPE 8-9. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Wide Overhand Pulldown",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "cable_fly",
+          "name": "Cable Crossover",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with 1 Arm Machine Row. 2-3 sets. Big stretch, big squeeze.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "1 Arm Machine Row",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Standing Cable Pullover",
+          "sets": 1,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "1-2 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Bro Day 1",
+      "focus": "Arms and side delts",
+      "exercises": [
+        {
+          "exerciseId": "hammer_curl",
+          "name": "Hammer Curl",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Tricep Pushdown. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "triceps_pushdown",
+          "name": "Tricep Pushdown",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "incline_dumbbell_curl",
+          "name": "Incline Dumbbell Curl",
+          "sets": 2,
+          "repsLow": 6,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RPE",
+            "value": 9.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Standing Overhead Extension. RPE 9-10. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_triceps_extension",
+          "name": "Standing Overhead Extension",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets. Hands behind head for a big stretch.",
+          "optional": false
+        },
+        {
+          "exerciseId": "cable_lateral_raise",
+          "name": "Cable Lateral Raise",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Upright Row (Barbell)",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2-3 sets. Experiment with grips to find a comfortable one; strict form. Can be done before the cable lateral raises if preferred.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Legs 2",
+      "focus": "Quads, hamstrings, glutes",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Back Squat",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 8.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "RPE 8-9. 2-3 sets. Upright, knees forward, slow lowering, slight pause.",
+          "optional": false
+        },
+        {
+          "exerciseId": "romanian_deadlift",
+          "name": "Romanian Deadlift",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RPE",
+            "value": 8
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "RPE 7-9. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "hip_thrust",
+          "name": "Hip Thrust",
+          "sets": 2,
+          "repsLow": 12,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_leg_curl",
+          "name": "Seated Hamstring Curl",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Leg Extension. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_extension",
+          "name": "Leg Extension",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Torso 2",
+      "focus": "Chest, back, front delts",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press (Barbell)",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 8.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Wide Neutral Pulldown. RPE 8-9. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Wide Neutral Pulldown",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "machine_chest_press",
+          "name": "Chest Press (Machine)",
+          "sets": 2,
+          "repsLow": 6,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 9.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Helms Row. RPE 9-10. 2-3 sets. Pause at the bottom with a full stretch.",
+          "optional": false
+        },
+        {
+          "exerciseId": "chest_supported_row",
+          "name": "Helms Row",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_dumbbell_press",
+          "name": "Seated Shoulder Press (Dumbbell)",
+          "sets": 2,
+          "repsLow": 6,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Seated Row. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_cable_row",
+          "name": "Seated Row (Cable)",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Bro Day 2",
+      "focus": "Arms, side and rear delts, neck, forearms",
+      "exercises": [
+        {
+          "exerciseId": "hammer_curl",
+          "name": "Hammer Curl",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Leaning Overhead Extension. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_triceps_extension",
+          "name": "Leaning Overhead Extension",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "barbell_curl",
+          "name": "Bicep Curl (Barbell)",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 9.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Tricep Pushdown. RPE 9-10. 2-3 sets. Minimal cheating.",
+          "optional": false
+        },
+        {
+          "exerciseId": "triceps_pushdown",
+          "name": "Tricep Pushdown",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 2-3 sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Lateral Raise (Machine)",
+          "sets": 2,
+          "repsLow": 12,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Lu Lateral Raise",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2-3 sets. Fairly strict, pause at the top.",
+          "optional": false
+        },
+        {
+          "exerciseId": "rear_delt_fly",
+          "name": "Cable Rear Delt",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "1-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Neck Flexion",
+          "sets": 1,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 8.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset A with Wrist Flexion/Extension. RPE 8-9. 1-2 sets. Start very light.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Wrist Flexion/Extension",
+          "sets": 1,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Superset B. 1-2 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://www.boostcamp.app/geoffrey-schofield/ravage"
+    ],
+    "changes": [
+      "Removed pullup_bar from equipment: no exercise in the program uses a pull-up bar (all vertical pulls are cable pulldowns).",
+      "Neck Flexion and Wrist Flexion/Extension set to optional=false: the source prescribes them (1-2 sets) and does not mark them optional.",
+      "Deload text now quotes the source week 5/10 day note exactly, notes the hack squat keeps only its top set, and states weeks 1-4 and 6-9 are identical in the source.",
+      "Upright Row notes: added author tip that it can be done before the cable lateral raises.",
+      "Summary: added that RAVAGE is the example program from the paid ebook Resurrecting Your Gains, while the full prescription is free on Boostcamp (pricing type free); isFree=true kept.",
+      "Checked every exercise name, order, superset pairing, set count, rep range and RPE/RPE range for all 6 days and all 10 weeks against the Boostcamp program data; all matched. Failure + partials sets have no RPE in the source; the template value RPE 10 is an interpretation, kept. Source gives no rest times (restSeconds null correct) and no AMRAP sets."
+    ]
+  }
+}

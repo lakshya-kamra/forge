@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "date": "2026-11-17",
+    "scope": "Features leading lifting and nutrition apps offer that Forge lacks, ranked for a single power user. Excludes items already built or already planned (multi-provider API keys, photo onboarding, free-program library, wearables, 3D exercise demos).",
+    "method": "Sourced from vendor pages (often promotional), help centers and peer-reviewed papers. The web-search budget ran out before r/fitness, r/MacroFactor and r/weightroom threads could be read directly, so community sentiment here comes only from secondary aggregators and is weakly sourced. Pricing is omitted on purpose.",
+    "unverified": [
+      "Whether MacroFactor has a built-in diet-break scheduler (not confirmed; idea 17 rests on the MATADOR evidence only)",
+      "How much Indian food is in Open Food Facts, and IFCT 2017 details such as the food count (idea 22)",
+      "The exact rules RP Hypertrophy uses to turn pump, soreness and workload feedback into volume changes (its help-center page returned 403)",
+      "Hevy's paywall split (free vs Pro) for its plate and warm-up calculators"
+    ]
+  },
+  "ideas": [
+    {
+      "rank": 1,
+      "name": "Per-set auto-progression engine",
+      "what": "For each working set, the app prescribes a target weight and reps (and optionally an RIR target) based on recent performance, then rounds the load to weights that actually exist in the user's gym. Forge already shows the last session; this turns that into a prescription. Start with double progression (add reps across a range, then add load) and add RIR-aware rules later.",
+      "why": "Progressive overload drives both strength and size, and per-set targets save the lifter from doing the maths mid-session. Most top trackers sell this as their main paid feature: Alpha Progression Pro (alphaprogression.com/en/blog/alpha-progression-guide), MacroFactor Workouts' rule-based 'data-driven progressive overload' (macrofactor.com/workouts), Boostcamp Pro Auto Progression (boostcamp.app/features) and Gravl.",
+      "effort": "M",
+      "bestExample": "Alpha Progression (per-set weight/rep/RIR targets that adapt set to set and respect the gym's available loads)"
+    },
+    {
+      "rank": 2,
+      "name": "Weekly sets-per-muscle tracker with fractional counting",
+      "what": "Count each muscle's hard sets for the week, giving full credit to the main movers and half credit to synergists (fractional counting, so a bench set counts 0.5 toward triceps). Show the totals as a body heatmap or table against a target band the user sets, and warn when a muscle is under or over its band. Forge's exercise_db can supply the muscle mapping.",
+      "why": "Pelland et al. (Sports Medicine 2026;56(2):481-505; 67 studies, 2,058 participants) found that hypertrophy and strength both rise with weekly set volume, with diminishing returns, and that fractional set counting fit the data best. Once volume was accounted for, frequency added little for hypertrophy. Boostcamp, Hevy, Alpha Progression and MacroFactor Workouts all ship per-muscle volume charts.",
+      "effort": "M",
+      "bestExample": "Boostcamp Muscle Tracker (weekly sets per muscle as a heatmap, radar or table)"
+    },
+    {
+      "rank": 3,
+      "name": "RIR/RPE logging per set, with calibration",
+      "what": "Add a one-tap RIR (or RPE 6-10) field to each set, in half-steps. Use it in progression decisions. Optionally run a periodic AMRAP check that compares the RIR the user predicted with the reps actually achieved, to show how well calibrated they are.",
+      "why": "Zourdos et al. (JSCR 2016;30(1):267-275) validated an RIR-based RPE scale for regulating daily load. Halperin et al. (Sports Medicine 2022;52:377-390; 12 studies) found lifters underpredict reps to failure by about 0.95 reps on average, so a calibration check is useful. MacroFactor Workouts, Alpha Progression, Hevy and Boostcamp all log RIR or RPE.",
+      "effort": "S",
+      "bestExample": "Alpha Progression (optional RIR with half-values, used in its recommendations)"
+    },
+    {
+      "rank": 4,
+      "name": "Weekly nutrition check-in and phase planner",
+      "what": "A guided weekly check-in that reviews trend weight, the adaptive TDEE and progress toward the goal, then proposes next week's calories and macros. Offer two modes: 'coached' (the app sets the targets) and 'collaborative' (the app sets a weekly budget and the user splits it across days). Phases (cut, maintain, bulk) have start and end dates and a target rate of change.",
+      "why": "Forge already computes adaptive TDEE but does not have a ritual for acting on it. MacroFactor's check-in resets targets each week from changes in expenditure, weight and goal, and offers coached and collaborative programs (strongerbyscience.com/welcome-to-macrofactor; macrofactor.com/dashboard-revamp). MacroFactor describes this as its core feature (vendor claim).",
+      "effort": "M",
+      "bestExample": "MacroFactor (weekly check-in with coached and collaborative modes)"
+    },
+    {
+      "rank": 5,
+      "name": "Plate calculator and warm-up set generator",
+      "what": "A gym profile stores the bar weights and the kg plate inventory. From that, the app shows plates per side for any target and the nearest achievable load when the exact target is impossible. It also generates percentage-based warm-up ramps from the first working set, rounded to the available plates.",
+      "why": "This saves mental arithmetic on every barbell set, and it is a standard expectation in strength trackers. Hevy, Strong (Pro), Boostcamp, MacroFactor Workouts and Alpha Progression all include it. Alpha Progression shows 'the next lower achievable weight' when a target can't be loaded.",
+      "effort": "S",
+      "bestExample": "Alpha Progression (gym profiles with equipment and plate inventory, plus a warm-up calculator that uses available weights)"
+    },
+    {
+      "rank": 6,
+      "name": "e1RM trends and live PR detection",
+      "what": "Calculate estimated 1RM per set (selectable formula, such as Epley or Brzycki) and chart it per lift. Detect PRs live as sets are logged (best e1RM, most reps at a weight, best volume), and keep a PR board per exercise.",
+      "why": "This is the quickest feedback that a program is working, and PR moments help adherence. Hevy has live PR notifications, Strong charts e1RM using Brzycki, and Boostcamp has live PR flags and PR boards (hevyapp.com/features/track-workouts; boostcamp.app/features).",
+      "effort": "S",
+      "bestExample": "Hevy (live PR notifications during the workout)"
+    },
+    {
+      "rank": 7,
+      "name": "Faster food logging: recents, saved meals, copy-day, recipes",
+      "what": "Make repeat logging take fewer taps: a timeline-style log with frequent and recent foods ranked by time of day, one-tap copy of a meal or a whole day, saved meals, and a recipe builder (weigh the cooked total, then log portions). This complements Forge's AI photo, barcode, label and text logging.",
+      "why": "Burke et al. (J Am Diet Assoc 2011; 22 studies) found self-monitoring consistently associated with weight loss, though the evidence quality was weak, so anything that keeps logging painless protects adherence. MacroFactor markets its timeline logger and shortcuts toolbar as the fastest available (vendor claim).",
+      "effort": "M",
+      "bestExample": "MacroFactor (timeline food log, shortcuts toolbar, recipes)"
+    },
+    {
+      "rank": 8,
+      "name": "Mesocycles with feedback-driven volume and deloads",
+      "what": "Run training blocks of N accumulation weeks plus a deload. After each session, ask short questions (pump, soreness or recovery, workload, joint pain) and use the answers to add or remove sets per muscle for the next week within the volume band. Schedule the deload, or trigger it early when fatigue signals stack up.",
+      "why": "This puts autoregulation on top of the volume dose-response (Pelland 2026). RP Hypertrophy builds its whole product on pump, soreness and workload feedback within a volume-landmark framework (rpstrength.com/hypertrophy-app; boostcamp.app/vs/rp-hypertrophy). Alpha Progression offers planned deloads. RP's exact algorithm is not public.",
+      "effort": "L",
+      "bestExample": "RP Hypertrophy (Meso Builder with feedback-based volume adjustment)"
+    },
+    {
+      "rank": 9,
+      "name": "Readiness-aware session adjustment",
+      "what": "Use Health Connect sleep, resting heart rate and HRV (and wearable data once that ships) to build a daily readiness signal compared against the user's own baseline. When readiness is poor, suggest lighter loads, fewer sets or swapping the hard session to another day, and show the reason.",
+      "why": "Lamon et al. (Physiological Reports 2021; n=13) found one night of total sleep deprivation cut postprandial muscle protein synthesis by about 18%, raised cortisol by 21% and lowered testosterone by 24%. Oura's Readiness Score combines sleep, HRV balance, resting heart rate and temperature (ouraring.com/readiness-score). WHOOP feeds lifting load into Strain and Recovery.",
+      "effort": "M",
+      "bestExample": "Oura (Readiness score built on personal-baseline HRV, RHR, temperature and sleep), with WHOOP Strength Trainer for linking lifting load to recovery"
+    },
+    {
+      "rank": 10,
+      "name": "Micronutrient tracking and nutrient explorer",
+      "what": "Track vitamins, minerals, fibre, sodium and omega-3 against DRI-based targets the user can edit. Show daily, weekly and monthly averages, pin chosen nutrients to the dashboard, and suggest foods that fill recurring gaps. Mark totals as incomplete when foods lack micronutrient data.",
+      "why": "Cronometer bases its default targets on DRIs and tracks 80 or more nutrients (support.cronometer.com, plus reviews). MacroFactor added a configurable Nutrient Explorer with averages over time (help.macrofactorapp.com). Cronometer itself warns that sparse data can understate intake, so the app should show coverage.",
+      "effort": "M",
+      "bestExample": "Cronometer (broadest micronutrient tracking with DRI targets)"
+    },
+    {
+      "rank": 11,
+      "name": "Smart exercise swap",
+      "what": "In a workout or imported program, swap an exercise for alternatives that hit the same muscles. Filter by equipment available today and by any injury or pain flags, and carry progression history over to the new exercise where it makes sense.",
+      "why": "Gyms are busy and equipment varies, so swaps keep a PDF-imported program usable. Boostcamp has Swap Exercise with coach-recommended alternatives. Gravl adjusts exercises around injuries and explains why (App Store listing).",
+      "effort": "S",
+      "bestExample": "Boostcamp (Swap Exercise with coach-recommended alternatives)"
+    },
+    {
+      "rank": 12,
+      "name": "Progress photos and body measurements with comparison",
+      "what": "Take progress photos with a pose guide and fixed angles, view them side by side or as a slider across dates, and pair them with tape measurements (waist, chest, arms, thighs) shown next to trend weight. Keep everything stored locally.",
+      "why": "Scale weight alone misreads recomposition, and waist plus photos add context during a cut or bulk. Boostcamp offers free progress photos with side-by-side comparison. Hevy has progress photos and body metrics. Strong puts measurements behind Pro.",
+      "effort": "S",
+      "bestExample": "Boostcamp (progress photos with side-by-side comparison, free)"
+    },
+    {
+      "rank": 13,
+      "name": "Full data export and import from other apps",
+      "what": "Export workouts, food, weight and measurements to CSV and JSON. Import history from Hevy or Strong CSV exports, and from MacroFactor or MyFitnessPal exports where the format allows. Add scheduled local backups.",
+      "why": "A single power user owns years of data, and portability prevents lock-in while bringing old PRs and trends into Forge's charts. Strong exports CSV, and export is commonly cited as a reason lifters pick or leave an app.",
+      "effort": "S",
+      "bestExample": "Strong (CSV export of workout history)"
+    },
+    {
+      "rank": 14,
+      "name": "Voice food logging",
+      "what": "Speak a meal ('2 rotis, 1 katori dal, 150 g paneer') and have Android speech-to-text feed Forge's existing text estimator, then show editable matched items before saving.",
+      "why": "Speaking is faster than typing and works hands-free while cooking or eating. MyFitnessPal launched Voice Log for Premium, which turns speech into suggested food matches (androidguys.com, systemtek.co.uk coverage).",
+      "effort": "S",
+      "bestExample": "MyFitnessPal (Voice Log)"
+    },
+    {
+      "rank": 15,
+      "name": "Daily step target and NEAT tracking",
+      "what": "Pull steps from Health Connect, set a daily step target, and show steps next to trend weight and TDEE. During a cut, flag when falling steps may explain a stall instead of cutting calories further.",
+      "why": "Paluch et al. (Lancet Public Health 2022; 15 cohorts) found more daily steps were associated with progressively lower all-cause mortality, levelling off around 8,000-10,000 steps per day for adults under 60. Movement outside training is also a large and changeable part of TDEE during a diet.",
+      "effort": "S",
+      "bestExample": "Oura (activity goals that feed its Readiness and Activity scores)"
+    },
+    {
+      "rank": 16,
+      "name": "Weekly training report with AI narrative",
+      "what": "An automatic weekly summary of sessions, total sets per muscle, volume, PRs, e1RM changes, adherence to the plan, and nutrition and weight trend. Forge's AI coach writes a short evidence-grounded narrative and suggests one or two actions.",
+      "why": "This closes the feedback loop and gives the AI coach structured context. Boostcamp has a free Weekly Report covering workouts, time, PRs, muscles trained and streak. Gravl generates an AI workout summary.",
+      "effort": "S",
+      "bestExample": "Boostcamp (Weekly Report), with Gravl's AI summary for the narrative layer"
+    },
+    {
+      "rank": 17,
+      "name": "Diet breaks and refeeds in fat-loss phases",
+      "what": "Let the user schedule planned maintenance blocks inside a cut, for example 2 weeks in a deficit then 2 weeks at maintenance. Targets come from the adaptive TDEE, and the projected end date adjusts automatically.",
+      "why": "In the MATADOR trial (Byrne et al., Int J Obes 2018;42:129-138; n=51 men with obesity), alternating 2-week energy-restriction blocks with 2-week energy-balance blocks produced more weight loss (14.1 vs 9.1 kg) and fat loss than continuous restriction, with similar fat-free mass loss. Evidence in lean lifters is limited.",
+      "effort": "S",
+      "bestExample": "No app verified to do this well; MacroFactor's phase planning is the closest base to build on"
+    },
+    {
+      "rank": 18,
+      "name": "Ongoing rest-timer notification and home-screen widgets",
+      "what": "Show an ongoing notification (or vivo/Android live-style notification) with a rest countdown and next-set target, controllable from the lock screen. Add home-screen widgets for today's macros left, trend weight, and next workout.",
+      "why": "The lifter can keep the phone locked between sets and check status at a glance without opening the app. Hevy has Live Activity, and Boostcamp has an iPhone lock-screen rest countdown. The Android equivalents are ongoing notifications and Glance widgets.",
+      "effort": "S",
+      "bestExample": "Hevy (Live Activity rest timer)"
+    },
+    {
+      "rank": 19,
+      "name": "Strength score and lift-balance analysis",
+      "what": "Turn e1RMs of the main lifts into a bodyweight-relative strength score, and show ratios between lifts (for example squat to deadlift, bench to overhead press, pushing to pulling) to flag lagging patterns.",
+      "why": "This gives a big-picture view of progress across lifts and spots imbalances that one-lift charts hide. Boostcamp has a 0-100 Strength Score across 13 lifts, with Level, Max and Balance views in Pro.",
+      "effort": "M",
+      "bestExample": "Boostcamp (Strength Score with Balance view)"
+    },
+    {
+      "rank": 20,
+      "name": "Per-muscle recovery heatmap",
+      "what": "Model each muscle's recovery percentage from recent sets, load and RIR, decaying over time. Show it on a front and back body map, and use it to order sessions or suggest what to train today. Label it clearly as an estimate.",
+      "why": "This helps when skipping or rescheduling sessions on a flexible split. Fitbod models a 0-100% recovery score per muscle and favours fresher muscles when generating workouts (help.fitbod.me). It is modelled, not measured, so treat it as a planning aid rather than physiology.",
+      "effort": "M",
+      "bestExample": "Fitbod (muscle recovery heat map)"
+    },
+    {
+      "rank": 21,
+      "name": "Scriptable progression rules for programs",
+      "what": "Add a small text DSL, or a rule builder, attached to each exercise in a program, for example lp(2.5kg), dp(2.5kg, 8, 12), or custom logic that reads completed reps and RIR and rewrites the next weights, reps or set scheme. PDF-imported programs would map onto these rules.",
+      "why": "This lets one power user encode any program's real progression logic (5/3/1, GZCL, RP-style) instead of relying on a fixed engine. Liftosaur's Liftoscript supports built-in lp, dp and sum progressions, plus custom() blocks that write changes back into the program text (liftosaur.com/docs).",
+      "effort": "L",
+      "bestExample": "Liftosaur (Liftoscript)"
+    },
+    {
+      "rank": 22,
+      "name": "Indian home-food database layer",
+      "what": "Seed a local database of common Indian home-cooked dishes and staples, per 100 g and in household units (katori, roti, piece), from the national food composition tables (IFCT 2017, NIN). Make it the first lookup for text, voice and photo estimates.",
+      "why": "Home-cooked Indian meals have no barcodes, and the AI estimates need a grounded reference. Unverified: how much Indian packaged food Open Food Facts covers, and the exact scope and licence of IFCT 2017. Check both before building.",
+      "effort": "M",
+      "bestExample": "None of the surveyed apps verified as strong here"
+    },
+    {
+      "rank": 23,
+      "name": "Daily log notes and context tags",
+      "what": "Add a free-text note plus quick tags (poor sleep, travel, high sodium, illness, stress) on each day, shown on the weight-trend and e1RM charts so outliers can be explained. The AI coach can also read them.",
+      "why": "This explains spikes in water weight and bad sessions, which stops overreacting to noise. MacroFactor added notes about the day directly in the food log (macrofactorapp.com product updates).",
+      "effort": "S",
+      "bestExample": "MacroFactor (log notes)"
+    },
+    {
+      "rank": 24,
+      "name": "Macro-fit meal planner with grocery list",
+      "what": "Generate a week of meals from saved recipes that fit the current phase's macro targets, and produce a consolidated grocery list. Let the user lock favourite meals.",
+      "why": "Planning ahead lowers daily decision load during a cut. MyFitnessPal's Premium+ Meal Planner suggests goal-aligned recipes from about 1,500 recipes and builds a grocery list. This ranks lower for a single lifter who mostly repeats meals.",
+      "effort": "M",
+      "bestExample": "MyFitnessPal (Premium+ Meal Planner)"
+    }
+  ]
+}

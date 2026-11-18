@@ -1,0 +1,386 @@
+{
+  "id": "helms_novice_bodybuilding",
+  "name": "Novice Bodybuilding Program (Muscle & Strength Pyramid)",
+  "author": "Eric Helms, Andy Morgan, Andrea Valdez",
+  "isFree": true,
+  "category": "HYPERTROPHY",
+  "level": "BEGINNER",
+  "daysPerWeek": 4,
+  "sessionMinutes": 60,
+  "durationWeeks": null,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable",
+    "machines",
+    "pullup_bar"
+  ],
+  "summary": "A four-day upper/lower program with one strength-focused and one volume-focused session for each half of the body, all at about 2 reps in reserve on the first set. Weight goes up every week in fixed steps until the lifter stalls.",
+  "evidenceNote": "Each muscle is trained twice a week with roughly 9-12 sets per week for the big muscle groups at moderate proximity to failure, a sensible, recoverable novice dose. Direct arm work is light (2 sets per week each) and there is no direct side-delt work. Linear session-to-session load increases suit beginners but will stop working within months, at which point RippedBody says to switch to autoregulated double progression.",
+  "sources": [
+    {
+      "title": "Novice Bodybuilding Program (RippedBody.com; Eric Helms, Andy Morgan, Andrea Valdez; updated 28 Dec 2025)",
+      "url": "https://rippedbody.com/novice-bodybuilding-program/",
+      "kind": "article"
+    },
+    {
+      "title": "Novice Bodybuilding Program by Eric Helms (Boostcamp, official Muscle and Strength Pyramid account)",
+      "url": "https://www.boostcamp.app/muscle-and-strength-pyramid/novice-bodybuilding-program",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Lower (Strength), Upper (Strength), Lower (Volume), Upper (Volume) once each per week, e.g. Mon/Wed/Fri/Sat. Spread them out and avoid more than two sessions back to back.",
+  "progression": {
+    "type": "LINEAR",
+    "description": "RippedBody (updated 28 Dec 2025) prescribes a first-set target of 2 RIR (no %1RM in the table) and the same load for all remaining sets; add a little weight each session while keeping good form and the RIR target, progress each day independently (strength-day and volume-day bench use different loads), avoid training to failure, and switch to autoregulated double progression once linear progression stops working consistently. The Boostcamp version (official Muscle and Strength Pyramid account) gives the steps: after the first session add weight each time; ~10 lb (~5 kg) for heavy full/lower-body compound movements (e.g. squats and deadlifts), 5 lb (~2.5 kg) or 2.5 lb for exercises that work less overall musculature (bench, overhead press, rows, any isolation exercise); if target reps are missed, repeat the same load next time. Lower-body isolation and single-leg work (split squat, calf raises, leg extension, leg curl) therefore use the smaller step even though they are lower-body; hip thrust and leg press are not named by the source, the 5 kg step for them is an interpretation. %1RM (Boostcamp: 82.5% for the 3x5 squat, deadlift and bench, 72.5% for the 2x8 overhead press, 67.5% for the 3x10 bench) is only a guide for the very first session; if 1RM is unknown use RPE 8 (2 RIR).",
+    "incrementKg": {
+      "upper": 2.5,
+      "lower": 5
+    },
+    "deload": "Boostcamp/Pyramid rule: if you fail to achieve your target reps in two consecutive workouts, reduce the load by 10% for the next workout, then return to the weight you could not complete on the following workout. No deloads at set time intervals are needed for novice progression."
+  },
+  "days": [
+    {
+      "name": "Lower (Strength)",
+      "focus": "Squat and deadlift strength, single-leg, calves",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Squat variant slot (RippedBody options: barbell back, front or safety-bar squat). 2 RIR applies to the first set; same load for all sets. ~82.5% 1RM as a first-session guide only. +~5 kg steps.",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Deadlift variant slot (RippedBody options: conventional, sumo, trap bar, Romanian, good morning). ~82.5% 1RM first session only. +~5 kg steps.",
+          "optional": false
+        },
+        {
+          "exerciseId": "bulgarian_split_squat",
+          "name": "Bulgarian Split Squat (Dumbbell)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Single-leg variant slot (RippedBody options: Bulgarian split squat, lunge, pistol squat). Smaller (~2.5 kg) steps.",
+          "optional": false
+        },
+        {
+          "exerciseId": "standing_calf_raise",
+          "name": "Standing Calf Raise",
+          "sets": 4,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Standing calf raise (RippedBody: Smith machine or leg press also fine). Smaller (~2.5 kg) steps.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Upper (Strength)",
+      "focus": "Bench and row strength, overhead press, chins, flys",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Horizontal push slot (bench press or dumbbell press). ~82.5% 1RM first session only. ~2.5 kg steps.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_cable_row",
+          "name": "Seated Row (Cable)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Horizontal pull slot (RippedBody options: cable, dumbbell, seal, machine or TRX row).",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "Overhead Press (Barbell)",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Vertical push slot (barbell or dumbbell overhead press, standing or seated, or landmine press). ~72.5% 1RM first session only.",
+          "optional": false
+        },
+        {
+          "exerciseId": "chin_up",
+          "name": "Chin-Up (Weighted)",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Vertical pull slot (RippedBody options: chin-up, pull-up or lat pulldown).",
+          "optional": false
+        },
+        {
+          "exerciseId": "cable_fly",
+          "name": "Chest Fly (Cable)",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Fly slot (cable or dumbbell).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Lower (Volume)",
+      "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+      "exercises": [
+        {
+          "exerciseId": "hip_thrust",
+          "name": "Hip Thrust (Barbell)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Hip hinge variant slot (RippedBody options: barbell hip thrust, glute bridge, cable pull-through).",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_press",
+          "name": "Leg Press",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Leg press variant slot (RippedBody options: seated leg press, 45-degree leg press, hack squat).",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_extension",
+          "name": "Leg Extension",
+          "sets": 3,
+          "repsLow": 12,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Leg Curl",
+          "sets": 3,
+          "repsLow": 12,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Any leg curl machine.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_calf_raise",
+          "name": "Seated Calf Raise",
+          "sets": 4,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Upper (Volume)",
+      "focus": "Bench and row volume, incline press, chins, arms",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press (Barbell)",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Horizontal push slot. Load is set independently of the strength-day bench. ~67.5% 1RM first session only.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_cable_row",
+          "name": "Seated Row (Cable)",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 150,
+          "notes": "Horizontal pull slot.",
+          "optional": false
+        },
+        {
+          "exerciseId": "incline_dumbbell_press",
+          "name": "Incline Bench Press (Dumbbell)",
+          "sets": 2,
+          "repsLow": 12,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Incline push slot.",
+          "optional": false
+        },
+        {
+          "exerciseId": "chin_up",
+          "name": "Chin-Up (Weighted)",
+          "sets": 2,
+          "repsLow": 12,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Vertical pull slot (RippedBody options: chin-up, pull-up or lat pulldown).",
+          "optional": false
+        },
+        {
+          "exerciseId": "triceps_pushdown",
+          "name": "Tricep Pushdown (Cable)",
+          "sets": 2,
+          "repsLow": 12,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Triceps isolation slot.",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_curl",
+          "name": "Bicep Curl (Dumbbell)",
+          "sets": 2,
+          "repsLow": 12,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 2
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Biceps isolation slot.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://rippedbody.com/novice-bodybuilding-program/",
+      "https://www.boostcamp.app/muscle-and-strength-pyramid/novice-bodybuilding-program"
+    ],
+    "changes": [
+      "Confirmed all 4 days, exercise order, sets x reps, 2 RIR first-set target (Boostcamp shows RPE 8), no AMRAP sets, and the %1RM first-session guides (82.5/72.5/67.5) against both sources; no set or rep changes were needed.",
+      "Deload rule: replaced 'then work back up' with the source rule: cut load 10% after two consecutive missed workouts, then return to the weight you failed at on the next workout; no fixed-interval deloads for novices.",
+      "Progression: Boostcamp names only squats and deadlifts as examples of the ~5 kg step and puts all isolation exercises in the 2.5 kg group; stated that lower-body isolation/single-leg work uses the small step and that the 5 kg step for hip thrust and leg press is an interpretation. Added 'use RPE 8 if 1RM unknown', progress each day independently, and avoid failure (from sources).",
+      "Removed unverified exercise notes ('low or high bar', 'use bands if too hard, add weight if too easy') and replaced them with the substitution options RippedBody lists for each slot.",
+      "evidenceNote: removed the unverified claim that the authors point to 'the intermediate program'; RippedBody only names autoregulated double progression.",
+      "Source title: credited all three authors instead of Andy Morgan alone.",
+      "Rest times kept (150 s main lifts, 90 s others): RippedBody says ~2-3 min for main exercises and 60-90 s for smaller isolation exercises; neither source assigns every exercise, so the split for split squats, chin-ups and incline press is an interpretation. durationWeeks left null: RippedBody gives no length; the Boostcamp app listing runs 12 weeks."
+    ]
+  }
+}

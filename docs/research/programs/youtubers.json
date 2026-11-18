@@ -1,0 +1,5465 @@
+{
+  "programs": [
+    {
+      "id": "gvs_rampage",
+      "name": "RAMPAGE (3x/week full body)",
+      "author": "Geoffrey Verity Schofield",
+      "isFree": true,
+      "category": "HYPERTROPHY",
+      "level": "INTERMEDIATE",
+      "daysPerWeek": 3,
+      "sessionMinutes": 60,
+      "durationWeeks": 10,
+      "equipment": [
+        "barbell",
+        "rack",
+        "bench",
+        "dumbbells",
+        "cable",
+        "machines",
+        "pullup_bar"
+      ],
+      "summary": "A three-day full-body hypertrophy program built around supersets of a press and a pull, with low set counts (2-3 per exercise) taken hard, often to failure plus partial reps. It is the example program from Schofield's ebook Resurrecting Your Gains, published free by him on Boostcamp.",
+      "evidenceNote": "Each muscle is hit about 3 times a week with roughly 6-9 hard sets per week for chest, quads and hamstrings at the minimum listed set counts and about twice that for back, which sits inside the range linked to good growth. Most sets are at RPE 8-10 or beyond failure with partials; lengthened-partial work has some supporting evidence but is still emerging, and frequent failure training raises fatigue. Several specialty lifts (Klokov press, Platz squat, Smith reverse-grip bench, Yates row) need equipment and mobility many gyms or lifters lack; the author lists swaps.",
+      "sources": [
+        {
+          "title": "RAMPAGE by Geoffrey Verity Schofield (Boostcamp, free program page, updated Oct 2026)",
+          "url": "https://www.boostcamp.app/geoffrey-schofield/rampage",
+          "kind": "article"
+        },
+        {
+          "title": "Resurrecting Your Gains: Finding Your Muscle Growth Formula (paid ebook the program comes from; not needed to run it)",
+          "url": "https://www.verityfit.com/product-page/resurrecting-your-gains-finding-your-muscle-growth-formula",
+          "kind": "book"
+        }
+      ],
+      "schedule": "Full 1 on Monday, Full 2 on Wednesday, Full 3 on Friday; rest or optional low-intensity cardio on the off days. Exercises labelled as pairs are supersets (alternate the two).",
+      "progression": {
+        "type": "DOUBLE_PROGRESSION",
+        "description": "Author: aim for a double progression, adding reps until you reach the top of the rep range, then adding weight, and repeating. Not all sets need the same weight; you can do one heavier set then drop the weight if fatigue requires it. Sets are autoregulated (do the higher end of the 2-3 set range when you feel good, the lower end when life, tiredness or poor sleep show up; start on the lower side). Week 1 is easy to find working weights: the programming notes say ~3-4 RIR, the in-app week 1 note says ~6-7 RPE. From week 2, sets marked failure + partials go to failure, gradually adding partial reps in later weeks. Load increment is not specified by the author beyond 'adding weight'; the 2.5 kg values here are an app default, not from the source.",
+        "incrementKg": {
+          "upper": 2.5,
+          "lower": 2.5
+        },
+        "deload": "Built-in deload in week 5 and week 10: 'Just 1 set per exercise at the same intensity.' No other stall rule is stated."
+      },
+      "days": [
+        {
+          "name": "Full 1",
+          "focus": "Full body: upper chest, back width, quads, hamstrings, delts",
+          "exercises": [
+            {
+              "exerciseId": "incline_dumbbell_press",
+              "name": "Incline Bench Press (Dumbbell)",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 1A with 1B. 2-3 sets. ~30-45 degree incline; full ROM, don't avoid the bottom stretch.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Wide Neutral Pulldown/Pullup",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 1B. 2-3 sets. Big stretch, pull towards the chest, control the eccentric.",
+              "optional": false
+            },
+            {
+              "exerciseId": "leg_press",
+              "name": "Leg Press",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 8-9. 2-4 sets. Feet as low as possible without heels coming up; lower under control, explode up.",
+              "optional": false
+            },
+            {
+              "exerciseId": "chest_supported_row",
+              "name": "Helms Row",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 3A with 3B. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing). Rest chest lightly on the bench, row back towards hips.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Arnold Press",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 3B. RPE 8-9. 2-3 sets. Swap for a horizontal press if you prioritise chest over shoulders.",
+              "optional": false
+            },
+            {
+              "exerciseId": "romanian_deadlift",
+              "name": "Romanian Deadlift",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RPE",
+                "value": 8
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets. Brace, push hips back, keep bar close; lock out by standing tall, not leaning back.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Standing Cable Pullover",
+              "sets": 2,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 5A with 5B. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Upright Row",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 5B. 2-3 sets. If shoulders are unhappy, do face pulls instead.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pec_deck",
+              "name": "Pec Deck (Machine)",
+              "sets": 1,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 6A with 6B. 1-2 sets. Big stretch, big squeeze.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Skiers",
+              "sets": 1,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 6B (rear delts). 1-2 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": "hanging_leg_raise",
+              "name": "Hanging Leg Raise",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets. Ab work is suggested but not required.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Full 2",
+          "focus": "Full body: flat chest, back, quads (front squat), lower back, arms, side delts",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press (Barbell)",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 1A with 1B. RPE 8-9. 2-3 sets. Moderate grip, chest up, pause slightly on chest.",
+              "optional": false
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Narrow Neutral Pullups",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 1B. 2-3 sets. Neutral (parallel) grip. Pull chest towards the bar.",
+              "optional": false
+            },
+            {
+              "exerciseId": "front_squat",
+              "name": "Front Squat (Barbell)",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 8-9. 2-4 sets. Allow knees forward, control the lowering, chest up.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "1 Arm Machine Row",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 3A with 3B. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_dumbbell_press",
+              "name": "Seated Shoulder Press (Dumbbell)",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 3B. RPE 8-9. 2-3 sets. Full ROM, dumbbells to shoulders at the bottom.",
+              "optional": false
+            },
+            {
+              "exerciseId": "back_extension",
+              "name": "Back Extension (Weighted)",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 8-9. 2-3 sets. Controlled lower, hamstring stretch at bottom, glute squeeze at top.",
+              "optional": false
+            },
+            {
+              "exerciseId": "triceps_pushdown",
+              "name": "Tricep Rope Push Down (Cable)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 5A with 5B. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "cable_lateral_raise",
+              "name": "Lateral Raise (Cable)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 5B. 2-3 sets of 12: fail around 8-10 reps, then partials to reach 12.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Spider Curl",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets of 12: fail around 8-10 reps, then partials to reach 12.",
+              "optional": false
+            },
+            {
+              "exerciseId": "cable_crunch",
+              "name": "Cable Crunch",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets. Ab work is suggested but not required.",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "Full 3",
+          "focus": "Full body: chest (reverse grip), lats, quads (Platz squat), hamstrings, arms",
+          "exercises": [
+            {
+              "exerciseId": null,
+              "name": "Smith Reverse Grip Bench",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 1A with 1B. RPE 8-9. 2-3 sets. Set safety supports; tuck elbows slightly.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Wide Overhand Pulldown",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 1B. 2-3 sets. Control the eccentric; go lighter than you think at first.",
+              "optional": false
+            },
+            {
+              "exerciseId": "back_squat",
+              "name": "Platz Squat",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 8-9. 2-4 sets. Narrower-stance high-bar deep upright-torso squat; slow lowering, slight pause.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Yates Row",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 3A with 3B. RPE 8-9. 2-3 sets. Hinge hips back, brace, squeeze the back each rep.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Klokov Press",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 3B. RPE 8-9. 2-3 sets. Behind-the-neck snatch-grip press; only if comfortable and mobile enough, otherwise swap.",
+              "optional": false
+            },
+            {
+              "exerciseId": "good_morning",
+              "name": "Good Morning",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 8-9. 2-3 sets. Set safety bar just below bottom position; push hips back to a hamstring stretch.",
+              "optional": false
+            },
+            {
+              "exerciseId": "overhead_triceps_extension",
+              "name": "Overhead Tricep Extension (Cable)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 5A with 5B. 2-3 sets. Full ROM, hands behind head.",
+              "optional": false
+            },
+            {
+              "exerciseId": "incline_dumbbell_curl",
+              "name": "Incline Dumbbell Curl",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset 5B. 2-3 sets. Control the lowering.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lateral_raise",
+              "name": "Lateral Raise (Dumbbell)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing). Move in the scapular plane.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Pallof Press",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets. Ab work is suggested but not required.",
+              "optional": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gvs_ravage",
+      "name": "RAVAGE (6x/week Legs-Torso-Bro)",
+      "author": "Geoffrey Verity Schofield",
+      "isFree": true,
+      "category": "HYPERTROPHY",
+      "level": "INTERMEDIATE",
+      "daysPerWeek": 6,
+      "sessionMinutes": 60,
+      "durationWeeks": 10,
+      "equipment": [
+        "barbell",
+        "rack",
+        "bench",
+        "dumbbells",
+        "cable",
+        "machines",
+        "pullup_bar"
+      ],
+      "summary": "A six-day Legs / Torso / Bro (arms and delts) split run twice a week, described by the author as a toned-down version of his own training. Sets are low (2-3) and taken very close to or beyond failure, with many press/pull and arm supersets.",
+      "evidenceNote": "Every muscle is trained twice a week with roughly 8-14 hard sets per muscle per week at the minimum listed set counts, including about 8 direct sets each for biceps, triceps and side delts from the two Bro days; that is consistent with hypertrophy evidence. Heavy use of RPE 9-10 and failure-plus-partials sets makes recovery the limiting factor, and the author explicitly says it is not for lifters without 1-2 years of solid training. Six sessions a week is a big time commitment for modest extra benefit over 4-5 well-built days.",
+      "sources": [
+        {
+          "title": "RAVAGE by Geoffrey Verity Schofield (Boostcamp, free program page, updated Oct 2026)",
+          "url": "https://www.boostcamp.app/geoffrey-schofield/ravage",
+          "kind": "article"
+        }
+      ],
+      "schedule": "Mon Legs 1, Tue Torso 1, Wed Bro Day 1, Thu Legs 2, Fri Torso 2, Sat Bro Day 2, Sun rest. Exercises labelled as pairs are supersets; the author prefers resting between the two movements to keep set quality.",
+      "progression": {
+        "type": "DOUBLE_PROGRESSION",
+        "description": "Author: use a double progression ('evolving rep range') whenever you can: when you get the top of the rep range on all sets, add the smallest amount of weight you can, which should reduce your reps, and repeat. Step loading (staying at a weight longer before jumping) can be used for small movements such as lateral raises, or progress range of motion on chest-supported rows. Sets: start at 2 per exercise and do the third when recovering well; 3-4 or 3-5 sets may suit lifters who respond to higher volume. Failure + partials: pick a weight you fail with a few reps short of the target, then add 2-3 partial reps. Increment is 'the smallest amount you can'; 2.5 kg here is an app default, not from the source.",
+        "incrementKg": {
+          "upper": 2.5,
+          "lower": 2.5
+        },
+        "deload": "Built-in deload in week 5 and week 10: 'Just 1 set per exercise at the same intensity.' No other stall rule is stated."
+      },
+      "days": [
+        {
+          "name": "Legs 1",
+          "focus": "Quads, hamstrings, glutes",
+          "exercises": [
+            {
+              "exerciseId": null,
+              "name": "Smith Machine Hack Squat",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 7.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 7-8. 1 top set of 5-10 reps, then 1-3 back-down sets of 10-15. Controlled lowering; weight will be lower than a back squat.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 5,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 10,
+                  "repsHigh": 15,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 10,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "back_extension",
+              "name": "Back Extension (Weighted)",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 8-9. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "walking_lunge",
+              "name": "Walking Lunge",
+              "sets": 2,
+              "repsLow": 20,
+              "repsHigh": 30,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets. Dumbbells preferred; descend under control.",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_leg_curl",
+              "name": "Seated Hamstring Curl",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets, failure + partials: fail at 8-12 full reps, then 2-3 partials.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Torso 1",
+          "focus": "Chest, lats, upper back",
+          "exercises": [
+            {
+              "exerciseId": null,
+              "name": "Close Grip Larsen Press",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RPE",
+                "value": 9.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Narrow Neutral Pulldown. RPE 9-10. 3-4 sets. Hands around shoulder width, control the lowering, pause slightly at the bottom, explode up.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Narrow Neutral Pulldown",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 3-4 sets. Full ROM, control the eccentric.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Smith Reverse Grip Bench",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Wide Overhand Pulldown. RPE 8-9. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Wide Overhand Pulldown",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "cable_fly",
+              "name": "Cable Crossover",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with 1 Arm Machine Row. 2-3 sets. Big stretch, big squeeze.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "1 Arm Machine Row",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Standing Cable Pullover",
+              "sets": 1,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "1-2 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Bro Day 1",
+          "focus": "Arms and side delts",
+          "exercises": [
+            {
+              "exerciseId": "hammer_curl",
+              "name": "Hammer Curl",
+              "sets": 2,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Tricep Pushdown. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "triceps_pushdown",
+              "name": "Tricep Pushdown",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "incline_dumbbell_curl",
+              "name": "Incline Dumbbell Curl",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RPE",
+                "value": 9.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Standing Overhead Extension. RPE 9-10. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "overhead_triceps_extension",
+              "name": "Standing Overhead Extension",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets. Hands behind head for a big stretch.",
+              "optional": false
+            },
+            {
+              "exerciseId": "cable_lateral_raise",
+              "name": "Cable Lateral Raise",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Upright Row (Barbell)",
+              "sets": 2,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets. Find a comfortable grip; strict form.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Legs 2",
+          "focus": "Quads, hamstrings, glutes",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Back Squat",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 8-9. 2-3 sets. Upright, knees forward, slow lowering, slight pause.",
+              "optional": false
+            },
+            {
+              "exerciseId": "romanian_deadlift",
+              "name": "Romanian Deadlift",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RPE",
+                "value": 8
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "RPE 7-9. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "hip_thrust",
+              "name": "Hip Thrust",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_leg_curl",
+              "name": "Seated Hamstring Curl",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Leg Extension. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "leg_extension",
+              "name": "Leg Extension",
+              "sets": 2,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Torso 2",
+          "focus": "Chest, back, front delts",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press (Barbell)",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Wide Neutral Pulldown. RPE 8-9. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Wide Neutral Pulldown",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "machine_chest_press",
+              "name": "Chest Press (Machine)",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 9.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Helms Row. RPE 9-10. 2-3 sets. Pause at the bottom with a full stretch.",
+              "optional": false
+            },
+            {
+              "exerciseId": "chest_supported_row",
+              "name": "Helms Row",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_dumbbell_press",
+              "name": "Seated Shoulder Press (Dumbbell)",
+              "sets": 2,
+              "repsLow": 6,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Seated Row. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_cable_row",
+              "name": "Seated Row (Cable)",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Bro Day 2",
+          "focus": "Arms, side and rear delts, neck, forearms",
+          "exercises": [
+            {
+              "exerciseId": "hammer_curl",
+              "name": "Hammer Curl",
+              "sets": 2,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Leaning Overhead Extension. 2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": "overhead_triceps_extension",
+              "name": "Leaning Overhead Extension",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": "barbell_curl",
+              "name": "Bicep Curl (Barbell)",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RPE",
+                "value": 9.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Tricep Pushdown. RPE 9-10. 2-3 sets. Minimal cheating.",
+              "optional": false
+            },
+            {
+              "exerciseId": "triceps_pushdown",
+              "name": "Tricep Pushdown",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 2-3 sets.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Lateral Raise (Machine)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Lu Lateral Raise",
+              "sets": 2,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "2-3 sets. Fairly strict, pause at the top.",
+              "optional": false
+            },
+            {
+              "exerciseId": "rear_delt_fly",
+              "name": "Cable Rear Delt",
+              "sets": 2,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "1-3 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Neck Flexion",
+              "sets": 1,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 8.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset A with Wrist Flexion/Extension. RPE 8-9. 1-2 sets. Start very light.",
+              "optional": true
+            },
+            {
+              "exerciseId": null,
+              "name": "Wrist Flexion/Extension",
+              "sets": 1,
+              "repsLow": 15,
+              "repsHigh": 20,
+              "intensity": {
+                "type": "RPE",
+                "value": 10
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Superset B. 1-2 sets, failure + partials: take to failure, then add partial reps (attempting full ROM but failing).",
+              "optional": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nuckols_beginner_strength",
+      "name": "Greg Nuckols Beginner Program (Strength)",
+      "author": "Greg Nuckols",
+      "isFree": true,
+      "category": "STRENGTH",
+      "level": "BEGINNER",
+      "daysPerWeek": 3,
+      "sessionMinutes": 60,
+      "durationWeeks": 12,
+      "equipment": [
+        "barbell",
+        "rack",
+        "bench",
+        "dumbbells",
+        "cable",
+        "machines",
+        "pullup_bar"
+      ],
+      "summary": "A 12-week, 3-day beginner program that rotates four different full-body workouts, each with three main lifts and two accessories done as a descending-rep pyramid of three sets. This is the strength variation; the hypertrophy variation uses 5-8 / 8-12 / 12-15 on the main lifts, accessories are the same.",
+      "evidenceNote": "Stopping 1-2 reps short of failure on every set fits current evidence for beginners, and the pyramid gives both heavy and moderate-rep exposure. Because four workouts rotate over three days, each main lift is trained less than once a week and most muscles get roughly 4-9 hard sets weekly, which is on the low side for hypertrophy but fine for new lifters. No deload or stall rule is given.",
+      "sources": [
+        {
+          "title": "Greg Nuckols Beginner Program (Boostcamp, free program page, updated Oct 2026)",
+          "url": "https://www.boostcamp.app/greg-nuckols/greg-nuckols-beginner-program",
+          "kind": "article"
+        },
+        {
+          "title": "Greg Nuckols Beginner Program - detailed program guide (Boostcamp)",
+          "url": "https://www.boostcamp.app/greg-nuckols-beginner-program",
+          "kind": "article"
+        }
+      ],
+      "schedule": "3 non-consecutive days (Mon/Wed/Fri). Workouts A, B, C, D rotate continuously: week 1 A-B-C, week 2 D-A-B, week 3 C-D-A, and so on for 12 weeks.",
+      "progression": {
+        "type": "DOUBLE_PROGRESSION",
+        "description": "Program text: within each rep range, keep the same weight and aim for more reps each week until you have mastered it; e.g. in a 5-8 range, stay at the weight until you can do 9 reps, then go heavier but still able to do at least 5. In-app weekly note: start with last week's weights, aim for 1 more rep than before until you hit the top of the target range, then increase weight by 5-10 lb (about 2.5-5 kg here) and work back up within the range. Each set of the pyramid progresses on its own rep range.",
+        "incrementKg": {
+          "upper": 2.5,
+          "lower": 5
+        },
+        "deload": "No deload or stall rule is stated by the author."
+      },
+      "days": [
+        {
+          "name": "Workout A",
+          "focus": "Bench, row, squat, arms",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press (Barbell)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "barbell_row",
+              "name": "Bent Over Row (Barbell)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat (Barbell)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "dumbbell_curl",
+              "name": "Bicep Curl (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Tricep Extension (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Workout B",
+          "focus": "Shoulder press, pulldown, deadlift, lunge, core",
+          "exercises": [
+            {
+              "exerciseId": "seated_dumbbell_press",
+              "name": "Seated Shoulder Press (Dumbbell)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Lat Pulldown",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift (Barbell)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Lunge (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Russian Twist (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Workout C",
+          "focus": "DB bench, machine row, leg press, arms",
+          "exercises": [
+            {
+              "exerciseId": "dumbbell_bench_press",
+              "name": "Bench Press (Dumbbell)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Seated Row (Machine)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "leg_press",
+              "name": "Leg Press",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "hammer_curl",
+              "name": "Hammer Curl",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "triceps_pushdown",
+              "name": "Tricep Pushdown (Cable)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Workout D",
+          "focus": "Overhead press, pull-up, good morning, goblet squat, core",
+          "exercises": [
+            {
+              "exerciseId": "overhead_press",
+              "name": "Overhead Press (Barbell)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Pull-Up (Assisted)",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure. Use assistance as needed.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "good_morning",
+              "name": "Good Morning",
+              "sets": 3,
+              "repsLow": 3,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 5,
+                  "repsLow": 3,
+                  "repsHigh": 5,
+                  "amrap": false
+                },
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "goblet_squat",
+              "name": "Goblet Squat",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "hanging_leg_raise",
+              "name": "Hanging Leg Raise",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nuckols_beginner_hypertrophy",
+      "name": "Greg Nuckols Beginner Program (Hypertrophy)",
+      "author": "Greg Nuckols",
+      "isFree": true,
+      "category": "HYPERTROPHY",
+      "level": "BEGINNER",
+      "daysPerWeek": 3,
+      "sessionMinutes": 60,
+      "durationWeeks": 12,
+      "equipment": [
+        "barbell",
+        "rack",
+        "bench",
+        "dumbbells",
+        "cable",
+        "machines",
+        "pullup_bar"
+      ],
+      "summary": "A 12-week, 3-day beginner program that rotates four different full-body workouts, each with three main lifts and two accessories done as a descending-rep pyramid of three sets. This is the hypertrophy variation; the strength variation uses 3-5 / 5-8 / 8-10 on the main lifts, accessories are the same.",
+      "evidenceNote": "Stopping 1-2 reps short of failure on every set fits current evidence for beginners, and the pyramid gives both heavy and moderate-rep exposure. Because four workouts rotate over three days, each main lift is trained less than once a week and most muscles get roughly 4-9 hard sets weekly, which is on the low side for hypertrophy but fine for new lifters. No deload or stall rule is given.",
+      "sources": [
+        {
+          "title": "Greg Nuckols Beginner Program (Boostcamp, free program page, updated Oct 2026)",
+          "url": "https://www.boostcamp.app/greg-nuckols/greg-nuckols-beginner-program",
+          "kind": "article"
+        },
+        {
+          "title": "Greg Nuckols Beginner Program - detailed program guide (Boostcamp)",
+          "url": "https://www.boostcamp.app/greg-nuckols-beginner-program",
+          "kind": "article"
+        }
+      ],
+      "schedule": "3 non-consecutive days (Mon/Wed/Fri). Workouts A, B, C, D rotate continuously: week 1 A-B-C, week 2 D-A-B, week 3 C-D-A, and so on for 12 weeks.",
+      "progression": {
+        "type": "DOUBLE_PROGRESSION",
+        "description": "Program text: within each rep range, keep the same weight and aim for more reps each week until you have mastered it; e.g. in a 5-8 range, stay at the weight until you can do 9 reps, then go heavier but still able to do at least 5. In-app weekly note: start with last week's weights, aim for 1 more rep than before until you hit the top of the target range, then increase weight by 5-10 lb (about 2.5-5 kg here) and work back up within the range. Each set of the pyramid progresses on its own rep range.",
+        "incrementKg": {
+          "upper": 2.5,
+          "lower": 5
+        },
+        "deload": "No deload or stall rule is stated by the author."
+      },
+      "days": [
+        {
+          "name": "Workout A",
+          "focus": "Bench, row, squat, arms",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "barbell_row",
+              "name": "Bent Over Row (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "dumbbell_curl",
+              "name": "Bicep Curl (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Tricep Extension (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Workout B",
+          "focus": "Shoulder press, pulldown, deadlift, lunge, core",
+          "exercises": [
+            {
+              "exerciseId": "seated_dumbbell_press",
+              "name": "Seated Shoulder Press (Dumbbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Lat Pulldown",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Lunge (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Russian Twist (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Workout C",
+          "focus": "DB bench, machine row, leg press, arms",
+          "exercises": [
+            {
+              "exerciseId": "dumbbell_bench_press",
+              "name": "Bench Press (Dumbbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": null,
+              "name": "Seated Row (Machine)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "leg_press",
+              "name": "Leg Press",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "hammer_curl",
+              "name": "Hammer Curl",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "triceps_pushdown",
+              "name": "Tricep Pushdown (Cable)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Workout D",
+          "focus": "Overhead press, pull-up, good morning, goblet squat, core",
+          "exercises": [
+            {
+              "exerciseId": "overhead_press",
+              "name": "Overhead Press (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "pull_up",
+              "name": "Pull-Up (Assisted)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure. Use assistance as needed.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "good_morning",
+              "name": "Good Morning",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 8,
+                  "repsLow": 5,
+                  "repsHigh": 8,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 8,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "goblet_squat",
+              "name": "Goblet Squat",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            },
+            {
+              "exerciseId": "hanging_leg_raise",
+              "name": "Hanging Leg Raise",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 1.5
+              },
+              "lastSetAmrap": false,
+              "restSeconds": null,
+              "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+              "optional": false,
+              "setScheme": [
+                {
+                  "reps": 10,
+                  "repsLow": 8,
+                  "repsHigh": 10,
+                  "amrap": false
+                },
+                {
+                  "reps": 12,
+                  "repsLow": 10,
+                  "repsHigh": 12,
+                  "amrap": false
+                },
+                {
+                  "reps": 15,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "amrap": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "helms_novice_bodybuilding",
+      "name": "Novice Bodybuilding Program (Muscle & Strength Pyramid)",
+      "author": "Eric Helms, Andy Morgan, Andrea Valdez",
+      "isFree": true,
+      "category": "HYPERTROPHY",
+      "level": "BEGINNER",
+      "daysPerWeek": 4,
+      "sessionMinutes": 60,
+      "durationWeeks": null,
+      "equipment": [
+        "barbell",
+        "rack",
+        "bench",
+        "dumbbells",
+        "cable",
+        "machines",
+        "pullup_bar"
+      ],
+      "summary": "A four-day upper/lower program with one strength-focused and one volume-focused session for each half of the body, all at about 2 reps in reserve on the first set. Weight goes up every week in fixed steps until the lifter stalls.",
+      "evidenceNote": "Each muscle is trained twice a week with roughly 9-12 sets per week for the big muscle groups at moderate proximity to failure, a sensible, recoverable novice dose. Direct arm work is light (2 sets per week each) and there is no direct side-delt work. Linear weekly load increases suit beginners but will stop working within months, at which point the authors say to switch to autoregulated double progression or the intermediate program.",
+      "sources": [
+        {
+          "title": "Novice Bodybuilding Program (RippedBody.com, Andy Morgan, updated 28 Dec 2025)",
+          "url": "https://rippedbody.com/novice-bodybuilding-program/",
+          "kind": "article"
+        },
+        {
+          "title": "Novice Bodybuilding Program by Eric Helms (Boostcamp, official Muscle and Strength Pyramid account)",
+          "url": "https://www.boostcamp.app/muscle-and-strength-pyramid/novice-bodybuilding-program",
+          "kind": "article"
+        }
+      ],
+      "schedule": "Lower (Strength), Upper (Strength), Lower (Volume), Upper (Volume) once each per week, e.g. Mon/Wed/Fri/Sat. Spread them out and avoid more than two sessions back to back.",
+      "progression": {
+        "type": "LINEAR",
+        "description": "Uses the authors' current version: RippedBody (updated 28 Dec 2025) gives first-set RIR 2 instead of %1RM or RPE and says to add a little weight each session while keeping form and the RIR target, then switch to autoregulated double progression once that stops working consistently. The Boostcamp version adds the exact steps: after the first session, if you hit the target reps, add 10 lb (~5 kg) to heavy lower-body compounds (squat, deadlift, hip thrust, leg press) and 5 lb (~2.5 kg) to everything else (bench, overhead press, rows, isolation work); if you miss, keep the weight. The first set is at about 2 RIR and the same weight is used for the remaining sets. %1RM (82.5% for 3x5 main lifts, 72.5% for 2x8 overhead press, 67.5% for 3x10 bench) is only a guide for the very first session.",
+        "incrementKg": {
+          "upper": 2.5,
+          "lower": 5
+        },
+        "deload": "Boostcamp/Pyramid rule: if you fail to hit your target reps in two consecutive workouts, reduce the load by 10%, then work back up. No scheduled deloads for novices."
+      },
+      "days": [
+        {
+          "name": "Lower (Strength)",
+          "focus": "Squat and deadlift strength, single-leg, calves",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 5,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Squat variant slot; low or high bar. ~82.5% 1RM as a first-session guide only.",
+              "optional": false
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 5,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Deadlift variant slot; sumo is fine. ~82.5% 1RM first session.",
+              "optional": false
+            },
+            {
+              "exerciseId": "bulgarian_split_squat",
+              "name": "Bulgarian Split Squat (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Single-leg variant slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "standing_calf_raise",
+              "name": "Standing Calf Raise",
+              "sets": 4,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Upper (Strength)",
+          "focus": "Bench and row strength, overhead press, chins, flys",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press (Barbell)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 5,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Horizontal push slot. ~82.5% 1RM first session.",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_cable_row",
+              "name": "Seated Row (Cable)",
+              "sets": 3,
+              "repsLow": 5,
+              "repsHigh": 5,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Horizontal pull slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "overhead_press",
+              "name": "Overhead Press (Barbell)",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Vertical push slot. ~72.5% 1RM first session.",
+              "optional": false
+            },
+            {
+              "exerciseId": "chin_up",
+              "name": "Chin-Up (Weighted)",
+              "sets": 2,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+              "optional": false
+            },
+            {
+              "exerciseId": "cable_fly",
+              "name": "Chest Fly (Cable)",
+              "sets": 2,
+              "repsLow": 15,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Fly slot.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Lower (Volume)",
+          "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+          "exercises": [
+            {
+              "exerciseId": "hip_thrust",
+              "name": "Hip Thrust (Barbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Hip hinge variant slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "leg_press",
+              "name": "Leg Press",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Leg press variant slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "leg_extension",
+              "name": "Leg Extension",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Leg Curl",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Any leg curl machine.",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_calf_raise",
+              "name": "Seated Calf Raise",
+              "sets": 4,
+              "repsLow": 15,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Upper (Volume)",
+          "focus": "Bench and row volume, incline press, chins, arms",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press (Barbell)",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Horizontal push slot. ~67.5% 1RM first session.",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_cable_row",
+              "name": "Seated Row (Cable)",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 150,
+              "notes": "Horizontal pull slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "incline_dumbbell_press",
+              "name": "Incline Bench Press (Dumbbell)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Incline push slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "chin_up",
+              "name": "Chin-Up (Weighted)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+              "optional": false
+            },
+            {
+              "exerciseId": "triceps_pushdown",
+              "name": "Tricep Pushdown (Cable)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Triceps isolation slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_curl",
+              "name": "Bicep Curl (Dumbbell)",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 90,
+              "notes": "Biceps isolation slot.",
+              "optional": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "helms_intermediate_bodybuilding",
+      "name": "Intermediate Bodybuilding Program (Muscle & Strength Pyramid)",
+      "author": "Eric Helms, Andy Morgan, Andrea Valdez",
+      "isFree": true,
+      "category": "HYPERTROPHY",
+      "level": "INTERMEDIATE",
+      "daysPerWeek": 5,
+      "sessionMinutes": 60,
+      "durationWeeks": 12,
+      "equipment": [
+        "barbell",
+        "rack",
+        "bench",
+        "dumbbells",
+        "cable",
+        "machines",
+        "pullup_bar"
+      ],
+      "summary": "A five-day Lower / Upper / Lower / Push / Pull program from the Muscle and Strength Pyramid authors, with compound lifts wave-loaded over 3-week waves and isolation work on double progression. Every fourth week is an optional deload decided by a short fatigue checklist.",
+      "evidenceNote": "Most muscles get about 10-16 sets per week across two sessions at roughly 2 RIR on the first set, squarely in the evidence-based range for intermediates. Wave loading gives built-in heavy-to-moderate variation and planned fatigue management. Weak points: direct side-delt work is absent (overhead presses and face pulls only), and the 4x3-5 squat and deadlift on the same day is demanding.",
+      "sources": [
+        {
+          "title": "Intermediate Bodybuilding Program (RippedBody.com, Andy Morgan, updated 28 Dec 2025)",
+          "url": "https://rippedbody.com/intermediate-bodybuilding-program/",
+          "kind": "article"
+        },
+        {
+          "title": "Intermediate Bodybuilding Program by Eric Helms (Boostcamp, official Muscle and Strength Pyramid account)",
+          "url": "https://www.boostcamp.app/muscle-and-strength-pyramid/intermediate-bodybuilding-program",
+          "kind": "article"
+        }
+      ],
+      "schedule": "Lower, Upper, Lower, Push, Pull once each per week (Boostcamp: Mon, Tue, Thu, Fri, Sat). Run the 4-week wave (3 loading weeks + optional deload) three times for 12 weeks, then repeat.",
+      "progression": {
+        "type": "CUSTOM",
+        "description": "Exercises and set/rep slots follow the authors' current RippedBody page (updated 28 Dec 2025), which uses first-set RIR 2 (=RPE 8, same weight for later sets) and says the program follows a wave-loading pattern but leaves the schedule to the book; the exact wave schedule below is from the official Boostcamp version. Compounds (3-5, 4-6, 6-8, 8-12 ranges): start at a weight where you can do all sets at the top of the range; each following week add load and drop one rep per set (two reps for 8-12 ranges). Boostcamp week notes say +10 lb (5 kg) for barbell squat and deadlift and +5 lb (2.5 kg) for everything else; the program description says +5 lb (2.5 kg) per week. After the deload the next wave restarts at the top of the range a little heavier than the previous wave's week 1. Isolation work in 12-15 ranges uses double progression: add reps each week toward 3 x 15, then add weight and restart at the bottom of the range.",
+        "incrementKg": {
+          "upper": 2.5,
+          "lower": 5
+        },
+        "deload": "Optional deload every 4th week: answer the checklist (dreading the gym? sleeping worse? loads/reps decreasing? more stress? more aches and pains?). Yes to 2 or more = deload: cut sets by about one third and use the lowest weight and reps from the previous 3 weeks. Yes to 0-1 = skip it and start the next wave."
+      },
+      "days": [
+        {
+          "name": "Day 1 - Lower",
+          "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+          "exercises": [
+            {
+              "exerciseId": "back_squat",
+              "name": "Squat (Barbell)",
+              "sets": 4,
+              "repsLow": 5,
+              "repsHigh": 5,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Squat variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+              "optional": false
+            },
+            {
+              "exerciseId": "conventional_deadlift",
+              "name": "Deadlift (Barbell)",
+              "sets": 4,
+              "repsLow": 5,
+              "repsHigh": 5,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Deadlift variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+              "optional": false
+            },
+            {
+              "exerciseId": "bulgarian_split_squat",
+              "name": "Bulgarian Split Squat (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "Single-leg variant slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Leg Curl",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": "standing_calf_raise",
+              "name": "Standing Calf Raise",
+              "sets": 5,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Day 2 - Upper",
+          "focus": "Bench, row, overhead press, chins, arms",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Bench Press (Barbell)",
+              "sets": 4,
+              "repsLow": 5,
+              "repsHigh": 5,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Horizontal push slot. ~82.5% 1RM as a reference (Boostcamp version).",
+              "optional": false
+            },
+            {
+              "exerciseId": "barbell_row",
+              "name": "Barbell Row",
+              "sets": 4,
+              "repsLow": 6,
+              "repsHigh": 6,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Horizontal pull slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "overhead_press",
+              "name": "Overhead Press (Barbell)",
+              "sets": 3,
+              "repsLow": 7,
+              "repsHigh": 7,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Vertical push slot. ~77.5% 1RM as a reference (Boostcamp version).",
+              "optional": false
+            },
+            {
+              "exerciseId": "chin_up",
+              "name": "Chin-Up (Weighted)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+              "optional": false
+            },
+            {
+              "exerciseId": "triceps_pushdown",
+              "name": "Tricep Pushdown (Cable)",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "Triceps slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_curl",
+              "name": "Bicep Curl (Dumbbell)",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "Biceps slot. Boostcamp lists 12/10/10 reps for weeks 1-3 (the 8-12 wave rule would give 8 in week 3).",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Day 3 - Lower",
+          "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+          "exercises": [
+            {
+              "exerciseId": "hip_thrust",
+              "name": "Hip Thrust (Barbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Hip hinge variant slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "leg_press",
+              "name": "Leg Press",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Leg press variant slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "leg_extension",
+              "name": "Leg Extension",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Leg Curl",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_calf_raise",
+              "name": "Seated Calf Raise",
+              "sets": 5,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Day 4 - Push",
+          "focus": "Overhead press, dumbbell bench, dips, flys",
+          "exercises": [
+            {
+              "exerciseId": "overhead_press",
+              "name": "Overhead Press (Barbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Vertical push slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_bench_press",
+              "name": "Bench Press (Dumbbell)",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Horizontal push slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dip",
+              "name": "Dip (Weighted)",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Chest Fly",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "Fly slot (cable or machine). Double progression: add reps up to 3 x 15, then add weight.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Day 5 - Pull",
+          "focus": "Row, pulldown, back extension, face pull",
+          "exercises": [
+            {
+              "exerciseId": "seated_cable_row",
+              "name": "Seated Row",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Horizontal pull slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Lat Pulldown",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 180,
+              "notes": "Vertical pull slot.",
+              "optional": false
+            },
+            {
+              "exerciseId": "back_extension",
+              "name": "Back Extension (Weighted)",
+              "sets": 3,
+              "repsLow": 12,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "",
+              "optional": false
+            },
+            {
+              "exerciseId": "face_pull",
+              "name": "Face Pull",
+              "sets": 2,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "RIR",
+                "value": 2
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 105,
+              "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+              "optional": false
+            }
+          ]
+        }
+      ],
+      "weeks": [
+        {
+          "week": 1,
+          "label": "Wave week 1 (top of rep ranges)",
+          "days": [
+            {
+              "name": "Day 1 - Lower",
+              "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+              "exercises": [
+                {
+                  "exerciseId": "back_squat",
+                  "name": "Squat (Barbell)",
+                  "sets": 4,
+                  "repsLow": 5,
+                  "repsHigh": 5,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Squat variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "conventional_deadlift",
+                  "name": "Deadlift (Barbell)",
+                  "sets": 4,
+                  "repsLow": 5,
+                  "repsHigh": 5,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deadlift variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "bulgarian_split_squat",
+                  "name": "Bulgarian Split Squat (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Single-leg variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "standing_calf_raise",
+                  "name": "Standing Calf Raise",
+                  "sets": 5,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 2 - Upper",
+              "focus": "Bench, row, overhead press, chins, arms",
+              "exercises": [
+                {
+                  "exerciseId": "bench_press",
+                  "name": "Bench Press (Barbell)",
+                  "sets": 4,
+                  "repsLow": 5,
+                  "repsHigh": 5,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal push slot. ~82.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "barbell_row",
+                  "name": "Barbell Row",
+                  "sets": 4,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical push slot. ~77.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "chin_up",
+                  "name": "Chin-Up (Weighted)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "triceps_pushdown",
+                  "name": "Tricep Pushdown (Cable)",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 12,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Triceps slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_curl",
+                  "name": "Bicep Curl (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 12,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Biceps slot. Boostcamp lists 12/10/10 reps for weeks 1-3 (the 8-12 wave rule would give 8 in week 3).",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 3 - Lower",
+              "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+              "exercises": [
+                {
+                  "exerciseId": "hip_thrust",
+                  "name": "Hip Thrust (Barbell)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Hip hinge variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_press",
+                  "name": "Leg Press",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Leg press variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_extension",
+                  "name": "Leg Extension",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 12,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 12,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "seated_calf_raise",
+                  "name": "Seated Calf Raise",
+                  "sets": 5,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 4 - Push",
+              "focus": "Overhead press, dumbbell bench, dips, flys",
+              "exercises": [
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_bench_press",
+                  "name": "Bench Press (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dip",
+                  "name": "Dip (Weighted)",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 12,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Chest Fly",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Fly slot (cable or machine). Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 5 - Pull",
+              "focus": "Row, pulldown, back extension, face pull",
+              "exercises": [
+                {
+                  "exerciseId": "seated_cable_row",
+                  "name": "Seated Row",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "lat_pulldown",
+                  "name": "Lat Pulldown",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "back_extension",
+                  "name": "Back Extension (Weighted)",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 12,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "face_pull",
+                  "name": "Face Pull",
+                  "sets": 2,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "week": 2,
+          "label": "Wave week 2 (-1 rep, +load)",
+          "days": [
+            {
+              "name": "Day 1 - Lower",
+              "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+              "exercises": [
+                {
+                  "exerciseId": "back_squat",
+                  "name": "Squat (Barbell)",
+                  "sets": 4,
+                  "repsLow": 4,
+                  "repsHigh": 4,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Squat variant slot. ~85% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "conventional_deadlift",
+                  "name": "Deadlift (Barbell)",
+                  "sets": 4,
+                  "repsLow": 4,
+                  "repsHigh": 4,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deadlift variant slot. ~85% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "bulgarian_split_squat",
+                  "name": "Bulgarian Split Squat (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Single-leg variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "standing_calf_raise",
+                  "name": "Standing Calf Raise",
+                  "sets": 5,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 2 - Upper",
+              "focus": "Bench, row, overhead press, chins, arms",
+              "exercises": [
+                {
+                  "exerciseId": "bench_press",
+                  "name": "Bench Press (Barbell)",
+                  "sets": 4,
+                  "repsLow": 4,
+                  "repsHigh": 4,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal push slot. ~85% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "barbell_row",
+                  "name": "Barbell Row",
+                  "sets": 4,
+                  "repsLow": 5,
+                  "repsHigh": 5,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical push slot. ~80% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "chin_up",
+                  "name": "Chin-Up (Weighted)",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "triceps_pushdown",
+                  "name": "Tricep Pushdown (Cable)",
+                  "sets": 3,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Triceps slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_curl",
+                  "name": "Bicep Curl (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Biceps slot. Boostcamp lists 12/10/10 reps for weeks 1-3 (the 8-12 wave rule would give 8 in week 3).",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 3 - Lower",
+              "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+              "exercises": [
+                {
+                  "exerciseId": "hip_thrust",
+                  "name": "Hip Thrust (Barbell)",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Hip hinge variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_press",
+                  "name": "Leg Press",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Leg press variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_extension",
+                  "name": "Leg Extension",
+                  "sets": 3,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "seated_calf_raise",
+                  "name": "Seated Calf Raise",
+                  "sets": 5,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 4 - Push",
+              "focus": "Overhead press, dumbbell bench, dips, flys",
+              "exercises": [
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_bench_press",
+                  "name": "Bench Press (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dip",
+                  "name": "Dip (Weighted)",
+                  "sets": 3,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Chest Fly",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Fly slot (cable or machine). Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 5 - Pull",
+              "focus": "Row, pulldown, back extension, face pull",
+              "exercises": [
+                {
+                  "exerciseId": "seated_cable_row",
+                  "name": "Seated Row",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "lat_pulldown",
+                  "name": "Lat Pulldown",
+                  "sets": 3,
+                  "repsLow": 7,
+                  "repsHigh": 7,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "back_extension",
+                  "name": "Back Extension (Weighted)",
+                  "sets": 3,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "face_pull",
+                  "name": "Face Pull",
+                  "sets": 2,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "week": 3,
+          "label": "Wave week 3 (-1 rep, +load)",
+          "days": [
+            {
+              "name": "Day 1 - Lower",
+              "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+              "exercises": [
+                {
+                  "exerciseId": "back_squat",
+                  "name": "Squat (Barbell)",
+                  "sets": 4,
+                  "repsLow": 3,
+                  "repsHigh": 3,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Squat variant slot. ~87.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "conventional_deadlift",
+                  "name": "Deadlift (Barbell)",
+                  "sets": 4,
+                  "repsLow": 3,
+                  "repsHigh": 3,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deadlift variant slot. ~87.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "bulgarian_split_squat",
+                  "name": "Bulgarian Split Squat (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Single-leg variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "standing_calf_raise",
+                  "name": "Standing Calf Raise",
+                  "sets": 5,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 2 - Upper",
+              "focus": "Bench, row, overhead press, chins, arms",
+              "exercises": [
+                {
+                  "exerciseId": "bench_press",
+                  "name": "Bench Press (Barbell)",
+                  "sets": 4,
+                  "repsLow": 3,
+                  "repsHigh": 3,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal push slot. ~87.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "barbell_row",
+                  "name": "Barbell Row",
+                  "sets": 4,
+                  "repsLow": 4,
+                  "repsHigh": 4,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 3,
+                  "repsLow": 5,
+                  "repsHigh": 5,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical push slot. ~82.5% 1RM as a reference (Boostcamp version).",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "chin_up",
+                  "name": "Chin-Up (Weighted)",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "triceps_pushdown",
+                  "name": "Tricep Pushdown (Cable)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Triceps slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_curl",
+                  "name": "Bicep Curl (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Biceps slot. Boostcamp lists 12/10/10 reps for weeks 1-3 (the 8-12 wave rule would give 8 in week 3).",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 3 - Lower",
+              "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+              "exercises": [
+                {
+                  "exerciseId": "hip_thrust",
+                  "name": "Hip Thrust (Barbell)",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Hip hinge variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_press",
+                  "name": "Leg Press",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Leg press variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_extension",
+                  "name": "Leg Extension",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "seated_calf_raise",
+                  "name": "Seated Calf Raise",
+                  "sets": 5,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 4 - Push",
+              "focus": "Overhead press, dumbbell bench, dips, flys",
+              "exercises": [
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_bench_press",
+                  "name": "Bench Press (Dumbbell)",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dip",
+                  "name": "Dip (Weighted)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Chest Fly",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Fly slot (cable or machine). Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 5 - Pull",
+              "focus": "Row, pulldown, back extension, face pull",
+              "exercises": [
+                {
+                  "exerciseId": "seated_cable_row",
+                  "name": "Seated Row",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "lat_pulldown",
+                  "name": "Lat Pulldown",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Vertical pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "back_extension",
+                  "name": "Back Extension (Weighted)",
+                  "sets": 3,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "face_pull",
+                  "name": "Face Pull",
+                  "sets": 2,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "RIR",
+                    "value": 2
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "week": 4,
+          "label": "Optional deload",
+          "days": [
+            {
+              "name": "Day 1 - Lower",
+              "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+              "exercises": [
+                {
+                  "exerciseId": "back_squat",
+                  "name": "Squat (Barbell)",
+                  "sets": 3,
+                  "repsLow": 3,
+                  "repsHigh": 3,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Squat variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "conventional_deadlift",
+                  "name": "Deadlift (Barbell)",
+                  "sets": 3,
+                  "repsLow": 3,
+                  "repsHigh": 3,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Deadlift variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "bulgarian_split_squat",
+                  "name": "Bulgarian Split Squat (Dumbbell)",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Single-leg variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "standing_calf_raise",
+                  "name": "Standing Calf Raise",
+                  "sets": 3,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 2 - Upper",
+              "focus": "Bench, row, overhead press, chins, arms",
+              "exercises": [
+                {
+                  "exerciseId": "bench_press",
+                  "name": "Bench Press (Barbell)",
+                  "sets": 3,
+                  "repsLow": 3,
+                  "repsHigh": 3,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "barbell_row",
+                  "name": "Barbell Row",
+                  "sets": 3,
+                  "repsLow": 4,
+                  "repsHigh": 4,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 2,
+                  "repsLow": 5,
+                  "repsHigh": 5,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "chin_up",
+                  "name": "Chin-Up (Weighted)",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical pull slot. Use bands if too hard, add weight if too easy.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "triceps_pushdown",
+                  "name": "Tricep Pushdown (Cable)",
+                  "sets": 2,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Triceps slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_curl",
+                  "name": "Bicep Curl (Dumbbell)",
+                  "sets": 2,
+                  "repsLow": 10,
+                  "repsHigh": 10,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Biceps slot. Boostcamp lists 12/10/10 reps for weeks 1-3 (the 8-12 wave rule would give 8 in week 3).",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 3 - Lower",
+              "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+              "exercises": [
+                {
+                  "exerciseId": "hip_thrust",
+                  "name": "Hip Thrust (Barbell)",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Hip hinge variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_press",
+                  "name": "Leg Press",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Leg press variant slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "leg_extension",
+                  "name": "Leg Extension",
+                  "sets": 2,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Leg Curl",
+                  "sets": 2,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "seated_calf_raise",
+                  "name": "Seated Calf Raise",
+                  "sets": 3,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 4 - Push",
+              "focus": "Overhead press, dumbbell bench, dips, flys",
+              "exercises": [
+                {
+                  "exerciseId": "overhead_press",
+                  "name": "Overhead Press (Barbell)",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dumbbell_bench_press",
+                  "name": "Bench Press (Dumbbell)",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal push slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "dip",
+                  "name": "Dip (Weighted)",
+                  "sets": 2,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": null,
+                  "name": "Chest Fly",
+                  "sets": 2,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Fly slot (cable or machine). Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            },
+            {
+              "name": "Day 5 - Pull",
+              "focus": "Row, pulldown, back extension, face pull",
+              "exercises": [
+                {
+                  "exerciseId": "seated_cable_row",
+                  "name": "Seated Row",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal pull slot.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "lat_pulldown",
+                  "name": "Lat Pulldown",
+                  "sets": 2,
+                  "repsLow": 6,
+                  "repsHigh": 6,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 180,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical pull slot. Boostcamp lists 3 deload sets here; 2 follows the stated reduce-sets-by-1/3 rule.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "back_extension",
+                  "name": "Back Extension (Weighted)",
+                  "sets": 2,
+                  "repsLow": 8,
+                  "repsHigh": 8,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Boostcamp lists 3 deload sets here; 2 follows the stated reduce-sets-by-1/3 rule.",
+                  "optional": false
+                },
+                {
+                  "exerciseId": "face_pull",
+                  "name": "Face Pull",
+                  "sets": 2,
+                  "repsLow": 12,
+                  "repsHigh": 15,
+                  "intensity": {
+                    "type": "NONE",
+                    "value": null
+                  },
+                  "lastSetAmrap": false,
+                  "restSeconds": 105,
+                  "notes": "Deload: use the lowest weight from the past 3 weeks. Double progression: add reps up to 3 x 15, then add weight.",
+                  "optional": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bws_full_body_3day",
+      "name": "Built With Science #1 Full Body Workout Plan",
+      "author": "Jeremy Ethier (Built With Science)",
+      "isFree": true,
+      "category": "HYPERTROPHY",
+      "level": "BEGINNER",
+      "daysPerWeek": 3,
+      "sessionMinutes": 70,
+      "durationWeeks": null,
+      "equipment": [
+        "barbell",
+        "rack",
+        "bench",
+        "dumbbells",
+        "cable",
+        "machines"
+      ],
+      "summary": "Three different full-body workouts on Monday, Wednesday and Friday, each with five or six exercises for 3 sets, finishing with an isolation superset. It is the updated version of Jeremy Ethier's free full-body plan, published in full on his site with a companion video.",
+      "evidenceNote": "Each muscle is trained 2-3 times a week for roughly 6-9 sets per week for the major muscles (about 3 for delts and arms), enough for beginners and early intermediates but on the lower side for more trained lifters. Proximity to failure is not specified except that the last set of back exercises goes past failure with stretched-position partials. Progression is simple double progression with no deload or stall guidance.",
+      "sources": [
+        {
+          "title": "The #1 Full Body Workout Plan for Growth (FULLY EXPLAINED) - builtwithscience.com (modified May 2026)",
+          "url": "https://builtwithscience.com/best-full-body-workout/",
+          "kind": "article"
+        },
+        {
+          "title": "The #1 Full Body Routine to Build Muscle & Lose Fat - Jeremy Ethier (YouTube)",
+          "url": "https://www.youtube.com/watch?v=B12MXF0bSFo",
+          "kind": "video"
+        }
+      ],
+      "schedule": "Workout 1 Monday, Workout 2 Wednesday, Workout 3 Friday. Pairs marked superset are alternated for 3 rounds.",
+      "progression": {
+        "type": "DOUBLE_PROGRESSION",
+        "description": "Author FAQ: add weight to the bar or dumbbells when you can complete all sets and reps with good form at the top of the recommended rep range (e.g. 12 clean reps on all sets of an 8-12 prescription), then increase the weight slightly next session; track weights and reps each session. Warm-up for the first lift: 1 light set of 8-10, then 3-5 reps heavier, then 1-2 reps heavy. The increment is only 'slightly'; 2.5 kg is an app default, not from the source.",
+        "incrementKg": {
+          "upper": 2.5,
+          "lower": 2.5
+        },
+        "deload": "No deload or stall rule is stated by the author."
+      },
+      "days": [
+        {
+          "name": "Workout 1",
+          "focus": "Upper chest, quads, mid back, hamstrings (knee flexion), arms",
+          "exercises": [
+            {
+              "exerciseId": "incline_dumbbell_press",
+              "name": "Incline Dumbbell Press",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Bench angle by sternum test (steeper sternum: 30-45 degrees). Elbows tucked in an arrow shape.",
+              "optional": false
+            },
+            {
+              "exerciseId": "back_squat",
+              "name": "Barbell Squats",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Elevate heels on plates if you struggle to squat deep.",
+              "optional": false
+            },
+            {
+              "exerciseId": "chest_supported_row",
+              "name": "Dumbbell Chest Supported Row",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "45-degree incline bench. Last set: after failure, 3-5 half reps in the stretched position.",
+              "optional": false
+            },
+            {
+              "exerciseId": "seated_leg_curl",
+              "name": "Leg Curls",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Seated preferred, lying is fine. Don't fully straighten the knees between reps.",
+              "optional": false
+            },
+            {
+              "exerciseId": "incline_dumbbell_curl",
+              "name": "Lying Incline Dumbbell Curl",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Superset with overhead extension. Cable option: behind-the-body cable curl.",
+              "optional": false
+            },
+            {
+              "exerciseId": "overhead_triceps_extension",
+              "name": "Dumbbell Overhead Extension",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Superset with the curl. Cable option: overhead rope extension.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Workout 2",
+          "focus": "Chest strength, hamstrings (hip hinge), lats, glutes, side delts, abs",
+          "exercises": [
+            {
+              "exerciseId": "bench_press",
+              "name": "Barbell Bench Press",
+              "sets": 3,
+              "repsLow": 4,
+              "repsHigh": 6,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "If heavy benching bothers your shoulders, go lighter for more reps or use flat dumbbell press.",
+              "optional": false
+            },
+            {
+              "exerciseId": "romanian_deadlift",
+              "name": "Romanian Deadlift",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 8,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Brace, push hips back, drive hips forward on the way up.",
+              "optional": false
+            },
+            {
+              "exerciseId": "lat_pulldown",
+              "name": "Lat Pulldown",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Fairly wide grip, lean back slightly. Last set: after failure, 3-5 half reps in the stretched position.",
+              "optional": false
+            },
+            {
+              "exerciseId": "walking_lunge",
+              "name": "Glute-Focused Walking Lunges",
+              "sets": 3,
+              "repsLow": 6,
+              "repsHigh": 10,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Reps per leg. Lean forward slightly for glute focus; back knee hovers above the floor.",
+              "optional": false
+            },
+            {
+              "exerciseId": "cable_lateral_raise",
+              "name": "Behind-the-Body Cable Lateral Raise",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Superset with reverse crunches. Cables 3-4 notches up from the bottom.",
+              "optional": false
+            },
+            {
+              "exerciseId": null,
+              "name": "Reverse Crunch",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Superset with lateral raise. Knees to chest, curl the pelvis, control the way down.",
+              "optional": false
+            }
+          ]
+        },
+        {
+          "name": "Workout 3",
+          "focus": "Front delts, lats, glutes, quads (rectus femoris), chest, calves, rear delts",
+          "exercises": [
+            {
+              "exerciseId": "seated_dumbbell_press",
+              "name": "Seated Dumbbell Shoulder Press",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Bench 1-2 notches down from upright.",
+              "optional": false
+            },
+            {
+              "exerciseId": "dumbbell_row",
+              "name": "Lat-Focused Dumbbell Row",
+              "sets": 3,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Elbow tight to the side, sweep toward the hip. Last set: after failure, half reps in the stretched position.",
+              "optional": false
+            },
+            {
+              "exerciseId": "hip_thrust",
+              "name": "Hip Thrust",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 120,
+              "notes": "Don't arch the lower back. Swap: dumbbell step-ups with a slight forward lean.",
+              "optional": false
+            },
+            {
+              "exerciseId": "leg_extension",
+              "name": "Leg Extensions",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Lean back if the machine allows.",
+              "optional": false
+            },
+            {
+              "exerciseId": "cable_fly",
+              "name": "Chest Flyes",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Seated cable fly preferred (pec deck alternative). Last set: half reps in the stretched position.",
+              "optional": false
+            },
+            {
+              "exerciseId": "standing_calf_raise",
+              "name": "Standing Calf Raises",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Superset with reverse cable flyes. Pause at the bottom for a deep stretch; legs straight.",
+              "optional": false
+            },
+            {
+              "exerciseId": "rear_delt_fly",
+              "name": "Reverse Cable Flyes",
+              "sets": 3,
+              "repsLow": 10,
+              "repsHigh": 15,
+              "intensity": {
+                "type": "NONE",
+                "value": null
+              },
+              "lastSetAmrap": false,
+              "restSeconds": 75,
+              "notes": "Superset with calf raises. Cables slightly above shoulder height, cross the cables.",
+              "optional": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

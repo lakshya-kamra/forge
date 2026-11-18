@@ -1,0 +1,638 @@
+{
+  "asOf": "2026-11-17",
+  "verification": {
+    "checkedAt": "2026-11-17",
+    "changes": [
+      "All 32 model IDs were confirmed on the provider's own models, model or pricing page (OpenRouter IDs via GET https://openrouter.ai/api/v1/models). Every listed price matched the official source; no price was changed.",
+      "notes: corrected the PDF claim. DeepSeek's type:file part takes file_data as an image data URL, so only OpenAI documents native PDF input on its chat endpoint.",
+      "gemini keyPatternNotes: removed the claim that Google will reject all standard keys from September 2026. The api-key page says only unrestricted standard keys are rejected and restricted standard keys keep working. Noted that the AIza {35} length is not from official docs.",
+      "gemini-3.1-flash-lite: jsonSchema is now verified (its model page lists Structured outputs: supported), sourceUrl changed to the model page, and modalities and limits added.",
+      "gemini models: release labels changed to 'latest update' because the pages give no release date. gemini-4-carbon is described as Google's 'most capable reasoning model', not 'strongest'.",
+      "openrouter: noted that Response Healing is documented for text.format json_schema (Responses API shape), and that Bedrock, Groq and Google do not support cancellation.",
+      "groq deprecatedAvoid: the compound models' affected tiers are not stated on the deprecations page. Noted that enterprise committed-spend contracts are unaffected by the Llama and Qwen shutdowns.",
+      "grok-4.7: removed the unsupported 'Knowledge cutoff May 2026' and 'most capable' wording, and added cached-input price and model-page description.",
+      "grok-4.20-0309-non-reasoning: replaced 'xAI lists no cheaper vision model' because grok-build-0.1 is cheaper ($1.00/$2.00); its vision support was not checked.",
+      "xai dataPolicy: the security FAQ was fetched directly and confirms 30-day retention, no training without permission and ZDR. Removed the unsupported '30 days' figure for Responses API storage.",
+      "xai structuredOutput: added non-circular $ref only and the list of enforced format values.",
+      "mistral: flagged that the vision page still lists retired mistral-medium-2508 and mistral-small-2506. Ministral model pages confirm Structured Outputs on chat completions and the $0.15 and $0.20 prices. For mistral-large-4-0, added the 2026-10-06 preview and launch-sale note; the pricing page confirms $0.70/$2.10.",
+      "deepseek: added the detail values and reasoning_effort values from the API reference.",
+      "together: legacy org keys confirmed deprecated. For DeepSeek-V4.1-Flash, replaced 'US hosting' because api.together.ai does not guarantee US processing; the US endpoint costs 1.25x ($0.375/$1.50)."
+    ],
+    "removed": []
+  },
+  "notes": [
+    "Tier and job picks are a judgement from each provider's own positioning, capability flags and prices. No benchmark on meal photos or Indian nutrition labels was run.",
+    "Prices are USD per 1M tokens, standard or on-demand tier, for short context. Batch, flex and off-peak discounts are not applied unless a note says so.",
+    "Key detection order matters. Test sk-or-v1- (OpenRouter) and sk-ant- (Anthropic) before any generic sk- rule. DeepSeek keys and legacy OpenAI keys both start with sk-. Mistral and Together have no documented prefix. For any key without a clear match, probe GET {baseUrl}/models on each candidate and pick the one that returns 200.",
+    "keyPatterns marked unverified in keyPatternNotes come from third-party sources such as secret scanners and client libraries, not from the provider's own docs.",
+    "Of the direct providers, only OpenAI documents native PDF input on its OpenAI-compatible chat endpoint (a type:file content part). DeepSeek also accepts a type:file part, but its API reference describes file_data as an image data URL, so it is not a PDF path. OpenRouter lists a file input modality on some models. For the pdf job, the portable path is to extract the text on the device and send it as text with a JSON schema."
+  ],
+  "providers": [
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "keyPatterns": [
+        "^sk-(proj|svcacct|admin)-[A-Za-z0-9_-]+$",
+        "^sk-[A-Za-z0-9_-]*T3BlbkFJ[A-Za-z0-9_-]*$"
+      ],
+      "keyPatternNotes": "OpenRouter's secret-format guide describes OpenAI keys as sk-proj-, sk-svcacct- or sk-admin- with the T3BlbkFJ marker, and legacy keys as sk- with T3BlbkFJ. OpenAI publishes no official format. sk-admin- keys are organisation admin keys and cannot be used for chat, so reject them with a clear message. Project key length has varied (reports of about 56 and about 156 characters), so do not check the length.",
+      "baseUrl": "https://api.openai.com/v1",
+      "authHeader": "Authorization: Bearer <key>",
+      "openAiCompatible": true,
+      "chatPath": "/chat/completions",
+      "modelsPath": "/models",
+      "imageFormat": "In a user message content array: {\"type\":\"image_url\",\"image_url\":{\"url\":\"data:image/jpeg;base64,<b64>\",\"detail\":\"auto|low|high|original\"}}. detail defaults to auto. Some models do not support original (for example gpt-5.2 and gpt-4.1-mini). Accepted types are PNG, JPEG, WEBP and non-animated GIF. Limits are 512 MB per request, 1,500 images, and 30,000 patches per image (images over the patch limit are rejected, not resized). For PDFs, Chat Completions accepts a type:file content part with base64 file_data (data:application/pdf;base64,...), each file under 50 MB and 50 MB total.",
+      "structuredOutput": "response_format {\"type\":\"json_schema\",\"json_schema\":{\"name\":\"...\",\"schema\":{...},\"strict\":true}}. The name allows letters, digits, _ and -, up to 64 characters. strict defaults to false. With strict, only a subset of JSON Schema is supported. The model pages for gpt-6-luna, gpt-6.1-terra, gpt-6.2-sol and gpt-6.2-astra all list Structured outputs: Supported.",
+      "streamingNotes": "stream:true sends SSE data: lines, each a chat.completion.chunk, and ends with data: [DONE]. stream_options {\"include_usage\":true} adds one extra chunk before [DONE] with empty choices and the usage totals. All other chunks have usage:null. If the stream is cut, the usage chunk may not arrive. gpt-6.2-sol and gpt-6.2-astra reject reasoning_effort none. On gpt-6-luna, function calling in Chat Completions works only with reasoning_effort none.",
+      "dataPolicy": "Not used for training by default (opt-in only). Abuse-monitoring logs are kept up to 30 days. Zero Data Retention and Modified Abuse Monitoring need OpenAI's approval. There is no free API tier, so all API traffic falls under this policy.",
+      "deprecatedAvoid": [
+        "gpt-5, gpt-5-mini, gpt-5-nano, gpt-5-pro, o3, o3-pro: shut down 2026-12-11",
+        "gpt-4o-2024-08-06, gpt-4o-2024-11-20, gpt-4o-mini-2024-07-18, gpt-4.1-2025-04-14, gpt-4.1-mini-2025-04-14: shut down 2027-01-14",
+        "gpt-5.1, gpt-5.4-nano, gpt-5.3-codex: shut down 2027-04-01"
+      ],
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/deprecations",
+        "https://developers.openai.com/api/docs/guides/your-data",
+        "https://developers.openai.com/api/docs/guides/images-vision",
+        "https://developers.openai.com/api/docs/guides/pdf-files",
+        "https://developers.openai.com/api/reference/resources/chat",
+        "https://openrouter.ai/docs/guides/features/guardrails/secret-formats.md"
+      ],
+      "models": [
+        {
+          "id": "gpt-6-luna",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.10,
+          "outPerM": 0.50,
+          "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+          "notes": "Flagship list says to use it for cost-sensitive, high-volume work. Context 1,050,000, max output 128,000. reasoning_effort accepts none, low, medium (default), high, xhigh and max. Replaces gpt-5-nano, gpt-4o and gpt-4.1 under the deprecation notices."
+        },
+        {
+          "id": "gpt-6.1-terra",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "balanced",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 1.00,
+          "outPerM": 5.00,
+          "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6.1-terra",
+          "notes": "Context 1,050,000. reasoning_effort accepts none to max (default medium). Named as the replacement for gpt-5-mini."
+        },
+        {
+          "id": "gpt-6.2-sol",
+          "jobs": ["coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 2.00,
+          "outPerM": 10.00,
+          "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6.2-sol",
+          "notes": "OpenAI's pick for balanced intelligence and cost. Listed here as a cheaper max option for coach and pdf. Rejects reasoning_effort none."
+        },
+        {
+          "id": "gpt-6.2-astra",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 8.00,
+          "outPerM": 40.00,
+          "sourceUrl": "https://developers.openai.com/api/docs/models/gpt-6.2-astra",
+          "notes": "OpenAI's top flagship for complex reasoning. Cached input costs $0.40/M. Rejects reasoning_effort none."
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "name": "Google Gemini (AI Studio API key)",
+      "keyPatterns": [
+        "^AIza[0-9A-Za-z_-]{35}$",
+        "^AQ\\.[A-Za-z0-9._-]+$"
+      ],
+      "keyPatternNotes": "Google's docs give no prefix. AIza is the standard Google API key prefix (listed in OpenRouter's secret-format guide). The AQ. prefix is community-reported only (discuss.ai.google.dev threads) for the new auth keys, which are bound to a service account. Since 2026-05-28, AI Studio creates auth keys by default. Google's docs say the API rejects unrestricted standard keys, while standard keys with explicit restrictions continue to work, and that dormant unrestricted keys have been blocked since 2026-05-07. The {35} length after AIza is the commonly observed Google key length, not stated in Google's or OpenRouter's docs. Forum users report some AQ. keys returning 401 ACCESS_TOKEN_TYPE_UNSUPPORTED with no official fix. The AQ. regex body and whether AQ. keys work with Bearer on the OpenAI-compat endpoint are unverified.",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "authHeader": "Authorization: Bearer <key> (OpenAI-compat endpoint). The native API uses x-goog-api-key: <key>.",
+      "openAiCompatible": true,
+      "chatPath": "chat/completions",
+      "modelsPath": "models",
+      "imageFormat": "Same as OpenAI: {\"type\":\"image_url\",\"image_url\":{\"url\":\"data:image/jpeg;base64,<b64>\"}}. Audio uses an input_audio part. The compat doc does not mention PDF input. Gemini 4 and 3.5 Flash-Lite take PDFs natively, but only through the native generateContent API.",
+      "structuredOutput": "The compat doc shows structured output only through SDK parse helpers (client.beta.chat.completions.parse with Pydantic or zodResponseFormat), which send response_format type json_schema. It does not document the strict flag. The model pages for gemini-4-carbon, gemini-4-hydrogen, gemini-3.5-flash-lite and gemini-3.1-flash-lite list structured outputs as supported.",
+      "streamingNotes": "stream:true gives OpenAI-style chunks (choices[0].delta). stream_options include_usage is shown in a doc example. reasoning_effort maps to Gemini thinking levels: minimal/low to low, medium to medium, high to high, and xhigh only on gemini-4-hydrogen. none disables thinking only on 2.5 models; Gemini 3 and 4 cannot turn thinking off. Do not send reasoning_effort together with thinking_config (sent via extra_body.google). The compat layer is still labelled beta.",
+      "dataPolicy": "On the free tier, content is used to improve Google products. On the paid tier, it is not. The invite-only Contributor paid tier, listed for gemini-4-argon and gemini-4-hydrogen, is the exception and may be used. gemini-4-carbon and gemini-3.1-pro-preview have no free tier.",
+      "deprecatedAvoid": [
+        "gemini-2.5-pro: deprecated, requests route to gemini-3.8-flash on 2026-12-01",
+        "gemini-2.5-flash: deprecated, requests route to gemini-3.5-flash-lite on 2026-12-01",
+        "gemini-3-pro-preview, gemini-3.1-flash-lite-preview, gemini-2.0-flash, gemini-2.0-flash-lite: already shut down"
+      ],
+      "sources": [
+        "https://aistudio.google.com/docs/pricing",
+        "https://aistudio.google.com/docs/models",
+        "https://aistudio.google.com/docs/openai",
+        "https://aistudio.google.com/docs/api-key",
+        "https://aistudio.google.com/docs/models/gemini-3.1-flash-lite",
+        "https://discuss.ai.google.dev/t/aq-key-401-access-token-type-unsupported-fully-configured-key-still-rejected/172852"
+      ],
+      "models": [
+        {
+          "id": "gemini-3.1-flash-lite",
+          "jobs": ["label"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.25,
+          "outPerM": 1.50,
+          "sourceUrl": "https://aistudio.google.com/docs/models/gemini-3.1-flash-lite",
+          "notes": "Stable (latest update May 2026). Has a free tier (pricing page). Cheapest current non-deprecated Gemini model with text and image input. Its model page lists text, image, video, audio and PDF input, input limit 1,048,576, output 65,536, and Structured outputs: supported. reasoning_effort xhigh is not supported on it."
+        },
+        {
+          "id": "gemini-3.5-flash-lite",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.30,
+          "outPerM": 2.50,
+          "sourceUrl": "https://aistudio.google.com/docs/models/gemini-3.5-flash-lite",
+          "notes": "Stable (latest update July 2026). Takes text, image, video, audio and PDF input. Input limit 1,048,576, output 65,536. Structured outputs and thinking supported. Has a free tier. Google recommends it for new projects."
+        },
+        {
+          "id": "gemini-4-hydrogen",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "balanced",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 1.50,
+          "outPerM": 7.50,
+          "sourceUrl": "https://aistudio.google.com/docs/models/gemini-4-hydrogen",
+          "notes": "Stable (latest update November 2026). Google recommends it for new projects. Context 1,048,576 shared between input and output; default max output 65,536. Thinking levels low, medium, high and xhigh. Has a free tier, on which data is used to improve products."
+        },
+        {
+          "id": "gemini-4-carbon",
+          "jobs": ["photo", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 2.00,
+          "outPerM": 10.00,
+          "sourceUrl": "https://aistudio.google.com/docs/models/gemini-4-carbon",
+          "notes": "Google calls it its most capable reasoning model. Paid only, no free tier. PRICE CHANGE: from 2026-12-01 it costs $4.00/M input and $20.00/M output. gemini-4-argon has the same price and the same change."
+        }
+      ]
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "keyPatterns": [
+        "^sk-or-v1-[0-9a-f]{64}$"
+      ],
+      "keyPatternNotes": "OpenRouter's own secret-format guide gives sk-or-v1- followed by 64 lowercase hex characters.",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "authHeader": "Authorization: Bearer <key>. Optional: HTTP-Referer: <app url>, X-OpenRouter-Title: <app name> (X-Title also accepted).",
+      "openAiCompatible": true,
+      "chatPath": "/chat/completions",
+      "modelsPath": "/models",
+      "imageFormat": "{\"type\":\"image_url\",\"image_url\":{\"url\":\"<https url or data:image/...;base64,...>\",\"detail\":\"auto\"}}. Image parts are allowed only in user messages.",
+      "structuredOutput": "response_format json_schema {name, strict, schema} or json_object. Support is per provider endpoint, not per model. Filter with GET /models (supported_parameters contains structured_outputs) and send provider.require_parameters:true so routing only goes to endpoints that support it. With strict:true, some providers guarantee the schema and others only approximate it. The Response Healing plugin repairs invalid JSON in non-streaming requests; the structured-outputs page describes it for text.format type json_schema (Responses API shape), so whether it applies to Chat Completions response_format is unverified.",
+      "streamingNotes": "SSE comment lines such as ': OPENROUTER PROCESSING' are keep-alives. Skip lines starting with ':' before JSON.parse, or it throws. The last chunk before data: [DONE] carries usage and repeats finish_reason; treat it as an accounting frame. Errors after headers are sent arrive as SSE with HTTP 200: a chunk with a top-level error and choices[].finish_reason:'error'. A 200 can contain only an error event. Aborting the connection stops billing only on providers that support cancellation; the streaming doc names AWS Bedrock, Groq and Google as not supporting it.",
+      "dataPolicy": "Each upstream provider has its own data policy, which OpenRouter shows per endpoint. In account privacy settings you can exclude providers that train on prompts; paid and free models have separate settings. You can also filter per request with provider routing, and a ZDR-only setting exists. The provider's training policy decides whether your data is trained on.",
+      "deprecatedAvoid": [
+        "meta-llama/llama-3.2-1b-instruct and meta-llama/llama-3.2-3b-instruct: expiration_date 2026-11-20",
+        "mistralai/mistral-medium-3-5: expiration_date 2027-01-31",
+        "thinkingmachines/inkling-2-small:free: expiration_date 2026-11-19"
+      ],
+      "sources": [
+        "https://openrouter.ai/docs/api/reference/overview",
+        "https://openrouter.ai/docs/api/reference/streaming",
+        "https://openrouter.ai/docs/guides/features/structured-outputs",
+        "https://openrouter.ai/docs/guides/privacy/logging",
+        "https://openrouter.ai/api/v1/models"
+      ],
+      "models": [
+        {
+          "id": "openai/gpt-6-luna",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.10,
+          "outPerM": 0.50,
+          "sourceUrl": "https://openrouter.ai/api/v1/models",
+          "notes": "Takes file, image and text input. supported_parameters includes structured_outputs. Context 1,050,000."
+        },
+        {
+          "id": "google/gemini-3.5-flash-lite",
+          "jobs": ["photo", "label", "pdf"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.30,
+          "outPerM": 2.50,
+          "sourceUrl": "https://openrouter.ai/api/v1/models",
+          "notes": "Economy alternative with native PDF input (file modality)."
+        },
+        {
+          "id": "google/gemini-4-hydrogen",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "balanced",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 1.50,
+          "outPerM": 7.50,
+          "sourceUrl": "https://openrouter.ai/api/v1/models",
+          "notes": "Takes audio, file, image, text and video input. Context 1,048,576."
+        },
+        {
+          "id": "openai/gpt-6.1-terra",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "balanced",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 1.00,
+          "outPerM": 5.00,
+          "sourceUrl": "https://openrouter.ai/api/v1/models",
+          "notes": "Balanced alternative with the same price as calling OpenAI directly."
+        },
+        {
+          "id": "anthropic/claude-opus-5.5",
+          "jobs": ["photo", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 4.00,
+          "outPerM": 20.00,
+          "sourceUrl": "https://openrouter.ai/api/v1/models",
+          "notes": "Takes text, image and file input. structured_outputs supported. Context 1,000,000."
+        },
+        {
+          "id": "openai/gpt-6.2-astra",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 8.00,
+          "outPerM": 40.00,
+          "sourceUrl": "https://openrouter.ai/api/v1/models",
+          "notes": "Most expensive pick. google/gemini-4-carbon is listed at $2/$10 on OpenRouter as of today, but Google raises its direct price on 2026-12-01 and OpenRouter will likely follow."
+        }
+      ]
+    },
+    {
+      "id": "groq",
+      "name": "Groq",
+      "keyPatterns": [
+        "^gsk_[A-Za-z0-9]+$"
+      ],
+      "keyPatternNotes": "Third-party sources (key testers, integration guides) agree on the gsk_ prefix. It was not confirmed on console.groq.com in this pass.",
+      "baseUrl": "https://api.groq.com/openai/v1",
+      "authHeader": "Authorization: Bearer <key>",
+      "openAiCompatible": true,
+      "chatPath": "/chat/completions",
+      "modelsPath": "/models",
+      "imageFormat": "{\"type\":\"image_url\",\"image_url\":{\"url\":\"data:image/jpeg;base64,<b64>\"}}. Only qwen/qwen3.8-27b (preview, up to 3 images, 2,048 tokens per image) and meta-models/muse-spark-open (limited preview, contact Groq) take images. A request with an image URL can be at most 20 MB; no separate base64 limit is stated. There is no PDF input.",
+      "structuredOutput": "response_format json_schema {name, strict, schema} or json_object. strict:true (constrained decoding) works only on openai/gpt-oss-20b, openai/gpt-oss-120b, qwen/qwen3.8-27b and meta-models/muse-spark-open. Strict requires every property in required and additionalProperties:false on every object; use a null union for optional fields. Structured Outputs do not support streaming or tool use.",
+      "streamingNotes": "SSE that ends with data: [DONE]. The x_groq metadata applies only to non-streaming responses. Structured outputs cannot stream. These fields return HTTP 400: logprobs, logit_bias, top_logprobs, messages[].name, and n other than 1. temperature 0 is converted to 1e-8. gpt-oss takes reasoning_effort low, medium (default) or high. reasoning_format (hidden, raw, parsed) and include_reasoning cannot be used together.",
+      "dataPolicy": "Inference inputs and outputs are not retained by default. They may be logged up to 30 days for reliability or abuse investigation; you can opt out in Data Controls. ZDR is self-serve. The your-data page does not say whether data is used for training.",
+      "deprecatedAvoid": [
+        "llama-3.1-8b-instant (2026-08-16), llama-3.3-70b-versatile (2026-08-16), meta-llama/llama-4-scout-17b-16e-instruct (2026-07-17), qwen/qwen3-32b (2026-07-17), qwen/qwen3.6-27b (2026-09-14): shut down for free and developer tiers (enterprise committed-spend contracts unaffected). groq/compound and groq/compound-mini: shut down 2026-09-21 (the deprecations page does not state which tiers). The models page still lists the Llama models with ContactSales pricing (enterprise only)."
+      ],
+      "sources": [
+        "https://console.groq.com/docs/models",
+        "https://console.groq.com/docs/deprecations",
+        "https://console.groq.com/docs/structured-outputs",
+        "https://console.groq.com/docs/vision",
+        "https://console.groq.com/docs/openai",
+        "https://console.groq.com/docs/api-reference",
+        "https://console.groq.com/docs/your-data"
+      ],
+      "models": [
+        {
+          "id": "openai/gpt-oss-20b",
+          "jobs": ["coach", "pdf"],
+          "tier": "economy",
+          "vision": false,
+          "jsonSchema": true,
+          "inPerM": 0.075,
+          "outPerM": 0.30,
+          "sourceUrl": "https://console.groq.com/docs/models",
+          "notes": "Production model. Context 131,072. Strict json_schema supported. Text only, so for pdf the app must extract the text on the device."
+        },
+        {
+          "id": "openai/gpt-oss-120b",
+          "jobs": ["coach", "pdf"],
+          "tier": "balanced",
+          "vision": false,
+          "jsonSchema": true,
+          "inPerM": 0.15,
+          "outPerM": 0.60,
+          "sourceUrl": "https://console.groq.com/docs/models",
+          "notes": "Production model. Context 131,072. Strict json_schema supported. Groq's usual replacement for the retired Llama models."
+        },
+        {
+          "id": "qwen/qwen3.8-27b",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.80,
+          "outPerM": 4.00,
+          "sourceUrl": "https://console.groq.com/docs/models",
+          "notes": "PREVIEW: Groq warns preview models may be discontinued at short notice. It is the only vision model on Groq that does not need sales contact, so use it for photo and label at every tier. Up to 3 images per request. Context 131,072. Strict json_schema supported."
+        }
+      ]
+    },
+    {
+      "id": "xai",
+      "name": "xAI (Grok)",
+      "keyPatterns": [
+        "^xai-[A-Za-z0-9_-]{10,}$"
+      ],
+      "keyPatternNotes": "Third-party sources (client libraries, key testers) agree on the xai- prefix. xAI's API reference does not state it.",
+      "baseUrl": "https://api.x.ai/v1",
+      "authHeader": "Authorization: Bearer <key>",
+      "openAiCompatible": true,
+      "chatPath": "/chat/completions",
+      "modelsPath": "/models",
+      "imageFormat": "Chat Completions: {\"type\":\"image_url\",\"image_url\":{\"url\":\"data:image/jpeg;base64,<b64>\",\"detail\":\"auto|low|high\"}}. JPG/JPEG or PNG only (no WEBP listed), at most 20 MiB per image, no limit on image count.",
+      "structuredOutput": "response_format json_schema {name, schema, strict:true} on Grok 4 family models. These return HTTP 400: empty enum/anyOf, boolean property schemas, minContains/maxContains, array-form items (use prefixItems), and circular $ref. Not enforced: not, if/then/else, allOf with more than one subschema, and length limits above 2048 chars, 256 items or 64 properties. Regex patterns cannot use lookaround, backreferences, \\b or \\p{}. Only non-circular $ref/$defs are supported. format is enforced only for date, time, date-time, email, uuid, ipv4, ipv6 and uri.",
+      "streamingNotes": "Chat Completions is officially LEGACY: new features land on /v1/responses first. No removal date is published. SSE ends with data: [DONE]. Reasoning models may need a longer client timeout. Prompts of 200k tokens or more are billed at double rates for the whole request.",
+      "dataPolicy": "API requests and responses are kept 30 days for abuse auditing, then deleted. xAI does not train on them without permission. ZDR teams skip the 30-day retention. The Responses API stores conversation history server-side for stateful use; that history cannot be stored under ZDR. Confirmed on the docs.x.ai security FAQ (fetched 2026-11-17).",
+      "deprecatedAvoid": [],
+      "sources": [
+        "https://docs.x.ai/docs/models",
+        "https://docs.x.ai/docs/models/grok-4.7",
+        "https://docs.x.ai/docs/models/grok-4.3",
+        "https://docs.x.ai/docs/models/grok-4.20-0309-non-reasoning",
+        "https://docs.x.ai/docs/guides/chat-completions",
+        "https://docs.x.ai/docs/guides/structured-outputs",
+        "https://docs.x.ai/docs/guides/image-understanding",
+        "https://docs.x.ai/developers/rest-api-reference/inference/models",
+        "https://docs.x.ai/docs/faq/security"
+      ],
+      "models": [
+        {
+          "id": "grok-4.20-0309-non-reasoning",
+          "jobs": ["photo", "label"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 1.25,
+          "outPerM": 2.50,
+          "sourceUrl": "https://docs.x.ai/docs/models/grok-4.20-0309-non-reasoning",
+          "notes": "No reasoning, so it is fast for transcription. Context 1,000,000. Aliases include grok-4.20-non-reasoning and grok-4.20-non-reasoning-latest. Same price as grok-4.3. grok-build-0.1 is cheaper ($1.00/$2.00, 256k context) but its image support was not checked."
+        },
+        {
+          "id": "grok-4.3",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "balanced",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 1.25,
+          "outPerM": 2.50,
+          "sourceUrl": "https://docs.x.ai/docs/models/grok-4.3",
+          "notes": "Reasoning effort none, low (default), medium, high or xhigh. Context 1,000,000. Alias: grok-4.3-latest."
+        },
+        {
+          "id": "grok-4.7",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 2.00,
+          "outPerM": 6.00,
+          "sourceUrl": "https://docs.x.ai/docs/models/grok-4.7",
+          "notes": "Described on its model page as the frontier model for coding, agentic tasks and knowledge work. No aliases listed. Reasoning effort low, medium, high (default) or xhigh. Context 500,000. Cached input $0.50/M. The model page states no knowledge cutoff. grok-4.6 and grok-4.5 are listed at the same $2.00/$6.00."
+        }
+      ]
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral AI",
+      "keyPatterns": [],
+      "keyPatternNotes": "Mistral documents no prefix. Use probe-based detection: GET https://api.mistral.ai/v1/models with Bearer.",
+      "baseUrl": "https://api.mistral.ai/v1",
+      "authHeader": "Authorization: Bearer <key>",
+      "openAiCompatible": true,
+      "chatPath": "/chat/completions",
+      "modelsPath": "/models",
+      "imageFormat": "Mistral's vision docs pass image_url as a plain string (\"image_url\": \"<url>\") and also accept base64 images. The exact base64 form (a string data URI or an OpenAI-style object) was not shown in the fetched docs; unverified. Vision models listed: mistral-large-4-0, mistral-large-2512, mistral-medium-2508, mistral-small-2506, ministral-14b-2512, ministral-8b-2512, ministral-3b-2512. Of these, mistral-medium-2508 and mistral-small-2506 are already retired and mistral-large-2512 is deprecated, even though the vision page still lists them. For PDFs, the separate OCR models (ocr-4-1 at $4 per 1,000 pages, alias mistral-ocr-latest) run on their own OCR endpoint, not on chat.",
+      "structuredOutput": "Supports custom structured outputs (JSON schema) and JSON mode. The model pages for mistral-large-4-0, mistral-small-2603, ministral-3-8b-25-12 and ministral-3-14b-25-12 list Structured Outputs on /v1/chat/completions. The SDK parse helper prepends a system instruction with the schema. The raw response_format json_schema shape and the strict flag were not confirmed in the fetched docs; unverified.",
+      "streamingNotes": "Not checked in this pass; the OpenAI-style data: [DONE] ending is unverified. mistral-large-4 and mistral-large-4-0 take reasoning_effort low, medium or high (default high). none returns HTTP 400 (changelog 2026-10-29).",
+      "dataPolicy": "Mistral's help centre says that in Free mode, Mistral may use inputs and outputs to train its models, with an opt-out. On Pay-as-you-go, customers keep full control over this processing and can opt out at any time. A Zero Data Retention option exists. The fetched page did not state retention periods.",
+      "deprecatedAvoid": [
+        "mistral-large-2512 (Mistral Large 3): deprecated 2026-10-31, retires 2027-04-30",
+        "mistral-medium-3-5: deprecated 2026-10-31, retires 2027-04-30",
+        "mistral-medium-2508, mistral-small-2506, mistral-ocr-4-0, open-mistral-nemo-2407: already retired"
+      ],
+      "sources": [
+        "https://docs.mistral.ai/getting-started/models/models_overview/",
+        "https://docs.mistral.ai/models",
+        "https://docs.mistral.ai/models/mistral-large-4-0",
+        "https://docs.mistral.ai/models/mistral-small-4-0-26-03",
+        "https://docs.mistral.ai/models/ministral-3-8b-25-12",
+        "https://docs.mistral.ai/models/ministral-3-14b-25-12",
+        "https://docs.mistral.ai/inference/pricing",
+        "https://docs.mistral.ai/getting-started/changelog/",
+        "https://docs.mistral.ai/capabilities/vision/",
+        "https://help.mistral.ai/en/articles/347617-do-you-use-my-user-data-to-train-your-artificial-intelligence-models"
+      ],
+      "models": [
+        {
+          "id": "ministral-8b-2512",
+          "jobs": ["photo", "label"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.15,
+          "outPerM": 0.15,
+          "sourceUrl": "https://docs.mistral.ai/capabilities/vision/",
+          "notes": "Ministral 3 8B (v25.12), text and vision. The pricing page slug is ministral-3-8b-25-12, while the vision page uses the API ID ministral-8b-2512. The model page also shows the alias ministral-8b-latest. Context 256k. The pricing page lists $0.15/$0.15 (cached input $0.015)."
+        },
+        {
+          "id": "mistral-small-2603",
+          "jobs": ["coach", "pdf"],
+          "tier": "economy",
+          "vision": false,
+          "jsonSchema": true,
+          "inPerM": 0.15,
+          "outPerM": 0.60,
+          "sourceUrl": "https://docs.mistral.ai/models/mistral-small-4-0-26-03",
+          "notes": "Mistral Small 4 (v26.03, GA, Apache 2.0). Hybrid instruct, reasoning and coding model. Context 256k. Mistral's vision page does not list it, but OpenRouter (mistralai/mistral-small-2603) lists text and image input, so vision on Mistral's own API is unverified."
+        },
+        {
+          "id": "ministral-14b-2512",
+          "jobs": ["photo", "label"],
+          "tier": "balanced",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.20,
+          "outPerM": 0.20,
+          "sourceUrl": "https://docs.mistral.ai/capabilities/vision/",
+          "notes": "Ministral 3 14B (v25.12), text and vision. Very cheap. Use mistral-large-4-0 if this is not accurate enough on meal photos."
+        },
+        {
+          "id": "mistral-large-4-0",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.70,
+          "outPerM": 2.10,
+          "sourceUrl": "https://docs.mistral.ai/models/mistral-large-4-0",
+          "notes": "Mistral Large 4 (v26.10), public preview 2026-10-06, GA as of 2026-11-05. Alias: mistral-large-4 (the model page shows it with two more aliases). Context 1M. Listed on the vision page. Cached input $0.07/M. The changelog announced 'Launch pricing: 50% off for 2 weeks' on 2026-10-06; both the model page and the API pricing page still show $0.70/$2.10 on 2026-11-17. Third-party claims of $1.36/$4.18 are unconfirmed; recheck before shipping."
+        }
+      ]
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "keyPatterns": [
+        "^sk-[0-9a-f]{32}$"
+      ],
+      "keyPatternNotes": "UNVERIFIED: DeepSeek publishes no key format. sk- plus 32 hex characters is commonly observed. It overlaps OpenAI's legacy sk- shape, so match it only when the key lacks the OpenAI T3BlbkFJ marker, and confirm with GET /models.",
+      "baseUrl": "https://api.deepseek.com",
+      "authHeader": "Authorization: Bearer <key>",
+      "openAiCompatible": true,
+      "chatPath": "/chat/completions",
+      "modelsPath": "/models",
+      "imageFormat": "{\"type\":\"image_url\",\"image_url\":{\"url\":\"data:image/jpeg;base64,<b64>\"}} on deepseek-flash only. Accepts JPEG, PNG, GIF and WebP; an http(s) URL can be up to 8192 characters. detail accepts low (downsamples to 512x512), high, original and auto. A type:file part with exactly one of file_id (from the Files API) or file_data is also accepted, but file_data is documented as an image data URL (data:image/jpeg;base64,...), so it is not a PDF input path.",
+      "structuredOutput": "NO json_schema. response_format accepts only text and json_object, and the prompt must contain the word json plus an example. Invalid JSON output is replaced with spaces, so content can be blank with finish_reason stop; validate the JSON on the device and retry.",
+      "streamingNotes": "data-only SSE ending with data: [DONE]. While waiting, the server sends ': keep-alive' comment lines on streams and empty lines on non-stream requests; skip both. The connection closes if inference has not started after 10 minutes. stream_options without stream:true returns 400. Usage rides on the last content chunk; there is no separate usage chunk. Thinking is ON by default; set thinking {type:disabled} or reasoning_effort none for fast label OCR. reasoning_effort accepts none, low, high (default) or max; minimal maps to low, and medium or xhigh map to high. Named or required tool_choice is not supported in thinking mode.",
+      "dataPolicy": "Not clearly stated for API traffic. DeepSeek's privacy policy says personal data is stored and processed in the People's Republic of China, lists model training as a purpose, and grants a right to opt out. No ZDR offer was found. Treat API data as possibly trained on and retained while the account exists.",
+      "deprecatedAvoid": [
+        "deepseek-chat and deepseek-reasoner: retired 2026-07-24 according to multiple secondary sources quoting DeepSeek's change log; the current docs list neither name",
+        "deepseek-v4-flash and deepseek-v4-flash-vision-exp: legacy names, still accepted but served by DeepSeek-V4.1-Flash-1017"
+      ],
+      "sources": [
+        "https://api-docs.deepseek.com/",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/api/create-chat-completion",
+        "https://api-docs.deepseek.com/guides/json_mode",
+        "https://api-docs.deepseek.com/quick_start/rate_limit",
+        "https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html"
+      ],
+      "models": [
+        {
+          "id": "deepseek-flash",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": false,
+          "inPerM": 0.30,
+          "outPerM": 1.20,
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+          "notes": "Points to DeepSeek-V4.1-Flash-1017. Prices are peak, cache miss. Off-peak is half ($0.15/$0.60). Peak is 01:00-04:00 and 06:00-10:00 UTC on weekdays, which is 06:30-09:30 and 11:30-15:30 IST. Context 1M, max output 384K. JSON mode only."
+        },
+        {
+          "id": "deepseek-v4-pro",
+          "jobs": ["coach", "pdf"],
+          "tier": "max",
+          "vision": false,
+          "jsonSchema": false,
+          "inPerM": 1.32,
+          "outPerM": 3.96,
+          "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+          "notes": "Points to DeepSeek-V4-Pro-0813. No image input. Prices are peak, cache miss; off-peak is $0.66/$1.98. Context 1M. JSON mode only."
+        }
+      ]
+    },
+    {
+      "id": "together",
+      "name": "Together AI",
+      "keyPatterns": [],
+      "keyPatternNotes": "Together's docs give no key format. Keys are now project-scoped, and legacy org keys are deprecated. Use probe-based detection: GET https://api.together.ai/v1/models with Bearer.",
+      "baseUrl": "https://api.together.ai/v1",
+      "authHeader": "Authorization: Bearer <key>",
+      "openAiCompatible": true,
+      "chatPath": "/chat/completions",
+      "modelsPath": "/models",
+      "imageFormat": "{\"type\":\"image_url\",\"image_url\":{\"url\":\"<https url or data:image/jpeg;base64,...>\"}}. detail is accepted but ignored. Images are split into 560 px tiles, at most 2x2, at 1,601 tokens per tile, so a typical photo costs about 6,404 input tokens.",
+      "structuredOutput": "response_format {\"type\":\"json_schema\",\"json_schema\":{\"name\":...,\"schema\":{...}}} and {\"type\":\"regex\"}. The docs do not mention a strict flag or json_object. Together advises also putting the schema in the prompt and watching for finish_reason length. Works with reasoning models.",
+      "streamingNotes": "OpenAI-style SSE (not checked in this pass). service_tier, store, metadata and prediction are ignored. logit_bias is unsupported on most models. seed is best-effort. OpenAI model names such as gpt-4o return 404. A US-only endpoint is at https://us-api.together.ai/v1; it supports only select models, costs 1.25x standard rates, and returns 404 region_unavailable for other models.",
+      "dataPolicy": "Training on your data is opt-in and off by default (Organization Settings > Privacy). An org admin can turn storage off for zero data retention; doing so also disables passthrough models.",
+      "deprecatedAvoid": [],
+      "sources": [
+        "https://docs.together.ai/docs/serverless-models",
+        "https://docs.together.ai/docs/openai-api-compatibility",
+        "https://docs.together.ai/docs/api-keys-authentication.md",
+        "https://docs.together.ai/docs/inference/chat/structured-outputs.md",
+        "https://docs.together.ai/docs/vision-overview",
+        "https://docs.together.ai/docs/privacy-and-security",
+        "https://docs.together.ai/docs/zero-data-retention",
+        "https://docs.together.ai/docs/serverless/geo-specific-inference.md"
+      ],
+      "models": [
+        {
+          "id": "Qwen/Qwen3.5-9B",
+          "jobs": ["photo", "label"],
+          "tier": "economy",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.17,
+          "outPerM": 0.25,
+          "sourceUrl": "https://docs.together.ai/docs/serverless-models",
+          "notes": "Together suggests it as the starting point for vision. Context 262,144."
+        },
+        {
+          "id": "Qwen/Qwen3.8-Flash",
+          "jobs": ["coach", "pdf"],
+          "tier": "economy",
+          "vision": false,
+          "jsonSchema": true,
+          "inPerM": 0.15,
+          "outPerM": 0.47,
+          "sourceUrl": "https://docs.together.ai/docs/serverless-models",
+          "notes": "Text only. Context 1,000,000."
+        },
+        {
+          "id": "thinkingmachines/Inkling-2-Small",
+          "jobs": ["photo", "label"],
+          "tier": "balanced",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 0.30,
+          "outPerM": 1.00,
+          "sourceUrl": "https://docs.together.ai/docs/serverless-models",
+          "notes": "In Together's vision table. Context 1,048,576."
+        },
+        {
+          "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+          "jobs": ["coach", "pdf"],
+          "tier": "balanced",
+          "vision": false,
+          "jsonSchema": true,
+          "inPerM": 0.30,
+          "outPerM": 1.20,
+          "sourceUrl": "https://docs.together.ai/docs/serverless-models",
+          "notes": "Not in Together's vision table, so treat as text only. Context 1,000,000. Structured outputs: Yes in Together's chat table. A way to use DeepSeek with json_schema instead of DeepSeek's own API. api.together.ai does not guarantee US processing; for US-only processing use https://us-api.together.ai/v1, which lists this model at 1.25x ($0.375/$1.50)."
+        },
+        {
+          "id": "Qwen/Qwen4-Max",
+          "jobs": ["photo", "label", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 1.425,
+          "outPerM": 4.275,
+          "sourceUrl": "https://docs.together.ai/docs/serverless-models",
+          "notes": "In Together's vision table. Context 1,000,000."
+        },
+        {
+          "id": "moonshotai/Kimi-K3.1-Pro",
+          "jobs": ["photo", "coach", "pdf"],
+          "tier": "max",
+          "vision": true,
+          "jsonSchema": true,
+          "inPerM": 2.00,
+          "outPerM": 10.00,
+          "sourceUrl": "https://docs.together.ai/docs/serverless-models",
+          "notes": "Max-tier alternative in the vision table. Context 1,048,576."
+        }
+      ]
+    }
+  ]
+}

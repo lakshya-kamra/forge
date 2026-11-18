@@ -1,0 +1,99 @@
+{
+  "reviewer": "skeptical sports-science review, lens: numbers and thresholds",
+  "reviewedFile": "docs/research/guardrails.json",
+  "reviewDate": "2026-11-17",
+  "notes": "Only issues backed by a checked source are listed. Each was checked against the abstract or full text through Europe PMC / PMC, the KDIGO PDF, or the author's own page. Some cited numbers were confirmed and need no change: SCOFF 100%/87.5%; Majmudar MAE 2.16 +/- 1.54 and LoA -5.5 to +4.7; Ferreira CCC >= 0.96, n=1273; Schumann SMDs -0.06/-0.28/-0.01; Singer >60 s / >90 s; Rogerson 5.6 +/- 2.3 wk and 6.4 +/- 1.7 d; ACSM 2009 2-10% load step, 8-12 RM novices, 2-3/3-4/4-5 d/wk, 3-5 min heavy rest; Iversen >= 4 sets and 6-15 RM / 15-40 reps; Baz-Valle 12-20 sets; Iraki 10-20%/5-10% surplus, 1.6-2.2 g/kg protein, 0.5-1.5 g/kg fat, >= 3-5 g/kg carbohydrate; Roberts 2-5 g/kg carbohydrate and up to 3.5 g/kg protein; ISSN 2026 VLED/LED cut-offs, 1.9-3.2 g/kg BW, the ~11-22% / ~20-35% body-fat ranges, the -10.80 kcal/day diet-break figure and the 3-5 kg / 5-10 kg break spacing; WHO 25 g fibre and 400 g fruit and vegetables; CDC 330-400 kcal. NICE NG69 and the IOC REDs full text could not be fetched (HTTP 403), so no issue is raised from them.",
+  "issues": [
+    {
+      "ruleId": "nutrition_protein_upper_soft_cap",
+      "problem": "If kidney disease is flagged, the rule caps protein at 'the maintenance default (1.6 g/kg)'. That is twice the KDIGO 2024 recommendation for CKD G3-G5 (0.8 g/kg/d) and above the KDIGO practice-point ceiling (avoid >1.3 g/kg/d in CKD at risk of progression). The label is also wrong: in nutrition_protein_surplus_maintenance, 1.6 is the minimum and the default is 1.8.",
+      "correction": "When kidney disease is flagged, set kidneyFlagMaxGPerKg = 0.8. Generate no protein target above 0.8 g/kg/d. Never allow a manual target above 1.3 g/kg/d (kidneyFlagHardMaxGPerKg = 1.3) without clinician sign-off. Show the referral note. Remove the words 'maintenance default (1.6 g/kg)'.",
+      "source": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of CKD, Kidney Int 2024;105(4S):S117-S314, Recommendation 3.3.1.1 ('maintaining a protein intake of 0.8 g/kg body weight/d in adults with CKD G3-G5 (2C)') and Practice Point 3.3.1.1 ('Avoid high protein intake (>1.3 g/kg body weight/d)') - https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf",
+      "severity": "high"
+    },
+    {
+      "ruleId": "nutrition_max_deficit_size",
+      "problem": "A 25%-of-TDEE cap allows deficits well above 500 kcal/day for a typical male lifter (e.g. TDEE 2800 kcal gives a 700 kcal/day deficit). Murphy & Koehler's meta-regression found that a deficit of about 500 kcal/day prevented lean-mass gains, and the authors advise avoiding deficits above 500 kcal/day when the aim is to preserve lean mass. ISSN 2026 cites this finding. With only a percentage cap, the rule stops protecting muscle at higher TDEEs.",
+      "correction": "Add maxDeficitKcalPerDay = 500, used when the goal is to preserve muscle (the default for lifters). Then deficit = min(0.25 x TDEE, 500 kcal, the rate-cap deficit, TDEE - calorie floor). A larger deficit is allowed only through an explicit opt-in that warns about muscle loss.",
+      "source": "Murphy C, Koehler K. 2022, Energy deficiency impairs resistance training gains in lean mass but not strength: a meta-analysis and meta-regression, Scand J Med Sci Sports - https://doi.org/10.1111/sms.14075; cited in Aragon et al. 2026 ISSN position stand - https://doi.org/10.1080/15502783.2026.2740266",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "nutrition_max_deficit_rate_by_body_fat",
+      "problem": "The rule says Garthe 2011 compared 0.7%/wk with 1.4%/wk. Those were the planned rates. The fast group actually lost 1.0 +/- 0.4%/wk, against 0.7 +/- 0.8%/wk in the slow group. Lean body mass rose 2.1% in the slow group and did not change in the fast group (-0.2%). So the observed rate that failed to add lean mass is the same 1.0%/wk the rule uses as its absolute maximum, which the cited trial does not support as harmless. Roberts 2020 also recommend <= 0.5%/wk for lean competitors, and their cited case reports of higher fat-free-mass loss lost 0.7% and 1.0%/wk.",
+      "correction": "Rewrite the citation as: 'Garthe 2011: planned 0.7 vs 1.4 %BW/wk; achieved 0.7 vs 1.0 %BW/wk; lean mass +2.1% vs -0.2%; energy intake cut 19% vs 30%.' Keep absoluteMaxPctBwPerWeek = 1.0 only for the high-body-fat tier (males >= 20% / females >= 30%). For a resistance-trained user whose goal is to keep or gain muscle, use 0.7%/wk as the default ceiling outside the high-body-fat tier (set tierMidMaxPctBwPerWeek = 0.7 instead of 0.75).",
+      "source": "Garthe et al. 2011, Int J Sport Nutr Exerc Metab 21(2):97-104 (abstract: '0.7% +/- 0.8% vs. 1.0% +/- 0.4%/wk'; 'LBM increased in SR by 2.1% ... unchanged in FR (-0.2%)') - https://doi.org/10.1123/ijsnem.21.2.97; Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "nutrition_energy_availability_floor",
+      "problem": "The single 30 kcal/kg FFM/day line comes from controlled studies in women (menstrual function). The app's user is male. In males, the reviewed evidence links harm to prolonged EA below about 25 kcal/kg FFM, and EA of 15 kcal/kg FFM for 4 days lowered leptin and insulin but did not change testosterone, T3 or IGF-1. A moderate male cut that otherwise meets every other guardrail (e.g. 64 kg FFM, about 2100 kcal intake, about 300 kcal of exercise) gives EA of about 28. The warning would therefore fire on almost every reasonable male cut, which teaches the user to ignore it.",
+      "correction": "Make the threshold sex-specific: eaWarnKcalPerKgFfmFemale = 30 and eaWarnKcalPerKgFfmMale = 25. Add an escalation for males: if the 7-day EA is below 25 for more than 14 consecutive days (eaMaleSustainedDays = 14), show the warning and route to the low-intake check-in. Keep the averaging window at 7 days.",
+      "source": "Fagerberg P. 2018, Negative Consequences of Low Energy Availability in Natural Male Bodybuilding: A Review, Int J Sport Nutr Exerc Metab 28(4):385-402 (abstract: 'prolonged EA < 25 kcal/kg FFM results in muscle loss, hormonal imbalances...'; 'A more tempered approach (EA > 25 kcal/kg FFM)') - https://doi.org/10.1123/ijsnem.2016-0332; Koehler et al. 2016, J Sports Sci - https://doi.org/10.1080/02640414.2016.1142109",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "nutrition_surplus_size",
+      "problem": "The starting surplus band comes from Iraki 2019, where +10-20% is paired with a gain of about 0.25-0.5% BW/week (about 1-2% BW/month) and +5-10% is paired with about 0.25%/week (about 1%/month). Forge pairs these surpluses with the stricter Pyramid rate caps (intermediate 0.5-1.0%/month, advanced <= 0.5%/month), which are about half as fast. Starting at the band midpoint (+15% or +7.5%) is therefore likely to overshoot the rate cap from the first weeks, and the 14-day cadence and 10% step limits in nutrition_adjustment_cadence slow the correction.",
+      "correction": "Start every lifter at the bottom of the Iraki band (noviceIntermediateStartSurplusPct = 10; advancedStartSurplusPct = 5). For intermediate and advanced users, also cap the starting surplus at advancedMaxSurplusKcal = 300. Iraki cite Garthe 2013 for a 200-300 kcal/day surplus in highly trained athletes. Let the weight-trend engine raise the surplus only if the 4-week rate is below the band.",
+      "source": "Iraki et al. 2019, Sports (Basel) 7(7):154, Table 1 and text ('a 200-300 kcal per day surplus in highly trained athletes might be more appropriate than 500 kcal'; advanced lifters 'aim for the lower end') - https://doi.org/10.3390/sports7070154 (full text PMC6680710)",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "nutrition_protein_distribution",
+      "problem": "The rule's own numbers cannot reach the protein targets. The minimum of 3 meals x 0.55 g/kg gives at most 1.65 g/kg/day, so the cut default of 2.2 g/kg and the maintenance default of 1.8 g/kg cannot be met at 3 meals within the stated per-meal range. Schoenfeld & Aragon, the origin of the 0.4-0.55 g/kg figure, derived it over a minimum of four meals: 0.4 x 4 = 1.6, and 0.55 x 4 = 2.2.",
+      "correction": "Set minProteinMealsPerDay = 4 (keep 3 as an allowed user choice). Compute perMealGPerKg = dailyTargetGPerKg / mealsPerDay. Show the 0.4-0.55 g/kg band only as guidance, and suggest an extra protein feeding when dailyTarget / meals > 0.55.",
+      "source": "Schoenfeld BJ, Aragon AA 2018, How much protein can the body use in a single meal for muscle-building?, J Int Soc Sports Nutr 15:10 (abstract: '0.4 g/kg/meal across a minimum of four meals ... would necessitate a maximum of 0.55 g/kg/meal') - https://doi.org/10.1186/s12970-018-0215-1; Aragon et al. 2026 ISSN position stand (restates 'at least 4 meals') - https://doi.org/10.1080/15502783.2026.2740266",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "photo_bf_accuracy_limits",
+      "problem": "The display half-width of +/-5 points is narrower than the best-case 95% limits of agreement (-5.5 to +4.7) reported for a purpose-built, validated CNN under standardised capture. Forge uses an unvalidated general LLM, whose error can only be larger. The rule also calls feeding the point estimate into the low-body-fat block 'conservative', but it is not: with the LoA above, a point estimate of 10% is compatible with a true value of about 4.5%, so the block (< 8% male) would not fire. The Majmudar sample was general adults (BMI 18.5-51.6), not lean lifters, so its accuracy at the low end is not established.",
+      "correction": "Set displayRangeHalfWidthPctPoints >= 6, rounded outward to whole numbers, since an unvalidated method cannot beat the best validated LoA. In safety_low_body_fat_no_deficit, compare the lower bound (pointEstimate - 5.5) with the block and caution thresholds for photo estimates. For DXA, BIA or skinfold estimates, compare the point estimate. Remove the word 'conservatively' unless this change is made.",
+      "source": "Majmudar et al. 2022, NPJ Digit Med 5:79 (abstract: 'LOA -5.5% to +4.7%'; n=134, BMI 18.5-51.6) - https://doi.org/10.1038/s41746-022-00628-3",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "nutrition_surplus_rate_by_training_age",
+      "problem": "The cited source does not define training stages by years. It defines them by how fast the lifter progresses (novice: most loads go up week to week; intermediate: month to month; advanced: progress visible only over months or a year). The rule's year bands also leave a gap: intermediate is '2-4 years' (intermediateMaxTrainingYears = 4) but advanced is '5+ years', so 4-5 years matches no band. The same page also gives newer, higher Morgan figures (beginner 2%, novice 1.5%, intermediate 1%, advanced 0.5% per month); the rule should say it uses the older book ranges on purpose.",
+      "correction": "Classify by progression rate first (as the source does), with years only as a fallback: novice < 2 y, intermediate >= 2 y and < 5 y, advanced >= 5 y (set intermediateMaxTrainingYears = 5 with an exclusive upper bound). State that the book ranges (novice 1-1.5, intermediate 0.5-1, advanced < 0.5 %BW/month) are used, not the author's updated 2/1.5/1/0.5% figures.",
+      "source": "Morgan A., Updated bulking guidelines, RippedBody (quotes the Muscle and Strength Pyramid book ranges and gives progression-based definitions) - https://rippedbody.com/updated-bulking-guidelines/",
+      "severity": "low"
+    },
+    {
+      "ruleId": "nutrition_protein_surplus_maintenance",
+      "problem": "The rule says the 2.2 g/kg upper figure 'was not checked against the paper'. It is in the paper: break point 1.62 g/kg/d, 95% CI 1.03 to 2.20, and the authors say ~2.2 g/kg/d 'may be prudent' for maximising gains. The rule leaves out that the break point itself was not statistically significant (p = 0.079), which matters because the rule is marked 'strong' and the user message says extra protein 'adds little' above about 1.6 g/kg.",
+      "correction": "Replace the caveat with: 'Morton 2018: break point 1.62 g/kg/d (95% CI 1.03-2.20; p = 0.079); authors suggest ~2.2 g/kg/d for those maximising gains.' Keep minGPerKg 1.6, defaultGPerKg 1.8 and maxGPerKg 2.2. Soften the user message to 'Most people get nearly all the benefit by about 1.6-2.2 g per kg.'",
+      "source": "Morton et al. 2018, Br J Sports Med 52:376-384 (full text PMC5867436: 'break point=1.62 (1.03, 2.20) g/kg/day'; 'p=0.079'; 'it may be prudent to recommend ~2.2 g protein/kg/d') - https://doi.org/10.1136/bjsports-2017-097608",
+      "severity": "low"
+    },
+    {
+      "ruleId": "nutrition_protein_deficit",
+      "problem": "The rule pairs Helms 2014's FFM range (2.3-3.1 g/kg FFM) with ISSN 2026's body-weight range (1.9-3.2 g/kg BW). These come from different analyses and do not convert into each other: ISSN 2026 pairs 1.9-3.2 g/kg BW with 2.5-4.2 g/kg FFM. ISSN 2026 also states that the upper end is mainly supported in lean, resistance-trained people and may not apply at higher body fat. Roberts 2020 recommend 1.8-2.7 g/kg for physique athletes. The rule's bwMaxGPerKg of 3.2 is therefore the top of a range meant for lean lifters only.",
+      "correction": "Keep ffmMinGPerKg = 2.3 and ffmMaxGPerKg = 3.1 (Helms 2014, scaled upward with leanness and deficit size), and label them as Helms 2014. Keep bwMinGPerKg = 1.9 and bwMaxGPerKg = 3.2 labelled ISSN 2026, but only allow bw targets above 2.7 g/kg (bwUpperForNonLeanGPerKg = 2.7, per Roberts 2020) when body fat is in the lean tier (male < 12% / female < 22%).",
+      "source": "Aragon et al. 2026, ISSN position stand: diets for body weight reduction, J Int Soc Sports Nutr ('1.9-3.2 g/kg BW, or 2.5-4.2 g/kg FFM'; 'upper end of these ranges is primarily supported in lean, resistance-trained populations') - https://doi.org/10.1080/15502783.2026.2740266 (PMC13665703); Helms et al. 2014, IJSNEM - https://doi.org/10.1123/ijsnem.2013-0054; Roberts et al. 2020 - https://doi.org/10.2478/hukin-2019-0096",
+      "severity": "low"
+    },
+    {
+      "ruleId": "training_rest_intervals",
+      "problem": "The rule says 'Schoenfeld 2016 found 3-min rest beat 1-min rest for strength and hypertrophy'. For hypertrophy, only anterior-thigh thickness was significantly greater (triceps was a trend, p = 0.06, and elbow flexors showed no difference). The isolation default of 60-120 s and the 60 s minimum are consistent with ACSM 2009 (1-2 min for hypertrophy) and Singer 2024. The 3-5 min heavy-strength default is consistent with ACSM 2009 for 1-6 RM loading.",
+      "correction": "Change the text to: 'Schoenfeld 2016 (n=21 trained men, 8 wk): 3-min rest gave greater 1RM squat and bench gains and greater anterior-thigh thickness than 1-min; triceps trend (p=0.06).' No change to the numeric params.",
+      "source": "Schoenfeld et al. 2016, J Strength Cond Res 30(7):1805-1812 - https://doi.org/10.1519/JSC.0000000000001272; ACSM 2009 position stand - https://doi.org/10.1249/MSS.0b013e3181915670",
+      "severity": "low"
+    },
+    {
+      "ruleId": "training_load_progression_cap",
+      "problem": "The 10% single-session cap matches the top of ACSM's 2-10% step. But on light fixed-increment implements, the smallest available jump is often well over 10% (e.g. a 2.5 kg step from 10 kg dumbbells is 25%), so the rule as written can never suggest a load increase on those exercises. ACSM's trigger is 'one to two repetitions over the desired number' at the current load, so reps are the progression variable until a load step fits.",
+      "correction": "If smallestIncrementPct > maxLoadIncreasePct (10), do not block. Progress reps (double progression) until the user exceeds the top of the rep range by 2 (repsOverTargetToProgressMax = 2), then allow the smallest available increment even if it exceeds 10%, and reset reps to the bottom of the range. Add the param allowSmallestIncrementAboveCap = 1.",
+      "source": "ACSM 2009, Progression models in resistance training for healthy adults, Med Sci Sports Exerc 41(3):687-708 (abstract: '2-10% increase in load be applied when the individual can perform the current workload for one to two repetitions over the desired number') - https://doi.org/10.1249/MSS.0b013e3181915670",
+      "severity": "low"
+    },
+    {
+      "ruleId": "safety_breastfeeding_no_deficit",
+      "problem": "CDC states the extra 330-400 kcal/day relative to the mother's intake before pregnancy. The rule adds it to Forge's 'estimated maintenance', which may be a current (postpartum) estimate rather than a pre-pregnancy baseline.",
+      "correction": "Energy target = pre-pregnancy maintenance intake (if logged or estimated from pre-pregnancy weight) + 330-400 kcal/day. If no pre-pregnancy baseline exists, use current estimated maintenance + 330-400 kcal and label it as an approximation.",
+      "source": "CDC, Maternal Diet - Breastfeeding Special Circumstances ('An additional 330 to 400 kilocalories (kcal) per day is recommended for well-nourished, breastfeeding mothers', compared with pre-pregnancy intake) - https://www.cdc.gov/breastfeeding-special-circumstances/hcp/diet-micronutrients/maternal-diet.html",
+      "severity": "low"
+    }
+  ]
+}

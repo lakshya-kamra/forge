@@ -1,0 +1,343 @@
+{
+  "meta": {
+    "compiledOn": "2026-11-17",
+    "author": "GVS = Geoffrey Verity Schofield, YouTube channel https://www.youtube.com/@GVS (channel id UCObA5o3mcc1felIMAv6cukw)",
+    "method": "We read titles, publish dates, descriptions and chapter lists from each video's YouTube watch page. Transcripts and comments could not be retrieved. For the 2025 creator tier list, we read the placements from the video's own storyboard preview frames. During each creator's chapter the frames show an on-screen name caption next to the tier board, so each new pick can be seen landing in its row. The last 6 creators (Israetel to Galpin) were filmed outdoors without the board on screen. We matched their segment photos to the final full board shown in Final Thoughts. The video says the order inside a tier does not matter and that his top 3 are in the pinned comment, which we could not read.",
+    "verifiedVsSecondhand": "verified=true means we confirmed the placements from the video itself (frames, description or chapters). verified=false means only the title, topic and tier names are confirmed and the individual placements are unknown. We found no usable secondhand write-ups (Reddit, articles) of the placements: web search returned none, and reddit.com could not be fetched."
+  },
+  "tierLists": [
+    {
+      "title": "The Science Based Fitness Tier List (Who's Legit?)",
+      "url": "https://www.youtube.com/watch?v=HSPidQAsVmo",
+      "date": "2025-03-14",
+      "ranks": "Science-based fitness content creators and researchers, ranked by legitimacy. On-screen title: 'The Science Based Content Creator Tier List'. Scale is S>A>B>C>D. His 10 criteria, shown on screen: 1 research and its quality; 2 'DYEL, bro?' (does the person lift and have a physique); 3 reasonable/nuance vs dogmatism; 4 how they react to criticism and whether they can change their mind; 5 science used as marketing (clickbait, drama, lab coats, rage bait); 6 educational background; 7 integrity/honesty; 8 selling out; 9 practical experience; 10 ratio of great to good to bad takes.",
+      "tiers": {
+        "S": ["Jeff Nippard", "Dr. Eric Helms", "Eric Bugenhagen", "Data Driven Strength Guys", "Kassem Hansen", "Lyle McDonald", "Joe 'Hypertrophy Coach' Bennett", "House Of Hypertrophy", "Greg Nuckols", "Jonathan Warren"],
+        "A": ["Dr. Eric Trexler", "Chris Barakat", "TNF", "Dr. Andy Galpin"],
+        "B": ["Dr. Brad Schoenfeld", "Menno Henselmans", "Jeremy Ethier", "Dr. Pak", "Dr. Layne Norton"],
+        "C": ["ScientificSnitch", "Chris Beardsley", "Dr. Milo Wolf", "Dr. Mike Israetel"],
+        "D": ["Dr. Andrew Huberman", "Ryan Humiston"]
+      },
+      "verified": true,
+      "notes": "The 25 placements match the 25 creator chapters. We watched the first 19 land on the board during their own segments. The last 6 (Israetel C, Nuckols S, Barakat A, Warren S, TNF A, Galpin A) were matched by segment photo to the final board. A caption in Chris Beardsley's segment reads 'Also his buddy Paul Carter is D tier. If you block people that much for no reason...automatic D tier.' This was said verbally; Paul Carter is not on the board. Israetel's chapter is the longest (24:21-28:40). The description links a Lyle McDonald critique of Israetel and Kassem Hansen's Instagram 'rack pull debunk' of Milo Wolf. Later context: GVS posted 'The Jeff Nippard Situation Just Got WILD... (LATEST UPDATE)' on 2025-08-15 (https://www.youtube.com/watch?v=L10lyWplTFY). We did not verify what it says, and Nippard's S placement predates it. The reaction video 'Mob Lawyers for the \"Science Based\" Mafia' by atlaspowershrugged (2025-03-20, https://www.youtube.com/watch?v=pvtBaewc_ek) is based on this list. We verified it exists but not what it says."
+    },
+    {
+      "title": "The Hypertrophy Tier List Tier List (BEST TO WORST)",
+      "url": "https://www.youtube.com/watch?v=-rxymhS6zhE",
+      "date": "2024-07-05",
+      "ranks": "Other creators' hypertrophy tier lists (a tier list of tier lists, per the description). The board uses S, A, B, C, D and F rows.",
+      "tiers": {},
+      "verified": false,
+      "notes": "The board is too low-resolution in the preview frames to identify entries. One verified on-screen caption near the end reads 'Can Nippard regain the throne? Find out next year when I do my tier list tier list tier list'. This suggests Nippard's tier lists were not placed at the top, but that is an inference. Individual placements are unverified."
+    },
+    {
+      "title": "Which MUSCLES Make You Look JACKED? (Tier List)",
+      "url": "https://www.youtube.com/watch?v=3SlV9xbIkH8",
+      "date": "2023-01-03",
+      "ranks": "Muscle groups, by how much they contribute to looking muscular. The description mentions triceps, biceps, chest, glutes and calves.",
+      "tiers": {
+        "Tier 1: Supremely Stacked": [],
+        "Tier 2: Packed to The Max": [],
+        "Tier 3: Yiggity Yacked": [],
+        "Tier 4: Jiggity Jacked": [],
+        "Tier 5: No.": []
+      },
+      "verified": false,
+      "notes": "Tier names come from the chapters (verified). Which muscle went into which tier is unverified."
+    },
+    {
+      "title": "How I Chose My Gym (TIER LIST)",
+      "url": "https://www.youtube.com/watch?v=IizB4HBjJq4",
+      "date": "2022-12-22",
+      "ranks": "Factors that matter when choosing a gym. Tiers 1 to 5, where Tier 1 matters most.",
+      "tiers": {},
+      "verified": false,
+      "notes": "Only the topic and the 5-tier structure are verified, from the description and chapters."
+    },
+    {
+      "title": "The Hypertrophy Exercise Tier List",
+      "url": "https://www.youtube.com/watch?v=HlIeoi42cqI",
+      "date": "2022-05-07",
+      "ranks": "The description says it covers 'what actually matters for hypertrophy when choosing your exercises', meaning exercise-selection factors rather than named exercises. Tiers 1 to 5.",
+      "tiers": {},
+      "verified": false,
+      "notes": "Placements are unverified. The preview frames are only 160x90."
+    },
+    {
+      "title": "The Hypertrophy PROGRESSIVE OVERLOAD Tier List",
+      "url": "https://www.youtube.com/watch?v=y9_66V4CJeM",
+      "date": "2021-09-03",
+      "ranks": "Methods of progressive overload for hypertrophy. Tiers 1 to 5, plus a chapter titled 'Don't Use ALL Of These At Once!'.",
+      "tiers": {},
+      "verified": false,
+      "notes": "Placements are unverified."
+    },
+    {
+      "title": "THE ULTIMATE MUSCLE GROWTH TIER LIST (What Matters...And What Doesn't)",
+      "url": "https://www.youtube.com/watch?v=qnNBs01etg0",
+      "date": "2021-07-28",
+      "ranks": "Factors that drive muscle growth, ranked by importance.",
+      "tiers": {
+        "Tier 1 ABSOLUTELY CRUCIAL": [],
+        "Tier 2 PRETTY IMPORTANT": [],
+        "Tier 3 KIND OF A THING": [],
+        "Tier 4 MEH": [],
+        "Tier 5 WHO CARES": []
+      },
+      "verified": false,
+      "notes": "Tier names are verified from the chapters, but not which factors went where. The description links a Weightology testosterone article and a Stronger By Science bar-speed article."
+    },
+    {
+      "title": "The Hypertrophy Technical Rating Tier List (For Muscle Growth Training Plans)",
+      "url": "https://www.youtube.com/watch?v=-XPammxbh2o",
+      "date": "2021-06-18",
+      "ranks": "Exercises, by technical rating (how technically demanding they are). Uses 5 factors: precision, mobility, motor units, coordination and stabilization. Tiers 1 to 5.",
+      "tiers": {},
+      "verified": false,
+      "notes": "Only the factors and structure are verified, from the chapters. Exercise placements are unverified."
+    },
+    {
+      "title": "SUPPLEMENTS TIER LIST (Plus, the ONLY one I take)",
+      "url": "https://www.youtube.com/watch?v=axB--k_5voI",
+      "date": "2020-03-30",
+      "ranks": "Supplements, and how they compare with the basics.",
+      "tiers": {
+        "Tier 1": ["food", "water", "shelter", "a place to lift and live"],
+        "Tier 2": ["education/knowledge", "training plans", "coaching (if good)"],
+        "Tier 3": ["multivitamin", "casein", "whey", "fish oil", "meal replacement (Zhi20)", "creatine"],
+        "Tier 4": ["pre-workout", "pro/prebiotics", "ZMA (he notes it might belong in tier 5)", "curcumin", "vitamin D3", "beta-alanine"],
+        "Tier 5": ["glutamine", "raspberry ketones", "test boosters", "weight gainers", "most fat-loss supplements", "protein bars", "BCAAs", "CLA", "dextrose", "green coffee bean extract", "elk antler spray", "nitric oxide", "tribulus terrestris"]
+      },
+      "verified": true,
+      "notes": "Taken directly from the video description. He calls tier 3 'proven to work, and are moderately effective' but not essential. The description says creatine belongs in tier 3 ('or creatine (I forgot)'). This list is from 2020."
+    },
+    {
+      "title": "15 CRIMINALLY Underrated Fitness YouTubers (related ranking, not a tier list)",
+      "url": "https://www.youtube.com/watch?v=7O9WD4Lx5Kc",
+      "date": "2021-01-29",
+      "ranks": "Small or medium fitness channels he recommends, numbered from 15 to 1.",
+      "tiers": {
+        "ranked_1_to_15": ["#1 (unnamed joke entry)", "#2 Natural Hypertrophy", "#3 Alec Enkiri", "#4 Curlean-X", "#5 SSD Abel", "#6 Brawny King Fitness", "#7 Dr. Swole", "#8 Ben Carpenter", "#9 Fitlabb", "#10 The Swolefessor", "#11 Micha Shultz", "#12 The Strength Classroom / Alexander Bromley", "#13 Revival Fitness", "#14 Real Natural Bodybuilding", "#15 The Last Natural"],
+        "honorableMentions": ["Izzy Narvaez", "Jack PGM", "PowerWeightTraining", "Natural Gallant Bodybuilding", "Jamal Browner", "Josh Kardos", "Magnus Bulkan"]
+      },
+      "verified": true,
+      "notes": "From the description and chapters. This list is about general recommendations, not scientific rigor."
+    },
+    {
+      "title": "My Top 10 Favorite Fitness YouTubers (related ranking, not a tier list)",
+      "url": "https://www.youtube.com/watch?v=dpnC0XGMjEc",
+      "date": "2021-03-23",
+      "ranks": "His favorite fitness channels.",
+      "tiers": {
+        "linkedChannels_order_unverified": ["AlphaDestiny", "Vitruvian Physique", "MPMD (More Plates More Dates)", "Alexander Bromley", "Renaissance Periodization", "Steve Shaw", "Alec Enkiri", "Natural Hypertrophy", "Jeff Nippard", "Sean Nalewanyj"]
+      },
+      "verified": false,
+      "notes": "The 10 channels are verified from the description links. Their numeric rank is unverified because the chapters list numbers only."
+    },
+    {
+      "title": "Rate a Fitness YouTuber: Jeff Nippard (related rating, not a tier list)",
+      "url": "https://www.youtube.com/watch?v=koyXzHE0WHE",
+      "date": "2020-03-04",
+      "ranks": "Score for a single creator.",
+      "tiers": {
+        "score": ["Jeff Nippard: 94.5 total (content 60/60, video 8/10, knowledge and experience 9/10, physique 9/10, marketing 8.5/10)"]
+      },
+      "verified": true,
+      "notes": "From the description. His one gripe is that Nippard may overestimate RPE (reps in reserve). Other entries in the same series, verified by title only: Jeremy Ethier (https://www.youtube.com/watch?v=SJV4LsbmI8M, praised for apologizing and taking a video down after criticism), Christian Thibaudeau, Sean Nalewanyj."
+    }
+  ],
+  "trustedCreators": [
+    {
+      "name": "Jeff Nippard",
+      "channelName": "Jeff Nippard",
+      "channelUrl": "https://www.youtube.com/@JeffNippard",
+      "specialty": ["technique", "programming", "nutrition"],
+      "gvsTier": "S",
+      "why": "Ranked S in GVS's 2025 list. GVS scored him 94.5/100 in 2020 and praised him for linking studies to his claims. He is the best single source for exercise-technique tutorials with cited hypertrophy research, and he also publishes programs. GVS's one caveat is that his RIR/RPE estimates may be optimistic."
+    },
+    {
+      "name": "Dr. Eric Helms",
+      "channelName": "Team3DMJ (also Iron Culture Podcast, @IronCulturePodcast)",
+      "channelUrl": "https://www.youtube.com/@Team3DMJ",
+      "specialty": ["programming", "nutrition"],
+      "gvsTier": "S",
+      "why": "Ranked S by GVS. He is a PhD researcher and competitive natural bodybuilder, and co-founded Iron Culture with Omar Isuf (per that channel's description). He is the best source for natural-lifter programming and contest or diet nutrition. He has no large personal YouTube channel, so his content is on Team3DMJ and podcasts."
+    },
+    {
+      "name": "Greg Nuckols",
+      "channelName": "Stronger By Science",
+      "channelUrl": "https://www.youtube.com/@strongerbyscience",
+      "specialty": ["programming", "nutrition"],
+      "gvsTier": "S",
+      "why": "Ranked S by GVS. Stronger By Science publishes careful, nuanced research analysis on strength and hypertrophy programming, and GVS cites its articles in his own videos."
+    },
+    {
+      "name": "Data Driven Strength",
+      "channelName": "Data Driven Strength",
+      "channelUrl": "https://www.youtube.com/@DataDrivenStrength",
+      "specialty": ["programming"],
+      "gvsTier": "S",
+      "why": "Ranked S by GVS ('Data Driven Strength Guys'). The channel does research-driven discussion of training variables."
+    },
+    {
+      "name": "House of Hypertrophy",
+      "channelName": "House of Hypertrophy",
+      "channelUrl": "https://www.youtube.com/@HouseofHypertrophy",
+      "specialty": ["programming", "technique"],
+      "gvsTier": "S",
+      "why": "Ranked S by GVS. The channel summarizes hypertrophy studies, including exercise selection and range of motion."
+    },
+    {
+      "name": "Joe 'Hypertrophy Coach' Bennett",
+      "channelName": "Hypertrophy Coach",
+      "channelUrl": "https://www.youtube.com/@HypertrophyCoach",
+      "specialty": ["technique", "programming"],
+      "gvsTier": "S",
+      "why": "Ranked S by GVS. A good source for exercise execution, machine setup and practical hypertrophy coaching."
+    },
+    {
+      "name": "Lyle McDonald",
+      "channelName": "Lyle McDonald",
+      "channelUrl": "https://www.youtube.com/@lylemcdonaldisright",
+      "specialty": ["nutrition", "programming"],
+      "gvsTier": "S",
+      "why": "Ranked S by GVS. He is a long-standing authority on diet and fat-loss physiology. The handle is tagged as Lyle McDonald by another creator and its description fits him, but it is not officially confirmed. His blunt, combative style is a known trait."
+    },
+    {
+      "name": "Kassem Hansen",
+      "channelName": "N1 Education And Training (founded by Kassem Hansen)",
+      "channelUrl": "https://www.youtube.com/@N1education",
+      "specialty": ["technique"],
+      "gvsTier": "S",
+      "why": "Ranked S by GVS. N1 focuses on biomechanics and exercise execution. The channel title spells his name 'Hanson'."
+    },
+    {
+      "name": "Dr. Andy Galpin",
+      "channelName": "Andy Galpin",
+      "channelUrl": "https://www.youtube.com/@drandygalpin",
+      "specialty": ["programming"],
+      "gvsTier": "A",
+      "why": "Ranked A by GVS. He is an exercise physiologist, best for general physiology and training-principle background rather than hands-on lifting tutorials."
+    },
+    {
+      "name": "Dr. Eric Trexler",
+      "channelName": "unknown (no verified personal channel)",
+      "channelUrl": "",
+      "specialty": ["nutrition", "programming"],
+      "gvsTier": "A",
+      "why": "Ranked A by GVS. He is a researcher, but we found no clearly verified YouTube channel for him, so use him for reference only."
+    },
+    {
+      "name": "Dr. Brad Schoenfeld",
+      "channelName": "unknown (no personal YouTube channel found)",
+      "channelUrl": "",
+      "specialty": ["programming"],
+      "gvsTier": "B",
+      "why": "Ranked B by GVS. He is a leading hypertrophy researcher with many published studies on volume, load and frequency, but he appears mostly on other people's channels and podcasts."
+    },
+    {
+      "name": "Menno Henselmans",
+      "channelName": "Menno Henselmans",
+      "channelUrl": "https://www.youtube.com/@menno.henselmans",
+      "specialty": ["programming", "nutrition"],
+      "gvsTier": "B",
+      "why": "Ranked B by GVS. A research-literate hypertrophy and nutrition coach, also cited by GVS in his 2020 supplement tier list (on BCAAs)."
+    },
+    {
+      "name": "Jeremy Ethier",
+      "channelName": "Jeremy Ethier",
+      "channelUrl": "https://www.youtube.com/@JeremyEthier",
+      "specialty": ["technique", "programming"],
+      "gvsTier": "B",
+      "why": "Ranked B by GVS. His clear, animated technique tutorials are beginner-friendly. In 2020 GVS praised him for retracting a criticized video and apologizing."
+    },
+    {
+      "name": "Dr. Layne Norton",
+      "channelName": "Dr. Layne Norton",
+      "channelUrl": "https://www.youtube.com/@biolayne1",
+      "specialty": ["nutrition"],
+      "gvsTier": "B",
+      "why": "Ranked B by GVS. A PhD in nutritional sciences, strongest on protein, dieting and debunking nutrition myths."
+    },
+    {
+      "name": "Dr. Milo Wolf",
+      "channelName": "Dr. Milo Wolf",
+      "channelUrl": "https://www.youtube.com/@DrMiloWolf",
+      "specialty": ["programming"],
+      "gvsTier": "C",
+      "why": "Ranked C by GVS, who linked Kassem Hansen's critiques of Milo's rack-pull claims. Milo is a published hypertrophy researcher (lengthened partials, proximity to failure), so use his research summaries, but GVS rates his practical claims lower."
+    },
+    {
+      "name": "Dr. Mike Israetel",
+      "channelName": "Renaissance Periodization",
+      "channelUrl": "https://www.youtube.com/@RenaissancePeriodization",
+      "specialty": ["programming", "nutrition", "technique"],
+      "gvsTier": "C",
+      "why": "Ranked C by GVS, whose longest segment is on him and who linked a Lyle McDonald critique. RP's volume landmarks (MEV/MAV/MRV) and its many short exercise-technique videos are still widely used, but treat the entertainment and hot-take content with caution."
+    },
+    {
+      "name": "Dr. Andrew Huberman",
+      "channelName": "Andrew Huberman",
+      "channelUrl": "https://www.youtube.com/@hubermanlab",
+      "specialty": [],
+      "gvsTier": "D",
+      "why": "Ranked D by GVS. He is a neuroscientist, not a lifting specialist, and the segment's visuals include sponsored product imagery. Do not use him for training or nutrition guidance in Forge."
+    },
+    {
+      "name": "Alan Aragon",
+      "channelName": "unknown (no verified YouTube channel)",
+      "channelUrl": "",
+      "specialty": ["nutrition"],
+      "gvsTier": "unknown",
+      "why": "Not on GVS's list. He is a well-regarded evidence-based nutrition researcher and educator (Alan Aragon's Research Review). The only YouTube channel found under his name is unrelated."
+    },
+    {
+      "name": "Squat University",
+      "channelName": "Squat University",
+      "channelUrl": "https://www.youtube.com/@SquatUniversity",
+      "specialty": ["technique"],
+      "gvsTier": "unknown",
+      "why": "Not on GVS's list. A physical-therapy-oriented channel covering squat, deadlift and bench mechanics, mobility and pain troubleshooting. Good for technique and joint-friendly cues."
+    },
+    {
+      "name": "Alan Thrall",
+      "channelName": "Alan Thrall (Untamed Strength)",
+      "channelUrl": "https://www.youtube.com/@AlanThrall",
+      "specialty": ["technique"],
+      "gvsTier": "unknown",
+      "why": "Not on GVS's list. Practical barbell coaching; his how-to-deadlift and how-to-squat style tutorials are widely recommended for beginners."
+    },
+    {
+      "name": "Calgary Barbell",
+      "channelName": "Calgary Barbell",
+      "channelUrl": "https://www.youtube.com/@calgarybarbell",
+      "specialty": ["technique", "programming"],
+      "gvsTier": "unknown",
+      "why": "Not on GVS's list. A powerlifting coaching team with competition-lift technique breakdowns and programs."
+    },
+    {
+      "name": "Juggernaut Training Systems",
+      "channelName": "Juggernaut Training Systems",
+      "channelUrl": "https://www.youtube.com/@JuggernautTrainingSystems",
+      "specialty": ["technique", "programming"],
+      "gvsTier": "unknown",
+      "why": "Not on GVS's list. Strength-sport coaching with technique series for the squat, bench and deadlift, plus periodized programming."
+    },
+    {
+      "name": "Natural Hypertrophy",
+      "channelName": "Natural Hypertrophy",
+      "channelUrl": "https://www.youtube.com/@NaturalHypertrophy",
+      "specialty": ["programming"],
+      "gvsTier": "unknown",
+      "why": "Not on the 2025 science tier list. GVS ranked it #2 in his 2021 underrated-channels list and linked it among his favorite channels in 2021. Good for practical natural-lifter programming."
+    },
+    {
+      "name": "Geoffrey Verity Schofield (GVS)",
+      "channelName": "Geoffrey Verity Schofield",
+      "channelUrl": "https://www.youtube.com/@GVS",
+      "specialty": ["programming"],
+      "gvsTier": "unknown",
+      "why": "The author of these tier lists. He covers natural-lifter hypertrophy programming, exercise selection and progressive-overload strategy."
+    }
+  ]
+}

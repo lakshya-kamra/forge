@@ -1,0 +1,691 @@
+{
+  "id": "nsuns_531_lp_4day",
+  "name": "nSuns 5/3/1 LP (4-day)",
+  "author": "u/nSuns (Reddit)",
+  "isFree": true,
+  "category": "STRENGTH",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 4,
+  "sessionMinutes": 90,
+  "durationWeeks": null,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench"
+  ],
+  "summary": "A high-volume 5/3/1-style linear progression where each day pairs a main lift for 9 sets with a secondary lift for 8 sets. Training maxes go up weekly based on how many reps you get on the heavy single.",
+  "evidenceNote": "Very high volume: 17 sets of main lifts per session. On the 4-day version the bench pattern gets 26 sets a week (9 volume bench, 9 heavy bench, 8 close-grip) plus 8 OHP sets. Most sets sit well short of failure while the 1+ and final '+' sets are near-maximal. It suits intermediates coming off a novice program who can recover from long sessions. Known weaknesses: sessions are long, TM jumps based on one single can outrun real strength and lead to stalls, and accessory work is left entirely to the lifter.",
+  "sources": [
+    {
+      "title": "nSuns 531 LP spreadsheet (4, 5 and 6 day; author's Google Sheet)",
+      "url": "https://docs.google.com/spreadsheets/d/1O0scKzbV22jNs3yYcNYymon4fsY7b7PQbWPjstorM4o",
+      "kind": "spreadsheet"
+    },
+    {
+      "title": "nSuns LP (The Fitness Wiki, quotes and links the author's original r/Fitness post)",
+      "url": "https://thefitness.wiki/routines/nsuns-lp/",
+      "kind": "wiki"
+    },
+    {
+      "title": "Original r/Fitness post by u/nSuns (archive)",
+      "url": "https://archive.is/2017.01.27-015129/https://www.reddit.com/r/Fitness/comments/5icyza/2_suns531lp_tdee_calculator_and_other_items_all/",
+      "kind": "article"
+    }
+  ],
+  "schedule": "4 days a week per the spreadsheet: Monday volume bench + OHP, Tuesday squat + sumo deadlift, Thursday heavy bench + close-grip bench, Friday deadlift + front squat. Warm up to the first lift, do all its sets, then the second lift, then accessories.",
+  "progression": {
+    "type": "PERCENT_TM",
+    "description": "Training max (TM) starts at 90% of your 1RM; the sheet rounds the TM up (CEILING) to 5 lb or 2.5 kg, and rounds every set weight (MROUND) to 5 lb or 2.5 kg. Each week, the '1+' set (95% x1+) on each T1 day sets that lift's TM change for the next week: 0-1 reps no increase; 2-3 reps +5 lb; 4-5 reps +5-10 lb; more than 5 reps +10-15 lb. The rule is the same for every lift (no upper/lower split in the source). In kg (approximate conversion, not in the source: 5 lb -> 2.5 kg, 10 lb -> 5 kg, 15 lb -> 7.5 kg): 0-1 reps +0; 2-3 reps +2.5 kg; 4-5 reps +2.5-5 kg; 6+ reps +5-7.5 kg. The bench TM is driven by Thursday's 1+ set (Monday's volume bench has no 1+ set, only a final 8+). The spreadsheet also says to increase the TM each week if you completed all the reps, and that you enter the new TM manually. T2 lifts use percentages of the related main lift's TM (OHP from OHP, sumo deadlift from deadlift, close-grip bench from bench, front squat from squat).",
+    "incrementKg": {
+      "upper": 2.5,
+      "lower": 2.5
+    },
+    "deload": "No scheduled deload in the author's spreadsheet. A 0-1 rep result on the 1+ set means no TM increase that week; no further reset rule is given in the official sheet."
+  },
+  "days": [
+    {
+      "name": "Monday",
+      "focus": "Volume bench + OHP",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench",
+          "sets": 9,
+          "repsLow": 4,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 8,
+              "percent": 0.65,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 4,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 4,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 4,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.8,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 7,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.65,
+              "of": "TM",
+              "amrap": true
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.85
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "Volume bench. Percent of bench TM. The last set is 8+.",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "OHP",
+          "sets": 8,
+          "repsLow": 3,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 6,
+              "percent": 0.5,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 7,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 4,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.7
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2. Percent of OHP TM.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Assistance: Chest, Arms, Back",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Spreadsheet: assistance uses bodybuilding sets/reps chosen to your needs; sets/reps here are a placeholder, not from the source.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Tuesday",
+      "focus": "Squat + Sumo deadlift",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 9,
+          "repsLow": 1,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 1,
+              "percent": 0.95,
+              "of": "TM",
+              "amrap": true
+            },
+            {
+              "reps": 3,
+              "percent": 0.9,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.8,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.65,
+              "of": "TM",
+              "amrap": true
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.95
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T1. Percent of this lift's TM. Sets marked AMRAP are '+' sets; the 95% x1+ set decides next week's TM change.",
+          "optional": false
+        },
+        {
+          "exerciseId": "sumo_deadlift",
+          "name": "Sumo Dead",
+          "sets": 8,
+          "repsLow": 3,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": 0.5,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 7,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 4,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.7
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2. Percent of deadlift TM.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Assistance: Legs, Abs",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Assistance sets/reps are a placeholder, not from the source.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Thursday",
+      "focus": "Heavy bench + Close-grip bench",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench",
+          "sets": 9,
+          "repsLow": 1,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 1,
+              "percent": 0.95,
+              "of": "TM",
+              "amrap": true
+            },
+            {
+              "reps": 3,
+              "percent": 0.9,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.8,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.65,
+              "of": "TM",
+              "amrap": true
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.95
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T1. Percent of this lift's TM. Sets marked AMRAP are '+' sets; the 95% x1+ set decides next week's TM change.",
+          "optional": false
+        },
+        {
+          "exerciseId": "close_grip_bench_press",
+          "name": "C.G.Bench",
+          "sets": 8,
+          "repsLow": 3,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 6,
+              "percent": 0.4,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.5,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 7,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 4,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.6,
+              "of": "TM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.6
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2. Percent of bench TM.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Assistance: Arms, Other",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Assistance sets/reps are a placeholder, not from the source.",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Friday",
+      "focus": "Deadlift + Front squat",
+      "exercises": [
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 9,
+          "repsLow": 1,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 1,
+              "percent": 0.95,
+              "of": "TM",
+              "amrap": true
+            },
+            {
+              "reps": 3,
+              "percent": 0.9,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.85,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.8,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.75,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.7,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.65,
+              "of": "TM",
+              "amrap": true
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.95
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T1. Percent of this lift's TM. Sets marked AMRAP are '+' sets; the 95% x1+ set decides next week's TM change.",
+          "optional": false
+        },
+        {
+          "exerciseId": "front_squat",
+          "name": "Front Squat",
+          "sets": 8,
+          "repsLow": 3,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": 0.35,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.45,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": 0.55,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": 0.55,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 7,
+              "percent": 0.55,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 4,
+              "percent": 0.55,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 6,
+              "percent": 0.55,
+              "of": "TM",
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": 0.55,
+              "of": "TM",
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "PERCENT_TM",
+            "value": 0.55
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2. Percent of squat TM.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Assistance: Back, Abs",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Assistance sets/reps are a placeholder, not from the source.",
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "notes": "All sets, reps, percentages and '+' (AMRAP) markers checked cell by cell against the '4 Day LP' tab of the author's spreadsheet (the '+' is in the cell number format). The 4-day version has no T1 OHP day, so the per-lift '1+' rule does not cover OHP; the sheet's general line (increase your TM if you completed all the reps) is the only guidance. Rest periods are not given in the source. Assistance areas per day are from the sheet ('Chest, Arms, Back', 'Legs, Abs', 'Arms, Other', 'Back, Abs'); the sheet says assistance uses bodybuilding sets/reps fitted to your needs, so the 3 x 8-15 here is a placeholder. sessionMinutes is an estimate.",
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://docs.google.com/spreadsheets/d/1O0scKzbV22jNs3yYcNYymon4fsY7b7PQbWPjstorM4o",
+      "https://thefitness.wiki/routines/nsuns-lp/"
+    ],
+    "changes": [
+      "Front squat set 2 percent was the float artefact 0.44999999999999996; set to 0.45 (sheet formula H14*0.45).",
+      "incrementKg.lower changed from 5 to 2.5: the sheet's TM rule is rep-based and identical for all lifts (2-3 reps on the 1+ set = +5 lb, about 2.5 kg); there is no 5 kg lower-body default in the source.",
+      "Progression description: added the sheet's TM rounding (CEILING) and set-weight rounding (MROUND to 5 lb / 2.5 kg), noted the kg values are an approximate conversion, noted bench TM is driven by Thursday's 1+ set, and removed the reference to incline bench (not in the 4-day version).",
+      "evidenceNote: replaced the 5-day bench volume figure with the 4-day count (26 bench-pattern sets plus 8 OHP sets per week).",
+      "notes: recorded that rest periods are not in the source and listed the sheet's assistance areas.",
+      "All exercises, day order (Mon/Tue/Thu/Fri), sets, reps, percentages, AMRAP flags (Mon bench 8+, T1 1+ and last sets 5+/5+/3+, no AMRAP on T2), TM = 90% of 1RM, progression table, absence of a deload rule, and isFree=true (public Google Sheet) were confirmed against the source unchanged. The original Reddit post could not be fetched (archive.is and Wayback blocked); the Fitness Wiki quotes the same progression rule."
+    ]
+  }
+}

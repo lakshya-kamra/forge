@@ -1,0 +1,3886 @@
+{
+  "meta": {
+    "version": 1,
+    "generated": "2026-11-17",
+    "scope": "Lower body, hinge, core and power exercises for Forge procedural skeleton animation (FK + 2-bone IK).",
+    "conventions": {
+      "units": "degrees; anatomical standing = 0",
+      "trunkFromVertical": "forward lean of the pelvis-to-neck line from gravity vertical, positive forward; null for supine/prone/seated where bodyPlane is given instead (optional trunkFromHorizontal: positive = head end higher than hips)",
+      "hipFlexion": "thigh flexion relative to trunk (negative = extension). When spineFlexion is present, hipFlexion is thigh relative to pelvis.",
+      "kneeFlexion": "0 = straight",
+      "ankleDorsiflexion": "shin forward of perpendicular to the foot; negative = plantarflexion. For machines it is relative to the footplate.",
+      "shoulderFlexion": "upper arm raised forward relative to the trunk (0 at sides, 180 overhead)",
+      "shoulderAbduction": "upper arm raised sideways in the frontal plane",
+      "shoulderHorizontalAbduction": "upper arm angle from the frontal plane, positive = elbows behind torso; null when not meaningful",
+      "elbowFlexion": "0 = straight",
+      "spineFlexion": "optional; total lumbar+thoracic flexion, 0 = neutral",
+      "hipAbduction": "optional per-keyframe or exercise-level (hipAbductionDeg) thigh abduction from midline per side",
+      "asymmetric": "when asymmetric=true, leg joint values are objects {left, right}; leadLeg names the working/lead leg. Mirror sides on alternate reps where noted.",
+      "widths": "stanceWidthSW / gripWidthSW are multiples of shoulder (biacromial) width; stance measured between heel centres, grip between hands",
+      "keyframes": "t in [0,1] over one rep; t spacing follows the tempo; first and last frames are the same pose. Interpolate with ease-in-out per segment.",
+      "tempo": "seconds; order says which phase comes first; pauseAt says where the pause sits",
+      "consistency": "For floor-standing frames with feet flat, trunkFromVertical = ankleDorsiflexion - kneeFlexion + hipFlexion (sagittal approximation). Wide stances (sumo, low bar) add hip abduction/external rotation, so drive the pelvis from trunkFromVertical and solve legs with IK to the fixed foot contacts.",
+      "ik": "ikLimbs lists limbs whose end effector is pinned by fixedContacts and should be solved with 2-bone IK; other limbs use FK from the joint angles.",
+      "angleBasis": "measured | measured+derived | measured+coaching_estimate | coaching_estimate"
+    },
+    "unverifiedNote": "Values marked angleBasis 'coaching_estimate' are standard coaching ranges chosen by the author for animation, not taken from a measured study. Shoulder width (SW) multiples derived from centimetre values assume biacromial width ~40 cm (an assumption).",
+    "sources": [
+      {
+        "id": "S1",
+        "cite": "Glassbrook DJ, et al. The high-bar and low-bar back-squats: a biomechanical analysis. J Strength Cond Res 2019;33(Suppl 1):S1-S18 (accepted manuscript, AUT repository).",
+        "url": "https://openrepository.aut.ac.nz/handle/10292/12171",
+        "used": "Table 4 sagittal peak-flexion 'actual' (interior) angles at 74-83% 1RM. Olympic weightlifters, high bar: hip 69+-7, knee 54+-7, ankle ROM 33+-4. Powerlifters, low bar: hip 59+-9, knee 62+-11, ankle ROM 33+-6. Hip = anterior angle thorax-to-thigh (acromion, greater trochanter, lateral epicondyle markers). Converted here as flexion = 180 - interior angle; ankleDorsiflexion taken as the ankle ROM. Lifters wore heeled weightlifting shoes."
+      },
+      {
+        "id": "S2",
+        "cite": "Glassbrook DJ, et al. A review of the biomechanical differences between the high-bar and low-bar back-squat. J Strength Cond Res 2017;31(9):2618-2634.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28570490/",
+        "used": "Qualitative: high bar = more knee flexion, less hip flexion, more upright torso; low bar = more forward lean, greater erector spinae, adductor and gluteal activity; high bar = greater quadriceps activity."
+      },
+      {
+        "id": "S3",
+        "cite": "Escamilla RF, et al. A three-dimensional biomechanical analysis of sumo and conventional style deadlifts. Med Sci Sports Exerc 2000;32(7):1265-1275.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/10912892/",
+        "used": "Abstract (read via Duke Scholars record): stance 70+-11 cm sumo vs 32+-8 cm conventional; foot turnout 42+-8 vs 14+-6 deg; grip 47+-4 vs 55+-10 cm; at liftoff and knee passage sumo trunk 5-10 deg more vertical, thigh 11-16 deg more horizontal; conventional knees and hips ~12 deg more extended. A secondary summary (not the primary paper) gives knee interior angle at knee passage of ~158-159 deg (about 21-22 deg flexion) for both styles: treated as unverified."
+      },
+      {
+        "id": "S4",
+        "cite": "Gullett JC, et al. A biomechanical comparison of back and front squats in healthy trained individuals. J Strength Cond Res 2009;23(1):284-292.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/19002072/",
+        "used": "Qualitative: back squat produced higher knee compressive forces and knee extensor moments than front squat; muscle activity similar."
+      },
+      {
+        "id": "S5",
+        "cite": "Yavuz HU, et al. Kinematic and EMG activities during front and back squat variations in maximum loads. J Sports Sci 2015.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25630691/",
+        "used": "Qualitative: back squat showed significantly greater trunk lean than front squat with no knee kinematic differences. Exact degree values were not retrieved."
+      },
+      {
+        "id": "S6",
+        "cite": "Brazil A, et al. A comprehensive biomechanical analysis of the barbell hip thrust. PLoS One 2021.",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8006986/",
+        "used": "70% 1RM, 19 trained men: ROM hip 75+-19 deg, knee 21+-7 deg, pelvic-trunk 12+-21 deg; knee ~108+-8 deg and hip ~83+-16 deg flexed at peak hip extensor moment (early in the lift); mean lift time 0.83 s. Start/top absolute angles not reported."
+      },
+      {
+        "id": "S7",
+        "cite": "Sconce E, et al. Agreement between methods and terminology used to assess the kinematics of the Nordic hamstring exercise. J Sports Sci 2021.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34459716/",
+        "used": "Break-point angle 121.5+-10.4 deg and break-torque angle 126.0+-9.8 deg (as reported in search abstract). Read here as interior knee angle, i.e. roughly 54-60 deg knee flexion: the convention is our interpretation, not confirmed from the full text."
+      }
+    ]
+  },
+  "exercises": [
+    {
+      "id": "back_squat",
+      "name": "High-bar back squat",
+      "orientation": "STANDING",
+      "implement": "BARBELL",
+      "implementPlacement": "back rack, high: bar on upper trapezius just below C7, above the spine of the scapula",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_bar",
+        "bar_upper_traps"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.1,
+      "stanceWidthRangeSW": [
+        1.0,
+        1.2
+      ],
+      "footTurnoutDeg": [
+        15,
+        30
+      ],
+      "gripWidthSW": 1.6,
+      "gripWidthRangeSW": [
+        1.4,
+        1.8
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "standing, braced",
+          "trunkFromVertical": 3,
+          "bodyPlane": null,
+          "hipFlexion": 3,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral, thumbs around bar, wrists stacked over elbows",
+          "implementPosition": "on upper traps, vertically over midfoot, at shoulder height"
+        },
+        {
+          "t": 0.33,
+          "label": "mid-descent",
+          "trunkFromVertical": 37,
+          "bodyPlane": null,
+          "hipFlexion": 92,
+          "kneeFlexion": 75,
+          "ankleDorsiflexion": 20,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral",
+          "implementPosition": "over midfoot, moving straight down"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom (below parallel)",
+          "trunkFromVertical": 34,
+          "bodyPlane": null,
+          "hipFlexion": 127,
+          "kneeFlexion": 126,
+          "ankleDorsiflexion": 33,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral",
+          "implementPosition": "over midfoot, lowest point"
+        },
+        {
+          "t": 0.83,
+          "label": "mid-ascent (sticking region)",
+          "trunkFromVertical": 38,
+          "bodyPlane": null,
+          "hipFlexion": 96,
+          "kneeFlexion": 80,
+          "ankleDorsiflexion": 22,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral",
+          "implementPosition": "over midfoot, rising"
+        },
+        {
+          "t": 1.0,
+          "label": "standing, braced",
+          "trunkFromVertical": 3,
+          "bodyPlane": null,
+          "hipFlexion": 3,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral, thumbs around bar, wrists stacked over elbows",
+          "implementPosition": "on upper traps, vertically over midfoot, at shoulder height"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "hamstrings",
+        "lower_back",
+        "abs"
+      ],
+      "cues": [
+        "Big breath and brace before each descent",
+        "Knees travel forward and out over the toes",
+        "Sit straight down between the heels with chest up",
+        "Drive up keeping the bar over midfoot"
+      ],
+      "mistakes": [
+        "Knees caving inward (valgus) on the way up",
+        "Heels lifting or weight drifting to the toes",
+        "Hips shooting up first so the squat turns into a good morning"
+      ],
+      "angleBasis": "measured+coaching_estimate",
+      "sourceIds": [
+        "S1",
+        "S2"
+      ],
+      "angleNotes": "Bottom knee (126) and ankle (33) from S1 Olympic-weightlifter means. S1's hip (interior 69 -> flexion 111) gives trunk 18 deg, which in a 2D balance check puts the bar ~13 cm behind midfoot in flat shoes (S1 lifters wore heeled shoes), so hip flexion was raised to 127 (interior 53) to keep bar and system centre of mass over midfoot; trunk = ankle - knee + hip = 34. Intermediate frames are coaching estimates balanced the same way."
+    },
+    {
+      "id": "low_bar_squat",
+      "name": "Low-bar back squat",
+      "orientation": "STANDING",
+      "implement": "BARBELL",
+      "implementPlacement": "back rack, low: bar across rear delts on or just below the spine of the scapula",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_bar",
+        "bar_rear_delts"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.3,
+      "stanceWidthRangeSW": [
+        1.2,
+        1.5
+      ],
+      "footTurnoutDeg": [
+        20,
+        30
+      ],
+      "gripWidthSW": 1.5,
+      "gripWidthRangeSW": [
+        1.3,
+        1.8
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "standing, braced",
+          "trunkFromVertical": 8,
+          "bodyPlane": null,
+          "hipFlexion": 8,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 55,
+          "shoulderHorizontalAbduction": 45,
+          "elbowFlexion": 90,
+          "wristNotes": "wrists straight in line with forearm, thumb over or beside bar; bar weight on back not hands",
+          "implementPosition": "on rear delts, over midfoot"
+        },
+        {
+          "t": 0.33,
+          "label": "mid-descent, hips back",
+          "trunkFromVertical": 45,
+          "bodyPlane": null,
+          "hipFlexion": 94,
+          "kneeFlexion": 65,
+          "ankleDorsiflexion": 16,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 55,
+          "shoulderHorizontalAbduction": 45,
+          "elbowFlexion": 90,
+          "wristNotes": "straight",
+          "implementPosition": "over midfoot"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom (just below parallel)",
+          "trunkFromVertical": 41,
+          "bodyPlane": null,
+          "hipFlexion": 126,
+          "kneeFlexion": 118,
+          "ankleDorsiflexion": 33,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 55,
+          "shoulderHorizontalAbduction": 45,
+          "elbowFlexion": 90,
+          "wristNotes": "straight",
+          "implementPosition": "over midfoot, lowest point"
+        },
+        {
+          "t": 0.83,
+          "label": "mid-ascent (sticking region)",
+          "trunkFromVertical": 49,
+          "bodyPlane": null,
+          "hipFlexion": 106,
+          "kneeFlexion": 75,
+          "ankleDorsiflexion": 18,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 55,
+          "shoulderHorizontalAbduction": 45,
+          "elbowFlexion": 90,
+          "wristNotes": "straight",
+          "implementPosition": "over midfoot, rising"
+        },
+        {
+          "t": 1.0,
+          "label": "standing, braced",
+          "trunkFromVertical": 8,
+          "bodyPlane": null,
+          "hipFlexion": 8,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 55,
+          "shoulderHorizontalAbduction": 45,
+          "elbowFlexion": 90,
+          "wristNotes": "wrists straight in line with forearm",
+          "implementPosition": "on rear delts, over midfoot"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "glutes",
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "hamstrings",
+        "lower_back",
+        "abs"
+      ],
+      "cues": [
+        "Squeeze the bar into the back with elbows pulled back",
+        "Hips back and knees out at the same time",
+        "Keep the chest angle constant, do not let it collapse",
+        "Drive the upper back into the bar out of the hole"
+      ],
+      "mistakes": [
+        "Elbows flaring up so the bar rolls and loads the wrists",
+        "Chest dropping out of the bottom (good-morning squat)",
+        "Cutting depth above parallel"
+      ],
+      "angleBasis": "measured+derived",
+      "sourceIds": [
+        "S1",
+        "S2"
+      ],
+      "angleNotes": "Bottom knee (118) and ankle (33) from S1 powerlifter means; hip 126 (interior 54) is within one SD of S1's 59+-9 and was chosen so the bar stays over midfoot (S1 mean hip gives trunk 36 and bar ~4 cm behind midfoot). Trunk = ankle - knee + hip. Intermediate frames are coaching estimates balanced in a 2D model."
+    },
+    {
+      "id": "front_squat",
+      "name": "Front squat",
+      "orientation": "STANDING",
+      "implement": "BARBELL",
+      "implementPlacement": "front rack: bar on anterior delts against the throat, fingertips under bar, elbows high",
+      "fixedContacts": [
+        "feet_floor",
+        "bar_front_delts",
+        "fingers_bar"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.05,
+      "stanceWidthRangeSW": [
+        1.0,
+        1.2
+      ],
+      "footTurnoutDeg": [
+        15,
+        25
+      ],
+      "gripWidthSW": 1.2,
+      "gripWidthRangeSW": [
+        1.1,
+        1.3
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "standing, elbows up",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 90,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 145,
+          "wristNotes": "extended ~70-90 deg, bar on fingertips",
+          "implementPosition": "on front delts over midfoot"
+        },
+        {
+          "t": 0.33,
+          "label": "mid-descent",
+          "trunkFromVertical": 24,
+          "bodyPlane": null,
+          "hipFlexion": 75,
+          "kneeFlexion": 75,
+          "ankleDorsiflexion": 24,
+          "shoulderFlexion": 114,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 145,
+          "wristNotes": "extended",
+          "implementPosition": "over midfoot"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom (deep)",
+          "trunkFromVertical": 27,
+          "bodyPlane": null,
+          "hipFlexion": 117,
+          "kneeFlexion": 125,
+          "ankleDorsiflexion": 35,
+          "shoulderFlexion": 117,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 145,
+          "wristNotes": "extended",
+          "implementPosition": "over midfoot, lowest point"
+        },
+        {
+          "t": 0.83,
+          "label": "mid-ascent",
+          "trunkFromVertical": 27,
+          "bodyPlane": null,
+          "hipFlexion": 83,
+          "kneeFlexion": 82,
+          "ankleDorsiflexion": 26,
+          "shoulderFlexion": 117,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 145,
+          "wristNotes": "extended",
+          "implementPosition": "over midfoot, rising"
+        },
+        {
+          "t": 1.0,
+          "label": "standing, elbows up",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 90,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 145,
+          "wristNotes": "extended ~70-90 deg, bar on fingertips",
+          "implementPosition": "on front delts over midfoot"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "upper_back",
+        "abs",
+        "lower_back"
+      ],
+      "cues": [
+        "Elbows up, upper arms parallel to the floor",
+        "Sit straight down, torso tall",
+        "Knees forward and out",
+        "Lead out of the bottom with the elbows"
+      ],
+      "mistakes": [
+        "Elbows dropping so the bar rolls forward",
+        "Bar weight carried in the hands instead of on the shoulders",
+        "Heels lifting from limited ankle dorsiflexion"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [
+        "S4",
+        "S5"
+      ],
+      "angleNotes": "S4/S5 support a more upright trunk than the back squat with similar knee motion; exact degrees are coaching estimates. shoulderFlexion is set to 90 + trunk lean so the upper arm stays horizontal."
+    },
+    {
+      "id": "goblet_squat",
+      "name": "Goblet squat",
+      "orientation": "STANDING",
+      "implement": "DUMBBELL_SINGLE",
+      "implementPlacement": "hands: one dumbbell held vertically against the sternum, palms cupping the top head",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_dumbbell"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg"
+      ],
+      "stanceWidthSW": 1.2,
+      "stanceWidthRangeSW": [
+        1.1,
+        1.4
+      ],
+      "footTurnoutDeg": [
+        20,
+        30
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "standing",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "neutral, palms up under the top plate",
+          "implementPosition": "against sternum"
+        },
+        {
+          "t": 0.33,
+          "label": "mid-descent",
+          "trunkFromVertical": 30,
+          "bodyPlane": null,
+          "hipFlexion": 78,
+          "kneeFlexion": 70,
+          "ankleDorsiflexion": 22,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "neutral",
+          "implementPosition": "against sternum"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom, elbows inside knees",
+          "trunkFromVertical": 34,
+          "bodyPlane": null,
+          "hipFlexion": 120,
+          "kneeFlexion": 120,
+          "ankleDorsiflexion": 34,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "neutral",
+          "implementPosition": "against sternum, between knees"
+        },
+        {
+          "t": 1.0,
+          "label": "standing",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "neutral",
+          "implementPosition": "against sternum"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "abs",
+        "upper_back"
+      ],
+      "cues": [
+        "Hold the weight tight to the chest",
+        "Sit between the heels, elbows inside the knees",
+        "Chest proud, spine long",
+        "Push the floor away"
+      ],
+      "mistakes": [
+        "Letting the dumbbell drift away from the chest",
+        "Rounding the lower back at the bottom",
+        "Knees collapsing inward"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": []
+    },
+    {
+      "id": "leg_press",
+      "name": "Leg press",
+      "orientation": "SEATED",
+      "implement": "MACHINE",
+      "implementPlacement": "feet: 45-degree sled; feet mid-platform, back and hips on the reclined seat",
+      "fixedContacts": [
+        "feet_platform",
+        "back_backrest",
+        "hips_seat",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.0,
+      "stanceWidthRangeSW": [
+        0.9,
+        1.2
+      ],
+      "footTurnoutDeg": [
+        10,
+        20
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "legs extended, soft knees",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated reclined; backrest angle machine-dependent; sled travels on a 45 deg rail",
+          "hipFlexion": 70,
+          "kneeFlexion": 10,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 15,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 30,
+          "wristNotes": "neutral grip on side handles",
+          "implementPosition": "sled at top of travel"
+        },
+        {
+          "t": 0.33,
+          "label": "mid-descent",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated reclined",
+          "hipFlexion": 91,
+          "kneeFlexion": 55,
+          "ankleDorsiflexion": 4,
+          "shoulderFlexion": 15,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 30,
+          "wristNotes": "neutral",
+          "implementPosition": "sled mid-travel"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated reclined",
+          "hipFlexion": 108,
+          "kneeFlexion": 95,
+          "ankleDorsiflexion": 27,
+          "shoulderFlexion": 15,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 30,
+          "wristNotes": "neutral",
+          "implementPosition": "sled lowest point, thighs toward chest"
+        },
+        {
+          "t": 1.0,
+          "label": "legs extended, soft knees",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated reclined; backrest angle machine-dependent",
+          "hipFlexion": 70,
+          "kneeFlexion": 10,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 15,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 30,
+          "wristNotes": "neutral",
+          "implementPosition": "sled at top of travel"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "hamstrings"
+      ],
+      "cues": [
+        "Keep hips and lower back pinned to the seat",
+        "Lower until just before the pelvis starts to tuck",
+        "Press through the whole foot",
+        "Stop just short of locking the knees"
+      ],
+      "mistakes": [
+        "Pelvis rolling off the seat at the bottom",
+        "Locking the knees hard at the top",
+        "Heels lifting off the platform"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Leg angles relative to the machine; ankleDorsiflexion is shin relative to the footplate. Hips are fixed to the seat, so with a fixed footplate ankle change = knee change - hip change; values solved so the feet travel on a straight 45 deg rail for an assumed backrest reclined ~60 deg from vertical (machine-dependent assumption). Feet are IK targets on the moving sled."
+    },
+    {
+      "id": "hack_squat",
+      "name": "Hack squat",
+      "orientation": "STANDING",
+      "implement": "MACHINE",
+      "implementPlacement": "shoulders under the machine pads, back flat on the sled pad, feet on the angled platform",
+      "fixedContacts": [
+        "feet_platform",
+        "back_pad",
+        "shoulders_pads",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.0,
+      "stanceWidthRangeSW": [
+        0.9,
+        1.2
+      ],
+      "footTurnoutDeg": [
+        10,
+        20
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "top, soft knees",
+          "trunkFromVertical": -45,
+          "bodyPlane": null,
+          "hipFlexion": 25,
+          "kneeFlexion": 10,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 30,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral, hands on handles at the shoulder pads",
+          "implementPosition": "sled at top; trunk reclined on pad (machine-dependent ~45 deg)"
+        },
+        {
+          "t": 0.33,
+          "label": "mid-descent",
+          "trunkFromVertical": -45,
+          "bodyPlane": null,
+          "hipFlexion": 53,
+          "kneeFlexion": 60,
+          "ankleDorsiflexion": 22,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 30,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "sled mid-travel"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom",
+          "trunkFromVertical": -45,
+          "bodyPlane": null,
+          "hipFlexion": 97,
+          "kneeFlexion": 115,
+          "ankleDorsiflexion": 33,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 30,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "sled lowest point"
+        },
+        {
+          "t": 1.0,
+          "label": "top, soft knees",
+          "trunkFromVertical": -45,
+          "bodyPlane": null,
+          "hipFlexion": 25,
+          "kneeFlexion": 10,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 30,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "sled at top"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "adductors"
+      ],
+      "cues": [
+        "Keep the whole back flat on the pad",
+        "Knees travel forward over the toes",
+        "Full depth under control",
+        "Drive through the mid-foot"
+      ],
+      "mistakes": [
+        "Hips peeling off the pad at the bottom",
+        "Heels rising",
+        "Bouncing off the bottom"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "trunkFromVertical is negative (reclined back against the pad); the exact recline depends on the machine. ankleDorsiflexion is relative to the footplate. Values solved so the hip moves straight along the rail (assumed parallel to the back pad) while the feet stay fixed: top hip 25 reflects feet placed forward of the body line."
+    },
+    {
+      "id": "bulgarian_split_squat",
+      "name": "Bulgarian split squat",
+      "orientation": "STANDING",
+      "implement": "DUMBBELL_PAIR",
+      "implementPlacement": "hands: dumbbells hanging at the sides",
+      "fixedContacts": [
+        "lead_foot_floor",
+        "rear_foot_dorsum_bench",
+        "hands_dumbbells"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg"
+      ],
+      "asymmetric": true,
+      "leadLeg": "right",
+      "stanceWidthSW": 0.5,
+      "stanceWidthRangeSW": [
+        0.4,
+        0.6
+      ],
+      "footTurnoutDeg": [
+        0,
+        10
+      ],
+      "gripWidthSW": null,
+      "stanceNotes": "Front ankle ~0.65 m (about 0.37 x height) ahead of the rear ankle; bench about 40-45 cm (just below knee height); rear laces on the bench with the foot pointing back and slightly down, rear ankle ~0.5 m above the floor. These distances are model assumptions for a 1.75 m lifter.",
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "top",
+          "trunkFromVertical": 10,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 30,
+            "left": -10
+          },
+          "kneeFlexion": {
+            "right": 30,
+            "left": 71
+          },
+          "ankleDorsiflexion": {
+            "right": 10,
+            "left": -59
+          },
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral grip, arms long",
+          "implementPosition": "dumbbells beside hips"
+        },
+        {
+          "t": 0.33,
+          "label": "mid-descent",
+          "trunkFromVertical": 14,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 56,
+            "left": 3
+          },
+          "kneeFlexion": {
+            "right": 60,
+            "left": 96
+          },
+          "ankleDorsiflexion": {
+            "right": 18,
+            "left": -43
+          },
+          "shoulderFlexion": 14,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside thighs"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom, rear knee near floor",
+          "trunkFromVertical": 18,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 95,
+            "left": -7
+          },
+          "kneeFlexion": {
+            "right": 105,
+            "left": 119
+          },
+          "ankleDorsiflexion": {
+            "right": 28,
+            "left": -7
+          },
+          "shoulderFlexion": 18,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside lead shin"
+        },
+        {
+          "t": 1.0,
+          "label": "top",
+          "trunkFromVertical": 10,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 30,
+            "left": -10
+          },
+          "kneeFlexion": {
+            "right": 30,
+            "left": 71
+          },
+          "ankleDorsiflexion": {
+            "right": 10,
+            "left": -59
+          },
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside hips"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": "per leg"
+      },
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "hamstrings"
+      ],
+      "cues": [
+        "Most of the weight on the front foot",
+        "Drop the back knee straight down",
+        "Slight forward lean, spine long",
+        "Drive through the front heel and mid-foot"
+      ],
+      "mistakes": [
+        "Front foot too close to the bench so the heel lifts",
+        "Pushing off the rear foot",
+        "Front knee caving inward"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Asymmetric: per-side values {left,right}; lead leg right. Rear (left) leg solved by IK so the rear ankle stays fixed on the bench in every frame. Rear ankle negative = plantarflexed; it is pointed hard at the top (about -59, near the end of range, ankle plus midfoot) and nearly neutral at the bottom where the shin is steep. Rear knee ends ~15 cm above the floor."
+    },
+    {
+      "id": "walking_lunge",
+      "name": "Walking lunge",
+      "orientation": "STANDING",
+      "implement": "DUMBBELL_PAIR",
+      "implementPlacement": "hands: dumbbells hanging at the sides",
+      "fixedContacts": [
+        "feet_floor_alternating",
+        "hands_dumbbells"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg"
+      ],
+      "asymmetric": true,
+      "leadLeg": "right",
+      "stanceWidthSW": 0.5,
+      "stanceWidthRangeSW": [
+        0.4,
+        0.6
+      ],
+      "footTurnoutDeg": [
+        0,
+        10
+      ],
+      "gripWidthSW": null,
+      "stanceNotes": "One rep = one step: the root translates forward by one stride and the lead leg alternates each rep (mirror left/right on odd reps). The t=1 pose equals t=0 translated forward and mirrored.",
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "standing, feet together",
+          "trunkFromVertical": 2,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 2,
+            "left": 2
+          },
+          "kneeFlexion": {
+            "right": 0,
+            "left": 0
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": 0
+          },
+          "shoulderFlexion": 2,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral, arms long",
+          "implementPosition": "dumbbells beside hips"
+        },
+        {
+          "t": 0.4,
+          "label": "lead heel contact",
+          "trunkFromVertical": 5,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 40,
+            "left": -15
+          },
+          "kneeFlexion": {
+            "right": 15,
+            "left": 20
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": 12
+          },
+          "shoulderFlexion": 5,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside hips"
+        },
+        {
+          "t": 0.6,
+          "label": "bottom, rear knee near floor",
+          "trunkFromVertical": 9,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 85,
+            "left": 1
+          },
+          "kneeFlexion": {
+            "right": 100,
+            "left": 83
+          },
+          "ankleDorsiflexion": {
+            "right": 24,
+            "left": 15
+          },
+          "shoulderFlexion": 9,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside lead knee"
+        },
+        {
+          "t": 1.0,
+          "label": "standing on lead leg, rear foot brought through",
+          "trunkFromVertical": 2,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 2,
+            "left": 2
+          },
+          "kneeFlexion": {
+            "right": 0,
+            "left": 0
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": 0
+          },
+          "shoulderFlexion": 2,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside hips, one stride ahead"
+        }
+      ],
+      "tempo": {
+        "eccentric": 1.5,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": "per step"
+      },
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "hamstrings",
+        "calves"
+      ],
+      "cues": [
+        "Long enough step that the front shin stays near vertical",
+        "Drop the back knee toward the floor",
+        "Torso tall",
+        "Drive through the front foot to step through"
+      ],
+      "mistakes": [
+        "Short steps that push the front knee far over the toes and lift the heel",
+        "Feet on a tightrope line causing wobble",
+        "Leaning the torso far forward"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "At the bottom the rear foot is on the ball (toes extended, foot pitched ~75 deg) with the rear shin nearly horizontal, so the rear ankle reads as slight dorsiflexion (+15): ankle angle is shin relative to foot, not heel height. The rear ball of the foot stays on the same floor point from t=0.4 to t=0.6 and the front heel lands ~0.70 m ahead of it."
+    },
+    {
+      "id": "step_up",
+      "name": "Step-up",
+      "orientation": "STANDING",
+      "implement": "DUMBBELL_PAIR",
+      "implementPlacement": "hands: dumbbells hanging at the sides",
+      "fixedContacts": [
+        "lead_foot_box",
+        "trail_foot_floor_until_liftoff",
+        "hands_dumbbells"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg"
+      ],
+      "asymmetric": true,
+      "leadLeg": "right",
+      "stanceWidthSW": 0.5,
+      "stanceWidthRangeSW": [
+        0.4,
+        0.6
+      ],
+      "footTurnoutDeg": [
+        0,
+        10
+      ],
+      "gripWidthSW": null,
+      "stanceNotes": "Box about 45 cm (just below knee height for a 1.75 m lifter, model assumption); whole lead foot on the box; trail foot starts ~35 cm behind the lead ankle.",
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "lead foot on box",
+          "trunkFromVertical": 15,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 105,
+            "left": 14
+          },
+          "kneeFlexion": {
+            "right": 110,
+            "left": 8
+          },
+          "ankleDorsiflexion": {
+            "right": 20,
+            "left": 9
+          },
+          "shoulderFlexion": 15,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral, arms long",
+          "implementPosition": "dumbbells beside hips"
+        },
+        {
+          "t": 0.29,
+          "label": "standing tall on box",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 0,
+            "left": 10
+          },
+          "kneeFlexion": {
+            "right": 0,
+            "left": 30
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": 0
+          },
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside hips, raised by box height"
+        },
+        {
+          "t": 0.43,
+          "label": "top hold",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 0,
+            "left": 10
+          },
+          "kneeFlexion": {
+            "right": 0,
+            "left": 30
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": 0
+          },
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside hips"
+        },
+        {
+          "t": 0.71,
+          "label": "controlled lowering, trail toe reaching floor",
+          "trunkFromVertical": 10,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 90,
+            "left": 0
+          },
+          "kneeFlexion": {
+            "right": 85,
+            "left": 5
+          },
+          "ankleDorsiflexion": {
+            "right": 5,
+            "left": -25
+          },
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside thighs"
+        },
+        {
+          "t": 1.0,
+          "label": "lead foot on box",
+          "trunkFromVertical": 15,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 105,
+            "left": 14
+          },
+          "kneeFlexion": {
+            "right": 110,
+            "left": 8
+          },
+          "ankleDorsiflexion": {
+            "right": 20,
+            "left": 9
+          },
+          "shoulderFlexion": 15,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "dumbbells beside hips"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0.5,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": "per leg"
+      },
+      "primaryMuscles": [
+        "quads",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "adductors",
+        "calves"
+      ],
+      "cues": [
+        "Drive through the whole foot on the box",
+        "Lean slightly forward to start",
+        "Do not push off the trail leg",
+        "Lower slowly under control"
+      ],
+      "mistakes": [
+        "Bouncing off the floor with the trail leg",
+        "Lead knee caving inward",
+        "Dropping down fast on the eccentric"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Both start feet are flat (trunk = ankle - knee + hip on each side). At t=0.71 the trail toe just touches the floor one box-height below the lead foot."
+    },
+    {
+      "id": "romanian_deadlift",
+      "name": "Romanian deadlift",
+      "orientation": "HINGED",
+      "implement": "BARBELL",
+      "implementPlacement": "hands: double-overhand grip, bar against the thighs",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_bar"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg"
+      ],
+      "stanceWidthSW": 0.7,
+      "stanceWidthRangeSW": [
+        0.6,
+        0.8
+      ],
+      "footTurnoutDeg": [
+        0,
+        10
+      ],
+      "gripWidthSW": 1.25,
+      "gripWidthRangeSW": [
+        1.1,
+        1.4
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "standing lockout",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 5,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral, double overhand, arms long",
+          "implementPosition": "against upper thighs, over midfoot"
+        },
+        {
+          "t": 0.33,
+          "label": "hips back, bar above knees",
+          "trunkFromVertical": 39,
+          "bodyPlane": null,
+          "hipFlexion": 57,
+          "kneeFlexion": 17,
+          "ankleDorsiflexion": -1,
+          "shoulderFlexion": 29,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "just above the knees, touching the thighs, over midfoot"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom, bar below the knees (upper shin)",
+          "trunkFromVertical": 74,
+          "bodyPlane": null,
+          "hipFlexion": 108,
+          "kneeFlexion": 31,
+          "ankleDorsiflexion": -3,
+          "shoulderFlexion": 58,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "upper-to-mid shin, touching the legs, over midfoot"
+        },
+        {
+          "t": 1.0,
+          "label": "standing lockout",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 5,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "against upper thighs"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "lower_back",
+        "adductors",
+        "upper_back",
+        "forearms"
+      ],
+      "cues": [
+        "Push the hips back, knees soft and fixed",
+        "Keep the bar dragging along the legs",
+        "Neutral spine, lats tight",
+        "Stop when the hips stop moving back"
+      ],
+      "mistakes": [
+        "Rounding the lower back to reach lower",
+        "Bending the knees into a squat",
+        "Bar drifting away from the legs"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Bottom depth depends on hamstring flexibility. Shoulders sit ahead of the bar with the arms angled back (lats pulling the bar in), so shoulderFlexion = trunk - ~10-16 deg, not equal to trunk. Hips travel back behind the heels and shins tilt slightly back to keep bar and centre of mass over midfoot; this needs ~30 deg of knee bend at the bottom."
+    },
+    {
+      "id": "conventional_deadlift",
+      "name": "Conventional deadlift",
+      "orientation": "HINGED",
+      "implement": "BARBELL",
+      "implementPlacement": "hands: grip just outside the shins (double overhand, mixed or hook)",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_bar"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.8,
+      "stanceWidthRangeSW": [
+        0.6,
+        1.0
+      ],
+      "footTurnoutDeg": [
+        8,
+        20
+      ],
+      "gripWidthSW": 1.35,
+      "gripWidthRangeSW": [
+        1.1,
+        1.6
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "setup / liftoff",
+          "trunkFromVertical": 64,
+          "bodyPlane": null,
+          "hipFlexion": 127,
+          "kneeFlexion": 73,
+          "ankleDorsiflexion": 10,
+          "shoulderFlexion": 58,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral, arms straight",
+          "implementPosition": "on floor, over midfoot, touching shins"
+        },
+        {
+          "t": 0.2,
+          "label": "bar passing knees",
+          "trunkFromVertical": 52,
+          "bodyPlane": null,
+          "hipFlexion": 79,
+          "kneeFlexion": 27,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 40,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "at knee height, over midfoot"
+        },
+        {
+          "t": 0.43,
+          "label": "lockout",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "against upper thighs"
+        },
+        {
+          "t": 0.57,
+          "label": "lockout hold end",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "against upper thighs"
+        },
+        {
+          "t": 1.0,
+          "label": "bar returned to floor",
+          "trunkFromVertical": 64,
+          "bodyPlane": null,
+          "hipFlexion": 127,
+          "kneeFlexion": 73,
+          "ankleDorsiflexion": 10,
+          "shoulderFlexion": 58,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "on floor, over midfoot"
+        }
+      ],
+      "tempo": {
+        "eccentric": 1.5,
+        "pause": 0.5,
+        "concentric": 1.5,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": "brief dead-stop reset on the floor between reps"
+      },
+      "primaryMuscles": [
+        "glutes",
+        "hamstrings",
+        "lower_back"
+      ],
+      "secondaryMuscles": [
+        "quads",
+        "upper_back",
+        "traps",
+        "forearms",
+        "lats",
+        "adductors"
+      ],
+      "cues": [
+        "Bar over midfoot, shins touch the bar",
+        "Pull the slack out and brace before the floor breaks",
+        "Push the floor away, then hips through",
+        "Keep the bar close the whole way"
+      ],
+      "mistakes": [
+        "Hips shooting up first so the back rounds",
+        "Bar drifting forward away from the shins",
+        "Hyperextending the lower back at lockout"
+      ],
+      "angleBasis": "measured+coaching_estimate",
+      "sourceIds": [
+        "S3"
+      ],
+      "angleNotes": "Stance (32 cm), turnout (14 deg) and grip (55 cm) from S3. Start and knee-passage angles are coaching estimates solved so straight arms (shoulders ~6-12 deg ahead of the bar) reach a 0.225 m bar centre touching the shins over midfoot; trunk = ankle - knee + hip. A secondary summary of S3 gives ~22 deg knee flexion at knee passage (unverified); the model needs ~27."
+    },
+    {
+      "id": "sumo_deadlift",
+      "name": "Sumo deadlift",
+      "orientation": "HINGED",
+      "implement": "BARBELL",
+      "implementPlacement": "hands: grip inside the knees, arms vertical",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_bar"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.75,
+      "stanceWidthRangeSW": [
+        1.5,
+        2.2
+      ],
+      "footTurnoutDeg": [
+        35,
+        50
+      ],
+      "gripWidthSW": 1.2,
+      "gripWidthRangeSW": [
+        1.0,
+        1.3
+      ],
+      "hipAbductionDeg": 35,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "setup / liftoff",
+          "trunkFromVertical": 53,
+          "bodyPlane": null,
+          "hipFlexion": 125,
+          "kneeFlexion": 78,
+          "ankleDorsiflexion": 6,
+          "shoulderFlexion": 49,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral, arms straight",
+          "implementPosition": "on floor, over midfoot, close to shins"
+        },
+        {
+          "t": 0.2,
+          "label": "bar passing knees",
+          "trunkFromVertical": 41,
+          "bodyPlane": null,
+          "hipFlexion": 67,
+          "kneeFlexion": 26,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 32,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "at knee height"
+        },
+        {
+          "t": 0.43,
+          "label": "lockout",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "against upper thighs"
+        },
+        {
+          "t": 0.57,
+          "label": "lockout hold end",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "against upper thighs"
+        },
+        {
+          "t": 1.0,
+          "label": "bar returned to floor",
+          "trunkFromVertical": 53,
+          "bodyPlane": null,
+          "hipFlexion": 125,
+          "kneeFlexion": 78,
+          "ankleDorsiflexion": 6,
+          "shoulderFlexion": 49,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "on floor"
+        }
+      ],
+      "tempo": {
+        "eccentric": 1.5,
+        "pause": 0.5,
+        "concentric": 1.5,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": "brief dead-stop reset on the floor between reps"
+      },
+      "primaryMuscles": [
+        "glutes",
+        "quads",
+        "adductors"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "lower_back",
+        "upper_back",
+        "traps",
+        "forearms"
+      ],
+      "cues": [
+        "Shins near vertical, knees pushed out over the toes",
+        "Chest up, hips close to the bar",
+        "Spread the floor apart as you push",
+        "Hips through at the top"
+      ],
+      "mistakes": [
+        "Knees caving in off the floor",
+        "Hips rising first so it becomes a stiff-legged pull",
+        "Stance so wide the knees track inside the feet"
+      ],
+      "angleBasis": "measured+coaching_estimate",
+      "sourceIds": [
+        "S3"
+      ],
+      "angleNotes": "Stance (70 cm), turnout (42 deg), grip (47 cm) and 'trunk 5-10 deg more vertical than conventional' from S3. Sagittal hip/knee angles are projections; apply hipAbductionDeg and external rotation so knees track over the turned-out feet."
+    },
+    {
+      "id": "good_morning",
+      "name": "Good morning",
+      "orientation": "HINGED",
+      "implement": "BARBELL",
+      "implementPlacement": "back rack, high: bar on upper trapezius",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_bar",
+        "bar_upper_traps"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.0,
+      "stanceWidthRangeSW": [
+        0.8,
+        1.2
+      ],
+      "footTurnoutDeg": [
+        0,
+        15
+      ],
+      "gripWidthSW": 1.6,
+      "gripWidthRangeSW": [
+        1.4,
+        1.8
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "standing",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 5,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral",
+          "implementPosition": "upper traps, over midfoot"
+        },
+        {
+          "t": 0.33,
+          "label": "hinging",
+          "trunkFromVertical": 40,
+          "bodyPlane": null,
+          "hipFlexion": 61,
+          "kneeFlexion": 20,
+          "ankleDorsiflexion": -1,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral",
+          "implementPosition": "upper traps, ahead of midfoot while hips move back"
+        },
+        {
+          "t": 0.67,
+          "label": "bottom, torso ~20 deg above parallel",
+          "trunkFromVertical": 70,
+          "bodyPlane": null,
+          "hipFlexion": 103,
+          "kneeFlexion": 27,
+          "ankleDorsiflexion": -6,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral",
+          "implementPosition": "upper traps, ~15 cm ahead of midfoot; hips ~30 cm behind the ankles keep the combined centre of mass over midfoot"
+        },
+        {
+          "t": 1.0,
+          "label": "standing",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 5,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 70,
+          "shoulderHorizontalAbduction": 30,
+          "elbowFlexion": 110,
+          "wristNotes": "neutral",
+          "implementPosition": "upper traps, over midfoot"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "hamstrings",
+        "glutes",
+        "lower_back"
+      ],
+      "secondaryMuscles": [
+        "adductors",
+        "upper_back",
+        "abs"
+      ],
+      "cues": [
+        "Soft knees, then push the hips straight back",
+        "Keep the bar pinned to the upper back",
+        "Neutral spine throughout",
+        "Lead the return with the hips"
+      ],
+      "mistakes": [
+        "Rounding the upper or lower back",
+        "Going deeper than hamstring flexibility allows",
+        "Turning it into a squat by bending the knees"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Balance solved for a bar of ~0.3-0.5 x bodyweight: the hips must travel well behind the heels with shins slightly back, which needs 20-30 deg of knee bend at depth."
+    },
+    {
+      "id": "hip_thrust",
+      "name": "Barbell hip thrust",
+      "orientation": "SUPINE_INCLINE",
+      "implement": "BARBELL",
+      "implementPlacement": "hip crease (padded), held with both hands",
+      "fixedContacts": [
+        "upper_back_bench",
+        "feet_floor",
+        "hands_bar",
+        "bar_hips"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 1.1,
+      "stanceWidthRangeSW": [
+        0.9,
+        1.3
+      ],
+      "footTurnoutDeg": [
+        10,
+        20
+      ],
+      "gripWidthSW": 1.5,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "bottom, hips low",
+          "trunkFromVertical": null,
+          "bodyPlane": 35,
+          "hipFlexion": 75,
+          "kneeFlexion": 110,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 35,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 70,
+          "wristNotes": "neutral, hands on bar over hips",
+          "implementPosition": "on hips, lowest point",
+          "trunkFromHorizontal": 30
+        },
+        {
+          "t": 0.25,
+          "label": "top lockout",
+          "trunkFromVertical": null,
+          "bodyPlane": 0,
+          "hipFlexion": 0,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 35,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 70,
+          "wristNotes": "neutral",
+          "implementPosition": "on hips, highest point",
+          "trunkFromHorizontal": 0
+        },
+        {
+          "t": 0.5,
+          "label": "top hold end",
+          "trunkFromVertical": null,
+          "bodyPlane": 0,
+          "hipFlexion": 0,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 35,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 70,
+          "wristNotes": "neutral",
+          "implementPosition": "on hips, highest point",
+          "trunkFromHorizontal": 0
+        },
+        {
+          "t": 0.75,
+          "label": "lowering",
+          "trunkFromVertical": null,
+          "bodyPlane": 15,
+          "hipFlexion": 33,
+          "kneeFlexion": 106,
+          "ankleDorsiflexion": -2,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 35,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 70,
+          "wristNotes": "neutral",
+          "implementPosition": "on hips, mid-range",
+          "trunkFromHorizontal": 15
+        },
+        {
+          "t": 1.0,
+          "label": "bottom, hips low",
+          "trunkFromVertical": null,
+          "bodyPlane": 35,
+          "hipFlexion": 75,
+          "kneeFlexion": 110,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 35,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 70,
+          "wristNotes": "neutral",
+          "implementPosition": "on hips, lowest point",
+          "trunkFromHorizontal": 30
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "glutes"
+      ],
+      "secondaryMuscles": [
+        "hamstrings",
+        "quads",
+        "adductors"
+      ],
+      "cues": [
+        "Chin tucked, ribs down",
+        "Drive through the heels",
+        "Shins vertical at the top",
+        "Squeeze the glutes, no lower-back arch"
+      ],
+      "mistakes": [
+        "Hyperextending the lower back instead of extending the hips",
+        "Feet too far out so hamstrings take over",
+        "Bench contact too high on the neck"
+      ],
+      "angleBasis": "measured+coaching_estimate",
+      "sourceIds": [
+        "S6"
+      ],
+      "angleNotes": "Solved with the feet fixed and the upper back pivoting on a bench edge ~42 cm high: top = trunk and thighs horizontal, shins vertical (knee 90); bottom = trunk ~35 deg up from horizontal, hips ~20 cm off the floor, giving hip ROM 75 and knee ROM 20, matching S6 (75+-19, 21+-7). At the bottom the knees sit behind the ankles, so the ankle is plantarflexed (negative). Absolute angles are model estimates."
+    },
+    {
+      "id": "leg_extension",
+      "name": "Leg extension",
+      "orientation": "SEATED",
+      "implement": "MACHINE",
+      "implementPlacement": "shin pad on the lower shin just above the ankle; knee aligned with machine pivot",
+      "fixedContacts": [
+        "hips_seat",
+        "back_backrest",
+        "shins_pad",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.5,
+      "footTurnoutDeg": [
+        0,
+        0
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "knees bent",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated; backrest ~10-20 deg reclined (machine-dependent)",
+          "hipFlexion": 80,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral grip on side handles",
+          "implementPosition": "pad low, lever down"
+        },
+        {
+          "t": 0.25,
+          "label": "full extension",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 80,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "lever up"
+        },
+        {
+          "t": 0.5,
+          "label": "squeeze end",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 80,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "lever up"
+        },
+        {
+          "t": 0.75,
+          "label": "lowering",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 80,
+          "kneeFlexion": 50,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "lever mid"
+        },
+        {
+          "t": 1.0,
+          "label": "knees bent",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 80,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "lever down"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "quads"
+      ],
+      "secondaryMuscles": [],
+      "cues": [
+        "Line the knee up with the machine pivot",
+        "Hips down, hold the handles",
+        "Squeeze at the top",
+        "Control the lowering"
+      ],
+      "mistakes": [
+        "Swinging the weight up with momentum",
+        "Hips lifting off the seat",
+        "Cutting the range short at the bottom"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": []
+    },
+    {
+      "id": "lying_leg_curl",
+      "name": "Lying leg curl",
+      "orientation": "PRONE",
+      "implement": "MACHINE",
+      "implementPlacement": "ankle pad on the back of the lower calves just above the heels; knees just off the bench end",
+      "fixedContacts": [
+        "torso_bench",
+        "hips_bench",
+        "ankles_pad",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.5,
+      "footTurnoutDeg": [
+        0,
+        0
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "legs extended",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone on bench, hips flexed ~20 deg by the angled bench (machine-dependent)",
+          "hipFlexion": 20,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 140,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral grip on front handles",
+          "implementPosition": "pad low"
+        },
+        {
+          "t": 0.25,
+          "label": "full curl",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone",
+          "hipFlexion": 20,
+          "kneeFlexion": 120,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 140,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad near glutes"
+        },
+        {
+          "t": 0.5,
+          "label": "squeeze end",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone",
+          "hipFlexion": 20,
+          "kneeFlexion": 120,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 140,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad near glutes"
+        },
+        {
+          "t": 0.75,
+          "label": "lowering",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone",
+          "hipFlexion": 20,
+          "kneeFlexion": 60,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 140,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad mid"
+        },
+        {
+          "t": 1.0,
+          "label": "legs extended",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone",
+          "hipFlexion": 20,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 140,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad low"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "calves"
+      ],
+      "cues": [
+        "Hips pressed into the pad",
+        "Curl heels toward glutes",
+        "Pause at the top",
+        "Lower slowly to almost straight"
+      ],
+      "mistakes": [
+        "Hips lifting off the bench",
+        "Jerking the weight up",
+        "Short, partial range"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": []
+    },
+    {
+      "id": "seated_leg_curl",
+      "name": "Seated leg curl",
+      "orientation": "SEATED",
+      "implement": "MACHINE",
+      "implementPlacement": "thigh pad on top of the thighs above the knees; ankle pad behind the lower calves",
+      "fixedContacts": [
+        "hips_seat",
+        "back_backrest",
+        "thighs_pad",
+        "ankles_pad",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.5,
+      "footTurnoutDeg": [
+        0,
+        0
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "legs extended",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated upright, slight forward lean allowed",
+          "hipFlexion": 95,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 60,
+          "wristNotes": "neutral grip on handles",
+          "implementPosition": "pad forward"
+        },
+        {
+          "t": 0.25,
+          "label": "full curl",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 95,
+          "kneeFlexion": 120,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 60,
+          "wristNotes": "neutral",
+          "implementPosition": "pad under seat"
+        },
+        {
+          "t": 0.5,
+          "label": "squeeze end",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 95,
+          "kneeFlexion": 120,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 60,
+          "wristNotes": "neutral",
+          "implementPosition": "pad under seat"
+        },
+        {
+          "t": 0.75,
+          "label": "lowering",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 95,
+          "kneeFlexion": 60,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 60,
+          "wristNotes": "neutral",
+          "implementPosition": "pad mid"
+        },
+        {
+          "t": 1.0,
+          "label": "legs extended",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 95,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 60,
+          "wristNotes": "neutral",
+          "implementPosition": "pad forward"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "calves"
+      ],
+      "cues": [
+        "Knees aligned with the pivot",
+        "Thigh pad locked down tight",
+        "Pull heels under the seat",
+        "Slow return to full stretch"
+      ],
+      "mistakes": [
+        "Thigh pad loose so hips slide",
+        "Using momentum",
+        "Not reaching full extension"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": []
+    },
+    {
+      "id": "nordic_curl",
+      "name": "Nordic hamstring curl",
+      "orientation": "KNEELING",
+      "implement": "BODYWEIGHT",
+      "implementPlacement": "none: ankles anchored under a pad or by a partner",
+      "fixedContacts": [
+        "knees_pad",
+        "ankles_anchor",
+        "hands_floor_at_catch"
+      ],
+      "ikLimbs": [],
+      "stanceWidthSW": 0.5,
+      "footTurnoutDeg": [
+        0,
+        0
+      ],
+      "gripWidthSW": 1.0,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "tall kneel",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral, hands in front of chest",
+          "implementPosition": "n/a"
+        },
+        {
+          "t": 0.5,
+          "label": "break point",
+          "trunkFromVertical": 32,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 58,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 40,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 100,
+          "wristNotes": "neutral",
+          "implementPosition": "n/a"
+        },
+        {
+          "t": 0.8,
+          "label": "catch",
+          "trunkFromVertical": 75,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 15,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 42,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "extended, palms on floor",
+          "implementPosition": "n/a"
+        },
+        {
+          "t": 1.0,
+          "label": "tall kneel",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "n/a"
+        }
+      ],
+      "tempo": {
+        "eccentric": 4,
+        "pause": 0,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": "concentric is a hand push-off back to kneeling"
+      },
+      "primaryMuscles": [
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "glutes",
+        "calves",
+        "abs"
+      ],
+      "cues": [
+        "Straight line from knees to head",
+        "Squeeze glutes so the hips stay extended",
+        "Lower as slowly as possible",
+        "Catch with the hands and push back up"
+      ],
+      "mistakes": [
+        "Bending at the hips to shorten the lever",
+        "Dropping fast early in the range",
+        "Arching the lower back"
+      ],
+      "angleBasis": "measured+coaching_estimate",
+      "sourceIds": [
+        "S7"
+      ],
+      "angleNotes": "Body is one rigid line pivoting at the knee, so trunkFromVertical = 90 - kneeFlexion while hipFlexion ~0. Break point ~58 deg knee flexion interpreted from S7 (break-point angle ~121.5 deg); convention unconfirmed. Ankles plantarflexed under the anchor."
+    },
+    {
+      "id": "standing_calf_raise",
+      "name": "Standing calf raise",
+      "orientation": "STANDING",
+      "implement": "MACHINE",
+      "implementPlacement": "shoulders under the machine pads; balls of feet on the block edge",
+      "fixedContacts": [
+        "forefoot_block",
+        "shoulders_pads",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.6,
+      "stanceWidthRangeSW": [
+        0.5,
+        0.7
+      ],
+      "footTurnoutDeg": [
+        0,
+        10
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "top, on toes",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 3,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 45,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral on handles",
+          "implementPosition": "pads on shoulders, highest"
+        },
+        {
+          "t": 0.25,
+          "label": "lowering through neutral",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 3,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 45,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "pads mid"
+        },
+        {
+          "t": 0.5,
+          "label": "bottom stretch",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 3,
+          "ankleDorsiflexion": 20,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 45,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "pads lowest"
+        },
+        {
+          "t": 0.75,
+          "label": "stretch hold end",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 3,
+          "ankleDorsiflexion": 20,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 45,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "pads lowest"
+        },
+        {
+          "t": 1.0,
+          "label": "top, on toes",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 3,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 45,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 120,
+          "wristNotes": "neutral",
+          "implementPosition": "pads highest"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "calves"
+      ],
+      "secondaryMuscles": [],
+      "cues": [
+        "Knees straight but not locked",
+        "Pause in the deep stretch",
+        "Rise onto the big toe",
+        "No bouncing"
+      ],
+      "mistakes": [
+        "Bouncing out of the bottom",
+        "Bending the knees to help",
+        "Partial range"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "ankleDorsiflexion negative = plantarflexion."
+    },
+    {
+      "id": "seated_calf_raise",
+      "name": "Seated calf raise",
+      "orientation": "SEATED",
+      "implement": "MACHINE",
+      "implementPlacement": "knee pad on the distal thighs just above the knees; balls of feet on the block",
+      "fixedContacts": [
+        "hips_seat",
+        "thighs_pad",
+        "forefoot_block",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.6,
+      "footTurnoutDeg": [
+        0,
+        10
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "top",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated upright",
+          "hipFlexion": 90,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral on pad handles",
+          "implementPosition": "pad highest"
+        },
+        {
+          "t": 0.25,
+          "label": "lowering through neutral",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 90,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad mid"
+        },
+        {
+          "t": 0.5,
+          "label": "bottom stretch",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 90,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": 20,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad lowest"
+        },
+        {
+          "t": 0.75,
+          "label": "stretch hold end",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 90,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": 20,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad lowest"
+        },
+        {
+          "t": 1.0,
+          "label": "top",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 90,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -35,
+          "shoulderFlexion": 30,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "neutral",
+          "implementPosition": "pad highest"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "calves"
+      ],
+      "secondaryMuscles": [],
+      "cues": [
+        "Knees at 90 degrees under the pad",
+        "Deep stretch at the bottom",
+        "Drive up through the big toe",
+        "Control every inch"
+      ],
+      "mistakes": [
+        "Bouncing",
+        "Rolling onto the outer edge of the foot",
+        "Partial range"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": []
+    },
+    {
+      "id": "hip_adduction",
+      "name": "Machine hip adduction",
+      "orientation": "SEATED",
+      "implement": "MACHINE",
+      "implementPlacement": "pads on the inner thighs just above the knees",
+      "fixedContacts": [
+        "hips_seat",
+        "back_backrest",
+        "inner_thighs_pads",
+        "feet_pegs",
+        "hands_handles"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": null,
+      "footTurnoutDeg": [
+        0,
+        10
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "legs open",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated upright",
+          "hipFlexion": 85,
+          "kneeFlexion": 85,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral on side handles",
+          "implementPosition": "pads apart",
+          "hipAbduction": 45
+        },
+        {
+          "t": 0.25,
+          "label": "legs together",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 85,
+          "kneeFlexion": 85,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "pads together",
+          "hipAbduction": 3
+        },
+        {
+          "t": 0.5,
+          "label": "squeeze end",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 85,
+          "kneeFlexion": 85,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "pads together",
+          "hipAbduction": 3
+        },
+        {
+          "t": 0.75,
+          "label": "opening",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 85,
+          "kneeFlexion": 85,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "pads mid",
+          "hipAbduction": 25
+        },
+        {
+          "t": 1.0,
+          "label": "legs open",
+          "trunkFromVertical": null,
+          "bodyPlane": "seated",
+          "hipFlexion": 85,
+          "kneeFlexion": 85,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 10,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 40,
+          "wristNotes": "neutral",
+          "implementPosition": "pads apart",
+          "hipAbduction": 45
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "adductors"
+      ],
+      "secondaryMuscles": [],
+      "cues": [
+        "Sit tall, back on the pad",
+        "Squeeze knees together",
+        "Pause at the close",
+        "Open slowly to a comfortable stretch"
+      ],
+      "mistakes": [
+        "Letting the weight stack slam",
+        "Rocking the torso forward",
+        "Starting wider than flexibility allows"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "hipAbduction (per side, deg from midline) is the moving joint; start width is machine/user set."
+    },
+    {
+      "id": "back_extension",
+      "name": "45-degree back extension",
+      "orientation": "HINGED",
+      "implement": "BODYWEIGHT",
+      "implementPlacement": "none (optional plate hugged to chest); hip pad just below the hip crease",
+      "fixedContacts": [
+        "thighs_hip_pad",
+        "heels_under_pad",
+        "feet_platform"
+      ],
+      "ikLimbs": [],
+      "stanceWidthSW": 0.6,
+      "footTurnoutDeg": [
+        0,
+        15
+      ],
+      "gripWidthSW": null,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "top, straight line",
+          "trunkFromVertical": 45,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 0,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "hands on opposite shoulders (arms crossed)",
+          "implementPosition": "n/a"
+        },
+        {
+          "t": 0.25,
+          "label": "lowering",
+          "trunkFromVertical": 90,
+          "bodyPlane": null,
+          "hipFlexion": 45,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 0,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "arms crossed",
+          "implementPosition": "n/a"
+        },
+        {
+          "t": 0.5,
+          "label": "bottom",
+          "trunkFromVertical": 130,
+          "bodyPlane": null,
+          "hipFlexion": 85,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 0,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "arms crossed",
+          "implementPosition": "n/a"
+        },
+        {
+          "t": 0.75,
+          "label": "top",
+          "trunkFromVertical": 45,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 0,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "arms crossed",
+          "implementPosition": "n/a"
+        },
+        {
+          "t": 1.0,
+          "label": "top hold end",
+          "trunkFromVertical": 45,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 20,
+          "shoulderAbduction": 0,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 140,
+          "wristNotes": "arms crossed",
+          "implementPosition": "n/a"
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "eccentric_first",
+        "pauseAt": "top",
+        "notes": "pause is a squeeze at the top"
+      },
+      "primaryMuscles": [
+        "lower_back",
+        "glutes",
+        "hamstrings"
+      ],
+      "secondaryMuscles": [
+        "upper_back"
+      ],
+      "cues": [
+        "Pad below the hip crease so the hips can hinge",
+        "Hinge at the hips, spine neutral",
+        "Squeeze glutes to rise",
+        "Stop in a straight line"
+      ],
+      "mistakes": [
+        "Hyperextending past a straight line at the top",
+        "Pad too high, blocking the hinge",
+        "Dropping fast into the bottom"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Legs are fixed at ~45 deg forward lean on the bench, so trunkFromVertical = 45 + hipFlexion (can exceed 90: head below hips)."
+    },
+    {
+      "id": "plank",
+      "name": "Front plank",
+      "orientation": "PLANK",
+      "implement": "BODYWEIGHT",
+      "implementPlacement": "none",
+      "fixedContacts": [
+        "forearms_floor",
+        "toes_floor"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm",
+        "left_leg",
+        "right_leg"
+      ],
+      "stanceWidthSW": 0.5,
+      "footTurnoutDeg": [
+        0,
+        0
+      ],
+      "gripWidthSW": 1.0,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "hold",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone, elbows under shoulders, body straight ~10 deg above horizontal (head end higher)",
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 80,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "forearms flat, hands loose or lightly clasped",
+          "implementPosition": "n/a",
+          "trunkFromHorizontal": 10
+        },
+        {
+          "t": 0.5,
+          "label": "hold (breathe)",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone",
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 80,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "forearms flat",
+          "implementPosition": "n/a",
+          "trunkFromHorizontal": 10
+        },
+        {
+          "t": 1.0,
+          "label": "hold",
+          "trunkFromVertical": null,
+          "bodyPlane": "prone",
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": 0,
+          "shoulderFlexion": 80,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 90,
+          "wristNotes": "forearms flat",
+          "implementPosition": "n/a",
+          "trunkFromHorizontal": 10
+        }
+      ],
+      "tempo": {
+        "eccentric": 0,
+        "pause": 30,
+        "concentric": 0,
+        "order": "isometric",
+        "pauseAt": "hold",
+        "notes": "hold 20-60 s; pause = hold seconds"
+      },
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "obliques",
+        "front_delts",
+        "glutes",
+        "quads"
+      ],
+      "cues": [
+        "Elbows under shoulders",
+        "Squeeze glutes and quads",
+        "Ribs down, slight posterior pelvic tilt",
+        "Breathe behind the brace"
+      ],
+      "mistakes": [
+        "Hips sagging into lumbar extension",
+        "Hips piked high",
+        "Head dropped or craned up"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": []
+    },
+    {
+      "id": "hanging_leg_raise",
+      "name": "Hanging leg raise",
+      "orientation": "HANGING",
+      "implement": "BODYWEIGHT",
+      "implementPlacement": "hands on a pull-up bar, overhand grip",
+      "fixedContacts": [
+        "hands_bar"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": null,
+      "gripWidthSW": 1.3,
+      "gripWidthRangeSW": [
+        1.1,
+        1.5
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "dead hang, legs straight",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 175,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "overhand, full grip",
+          "implementPosition": "bar overhead",
+          "spineFlexion": 0
+        },
+        {
+          "t": 0.25,
+          "label": "top, legs above parallel",
+          "trunkFromVertical": -15,
+          "bodyPlane": null,
+          "hipFlexion": 100,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 165,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "overhand",
+          "implementPosition": "bar overhead",
+          "spineFlexion": 15
+        },
+        {
+          "t": 0.5,
+          "label": "top hold end",
+          "trunkFromVertical": -15,
+          "bodyPlane": null,
+          "hipFlexion": 100,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 165,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "overhand",
+          "implementPosition": "bar overhead",
+          "spineFlexion": 15
+        },
+        {
+          "t": 0.75,
+          "label": "lowering",
+          "trunkFromVertical": -8,
+          "bodyPlane": null,
+          "hipFlexion": 45,
+          "kneeFlexion": 3,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 170,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "overhand",
+          "implementPosition": "bar overhead",
+          "spineFlexion": 5
+        },
+        {
+          "t": 1.0,
+          "label": "dead hang, legs straight",
+          "trunkFromVertical": 0,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 0,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": 175,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "overhand",
+          "implementPosition": "bar overhead",
+          "spineFlexion": 0
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": ""
+      },
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "obliques",
+        "forearms",
+        "lats"
+      ],
+      "cues": [
+        "Shoulders active, no dead swing",
+        "Curl the pelvis up, not just lift the legs",
+        "Pause at the top",
+        "Lower slowly without swinging"
+      ],
+      "mistakes": [
+        "Swinging for momentum",
+        "Only flexing the hips with an arched lower back",
+        "Dropping the legs fast"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Hands fixed on the bar: as the trunk tilts back, shoulderFlexion = 180 + trunkFromVertical keeps the arms vertical. spineFlexion = posterior pelvic tilt/lumbar flexion; when present, hipFlexion is thigh relative to pelvis."
+    },
+    {
+      "id": "cable_crunch",
+      "name": "Kneeling cable crunch",
+      "orientation": "KNEELING",
+      "implement": "CABLE",
+      "implementPlacement": "hands: rope from a high pulley, rope ends held beside the head",
+      "fixedContacts": [
+        "knees_floor",
+        "shins_floor",
+        "hands_rope"
+      ],
+      "ikLimbs": [],
+      "stanceWidthSW": 0.6,
+      "gripWidthSW": 0.4,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "start, kneeling tall-ish",
+          "trunkFromVertical": 30,
+          "bodyPlane": null,
+          "hipFlexion": 30,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 150,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 135,
+          "wristNotes": "neutral, rope ends at the ears/forehead",
+          "implementPosition": "rope beside head, cable taut",
+          "spineFlexion": 0
+        },
+        {
+          "t": 0.25,
+          "label": "full crunch",
+          "trunkFromVertical": 55,
+          "bodyPlane": null,
+          "hipFlexion": 30,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 150,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 135,
+          "wristNotes": "neutral",
+          "implementPosition": "rope beside head, moved down toward knees",
+          "spineFlexion": 50
+        },
+        {
+          "t": 0.5,
+          "label": "squeeze end",
+          "trunkFromVertical": 55,
+          "bodyPlane": null,
+          "hipFlexion": 30,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 150,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 135,
+          "wristNotes": "neutral",
+          "implementPosition": "rope near knees",
+          "spineFlexion": 50
+        },
+        {
+          "t": 0.75,
+          "label": "returning",
+          "trunkFromVertical": 42,
+          "bodyPlane": null,
+          "hipFlexion": 30,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 150,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 135,
+          "wristNotes": "neutral",
+          "implementPosition": "rope rising",
+          "spineFlexion": 25
+        },
+        {
+          "t": 1.0,
+          "label": "start",
+          "trunkFromVertical": 30,
+          "bodyPlane": null,
+          "hipFlexion": 30,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 150,
+          "shoulderAbduction": 15,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 135,
+          "wristNotes": "neutral",
+          "implementPosition": "rope beside head",
+          "spineFlexion": 0
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "bottom",
+        "notes": "pause is the squeeze in full flexion"
+      },
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "obliques"
+      ],
+      "cues": [
+        "Lock the hips in place, do not sit back",
+        "Curl the ribs toward the pelvis",
+        "Keep the hands fixed beside the head",
+        "Control the stretch on the way up"
+      ],
+      "mistakes": [
+        "Hinging at the hips instead of flexing the spine",
+        "Pulling with the arms",
+        "Sitting back onto the heels"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Thighs stay vertical; trunkFromVertical ~ hipFlexion + spineFlexion/2 (chord of a uniformly curved spine). Arms are fixed relative to the head."
+    },
+    {
+      "id": "ab_wheel",
+      "name": "Ab wheel rollout",
+      "orientation": "KNEELING",
+      "implement": "BODYWEIGHT",
+      "implementPlacement": "hands on the ab wheel handles; wheel rolls on the floor",
+      "fixedContacts": [
+        "knees_floor",
+        "shins_floor",
+        "hands_wheel_rolling"
+      ],
+      "ikLimbs": [
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.5,
+      "gripWidthSW": 0.5,
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "start, wheel under shoulders",
+          "trunkFromVertical": 55,
+          "bodyPlane": null,
+          "hipFlexion": 45,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 64,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 5,
+          "wristNotes": "neutral on handles",
+          "implementPosition": "wheel under shoulders",
+          "spineFlexion": 20
+        },
+        {
+          "t": 0.25,
+          "label": "rolling out",
+          "trunkFromVertical": 78,
+          "bodyPlane": null,
+          "hipFlexion": 30,
+          "kneeFlexion": 50,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 132,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 5,
+          "wristNotes": "neutral",
+          "implementPosition": "wheel ahead of head",
+          "spineFlexion": 15
+        },
+        {
+          "t": 0.5,
+          "label": "full extension",
+          "trunkFromVertical": 80,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 15,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 157,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 5,
+          "wristNotes": "neutral",
+          "implementPosition": "wheel far forward, arms overhead",
+          "spineFlexion": 10
+        },
+        {
+          "t": 0.625,
+          "label": "extension hold end",
+          "trunkFromVertical": 80,
+          "bodyPlane": null,
+          "hipFlexion": 0,
+          "kneeFlexion": 15,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 157,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 5,
+          "wristNotes": "neutral",
+          "implementPosition": "wheel far forward",
+          "spineFlexion": 10
+        },
+        {
+          "t": 1.0,
+          "label": "start",
+          "trunkFromVertical": 55,
+          "bodyPlane": null,
+          "hipFlexion": 45,
+          "kneeFlexion": 90,
+          "ankleDorsiflexion": -30,
+          "shoulderFlexion": 64,
+          "shoulderAbduction": 5,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 5,
+          "wristNotes": "neutral",
+          "implementPosition": "wheel under shoulders",
+          "spineFlexion": 20
+        }
+      ],
+      "tempo": {
+        "eccentric": 2,
+        "pause": 0.5,
+        "concentric": 1.5,
+        "order": "eccentric_first",
+        "pauseAt": "bottom",
+        "notes": "pause at full extension"
+      },
+      "primaryMuscles": [
+        "abs"
+      ],
+      "secondaryMuscles": [
+        "obliques",
+        "lats",
+        "front_delts"
+      ],
+      "cues": [
+        "Hollow body: ribs down, glutes squeezed",
+        "Roll out only as far as you can keep the back from sagging",
+        "Arms straight",
+        "Pull back with the abs and lats"
+      ],
+      "mistakes": [
+        "Lower back sagging into an arch",
+        "Leading the return with the hips",
+        "Bending the elbows"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Shins stay on the floor so thigh lean = 90 - kneeFlexion; trunkFromVertical ~ thigh lean + hipFlexion + spineFlexion/2. Wheel is an IK target sliding forward on the floor."
+    },
+    {
+      "id": "power_clean",
+      "name": "Power clean",
+      "orientation": "STANDING",
+      "implement": "BARBELL",
+      "implementPlacement": "hands (hook grip) from floor -> front rack on anterior delts",
+      "fixedContacts": [
+        "feet_floor",
+        "hands_bar"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg",
+        "left_arm",
+        "right_arm"
+      ],
+      "stanceWidthSW": 0.75,
+      "stanceWidthRangeSW": [
+        0.6,
+        0.9
+      ],
+      "catchStanceWidthSW": 1.0,
+      "footTurnoutDeg": [
+        5,
+        20
+      ],
+      "gripWidthSW": 1.3,
+      "gripWidthRangeSW": [
+        1.2,
+        1.5
+      ],
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "start (floor)",
+          "trunkFromVertical": 55,
+          "bodyPlane": null,
+          "hipFlexion": 126,
+          "kneeFlexion": 85,
+          "ankleDorsiflexion": 14,
+          "shoulderFlexion": 53,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "hook grip, wrists slightly flexed, arms straight",
+          "implementPosition": "on floor over midfoot, touching shins"
+        },
+        {
+          "t": 0.12,
+          "label": "bar passing knees (end of first pull)",
+          "trunkFromVertical": 50,
+          "bodyPlane": null,
+          "hipFlexion": 79,
+          "kneeFlexion": 30,
+          "ankleDorsiflexion": 1,
+          "shoulderFlexion": 40,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "hook grip, arms straight",
+          "implementPosition": "at knee height, close to legs"
+        },
+        {
+          "t": 0.2,
+          "label": "full extension (triple extension)",
+          "trunkFromVertical": -10,
+          "bodyPlane": null,
+          "hipFlexion": -15,
+          "kneeFlexion": 5,
+          "ankleDorsiflexion": -20,
+          "shoulderFlexion": -10,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 10,
+          "wristNotes": "hook grip, shrugged",
+          "implementPosition": "at upper thigh/hip crease, moving up fast"
+        },
+        {
+          "t": 0.29,
+          "label": "catch (power position)",
+          "trunkFromVertical": 15,
+          "bodyPlane": null,
+          "hipFlexion": 60,
+          "kneeFlexion": 70,
+          "ankleDorsiflexion": 25,
+          "shoulderFlexion": 105,
+          "shoulderAbduction": 20,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 145,
+          "wristNotes": "extended ~80 deg, bar in fingers",
+          "implementPosition": "front rack on delts, over midfoot"
+        },
+        {
+          "t": 1.0,
+          "label": "start (floor)",
+          "trunkFromVertical": 55,
+          "bodyPlane": null,
+          "hipFlexion": 126,
+          "kneeFlexion": 85,
+          "ankleDorsiflexion": 14,
+          "shoulderFlexion": 53,
+          "shoulderAbduction": 10,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "hook grip",
+          "implementPosition": "on floor over midfoot"
+        }
+      ],
+      "transitionNotes": "Concentric (pull + catch) spans t 0-0.29 (1 s). The 1 s pause spans t 0.29-0.57: rise from the catch to a full front-rack stand by ~t 0.43 and hold. Eccentric 1.5 s spans t 0.57-1.0: drop the bar to the hang (~t 0.7) and hinge it to the floor. Renderers may insert an implicit standing-front-rack pose at t~0.43-0.57 and a hang pose at t~0.7.",
+      "tempo": {
+        "eccentric": 1.5,
+        "pause": 1,
+        "concentric": 1,
+        "order": "concentric_first",
+        "pauseAt": "top",
+        "notes": "concentric ~1 s explosive pull and catch; pause = stand in front rack; eccentric = controlled return to floor"
+      },
+      "primaryMuscles": [
+        "glutes",
+        "quads",
+        "hamstrings",
+        "traps"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "lower_back",
+        "calves",
+        "front_delts",
+        "forearms"
+      ],
+      "cues": [
+        "Shoulders over the bar, push the floor away",
+        "Keep the bar close and sweep it into the hips",
+        "Jump and shrug, then pull under",
+        "Fast elbows to the front rack"
+      ],
+      "mistakes": [
+        "Bending the arms early",
+        "Bar looping away from the body",
+        "Catching with low elbows or a reverse-curl"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Trunk angle held roughly constant through the first pull (55 -> 50), consistent with ISB/ISBS kinematic reports seen in search results (exact degrees not retrieved). Start solved so straight arms reach a 0.225 m bar centre over midfoot; knee passage has the bar just in front of the knees. At full extension the lifter is on the toes, so the floor-contact trunk formula does not apply."
+    },
+    {
+      "id": "farmers_walk",
+      "name": "Farmer's walk",
+      "orientation": "STANDING",
+      "implement": "DUMBBELL_PAIR",
+      "implementPlacement": "hands: heavy dumbbells or farmer's handles at the sides",
+      "fixedContacts": [
+        "hands_handles",
+        "feet_floor_alternating"
+      ],
+      "ikLimbs": [
+        "left_leg",
+        "right_leg"
+      ],
+      "asymmetric": true,
+      "leadLeg": "right",
+      "stanceWidthSW": 0.4,
+      "footTurnoutDeg": [
+        5,
+        10
+      ],
+      "gripWidthSW": null,
+      "stanceNotes": "One cycle = two steps; root translates forward by two step lengths. Steps are short and quick under load.",
+      "keyframes": [
+        {
+          "t": 0.0,
+          "label": "right heel contact",
+          "trunkFromVertical": 2,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 25,
+            "left": -10
+          },
+          "kneeFlexion": {
+            "right": 5,
+            "left": 35
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": -15
+          },
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 8,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral, crushing grip, shoulders packed",
+          "implementPosition": "handles beside thighs"
+        },
+        {
+          "t": 0.25,
+          "label": "right midstance / left swing",
+          "trunkFromVertical": 2,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 7,
+            "left": 25
+          },
+          "kneeFlexion": {
+            "right": 10,
+            "left": 55
+          },
+          "ankleDorsiflexion": {
+            "right": 5,
+            "left": 0
+          },
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 8,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "handles beside thighs"
+        },
+        {
+          "t": 0.5,
+          "label": "left heel contact",
+          "trunkFromVertical": 2,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": -10,
+            "left": 25
+          },
+          "kneeFlexion": {
+            "right": 35,
+            "left": 5
+          },
+          "ankleDorsiflexion": {
+            "right": -15,
+            "left": 0
+          },
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 8,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "handles beside thighs"
+        },
+        {
+          "t": 0.75,
+          "label": "left midstance / right swing",
+          "trunkFromVertical": 2,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 25,
+            "left": 7
+          },
+          "kneeFlexion": {
+            "right": 55,
+            "left": 10
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": 5
+          },
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 8,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "handles beside thighs"
+        },
+        {
+          "t": 1.0,
+          "label": "right heel contact",
+          "trunkFromVertical": 2,
+          "bodyPlane": null,
+          "hipFlexion": {
+            "right": 25,
+            "left": -10
+          },
+          "kneeFlexion": {
+            "right": 5,
+            "left": 35
+          },
+          "ankleDorsiflexion": {
+            "right": 0,
+            "left": -15
+          },
+          "shoulderFlexion": 0,
+          "shoulderAbduction": 8,
+          "shoulderHorizontalAbduction": null,
+          "elbowFlexion": 0,
+          "wristNotes": "neutral",
+          "implementPosition": "handles beside thighs"
+        }
+      ],
+      "tempo": {
+        "eccentric": 0,
+        "pause": 0,
+        "concentric": 0,
+        "order": "gait_cycle",
+        "pauseAt": "none",
+        "notes": "continuous walking; ~1.0-1.2 s per two-step cycle (coaching estimate); carry for distance or time"
+      },
+      "primaryMuscles": [
+        "forearms",
+        "traps"
+      ],
+      "secondaryMuscles": [
+        "upper_back",
+        "abs",
+        "obliques",
+        "glutes",
+        "quads",
+        "calves"
+      ],
+      "cues": [
+        "Stand tall, shoulders down and back",
+        "Crush the handles",
+        "Short, quick steps",
+        "Brace and breathe shallow behind it"
+      ],
+      "mistakes": [
+        "Leaning forward or to one side",
+        "Long overstriding steps",
+        "Letting the shoulders roll forward"
+      ],
+      "angleBasis": "coaching_estimate",
+      "sourceIds": [],
+      "angleNotes": "Leg angles are approximate normal-gait values, reduced for shorter loaded steps; general gait knowledge, not checked against a fetched source in this session."
+    }
+  ],
+  "verification": {
+    "checkedAt": "2026-11-17",
+    "changes": [
+      "method: every keyframe re-checked with a 2D sagittal stick model (segment lengths as fractions of height after Winter's anthropometric table, applied from memory: shank 0.246H, thigh 0.245H, hip-to-acromion 0.288H, shoulder-to-grip 0.392H, ankle height 0.039H, midfoot ~0.035H ahead of the ankle; H = 1.75 m). Checks: trunk identity for flat-foot frames, bar / system centre of mass over midfoot (bar load 0.3-1.5 x bodyweight by lift), hands reaching a 0.225 m bar centre at floor pulls, fixed contacts reachable with constant positions across frames, machine rail constraints, tempo vs t spacing. All corrected values are model-derived coaching estimates, not measurements.",
+      "back_squat: mid-descent hip 78->92, trunk 23->37; bottom hip 111->127, trunk 18->34; mid-ascent hip 85->96, trunk 27->38. Old values put the bar 10-13 cm behind midfoot (lifter would fall backward in flat shoes); S1 hip kept only as a reference in angleNotes; angleBasis now measured+coaching_estimate.",
+      "low_bar_squat: mid-descent knee 62->65, ankle 14->16, hip 78->94, trunk 30->45; bottom hip 121->126, trunk 36->41; mid-ascent hip 97->106, trunk 40->49. Mid-descent had the bar ~11 cm behind midfoot; bottom now within S1's SD and balanced.",
+      "front_squat: mid-descent ankle 22->24, hip 63->75, trunk 10->24; bottom hip 102->117, trunk 12->27; mid-ascent ankle 25->26, hip 72->83, trunk 15->27; shoulderFlexion kept at 90 + trunk (114/117/117). Old trunk 10-15 deg put bar and centre of mass 10-12 cm behind midfoot; new trunk stays clearly more upright than the back squat (S4/S5).",
+      "goblet_squat: mid-descent ankle 20->22, hip 62->78, trunk 12->30; bottom ankle 32->34, hip 103->120, trunk 15->34. A light dumbbell cannot counterbalance a 12-15 deg trunk; old poses had the centre of mass ~12 cm behind midfoot.",
+      "leg_press: top hip 45->70, ankle -5->-20; mid hip 80->91, ankle 10->4; bottom hip 110->108, ankle 20->27. Old frames violated the fixed-footplate rule (ankle must change by knee change minus hip change; was off by 5 deg) and the feet did not move on a straight rail; top hip 45 cannot point the legs up a 45 deg sled from a reclined seat.",
+      "hack_squat: top hip 10->25; mid hip 55->53, ankle 18->22; bottom hip 95->97, ankle 30->33. With the trunk fixed to the pad and feet fixed, the old set moved the hip ~20 cm off the rail between top and bottom and broke ankle = knee - hip change.",
+      "bulgarian_split_squat: rear foot was not a fixed contact (rear ankle moved ~20 cm between frames and sat only ~0.3 m above the front ankle, i.e. a very low bench). Re-solved rear leg for a fixed bench contact: rear hip -5/-3/0 -> -10/3/-7, rear knee 50/75/100 -> 71/96/119, rear ankle -40/-40/-40 -> -59/-43/-7; front top hip 22->30, knee 20->30, ankle 8->10 so the rear foot can reach the bench. stanceNotes now give the assumed distances.",
+      "walking_lunge: rear ankle at the bottom -10 -> +15 (old note mistook heel raise for plantarflexion; with -10 the rear foot floated ~20 cm above the floor); bottom rear hip -7->1, rear knee 95->83 (rear knee ~14 cm above floor), front hip 81->85, knee 95->100, ankle 22->24, trunk 8->9 (shoulderFlexion 8->9 to keep the dumbbells hanging); heel-contact rear knee 10->20, ankle 10->12 so rear forefoot and front heel are on the same floor level.",
+      "step_up: start lead hip 95->105, knee 95->110, ankle 15->20 and trail hip 3->14, knee 5->8, ankle 10->9 so the lead foot sits one box height (~45 cm) above the flat trail foot (old set implied a ~34 cm box and violated the flat-foot trunk identity for the trail leg). t=0.71 lead hip 55->90, knee 60->85, ankle 10->5, trail hip -5->0, ankle -15->-25: the old 'toe reaching floor' frame left the trail toe ~30 cm above the floor.",
+      "romanian_deadlift: arms were vertical (shoulderFlexion = trunk), which put the bar 18-32 cm ahead of midfoot. Mid frame hip 53->57, knee 15->17, ankle 2->-1, trunk 40->39, shoulder 40->29; bottom hip 92->108, knee 20->31, ankle 3->-3, trunk 75->74, shoulder 75->58; bar now ~0.33 m high (upper/mid shin) and over midfoot; label updated.",
+      "conventional_deadlift: old setup could not reach the bar (hands ~12 cm above a bar on 450 mm plates) and the bar sat ~9 cm ahead of midfoot. Setup hip 108->127, knee 65->73, ankle 15->10, trunk 58->64, shoulder 53->58; knee passage hip 64->79, knee 22->27, ankle 3->0, trunk 45->52, shoulder 42->40 (old knee-passage bar was ~14 cm ahead of midfoot).",
+      "sumo_deadlift: old setup left the hands ~10 cm above the bar even allowing for the shorter sagittal projection of abducted thighs (thigh scaled 0.82). Setup hip 113->125, knee 75->78, ankle 12->6, trunk 50->53, shoulder 45->49; knee passage hip 57->67, knee 21->26, ankle 2->0, trunk 38->41, shoulder 33->32. Trunk stays ~11 deg more upright and thighs ~9 deg more horizontal than conventional (S3 direction).",
+      "good_morning: old frames kept the hips over the heels (knee 10-15, shins forward) with the bar 19-37 cm ahead of midfoot, so the lifter would tip forward. Mid hip 49->61, knee 10->20, ankle 1->-1; bottom trunk 75->70, hip 88->103, knee 15->27, ankle 2->-6; label/implementPosition updated.",
+      "hip_thrust: bottom ankle +15 -> -20 (with feet flat and hips low the shins tilt back toward the bench, not forward), bottom bodyPlane 30->35, knee 105->110; top knee 87->90; lowering bodyPlane 15, hip 38->33, knee 96->106, ankle 8->-2. Old bottom set was not closable: hip 75 + knee 105 + ankle 15 implies the trunk ~75 deg from horizontal.",
+      "nordic_curl: catch hip 5->0 (rigid-line rule trunk = 90 - knee gave 80, not the stated 75); arms 90/80 -> shoulderFlexion 42, elbow 120 (push-up catch). With the old arms the hands would have been ~25 cm below the floor (shoulders are only ~0.29 m up at this trunk angle).",
+      "plank: shoulderFlexion 90->80 so the upper arm is vertical (elbows under shoulders) with the body 10 deg head-up; 10 deg itself checks out (forearm height vs toes).",
+      "ab_wheel: hands must reach a wheel ~9 cm off the floor. Start hip 60->45, trunk 70->55, shoulder 70->64 (old start put the hands ~13 cm below the floor with arms vertical); rolling shoulder 120->132; full extension and hold shoulder 165->157.",
+      "power_clean: start hip 110->126, knee 75->85, ankle 20->14, shoulder 50->53 (old start left the hands ~10 cm above the bar); knee passage hip 80->79, knee 30, ankle 5->1, trunk 55->50, shoulder 50->40 (old bar sat ~15 cm ahead of the knees/midfoot). Re-timed to the 3.5 s tempo: full extension t 0.22->0.20, catch t 0.32->0.29; transitionNotes now fit inside the stated pause and eccentric (old implicit stand at 0.45 plus 1 s pause plus 1.5 s lowering overran the rep).",
+      "farmers_walk: midstance stance-leg hip 5->7 so the flat stance foot satisfies trunk = ankle - knee + hip (trunk 2).",
+      "no change: leg_extension, lying_leg_curl, seated_leg_curl, standing_calf_raise, seated_calf_raise, hip_adduction, back_extension, hanging_leg_raise, cable_crunch passed range, contact and tempo checks. Tempo t spacing matched the stated tempo for every exercise except power_clean. Muscle lists checked; no errors found."
+    ]
+  }
+}

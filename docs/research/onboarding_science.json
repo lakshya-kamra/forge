@@ -1,0 +1,354 @@
+{
+  "meta": {
+    "title": "Forge onboarding: phase recommendation science",
+    "compiledOn": "2026-11-17",
+    "scope": "Decision framework for recommending cut / lean bulk / maingain / maintain / recomp / minicut / diet break / reverse diet from onboarding inputs (optional photos, weight, height, age, sex, circumferences, training age, goal, preference).",
+    "conventions": {
+      "bodyFat": "All body-fat (BF) values are percentage points of body mass. Thresholds are coach heuristics, not validated cut-offs; every BF input carries roughly +/-4-5 points of individual error (see navyFormula and visualEstimation), so the app must reason with ranges, not point values.",
+      "rates": "%BW/wk = percent of current body weight per week, judged on weekly-average weight, not single weigh-ins.",
+      "designChoice": "Items tagged designChoice are Forge engineering defaults derived from the cited ranges, not numbers stated by a source.",
+      "unverified": "Items tagged unverified could not be confirmed against a primary source in this session."
+    }
+  },
+  "sources": [
+    {"id": "helms2014", "cite": "Helms ER, Aragon AA, Fitschen PJ. Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation. J Int Soc Sports Nutr. 2014;11:20.", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4033492", "verified": "abstract and body read (PMC)"},
+    {"id": "iraki2019", "cite": "Iraki J, Fitschen P, Espinar S, Helms E. Nutrition recommendations for bodybuilders in the off-season: a narrative review. Sports. 2019;7(7):154.", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6680710", "verified": "abstract and summary read (PMC)"},
+    {"id": "roberts2020", "cite": "Roberts BM, Helms ER, Trexler ET, Fitschen PJ. Nutritional recommendations for physique athletes. J Hum Kinet. 2020;71:79-108.", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7052702", "verified": "read (PMC), first part"},
+    {"id": "slater2019", "cite": "Slater GJ, Dieter BP, Marsh DJ, Helms ER, Shaw G, Iraki J. Is an energy surplus required to maximize skeletal muscle hypertrophy associated with resistance training? Front Nutr. 2019;6:131.", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6710320", "verified": "read (PMC)"},
+    {"id": "helms2023", "cite": "Helms ER et al. Effect of small and large energy surpluses on strength, muscle, and skinfold thickness in resistance-trained individuals: a parallel groups design. Sports Med Open. 2023;9:102.", "url": "https://pubmed.ncbi.nlm.nih.gov/37914977/", "verified": "abstract via search summary only"},
+    {"id": "murphy2022", "cite": "Murphy C, Koehler K. Energy deficiency impairs resistance training gains in lean mass but not strength: a meta-analysis and meta-regression. Scand J Med Sci Sports. 2022;32(1):125-137.", "url": "https://read.qxmd.com/read/34623696/energy-deficiency-impairs-resistance-training-gains-in-lean-mass-but-not-strength-a-meta-analysis-and-meta-regression", "verified": "abstract via search summary"},
+    {"id": "barakat2020", "cite": "Barakat C et al. Body recomposition: can trained individuals build muscle and lose fat at the same time? Strength Cond J. 2020;42(5):7-21.", "url": "https://doi.org/10.1519/SSC.0000000000000584", "verified": "bibliographic record and abstract-level summaries only; full text not read"},
+    {"id": "sbsPratio", "cite": "Trexler E (Stronger By Science). Should you cut before you bulk? How body-fat levels affect your p-ratio (individual-data analysis of 7 studies, n=161).", "url": "https://www.strongerbyscience.com/p-ratios/", "verified": "read"},
+    {"id": "mfRecomp", "cite": "Trexler E. Can you lose fat and gain muscle at the same time? MacroFactor (updated 2026-07-03).", "url": "https://macrofactor.com/recomposition/", "verified": "read"},
+    {"id": "mfReverse", "cite": "Trexler E. Reverse dieting: hype versus evidence. MacroFactor (updated 2026-07-03).", "url": "https://macrofactor.com/?p=2478", "verified": "read (first 100k chars)"},
+    {"id": "mfPhotos", "cite": "MacroFactor Help Center. Tips for taking good progress photos.", "url": "https://help.macrofactorapp.com/en/articles/349-tips-for-taking-good-progress-photos", "verified": "read"},
+    {"id": "rpFaq", "cite": "Renaissance Periodization (Israetel et al.). FAQs: lose fat or gain muscle first.", "url": "https://rpstrength.com/pages/faqs", "verified": "read"},
+    {"id": "rpMinicut", "cite": "Israetel M. All about minicuts! RP Strength, 2017-10-11.", "url": "https://rpstrength.com/blogs/articles/minicuts-dr-mike-israetel", "verified": "read"},
+    {"id": "rpMass", "cite": "RP Strength. Tips for a productive mass phase, 2016-12-01.", "url": "https://rpstrength.com/blogs/articles/tips-productive-mass-phase", "verified": "read"},
+    {"id": "rpGainHelp", "cite": "Evans B. Set up a muscle gain (bulk) phase. RP Help Center (RP Diet app), updated 2026-11-13.", "url": "https://help.rpstrength.com/hc/en-us/articles/44876470035607-Set-Up-A-Muscle-Gain-Bulk-Phase", "verified": "read (page copy fetched 2026-11-17)"},
+    {"id": "nippardRecomp", "cite": "Nippard J. How to build muscle and lose fat at the same time: step by step explained (body recomposition), jeffnippard.com, 2023-05-28.", "url": "https://jeffnippard.com/blogs/news/how-to-build-muscle-and-lose-fat-at-the-same-time-step-by-step-explained-body-recomposition", "verified": "read"},
+    {"id": "nippardGaintain", "cite": "Nippard J. Bulking/Cutting vs. Gaintaining: which is best? YouTube, 2018-11-24.", "url": "https://www.youtube.com/watch?v=ubHlOQnmnd0", "verified": "video ID confirmed via YouTube oEmbed; content via third-party summary page"},
+    {"id": "rippedbody", "cite": "Morgan A (co-author of the Muscle and Strength Pyramid books with Helms). Should I bulk vs cut (or recomp)? The definitive guide. RippedBody.com (undated).", "url": "https://rippedbody.com/cut-or-bulk/", "verified": "read"},
+    {"id": "pyramid", "cite": "Helms E, Morgan A, Valdez A. The Muscle and Strength Pyramid: Nutrition (2nd ed.) - monthly gain-rate table by training status.", "url": null, "verified": "unverified - figures known only from secondary sites; advanced tier quoted as both <0.5% and 0.25-0.5%/month"},
+    {"id": "garthe2011", "cite": "Garthe I et al. Effect of two different weight-loss rates on body composition and strength and power-related performance in elite athletes. Int J Sport Nutr Exerc Metab. 2011;21(2):97-104.", "url": "https://pubmed.ncbi.nlm.nih.gov/21558571/", "verified": "findings as reported inside helms2014; PubMed ID not independently opened"},
+    {"id": "byrne2018", "cite": "Byrne NM et al. Intermittent energy restriction improves weight loss efficiency in obese men: the MATADOR study. Int J Obes. 2018;42:129-138.", "url": "https://pubmed.ncbi.nlm.nih.gov/28925405/", "verified": "design and fat-loss result via search summaries; PubMed ID not independently opened"},
+    {"id": "trexler2014", "cite": "Trexler ET, Smith-Ryan AE, Norton LE. Metabolic adaptation to weight loss: implications for the athlete. J Int Soc Sports Nutr. 2014;11:7.", "url": "https://jissn.biomedcentral.com/articles/10.1186/1550-2783-11-7", "verified": "abstract-level only"},
+    {"id": "hodgdon1984", "cite": "Hodgdon JA, Beckett MB. (a) Prediction of percent body fat for US Navy men from body circumferences and height; (b) Prediction of percent body fat for US Navy women from body circumferences and height. San Diego, CA: Naval Health Research Center, 1984. (NHRC report numbers 84-11 / 84-29 unverified.)", "url": "https://apps.dtic.mil/sti/pdfs/ADA143890.pdf", "verified": "Titles/publisher confirmed from Potter 2022 reference list. Primary PDFs not readable (DTIC 403; DTIC public search offline on 2026-11-17). Inch-form coefficients confirmed by Potter 2022 (male form verbatim) and by exactly reproducing every cell of the official 2016 Navy BCA tables (840 male + 1,040 female cells, rounded to whole %)."},
+    {"id": "navyBCA2016", "cite": "U.S. Navy Physical Readiness Program. Guide 4: Body Composition Assessment (BCA), Jan 2016 (copy hosted by USPHS).", "url": "https://dcp.psc.gov/ccmis/pdf_docs/Body%20Composition%20Assessment%20(BCA)%202016.pdf", "verified": "full text extracted and re-read 2026-11-17; contains measurement procedure and lookup tables only, no equations"},
+    {"id": "hodgdonFriedl1999", "cite": "Hodgdon JA, Friedl KE. Development of the DoD body composition estimation equations. NHRC Technical Document 99-2B, 1999.", "url": "https://apps.dtic.mil/sti/pdfs/ADA370158.pdf", "verified": "women R=0.856, SEE=3.61% via secondary listing (DTIC blocked)"},
+    {"id": "potter2022", "cite": "Potter AW, Tharion WJ, Holden LD, Pazmino A, Looney DP, Friedl KE. Circumference-based predictions of body fat revisited: preliminary results from a US Marine Corps body composition survey. Front Physiol. 2022;13:868627.", "url": "https://www.frontiersin.org/articles/10.3389/fphys.2022.868627/full", "verified": "read"},
+    {"id": "nap1992", "cite": "Institute of Medicine. Body Composition and Physical Performance: Applications for the Military Services. Washington, DC: National Academies Press; doi:10.17226/2031 (NAP lists 1990; Potter 2022 cites the Hodgdon chapter 'Body Composition in the Military Services: Standards and Methods', pp. 57-70, as 1992).", "url": "https://nap.nationalacademies.org/read/2031/chapter/7", "verified": "book and chapter titles confirmed on NAP; chapter text did not load (403/blank), so the claim 'overpredicts lean, underpredicts obese' is unverified from this source"},
+    {"id": "eckerson1992", "cite": "Eckerson JM, Housh TJ, Johnson GO. The validity of visual estimations of percent body fat in lean males. Med Sci Sports Exerc. 1992;24(5):615-618.", "url": "https://researchworks.creighton.edu/esploro/outputs/journalArticle/The-validity-of-visual-estimations-of/991005929594102656", "verified": "abstract read"},
+    {"id": "majmudar2022", "cite": "Majmudar MD et al. Smartphone camera based assessment of adiposity: a validation study. NPJ Digit Med. 2022;5:79. (Amazon-funded; several authors Amazon employees.)", "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9243018", "verified": "read"},
+    {"id": "ferreira2025", "cite": "Ferreira TJ et al. Advances in the estimation of body fat percentage using an artificial intelligence 2D-photo method. NPJ Digit Med. 2025;8:43. doi:10.1038/s41746-024-01380-6. PMID 39827323.", "url": "https://www.nature.com/articles/s41746-024-01380-6", "verified": "PubMed abstract read 2026-11-17"},
+    {"id": "reynolds2026", "cite": "Reynolds T et al. Validation of a smartphone-image-based computer-vision model for lean mass and body fat estimation against DXA. medRxiv preprint, 2026-06-16 (authors include company co-founders).", "url": "https://www.medrxiv.org/content/10.64898/2026.06.15.26355736v1.full", "verified": "read; not peer reviewed"},
+    {"id": "who2008waist", "cite": "WHO. Waist circumference and waist-hip ratio: report of a WHO expert consultation, Geneva 8-11 Dec 2008 (published 2011).", "url": "https://www.who.int/publications/i/item/9789241501491", "verified": "protocol wording via secondary document citing WHO STEPS"},
+    {"id": "who2004asian", "cite": "WHO Expert Consultation. Appropriate body-mass index for Asian populations and its implications for policy and intervention strategies. Lancet. 2004;363:157-163.", "url": "https://pubmed.ncbi.nlm.nih.gov/14726171/", "verified": "abstract via search"},
+    {"id": "misra2009", "cite": "Misra A, Chowbey P, Makkar BM et al. Consensus statement for diagnosis of obesity, abdominal obesity and the metabolic syndrome for Asian Indians. J Assoc Physicians India. 2009;57:163-170.", "url": "https://pubmed.ncbi.nlm.nih.gov/19582986/", "verified": "cut-offs via search summaries"},
+    {"id": "isak", "cite": "Stewart A, Marfell-Jones M, Olds T, de Ridder H. International Standards for Anthropometric Assessment (ISAK), 2011.", "url": "https://www.isak.global/", "verified": "landmarks (mid-acromiale-radiale, mesosternale, thigh 1 cm below gluteal fold) via secondary sources only"},
+    {"id": "paluch2022", "cite": "Paluch AE et al. Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts. Lancet Public Health. 2022;7:e219-e228.", "url": "https://discovery.ucl.ac.uk/id/eprint/10170017/1/1-s2.0-S2468266721003029-main.pdf", "verified": "abstract via search"},
+    {"id": "morton2018", "cite": "Morton RW et al. A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength. Br J Sports Med. 2018;52(6):376-384.", "url": "https://pubmed.ncbi.nlm.nih.gov/28698222/", "verified": "full text (PMC5867436) read 2026-11-17: breakpoint 1.62 g/kg/d, 95% CI 1.03-2.20"},
+    {"id": "schoenfeld2017", "cite": "Schoenfeld BJ, Ogborn D, Krieger JW. Dose-response relationship between weekly resistance training volume and increases in muscle mass. J Sports Sci. 2017;35(11):1073-1082 (online 2016).", "url": "https://pubmed.ncbi.nlm.nih.gov/27433992/", "verified": "findings via search; PubMed ID not independently opened"},
+    {"id": "acsm2009", "cite": "ACSM position stand. Progression models in resistance training for healthy adults. Med Sci Sports Exerc. 2009;41(3):687-708.", "url": "https://pubmed.ncbi.nlm.nih.gov/19204579/", "verified": "PubMed abstract read 2026-11-17: frequency 2-3 d/wk novice, 3-4 d/wk intermediate, 4-5 d/wk advanced"},
+    {"id": "frankenfield2005", "cite": "Frankenfield D, Roth-Yousey L, Compher C. Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review. J Am Diet Assoc. 2005;105(5):775-789.", "url": "https://pubmed.ncbi.nlm.nih.gov/15883556/", "verified": "abstract-level via search"}
+  ],
+  "phases": [
+    {
+      "id": "cut",
+      "name": "Cut (fat-loss phase)",
+      "definition": "Sustained energy deficit to reduce body fat while preserving lean mass with resistance training and high protein.",
+      "calories": "Start at estimated maintenance minus 10-20% (Nippard); larger deficits only for higher body fat. Avoid deficits above ~500 kcal/day when lean-mass retention or gain matters (Murphy & Koehler meta-regression).",
+      "rate": "0.5-1.0 %BW/wk (Helms 2014). Roberts 2020: slower loss (<=0.5 %BW/wk) is preferable for retaining fat-free mass; RippedBody calls ~0.5 %BW/wk the sweet spot. designChoice: default to the lower end when already lean. Garthe 2011 (cited in Helms 2014): 0.7 %BW/wk group gained ~2.1% LBM, 1.4 %BW/wk group did not.",
+      "protein": "2.3-3.1 g/kg lean body mass (Helms 2014) or 1.8-2.7 g/kg body mass, up to 3.5 g/kg for hunger control (Roberts 2020).",
+      "fat": "15-30% of calories (Helms 2014); Roberts 2020 suggests 10-25% but cautions against very low fat for long periods. designChoice: floor at 0.5 g/kg/day.",
+      "carbs": "Remainder of calories (Helms 2014); Roberts 2020 range 2-5 g/kg/day for physique athletes.",
+      "typicalDuration": "Competitors traditionally diet 2-4 months, and longer, more gradual diets may better preserve lean mass (Helms 2014); Roberts 2020 reports case-study preps of 14-32 weeks, says ideal duration is hard to determine and that rate of loss matters more than duration. designChoice: 8-16 weeks, then maintenance.",
+      "citations": ["helms2014", "roberts2020", "garthe2011", "murphy2022", "nippardRecomp", "rippedbody"]
+    },
+    {
+      "id": "minicut",
+      "name": "Minicut",
+      "definition": "A shortened cut of 2-6 weeks, typically used inside a gaining period to reduce accumulated fat before massing again.",
+      "calories": "Deficit sized to hit the rate below.",
+      "rate": "0.5-1.0 %BW/wk; RP suggests closer to 1.0 for most; first week higher from water loss.",
+      "typicalDuration": "2-6 weeks. RP: mass at least 6 (preferably 8) weeks before considering a minicut; consider one when male BF > ~12% so the next mass ends below ~15%.",
+      "citations": ["rpMinicut"]
+    },
+    {
+      "id": "lean_bulk",
+      "name": "Lean bulk (muscle-gain phase)",
+      "definition": "Deliberate small energy surplus to maximise hypertrophy while limiting fat gain.",
+      "calories": "Novice/intermediate +10-20% over maintenance; advanced +5-10% (Iraki 2019). Slater 2019: start conservatively at ~1,500-2,000 kJ/day (~360-480 kcal/day) and adjust from monitoring.",
+      "rate": "0.25-0.5 %BW/wk for novice/intermediate; ~0.25 %BW/wk for advanced (Iraki 2019). RP Diet app help: 0.125-0.5 %BW/wk (beginner ~0.5, intermediate ~0.25-0.3, advanced ~0.125) for 8-16 weeks; RP mass article: ~0.5 %BW/wk for ~2 months after a fat-loss phase. Pyramid monthly table (unverified, secondary): novice 1-1.5 %BW/month, intermediate 0.5-1, advanced <0.5.",
+      "protein": "1.6-2.2 g/kg/day, 0.40-0.55 g/kg per meal over 3-6 meals (Iraki 2019).",
+      "fat": "0.5-1.5 g/kg/day (~20-35% of calories) (Iraki 2019).",
+      "carbs": "Remainder, ensuring >=3-5 g/kg/day (Iraki 2019).",
+      "evidenceNote": "Helms 2023 (n=17 completers, 8 wk): 15% vs 5% surplus vs maintenance showed no group differences in muscle thickness; body-mass change strongly predicted skinfold change; 15% group gained more bench 1RM. Faster gain mostly adds fat.",
+      "typicalDuration": "RippedBody: bulks of ~5-6+ months for non-novices; RP: mass >=6-8 weeks before a minicut. Stop when the upper BF threshold is reached (see decisionRules).",
+      "citations": ["iraki2019", "slater2019", "helms2023", "rpMinicut", "rpMass", "rpGainHelp", "rippedbody", "pyramid"]
+    },
+    {
+      "id": "maingain",
+      "name": "Maingain / gaintain (very slow gain)",
+      "definition": "Colloquial term, not a defined research phase: eating at or slightly above maintenance to gain very slowly while staying lean year-round, accepting slower muscle gain.",
+      "calories": "Maintenance to about +5% (designChoice anchored on Helms 2023 5% arm).",
+      "rate": "<=0.25 %BW/wk; Nippard example: about 1 lb (~0.45 kg) per month.",
+      "whoFor": "People who value staying lean over maximal gain rate (Nippard 2018); advanced lifters already near the conservative end (Iraki 2019).",
+      "citations": ["nippardGaintain", "helms2023", "iraki2019"]
+    },
+    {
+      "id": "recomp",
+      "name": "Body recomposition",
+      "definition": "Simultaneous fat loss and muscle gain with little net change in body weight.",
+      "calories": "Maintenance, or a small deficit: Nippard 2023 centres recomp calories on maintenance; MacroFactor: avoid deficits >500 kcal/day when also pursuing muscle growth, and muscle gain in a deficit is often possible at <= ~1 lb (0.45 kg)/wk loss.",
+      "rate": "Weight roughly stable to slow loss (designChoice: 0 to -0.25 %BW/wk). Track waist and strength, not scale.",
+      "protein": "High protein (secondary summaries of Barakat 2020 cite 1.6-2.4 g/kg/day - unverified against full text). designChoice: 2.0-2.4 g/kg.",
+      "whoFor": "Novices, people with higher body fat, detrained/returning lifters, and under-optimised trainees (Nippard 2023; MacroFactor). Barakat 2020: recomposition also documented in resistance-trained people. Less likely in very lean or very advanced lifters.",
+      "citations": ["barakat2020", "mfRecomp", "nippardRecomp", "nippardGaintain", "murphy2022"]
+    },
+    {
+      "id": "maintain",
+      "name": "Maintenance",
+      "definition": "Energy balance; weekly-average weight stable. Used after a diet, between phases, for performance focus, or when life stress is high.",
+      "calories": "Estimated TDEE, then dynamic adjustment to hold weight (MacroFactor 'dynamic maintenance').",
+      "rate": "designChoice: weekly average within +/-0.25 %BW/wk drift.",
+      "citations": ["mfReverse"]
+    },
+    {
+      "id": "diet_break",
+      "name": "Diet break",
+      "definition": "Planned 1-2 week return to maintenance during a long cut.",
+      "evidence": "MATADOR (51 men with obesity): 8 x 2-week blocks of restriction alternating with 2-week energy-balance blocks lost more fat (12.3 vs 8.0 kg) than 16 weeks continuous restriction at the same 67% of maintenance intake. Roberts 2020: diet breaks/refeeds possibly beneficial; ideal dosing unknown.",
+      "citations": ["byrne2018", "roberts2020"]
+    },
+    {
+      "id": "reverse_diet",
+      "name": "Reverse diet",
+      "definition": "Gradual, stepwise calorie increase (often weekly) after a cut until maintenance is reached.",
+      "evidence": "Metabolic adaptation to dieting is documented (Trexler 2014), but the reverse-diet protocol itself has not been tested against a direct return to maintenance in a randomised trial. MacroFactor review: claims of repairing metabolism or preventing regain are poorly supported; most post-diet benefits come from leaving the deficit.",
+      "forgePolicy": "Do not recommend as a default. After a cut, move straight to estimated maintenance and adjust dynamically. Offer a short step-up only as an optional preference (e.g., user fears overshooting maintenance).",
+      "citations": ["mfReverse", "trexler2014"]
+    }
+  ],
+  "decisionRules": [
+    {
+      "if": "Age < 18, pregnancy/breastfeeding, a disclosed eating-disorder history, or a medical condition affecting weight",
+      "then": "Do not prescribe a deficit or aggressive surplus; default to maintain with training focus and advise professional guidance.",
+      "why": "Safety guard (designChoice). MacroFactor also advises skipping progress photos if they worsen body image.",
+      "citations": ["mfPhotos"]
+    },
+    {
+      "if": "BMI < 18.5 (underweight)",
+      "then": "lean_bulk",
+      "why": "RippedBody: if you are underweight, you should bulk.",
+      "citations": ["rippedbody"]
+    },
+    {
+      "if": "Estimated BF upper bound >= ~20% (male) or >= ~30% (female), OR waist >= 90 cm (male) / >= 80 cm (female) for an Indian user",
+      "then": "cut (novice or detrained: recomp acceptable if user prefers)",
+      "why": "Convergent coach thresholds: RippedBody - do not bulk beyond ~20%; Nippard - ~15-20+% (men) / 25-30+% (women) suggests prioritising fat loss; RP - over 15% (25% women) lose fat first. Misra 2009 consensus defines abdominal obesity in Asian Indians as waist >=90 cm (men) / >=80 cm (women). Note: Stronger By Science found no evidence that higher starting BF worsens p-ratio, so the rationale is health, appearance and comfort headroom, not muscle-gain efficiency.",
+      "citations": ["rippedbody", "nippardRecomp", "rpFaq", "misra2009", "sbsPratio"]
+    },
+    {
+      "if": "BF in grey zone ~15-20% (male) / ~25-30% (female) AND training age < ~1 year or detrained (returning after layoff)",
+      "then": "recomp",
+      "why": "Recomp is most realistic for novices, people with higher BF and detrained lifters (MacroFactor; Nippard). RippedBody: inexperienced trainees at 13-18% (male; add ~8 for women) should recomp.",
+      "citations": ["mfRecomp", "nippardRecomp", "rippedbody", "barakat2020"]
+    },
+    {
+      "if": "BF in grey zone ~15-20% (male) / ~25-30% (female) AND intermediate/advanced",
+      "then": "cut (default); lean_bulk only if user strongly prefers gaining and accepts a later cut",
+      "why": "RP FAQ: between thresholds it is your call, but when in doubt lose fat first. RippedBody: experienced trainees over ~16% should cut. Recomp potential is lower for experienced lifters (MacroFactor).",
+      "citations": ["rpFaq", "rippedbody", "mfRecomp"]
+    },
+    {
+      "if": "BF ~10-15% (male) / ~18-25% (female) AND goal is muscle/strength",
+      "then": "lean_bulk (novice/intermediate +10-20% kcal, 0.25-0.5 %BW/wk; advanced +5-10%, ~0.25 %BW/wk)",
+      "why": "RP minicut article (relaying others' suggestion, sex not specified): best muscle gain rates typically occur between 10% and 15% BF. Nippard: leaner lifters (~8-12% men / 18-22% women) should prioritise building muscle. Rates from Iraki 2019.",
+      "citations": ["rpMinicut", "nippardRecomp", "iraki2019"]
+    },
+    {
+      "if": "BF ~10-15% (male) / ~18-25% (female) AND user prefers to stay lean year-round, or is advanced",
+      "then": "maingain",
+      "why": "Nippard 2018: gaintaining suits people who value a lean look over maximum gain speed. Advanced lifters should be more conservative with surplus (Iraki 2019).",
+      "citations": ["nippardGaintain", "iraki2019"]
+    },
+    {
+      "if": "BF < ~10% (male) / < ~18% (female)",
+      "then": "lean_bulk (never cut further)",
+      "why": "RP: under 10% (15% women) gain muscle first. RippedBody: stop cutting at 8-10% (men) / 16-18% (women). SBS: lifters under ~8% generally gained some fat when gaining.",
+      "citations": ["rpFaq", "rippedbody", "sbsPratio"]
+    },
+    {
+      "if": "User reports finishing a deficit of >= ~8 weeks within the last month, or reports strong diet fatigue",
+      "then": "maintain (2-8 weeks, designChoice) before any new phase; reverse_diet only as an optional user preference",
+      "why": "Most post-diet benefits come from leaving the deficit; reverse dieting is not better supported than a direct return to maintenance (MacroFactor). RP mass article: do not stay at cutting-phase calories after a diet; set the new phase's calories and stick to them from the first week.",
+      "citations": ["mfReverse", "rpMass", "trexler2014"]
+    },
+    {
+      "if": "Goal is primarily strength/performance or an upcoming competition, BF in a healthy band",
+      "then": "maintain or maingain",
+      "why": "Murphy & Koehler: strength gains are comparable in a deficit, but lean-mass gains are impaired; Helms 2023: larger surplus gave more bench 1RM. designChoice to avoid deficits during performance blocks.",
+      "citations": ["murphy2022", "helms2023"]
+    },
+    {
+      "if": "Goal is a dated event (e.g., wedding, photoshoot) with a fixed deadline",
+      "then": "cut with rate capped at 1 %BW/wk; if required rate > 1 %BW/wk, lower the target rather than raise the rate",
+      "why": "Helms 2014 upper rate 1 %BW/wk; faster loss risks lean mass (Garthe 2011).",
+      "citations": ["helms2014", "garthe2011"]
+    },
+    {
+      "if": "BF estimate range (low-high) straddles a threshold",
+      "then": "Use waist-to-height and waist trend as tiebreaker, then ask the user's preference; never flip phase recommendation on a single estimate",
+      "why": "Individual error of Navy and photo methods is ~+/-4-5 points (Navy vs DXA SD 3.7-4.8, Potter 2022; photo model LoA about -5.5 to +4.7, Majmudar 2022), wider than the gaps between thresholds. Waist-to-height tiebreaker is a designChoice.",
+      "citations": ["potter2022", "majmudar2022"]
+    },
+    {
+      "if": "During lean_bulk: male BF reaches ~15% (RP) to ~20% (RippedBody upper limit), female ~25-28%, or waist rises past the user's ceiling",
+      "then": "minicut (2-6 wk) or full cut",
+      "why": "RP: over ~12% means the next mass may reach 15%, so consider a minicut; RippedBody advises not going beyond 20% (end bulks ~15%). Female values per the +8-10 point conversion rule (designChoice). (Earlier claim 'Nippard mini-cuts around 20%' removed: not found in nippardRecomp; unverified.)",
+      "citations": ["rpMinicut", "rippedbody"]
+    },
+    {
+      "if": "During cut: reaches lower BF bound (~10% male / ~18% female), rate stalls despite adherence for >= 3 weeks, or strength drops markedly",
+      "then": "maintain, then reassess (lean_bulk or maingain)",
+      "why": "Leaner competitors face greater LBM-loss risk (Helms 2014); RippedBody stop-cutting band 8-10% / 16-18%.",
+      "citations": ["helms2014", "rippedbody"]
+    },
+    {
+      "if": "Sex = female and a male threshold is used",
+      "then": "Add ~8-10 percentage points (designChoice; sources range from +5 to +10)",
+      "why": "RippedBody: add ~8% for women; RP FAQ maps 15% -> 25% (+10) but 10% -> 15% (+5); Nippard 8-12% -> 18-22% (+10), 15-20+% -> 25-30+% (+10).",
+      "citations": ["rippedbody", "rpFaq", "nippardRecomp"]
+    },
+    {
+      "if": "Coach opinions conflict on whether to cut before bulking",
+      "then": "Treat body-fat thresholds as comfort/health heuristics; let goal and preference decide within the safe band",
+      "why": "Stronger By Science individual-data analysis (7 studies, n=161): higher baseline BF did not reduce fat-free mass gains; 'Your choice to bulk or cut depends on your goals, preferences'. RP's minicut article takes the opposite view (higher body fat reduces the share of gained weight that becomes muscle). Evidence for the p-ratio argument is weak.",
+      "citations": ["sbsPratio", "rpMinicut"]
+    }
+  ],
+  "navyFormula": {
+    "male": "%BF = 495 / (1.0324 - 0.19077*log10(waist - neck) + 0.15456*log10(height)) - 450   [waist = abdomen at navel]",
+    "female": "%BF = 495 / (1.29579 - 0.35004*log10(waist + hip - neck) + 0.22100*log10(height)) - 450   [waist = natural waist, narrowest point]",
+    "units": "cm",
+    "inchForms": {
+      "male": "%BF = 86.010*log10(abdomen - neck) - 70.041*log10(height) + 36.76",
+      "female": "%BF = 163.205*log10(waist + hip - neck) - 97.684*log10(height) - 78.387"
+    },
+    "derivationNote": "The inch forms are attributed to Hodgdon & Beckett 1984a/b. Potter 2022 (peer reviewed) prints the male inch form character-for-character as above, with inches and log10; its printed female form reads 'abdomen - neck', which is a misprint: the Navy BCA guide defines the female circumference value as waist + hips - neck. The original NHRC reports and Hodgdon & Friedl 1999 could not be opened (DTIC 403). Check run 2026-11-17: the inch forms above, rounded to whole %, reproduce every parsed cell of the official 2016 Navy BCA tables (840/840 male, 1,040/1,040 female; e.g., male 70 in tall, abdomen-neck 20 in -> 19.43 -> 19%; female 64 in, waist+hip-neck 56 in -> 30.49 -> 30%). The 2016 guide itself gives only tables, no equations. The cm (495/density - 450) forms are widely published conversions with no official Navy metric source found; across the table range they differ from the inch forms by up to 0.24 points (male) and 0.72 points (female), so they do not reproduce the official tables exactly. All forms use log base 10.",
+    "recommendedImplementation": "Collect cm, convert to inches (divide by 2.54) and apply the inch forms, so results match the official Navy tables exactly. Use one form only. (Supersedes the earlier 'implement the cm form' note.)",
+    "errorVsDexa": "Not research-grade for individuals. Potter 2022 (609 US Marines vs DXA): mean bias men -2.6 +/- 3.7 (<=30 y) and -2.5 +/- 3.7 (>30 y) points (underestimates); women +2.3 +/- 4.3 and +1.3 +/- 4.8 points (overestimates); concordance 0.51-0.57 men, 0.72-0.74 women. Approximate 95% limits of agreement (bias +/- 1.96 SD, derived) about -10 to +5 points for men and -8 to +11 for women. Original development vs hydrostatic weighing (unverified - primary reports inaccessible, figures from secondary listings only): SEE 4.19 points (r=0.80) for one Navy report; DoD women's equation R=0.856, SEE=3.61. Systematic bias by fatness: Potter 2022 found the largest overestimations in the leanest women and describes increasing underestimation of total %BF as fat accumulates at sites the circumferences miss; the specific '<15%' cut-point and the NAP 1992 attribution are unverified. No validation against DXA in Asian Indian adults was found; WHO 2004 notes Asian populations have different BMI-%BF-risk relationships, so treat Navy %BF as approximate for this user.",
+    "forgeUse": "Show as a range: male estimate +2.5 (bias correction) +/- 5 points; female estimate -2 +/- 5 points (designChoice from Potter 2022 bias/SD). Note: +/-5 is about 1.0-1.35 SD (SD 3.7-4.8), i.e., roughly 70-82% coverage if errors are normal, not a 95% interval (95% would be about +/-7.3 men, +/-8.4-9.4 women); label it as a likely range, not a confidence interval. Use primarily for trend: the same tape, same person, same protocol over time is more useful than the absolute number.",
+    "citations": ["hodgdon1984", "potter2022", "hodgdonFriedl1999", "navyBCA2016", "nap1992", "who2004asian"]
+  },
+  "visualEstimation": {
+    "humanRaters": "Eckerson 1992 (35 lean men, ~9.6% BF, vs underwater weighing): the better of two experienced raters had total error 2.3 points (similar to skinfolds 2.4), but the two raters differed by a mean of 2.7 points; authors recommended skinfolds over visual inspection. No peer-reviewed study of human raters estimating BF from photographs against DXA was found. Accuracy claims like '+/-3-5%' on fitness sites are unsourced.",
+    "dedicatedAiModels": [
+      "Majmudar 2022 (Amazon-funded; n=134, BMI 18.5-51.6, 6.7% Asian): CNN on front+back smartphone photos vs DXA - MAE 2.16 +/- 1.54 points, bias -0.42, 95% LoA about -5.5 to +4.7, CCC 0.96; repeatability LoA -1.64 to +1.51. Better than the other methods in the same study: consumer BIA scales MAE 4.48-5.85, professional BIA 3.13-4.72, BOD POD 3.14.",
+      "Ferreira 2025 (n=1,273 Brazilian adults): AI 2D-photo method CCC >= 0.96 vs DXA, highest of methods compared (BIA CCC 0.90-0.95).",
+      "Reynolds 2026 medRxiv preprint (n=195, company co-founders as authors, not peer reviewed): MAE 2.77, bias +0.98, LoA -5.36 to +7.33; lean women (<25% BF) overestimated by ~4.4 points."
+    ],
+    "generalPurposeLLMs": "No peer-reviewed validation of general multimodal LLMs (e.g., GPT-4-class or Claude vision) estimating BF from photos against DXA was found as of this search. An informal blog test compared GPT-4o to reference photo guides (not DXA) and flagged possible training-data contamination. Forge must label any LLM photo estimate as unvalidated.",
+    "errorSources": "Loose clothing, dark/bright images, camera tilt, holding the belly in, flexing, non-standard poses, and recent large meals or workouts reduce accuracy (Majmudar 2022). Lighting and pump change apparent definition. Visual cues for lean individuals depend on fat distribution, which differs by ethnicity and sex.",
+    "combineHonestly": [
+      "Never present a single BF number; present a range and its source(s).",
+      "Navy range: corrected estimate +/- 5 points. Photo range (validated dedicated model): estimate +/- 5 points. Photo range (general LLM): estimate +/- 7 points and labelled unvalidated (designChoice).",
+      "If both are available, combine with inverse-variance weighting (designChoice) and report the overlap; if the two ranges do not overlap, flag disagreement, show both, and fall back to waist-to-height plus user self-assessment rather than averaging.",
+      "Make phase decisions on the range: only pick a BF-driven phase when the whole range sits inside one band; otherwise apply the straddle rule in decisionRules.",
+      "After onboarding, track waist, weight trend, strength and photos; do not re-estimate BF more than monthly, since method noise exceeds real monthly change."
+    ],
+    "citations": ["eckerson1992", "majmudar2022", "ferreira2025", "reynolds2026", "potter2022"]
+  },
+  "measurements": [
+    {"site": "height", "howTo": "Barefoot, heels together against a wall, head level looking straight ahead; record to 0.5 cm. Used in the Navy formula (Navy rounds height up to the nearest half inch)."},
+    {"site": "neck", "howTo": "Bare skin, just below the larynx (Adam's apple), tape perpendicular to the long axis of the neck - front of tape at same height as back as anatomically feasible; look straight ahead, shoulders down and relaxed; do not include trapezius. Navy rounds neck UP. Source: Navy BCA guide 2016."},
+    {"site": "waist_navel (abdomen)", "howTo": "Navy male site and Forge's primary tracking waist: bare skin, horizontally across the navel, arms at sides, tape parallel to the floor, snug without compressing skin, read at the end of a normal relaxed exhalation (take it after several breaths; do not suck in). Navy rounds DOWN. Use for male Navy formula and for all users' trend tracking."},
+    {"site": "waist_narrowest (natural waist)", "howTo": "Navy female site: bare skin at the point of minimal abdominal circumference, usually about halfway between navel and lower end of the sternum; if not obvious, measure several probable sites and take the smallest; tape level, arms at sides, end of normal exhalation. Use for the female Navy formula."},
+    {"site": "waist_WHO (health)", "howTo": "WHO STEPS / WHO 2008: midpoint between the lower margin of the last palpable rib and the top of the iliac crest, end of normal expiration, arms relaxed. This is the site behind health cut-offs (e.g., Asian Indian abdominal obesity >=90 cm men / >=80 cm women, Misra 2009). Optional; do not mix with navel waist in one trend line."},
+    {"site": "hips", "howTo": "Over thin form-fitting shorts (no shaping garments; Navy: PT shorts only), standing relaxed (feet together is a designChoice, not in the Navy guide), tape around the greatest protrusion of the buttocks as viewed from the side, level and parallel to the floor; enough tension to minimise clothing effect. Required for the female Navy formula; optional for men."},
+    {"site": "chest", "howTo": "ISAK chest girth at the mesosternale level (mid-sternum), arms relaxed at sides, read at end of normal expiration, tape horizontal. Optional tracking only. (Landmark from ISAK via secondary sources.)"},
+    {"site": "upper_arm_relaxed", "howTo": "ISAK relaxed arm girth: arm hanging relaxed, tape horizontal at the mid-point between acromiale (shoulder tip) and radiale (elbow), same side every time. Optional tracking. A flexed arm girth also exists in ISAK but its procedure was not verified here (unverified)."},
+    {"site": "thigh", "howTo": "ISAK thigh girth 1 cm below the gluteal fold, standing with weight evenly distributed, tape perpendicular to the femur; same side every time. Optional tracking. (Landmark from ISAK via secondary sources; detailed technique unverified.)"},
+    {"site": "general_protocol", "howTo": "From Navy BCA guide: right side of body; tape contacts skin and conforms without compressing; take each site twice in rotation (neck, waist, neck, waist - not two necks in a row); if the two readings differ by >1 inch (~2.5 cm), take a third and average the two closest. Forge designChoice: measure every 2-4 weeks, morning, after toilet, before food, same non-stretch tape, record to 0.5 cm."}
+  ],
+  "photoProtocol": [
+    "Time: first thing in the morning before eating or drinking, after the toilet, same day of week; not after a workout or large meal (MacroFactor; Majmudar 2022).",
+    "Place and light: same spot with a plain wall, same time of day for consistent natural light, same flash setting, no filters/beauty modes; avoid very dark or very bright images and back-lighting (MacroFactor; Majmudar 2022).",
+    "Camera: on a tripod/stand with self-timer, level (no tilt), held at roughly chest/mid-torso height (designChoice; secondary sources), mark the floor position. Majmudar 2022 captured at ~4-6 ft (1.2-1.8 m), camera above knee height.",
+    "Framing: whole body head to feet; crop consistently so head is near the top and feet near the bottom (MacroFactor).",
+    "Clothing: minimal, form-fitting, same outfit every time; navel and mid-thigh visible; no socks/shoes/watches/jewellery for AI estimation (Majmudar 2022).",
+    "Poses: front, side (one consistent side, or both), back. Relaxed, arms in a slight 'A' pose away from the torso, normal breathing, no sucking in and no flexing. If flexed shots are wanted, take them on a separate day/set (MacroFactor; Majmudar 2022).",
+    "Frequency: about monthly, plus at the start and end of every phase; weekly/biweekly only when pursuing extreme leanness (MacroFactor).",
+    "Privacy/comfort: photos optional and stored on-device; skip if they cause distress (MacroFactor)."
+  ],
+  "phaseDuration": {
+    "cut": "Typically 2-4 months (Helms 2014); slower, longer diets (0.5-1 %BW/wk) may preserve LBM better (Helms 2014). designChoice: 8-16 weeks, insert a 1-2 week diet break every ~6-10 weeks on long cuts (MATADOR; Roberts 2020).",
+    "minicut": "2-6 weeks (RP).",
+    "lean_bulk": "At least 6-8 weeks before any minicut (RP); RippedBody suggests ~5-6+ months for non-novices. Continue while BF stays below the upper threshold and rate is on target.",
+    "maingain": "Open-ended; reassess every 12 weeks (designChoice).",
+    "recomp": "8-12 week blocks then reassess (designChoice; most supporting trials in trained people run 6-10 weeks per SBS dataset).",
+    "maintain": "2-8 weeks after a cut, or open-ended (designChoice).",
+    "reassessment": {
+      "weekly": "Compute 7-day average weight from daily morning weigh-ins; compare to target rate (Iraki 2019 recommends weekly averages from daily or multiple weekly weigh-ins).",
+      "every2to3Weeks": "If the weekly-average rate is outside the target band for 2 consecutive weeks (designChoice), adjust calories ~5-10% (designChoice) or update TDEE estimate.",
+      "every2to4Weeks": "Re-take circumferences (designChoice).",
+      "monthly": "Photos and optional BF re-estimate (MacroFactor photo cadence).",
+      "phaseEnd": "Re-run decisionRules at the end of each phase or every 12 weeks, whichever first (designChoice); also immediately on hitting a stop condition (BF bound, stalled rate, marked strength loss)."
+    },
+    "citations": ["helms2014", "roberts2020", "byrne2018", "rpMinicut", "rippedbody", "iraki2019", "mfPhotos", "sbsPratio"]
+  },
+  "planContents": [
+    {"item": "phase", "spec": "Phase id, plain-language reason (which rule fired, with the BF range and its uncertainty), start date, planned length, stop conditions, and the next likely phase."},
+    {"item": "calories", "spec": "Maintenance estimate: Mifflin-St Jeor RMR (men 10*kg + 6.25*cm - 5*age + 5; women ... - 161; coefficients from Mifflin 1990, not re-fetched this session) times an activity factor, replaced by observed TDEE from intake vs weight trend after 2-3 weeks. Frankenfield 2005: Mifflin-St Jeor was the most accurate common equation (within 10% for the largest share) but with notable individual error and ethnic minorities under-represented. Target = maintenance adjusted per phase table."},
+    {"item": "rate", "spec": "Target weekly change in %BW and kg with a tolerance band (cut 0.5-1.0; lean bulk 0.25-0.5; advanced bulk ~0.25; maingain <=0.25; recomp 0 to -0.25; maintain +/-0.25)."},
+    {"item": "macros", "spec": "Protein first: gaining/maintaining 1.6-2.2 g/kg (Iraki 2019; Morton 2018 breakpoint ~1.6); cutting 1.8-2.7 g/kg or 2.3-3.1 g/kg LBM (Roberts 2020; Helms 2014). Fat 0.5-1.5 g/kg (~20-35%; cutting 15-30%). Carbs = remainder (>=3-5 g/kg when gaining). Protein per meal 0.40-0.55 g/kg over 3-6 meals (Iraki 2019)."},
+    {"item": "steps", "spec": "Daily step target: Paluch 2022 meta-analysis - mortality risk declines up to ~8,000-10,000 steps/day in adults <60 y (6,000-8,000 in >=60 y). designChoice: set target from baseline (e.g., baseline + 1,000-2,000, aiming 8,000-10,000) and keep it constant within a phase so TDEE estimates stay stable; raise steps before cutting calories further on a cut."},
+    {"item": "training", "spec": "Resistance training is mandatory in every phase. Beginner (<~6-12 months consistent training): full-body 2-3 days/week (ACSM 2009), compound lifts with simple linear load progression, ~10+ hard sets per muscle per week (Schoenfeld 2017: graded dose-response, each extra weekly set ~+0.37% gain; the 10+ sets category showed only a non-significant trend, P=0.074). Intermediate: 3-4 days/week (ACSM 2009; advanced 4-5), split such as upper/lower (designChoice), 10-20 sets per muscle per week (Nippard 2023 range), progression via double progression/RPE. Keep training volume and intensity on a cut; strength gains are comparable in a deficit while lean-mass gains are impaired (Murphy & Koehler 2022)."},
+    {"item": "checkIns", "spec": "Daily: morning weight (after toilet, before food/drink), steps, intake. Weekly: 7-day average weight vs target, adherence, training performance, hunger/sleep/energy 1-5 scores. Every 2-4 weeks: circumferences. Monthly: photos. Phase end or 12 weeks: full reassessment and new phase recommendation."},
+    {"item": "adjustmentRules", "spec": "If weekly-average rate is outside the band for 2 consecutive weeks with good adherence, change calories by ~5-10% (designChoice) - or, on a cut, add steps first. On a cut, diet break 1-2 weeks at maintenance every ~6-10 weeks or on high fatigue (MATADOR; Roberts 2020). Never exceed 1 %BW/wk loss or ~0.5 %BW/wk gain."},
+    {"item": "uncertaintyDisclosure", "spec": "Show BF as a range with method, note that no circumference or photo method is validated for Asian Indians specifically, and that waist and strength trends are the primary progress signals."}
+  ],
+  "unverifiedOrConflicting": [
+    "Exact Helms/Aragon personal body-fat cut-first thresholds were not found in a primary source; Pyramid-book monthly gain table known only via secondary sites.",
+    "Aragon & Schoenfeld 2020 surplus figures known only from secondary summaries (not used as primary numbers).",
+    "Barakat 2020 full text not read; protein figure 1.6-2.4 g/kg attributed by secondary summaries.",
+    "No official Navy metric equation; cm forms are a widely used conversion that differs from the official tables by up to ~0.7 points (female). Use inch forms on converted cm inputs.",
+    "Hodgdon & Beckett 1984 primary reports and Hodgdon & Friedl 1999 not opened (DTIC 403); NHRC report numbers 84-11/84-29 and development statistics (SEE 4.19, r=0.80; women R=0.856, SEE=3.61) unverified.",
+    "NAP/IOM chapter text did not load; its 'overpredicts lean, underpredicts obese' statement is unverified.",
+    "Misra 2009 waist cut-offs (>=90 cm men / >=80 cm women) are not stated in the PubMed abstract; known only via secondary summaries.",
+    "Nippard Gaintaining video content (incl. ~1 lb/month example) known only via a third-party summary.",
+    "2025 revised Indian obesity definition (BMI >23 plus waist or waist-to-height criteria) seen only via press reports; exact waist/WHtR cut-offs not verified.",
+    "Camera height (chest level) for photos comes from non-authoritative sources."
+  ],
+  "verification": {
+    "checkedAt": "2026-11-17",
+    "method": "Navy equations checked character by character against Potter 2022 (frontiersin full text) and numerically against every cell of the official 2016 Navy BCA tables (pdftotext extraction); thresholds re-read in RippedBody, RP FAQ, RP minicut, RP mass, RP help center, Nippard 2023, SBS p-ratios, MacroFactor recomp/reverse, Helms 2014, Iraki 2019, Roberts 2020, Slater 2019, Majmudar 2022, Reynolds 2026; citation existence checked via NCBI E-utilities/Crossref. Web search budget was exhausted mid-check, so nippardGaintain, who2008waist, isak, eckerson URL beyond abstract and pyramid were not re-searched.",
+    "changes": [
+      "navyFormula: male/female cm and inch equations unchanged - all coefficients confirmed (inch forms reproduce 840/840 male and 1,040/1,040 female official 2016 Navy table cells when rounded).",
+      "navyFormula.derivationNote: corrected cm-vs-inch agreement from 'within 0.3 points' to up to 0.24 (male) / 0.72 (female) points; noted Potter 2022 misprints the female variable as 'abdomen - neck'; removed claim that Hodgdon & Friedl 1999 was used to confirm the equations (not opened); noted the 2016 guide holds only tables.",
+      "navyFormula: added recommendedImplementation (inch forms on cm/2.54 inputs) replacing 'implement the cm form', because only the inch forms match the official tables exactly.",
+      "navyFormula.errorVsDexa: marked development SEE/r/R values unverified; replaced the unverified NAP '<15% lean' claim with what Potter 2022 actually reports.",
+      "navyFormula.forgeUse: added that +/-5 points is ~1.0-1.35 SD (~70-82% coverage), not a 95% interval.",
+      "sources.hodgdon1984: split into men (a) and women (b) report titles per Potter 2022 reference list; marked NHRC report numbers unverified; corrected verification note (topendsports is not a primary source).",
+      "sources.nap1992: corrected title/year (NAP lists IOM 1990, doi 10.17226/2031), pointed URL to the Hodgdon chapter, marked the bias claim unverified.",
+      "sources.morton2018: 95% CI 1.03-2.20 g/kg/d now verified from full text; removed from unverified list.",
+      "sources.acsm2009: intermediate 3-4 d/wk and advanced 4-5 d/wk verified from abstract; planContents.training changed intermediate frequency from 3-5 to 3-4 d/wk.",
+      "planContents.training: Schoenfeld 2017 - '>=10 weekly sets produced the largest gains' corrected; the 10+ category was only a non-significant trend (P=0.074); graded dose-response retained.",
+      "sources.ferreira2025: added volume/article 8:43 and PMID 39827323; abstract verified (n=1,273, CCC >=0.96, BIA 0.90-0.95).",
+      "visualEstimation.majmudar2022: corrected 'consumer BIA MAE 3.1-5.9' to consumer BIA 4.48-5.85 (3.13 was the professional InBody S10); added professional BIA and BOD POD values.",
+      "sources: added rpGainHelp (RP Help Center bulk set-up page); lean_bulk.rate 'RP: 0.25-0.5 %BW/wk' (not in the cited RP articles) replaced with RP help-center 0.125-0.5 %BW/wk by experience.",
+      "recomp.calories: removed 'Nippard 5-20% below maintenance' (article centres recomp on maintenance) and 'Jeremy Ethier ~250 kcal' (no source in list); MacroFactor wording aligned to the article.",
+      "decisionRules (cut threshold): removed uncited Ethier claim.",
+      "decisionRules (straddle): removed RP FAQ attribution for 'BF numbers unreliable / track waist-to-height' (not in rpFaq); tiebreaker now labelled designChoice.",
+      "decisionRules (coach conflict): RP opposing view re-cited to rpMinicut (not stated in rpFaq).",
+      "decisionRules (lean bulk 10-15%): RP 10-15% range is a relayed suggestion with no sex specified; removed '(male)'.",
+      "decisionRules (lean_bulk stop): removed unverified 'Nippard mini-cuts around 20%'; restated RP 12%/15% logic.",
+      "decisionRules (female conversion): RP 10%->15% is +5, not +8-10; rule now states sources range +5 to +10 and labels ~8-10 a designChoice.",
+      "decisionRules (post-diet maintain): rewrote mis-stated RP advice to match the RP mass article.",
+      "cut.rate and cut.typicalDuration, phaseDuration.cut: Roberts 2020 says <=0.5 %BW/wk is preferable for FFM retention (not specifically 'when lean'); removed unsupported 'leaner people need shorter diets'; added Roberts 14-32 week case-study range.",
+      "measurements.hips: 'standing feet together' is not in the Navy guide; relabelled designChoice.",
+      "Confirmed unchanged: Potter 2022 bias/SD/CCC/n=609 and derived LoA; Navy rounding and site procedures; Helms 2014 rate/protein/fat/Garthe numbers; Iraki 2019 surplus/rate/macros; Slater 2019 surplus; Helms 2023; MATADOR; Murphy 2022; SBS p-ratio (7 studies, n=161, <8% quote); MacroFactor recomp/reverse; RippedBody thresholds; RP FAQ thresholds; RP minicut; Nippard 2023 thresholds; Eckerson 1992; Reynolds 2026; Paluch 2022; Frankenfield 2005. All PubMed/PMC IDs and DOIs in sources resolve to the cited papers."
+    ]
+  }
+}

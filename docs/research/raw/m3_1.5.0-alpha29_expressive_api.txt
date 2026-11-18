@@ -1,0 +1,2070 @@
+=== FILE androidx.compose.material3.AppBarKt
+  fun MediumFlexibleTopAppBar(
+      title: @Composable () -> Unit,
+      modifier: Modifier = <default>,
+      subtitle: @Composable (() -> Unit)? = <default>,
+      navigationIcon: @Composable () -> Unit = <default>,
+      actions: @Composable RowScope.() -> Unit = <default>,
+      titleHorizontalAlignment: Alignment.Horizontal = <default>,
+      collapsedHeight: Dp = <default>,
+      expandedHeight: Dp = <default>,
+      windowInsets: WindowInsets = <default>,
+      colors: TopAppBarColors = <default>,
+      scrollBehavior: TopAppBarScrollBehavior? = <default>,
+  ): Unit    [@Composable]
+  fun LargeFlexibleTopAppBar(
+      title: @Composable () -> Unit,
+      modifier: Modifier = <default>,
+      subtitle: @Composable (() -> Unit)? = <default>,
+      navigationIcon: @Composable () -> Unit = <default>,
+      actions: @Composable RowScope.() -> Unit = <default>,
+      titleHorizontalAlignment: Alignment.Horizontal = <default>,
+      collapsedHeight: Dp = <default>,
+      expandedHeight: Dp = <default>,
+      windowInsets: WindowInsets = <default>,
+      colors: TopAppBarColors = <default>,
+      scrollBehavior: TopAppBarScrollBehavior? = <default>,
+  ): Unit    [@Composable]
+  fun FlexibleBottomAppBar(
+      modifier: Modifier = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      contentPadding: PaddingValues = <default>,
+      horizontalArrangement: Arrangement.Horizontal = <default>,
+      expandedHeight: Dp = <default>,
+      windowInsets: WindowInsets = <default>,
+      scrollBehavior: BottomAppBarScrollBehavior? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+
+=== OBJECT androidx/compose/material3/BottomAppBarDefaults : Any
+  val containerColor: Color    [@Composable JvmName]
+  val ContainerElevation: Dp
+  val ContentPadding: PaddingValues
+  val windowInsets: WindowInsets    [@Composable JvmName]
+  val bottomAppBarFabColor: Color    [@Composable JvmName]
+  val FlexibleContentPadding: PaddingValues
+  val FlexibleBottomAppBarHeight: Dp
+  val FlexibleHorizontalArrangement: Arrangement.Horizontal
+  val FlexibleFixedHorizontalArrangement: Arrangement.Horizontal
+  val snapAnimationSpec: AnimationSpec<Float>    [@Composable JvmName]
+  val flingAnimationSpec: DecayAnimationSpec<Float>    [@Composable JvmName]
+  fun exitAlwaysScrollBehavior(
+      state: BottomAppBarState = <default>,
+      canScroll: () -> Boolean = <default>,
+      snapAnimationSpec: AnimationSpec<Float>? = <default>,
+      flingAnimationSpec: DecayAnimationSpec<Float>? = <default>,
+  ): BottomAppBarScrollBehavior    [@Composable]
+
+=== OBJECT androidx/compose/material3/ButtonDefaults : Any
+  val ContentPadding: PaddingValues
+  val ButtonWithIconContentPadding: PaddingValues
+  val SmallContentPadding: PaddingValues
+  val ExtraSmallContentPadding: PaddingValues
+  val MediumContentPadding: PaddingValues
+  val LargeContentPadding: PaddingValues
+  val ExtraLargeContentPadding: PaddingValues
+  val TextButtonContentPadding: PaddingValues
+  val TextButtonWithIconContentPadding: PaddingValues
+  val MinWidth: Dp
+  val MinHeight: Dp
+  val ExtraSmallContainerHeight: Dp
+  val MediumContainerHeight: Dp
+  val LargeContainerHeight: Dp
+  val ExtraLargeContainerHeight: Dp
+  val IconSize: Dp
+  val ExtraSmallIconSize: Dp
+  val SmallIconSize: Dp
+  val MediumIconSize: Dp
+  val LargeIconSize: Dp
+  val ExtraLargeIconSize: Dp
+  val IconSpacing: Dp
+  val ExtraSmallIconSpacing: Dp
+  val MediumIconSpacing: Dp
+  val LargeIconSpacing: Dp
+  val ExtraLargeIconSpacing: Dp
+  val squareShape: Shape    [@Composable JvmName]
+  val pressedShape: Shape    [@Composable JvmName]
+  val extraSmallPressedShape: Shape    [@Composable JvmName]
+  val mediumPressedShape: Shape    [@Composable JvmName]
+  val largePressedShape: Shape    [@Composable JvmName]
+  val extraLargePressedShape: Shape    [@Composable JvmName]
+  val shape: Shape    [@Composable JvmName]
+  val elevatedShape: Shape    [@Composable JvmName]
+  val filledTonalShape: Shape    [@Composable JvmName]
+  val outlinedShape: Shape    [@Composable JvmName]
+  val textShape: Shape    [@Composable JvmName]
+  val outlinedButtonBorder: BorderStroke    [@Composable Deprecated(WARNING: Please use the version that takes an `enabled` param to get the `BorderStroke` with the correct opacity) JvmName]
+  fun shapes(
+  ): ButtonShapes    [@Composable]
+  fun shapes(
+      shape: Shape? = <default>,
+      pressedShape: Shape? = <default>,
+  ): ButtonShapes    [@Composable]
+  fun buttonColors(
+  ): ButtonColors    [@Composable]
+  fun buttonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): ButtonColors    [@Composable]
+  fun elevatedButtonColors(
+  ): ButtonColors    [@Composable]
+  fun elevatedButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): ButtonColors    [@Composable]
+  fun filledTonalButtonColors(
+  ): ButtonColors    [@Composable]
+  fun filledTonalButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): ButtonColors    [@Composable]
+  fun outlinedButtonColors(
+  ): ButtonColors    [@Composable]
+  fun outlinedButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): ButtonColors    [@Composable]
+  fun textButtonColors(
+  ): ButtonColors    [@Composable]
+  fun textButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): ButtonColors    [@Composable]
+  fun buttonElevation(
+      defaultElevation: Dp = <default>,
+      pressedElevation: Dp = <default>,
+      focusedElevation: Dp = <default>,
+      hoveredElevation: Dp = <default>,
+      disabledElevation: Dp = <default>,
+  ): ButtonElevation    [@Composable]
+  fun elevatedButtonElevation(
+      defaultElevation: Dp = <default>,
+      pressedElevation: Dp = <default>,
+      focusedElevation: Dp = <default>,
+      hoveredElevation: Dp = <default>,
+      disabledElevation: Dp = <default>,
+  ): ButtonElevation    [@Composable]
+  fun filledTonalButtonElevation(
+      defaultElevation: Dp = <default>,
+      pressedElevation: Dp = <default>,
+      focusedElevation: Dp = <default>,
+      hoveredElevation: Dp = <default>,
+      disabledElevation: Dp = <default>,
+  ): ButtonElevation    [@Composable]
+  fun outlinedButtonBorder(
+      enabled: Boolean = <default>,
+  ): BorderStroke    [@Composable]
+  fun shapesFor(
+      buttonHeight: Dp,
+  ): ButtonShapes    [@Composable]
+  fun contentPaddingFor(
+      buttonHeight: Dp,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun iconSizeFor(
+      buttonHeight: Dp,
+  ): Dp
+  fun iconSpacingFor(
+      buttonHeight: Dp,
+  ): Dp
+  fun textStyleFor(
+      buttonHeight: Dp,
+  ): TextStyle    [@Composable]
+
+=== OBJECT androidx/compose/material3/ButtonGroupDefaults : Any
+  val ExpandedRatio: Float
+  val HorizontalArrangement: Arrangement.Horizontal
+  val ConnectedSpaceBetween: Dp
+  val connectedLeadingButtonShape: Shape    [@Composable JvmName]
+  val connectedLeadingButtonPressShape: Shape    [@Composable JvmName]
+  val connectedTrailingButtonShape: Shape    [@Composable JvmName]
+  val connectedTrailingButtonPressShape: Shape    [@Composable JvmName]
+  val connectedButtonCheckedShape: RoundedCornerShape
+  val connectedMiddleButtonPressShape: Shape    [@Composable JvmName]
+  fun connectedLeadingButtonShapes(
+      shape: Shape = <default>,
+      pressedShape: Shape = <default>,
+      checkedShape: Shape = <default>,
+  ): ToggleButtonShapes    [@Composable]
+  fun connectedMiddleButtonShapes(
+      shape: Shape = <default>,
+      pressedShape: Shape = <default>,
+      checkedShape: Shape = <default>,
+  ): ToggleButtonShapes    [@Composable]
+  fun connectedTrailingButtonShapes(
+      shape: Shape = <default>,
+      pressedShape: Shape = <default>,
+      checkedShape: Shape = <default>,
+  ): ToggleButtonShapes    [@Composable]
+  fun OverflowIndicator(
+      menuState: ButtonGroupMenuState,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shape: Shape = <default>,
+      colors: IconButtonColors = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+  ): Unit    [@Composable]
+
+=== FILE androidx.compose.material3.ButtonGroupKt
+  fun ButtonGroup(
+      overflowIndicator: @Composable (ButtonGroupMenuState) -> Unit,
+      modifier: Modifier = <default>,
+      expandedRatio: Float = <default>,
+      horizontalArrangement: Arrangement.Horizontal = <default>,
+      verticalAlignment: Alignment.Vertical = <default>,
+      content: ButtonGroupScope.() -> Unit,
+  ): Unit    [@Composable]
+
+=== CLASS androidx/compose/material3/ButtonGroupMenuState : Any
+  constructor(initialIsShowing: Boolean = <default>)
+  var isShowing: Boolean
+  fun dismiss(
+  ): Unit
+  fun show(
+  ): Unit
+
+=== INTERFACE androidx/compose/material3/ButtonGroupScope : Any
+  fun Modifier.weight(
+      weight: Float,
+  ): Modifier
+  fun Modifier.animateWidth(
+      interactionSource: InteractionSource,
+  ): Modifier
+  fun Modifier.animateWidth(
+      interactionSource: InteractionSource,
+      compressionLimit: Dp,
+  ): Modifier
+  fun Modifier.align(
+      alignment: Alignment.Vertical,
+  ): Modifier    [Stable]
+  fun clickableItem(
+      onClick: () -> Unit,
+      label: String,
+      icon: @Composable (() -> Unit)? = <default>,
+      weight: Float = <default>,
+      enabled: Boolean = <default>,
+  ): Unit
+  fun toggleableItem(
+      checked: Boolean,
+      label: String,
+      onCheckedChange: (Boolean) -> Unit,
+      icon: @Composable (() -> Unit)? = <default>,
+      weight: Float = <default>,
+      enabled: Boolean = <default>,
+  ): Unit
+  fun customItem(
+      buttonGroupContent: @Composable () -> Unit,
+      menuContent: @Composable (ButtonGroupMenuState) -> Unit,
+  ): Unit
+
+=== CLASS androidx/compose/material3/ButtonShapes : Any   [Immutable]
+  constructor(shape: Shape, pressedShape: Shape)
+  val shape: Shape
+  val pressedShape: Shape
+  fun copy(
+      shape: Shape? = <default>,
+      pressedShape: Shape? = <default>,
+  ): ButtonShapes
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== FILE androidx.compose.material3.ColorSchemeKt
+  fun expressiveLightColorScheme(
+  ): ColorScheme
+
+=== OBJECT androidx/compose/material3/ElevatedToggleButtonDefaults : Any
+  val size: ToggleButtonSize
+  val MinHeight: Dp
+  val IconSpacing: Dp
+  val IconSize: Dp
+  val shape: Shape    [@Composable JvmName]
+  val pressedShape: Shape    [@Composable JvmName]
+  val checkedShape: Shape    [@Composable JvmName]
+  fun contentPaddingFor(
+      buttonHeight: Dp,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun contentPaddingFor(
+      buttonSize: ToggleButtonSize,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun shapesFor(
+      buttonHeight: Dp,
+  ): ToggleButtonShapes    [@Composable]
+  fun shapesFor(
+      buttonSize: ToggleButtonSize,
+  ): ToggleButtonShapes    [@Composable]
+  fun colors(
+  ): ToggleButtonColors    [@Composable]
+  fun colors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): ToggleButtonColors    [@Composable]
+  fun elevation(
+      defaultElevation: Dp = <default>,
+      pressedElevation: Dp = <default>,
+      focusedElevation: Dp = <default>,
+      hoveredElevation: Dp = <default>,
+      disabledElevation: Dp = <default>,
+  ): ToggleButtonElevation    [@Composable]
+
+=== OBJECT androidx/compose/material3/FilledTonalToggleButtonDefaults : Any
+  val size: ToggleButtonSize
+  val MinHeight: Dp
+  val IconSpacing: Dp
+  val IconSize: Dp
+  val shape: Shape    [@Composable JvmName]
+  val pressedShape: Shape    [@Composable JvmName]
+  val checkedShape: Shape    [@Composable JvmName]
+  fun contentPaddingFor(
+      buttonHeight: Dp,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun contentPaddingFor(
+      buttonSize: ToggleButtonSize,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun shapesFor(
+      buttonHeight: Dp,
+  ): ToggleButtonShapes    [@Composable]
+  fun shapesFor(
+      buttonSize: ToggleButtonSize,
+  ): ToggleButtonShapes    [@Composable]
+  fun colors(
+  ): ToggleButtonColors    [@Composable]
+  fun colors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): ToggleButtonColors    [@Composable]
+  fun elevation(
+      defaultElevation: Dp = <default>,
+      pressedElevation: Dp = <default>,
+      focusedElevation: Dp = <default>,
+      hoveredElevation: Dp = <default>,
+      disabledElevation: Dp = <default>,
+  ): ToggleButtonElevation    [@Composable]
+
+=== FILE androidx.compose.material3.FloatingActionButtonKt
+  fun FloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun SmallFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun MediumFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun LargeFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun SmallExtendedFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun MediumExtendedFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun LargeExtendedFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun ExtendedFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun SmallExtendedFloatingActionButton(
+      text: @Composable () -> Unit,
+      icon: @Composable () -> Unit,
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      expanded: Boolean = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+  ): Unit    [@Composable]
+  fun MediumExtendedFloatingActionButton(
+      text: @Composable () -> Unit,
+      icon: @Composable () -> Unit,
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      expanded: Boolean = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+  ): Unit    [@Composable]
+  fun LargeExtendedFloatingActionButton(
+      text: @Composable () -> Unit,
+      icon: @Composable () -> Unit,
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      expanded: Boolean = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+  ): Unit    [@Composable]
+  fun ExtendedFloatingActionButton(
+      text: @Composable () -> Unit,
+      icon: @Composable () -> Unit,
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      expanded: Boolean = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      elevation: FloatingActionButtonElevation = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+  ): Unit    [@Composable]
+  fun Modifier.animateFloatingActionButton(
+      visible: Boolean,
+      alignment: Alignment,
+      targetScale: Float = <default>,
+      scaleAnimationSpec: AnimationSpec<Float>? = <default>,
+      alphaAnimationSpec: AnimationSpec<Float>? = <default>,
+  ): Modifier
+
+=== FILE androidx.compose.material3.FloatingActionButtonMenuKt
+  fun FloatingActionButtonMenu(
+      expanded: Boolean,
+      button: @Composable () -> Unit,
+      modifier: Modifier = <default>,
+      horizontalAlignment: Alignment.Horizontal = <default>,
+      content: @Composable FloatingActionButtonMenuScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun FloatingActionButtonMenuScope.FloatingActionButtonMenuItem(
+      onClick: () -> Unit,
+      text: @Composable () -> Unit,
+      icon: @Composable () -> Unit,
+      modifier: Modifier = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+  ): Unit    [@Composable]
+  fun ToggleFloatingActionButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      containerColor: (Float) -> Color = <default>,
+      contentAlignment: Alignment = <default>,
+      containerSize: (Float) -> Dp = <default>,
+      containerCornerRadius: (Float) -> Dp = <default>,
+      content: @Composable ToggleFloatingActionButtonScope.() -> Unit,
+  ): Unit    [@Composable]
+
+=== INTERFACE androidx/compose/material3/FloatingActionButtonMenuScope : Any
+  val horizontalAlignment: Alignment.Horizontal
+
+=== CLASS androidx/compose/material3/FloatingToolbarColors : Any   [Immutable]
+  constructor(toolbarContainerColor: Color, toolbarContentColor: Color, fabContainerColor: Color, fabContentColor: Color)
+  val toolbarContainerColor: Color
+  val toolbarContentColor: Color
+  val fabContainerColor: Color
+  val fabContentColor: Color
+  fun copy(
+      toolbarContainerColor: Color = <default>,
+      toolbarContentColor: Color = <default>,
+      fabContainerColor: Color = <default>,
+      fabContentColor: Color = <default>,
+  ): FloatingToolbarColors
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== OBJECT androidx/compose/material3/FloatingToolbarDefaults : Any
+  val ContainerSize: Dp
+  val ContainerExpandedElevation: Dp
+  val ContainerCollapsedElevation: Dp
+  val ContainerExpandedElevationWithFab: Dp
+  val ContainerCollapsedElevationWithFab: Dp
+  val ContainerShape: Shape    [@Composable JvmName]
+  val ContentPadding: PaddingValues
+  val ScreenOffset: Dp
+  val ScrollDistanceThreshold: Dp
+  fun <T> animationSpec(
+  ): FiniteAnimationSpec<T>    [@Composable]
+  fun exitAlwaysScrollBehavior(
+      exitDirection: FloatingToolbarExitDirection,
+      state: FloatingToolbarState = <default>,
+      snapAnimationSpec: AnimationSpec<Float> = <default>,
+      flingAnimationSpec: DecayAnimationSpec<Float> = <default>,
+  ): FloatingToolbarScrollBehavior    [@Composable]
+  fun horizontalEnterTransition(
+      expandFrom: Alignment.Horizontal,
+  ): EnterTransition    [@Composable]
+  fun verticalEnterTransition(
+      expandFrom: Alignment.Vertical,
+  ): EnterTransition    [@Composable]
+  fun horizontalExitTransition(
+      shrinkTowards: Alignment.Horizontal,
+  ): ExitTransition    [@Composable]
+  fun verticalExitTransition(
+      shrinkTowards: Alignment.Vertical,
+  ): ExitTransition    [@Composable]
+  fun standardFloatingToolbarColors(
+  ): FloatingToolbarColors    [@Composable]
+  fun vibrantFloatingToolbarColors(
+  ): FloatingToolbarColors    [@Composable]
+  fun standardFloatingToolbarColors(
+      toolbarContainerColor: Color = <default>,
+      toolbarContentColor: Color = <default>,
+      fabContainerColor: Color = <default>,
+      fabContentColor: Color = <default>,
+  ): FloatingToolbarColors    [@Composable]
+  fun vibrantFloatingToolbarColors(
+      toolbarContainerColor: Color = <default>,
+      toolbarContentColor: Color = <default>,
+      fabContainerColor: Color = <default>,
+      fabContentColor: Color = <default>,
+  ): FloatingToolbarColors    [@Composable]
+  fun VibrantFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun StandardFloatingActionButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun Modifier.floatingToolbarVerticalNestedScroll(
+      expanded: Boolean,
+      onExpand: () -> Unit,
+      onCollapse: () -> Unit,
+      expandScrollDistanceThreshold: Dp = <default>,
+      collapseScrollDistanceThreshold: Dp = <default>,
+      reverseLayout: Boolean = <default>,
+  ): Modifier
+
+=== COMPANION_OBJECT androidx/compose/material3/FloatingToolbarExitDirection.Companion : Any
+  val Bottom: FloatingToolbarExitDirection
+  val Top: FloatingToolbarExitDirection
+  val Start: FloatingToolbarExitDirection
+  val End: FloatingToolbarExitDirection
+
+=== CLASS androidx/compose/material3/FloatingToolbarExitDirection : Any   [JvmInline]
+  fun toString(
+  ): String
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== COMPANION_OBJECT androidx/compose/material3/FloatingToolbarHorizontalFabPosition.Companion : Any
+  val Start: FloatingToolbarHorizontalFabPosition
+  val End: FloatingToolbarHorizontalFabPosition
+
+=== CLASS androidx/compose/material3/FloatingToolbarHorizontalFabPosition : Any   [JvmInline]
+  fun toString(
+  ): String
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== FILE androidx.compose.material3.FloatingToolbarKt
+  fun HorizontalFloatingToolbar(
+      expanded: Boolean,
+      modifier: Modifier = <default>,
+      colors: FloatingToolbarColors = <default>,
+      contentPadding: PaddingValues = <default>,
+      scrollBehavior: FloatingToolbarScrollBehavior? = <default>,
+      shape: Shape = <default>,
+      leadingContent: @Composable (RowScope.() -> Unit)? = <default>,
+      trailingContent: @Composable (RowScope.() -> Unit)? = <default>,
+      expandedShadowElevation: Dp = <default>,
+      collapsedShadowElevation: Dp = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun HorizontalFloatingToolbar(
+      expanded: Boolean,
+      floatingActionButton: @Composable () -> Unit,
+      modifier: Modifier = <default>,
+      colors: FloatingToolbarColors = <default>,
+      contentPadding: PaddingValues = <default>,
+      scrollBehavior: FloatingToolbarScrollBehavior? = <default>,
+      shape: Shape = <default>,
+      floatingActionButtonPosition: FloatingToolbarHorizontalFabPosition = <default>,
+      animationSpec: FiniteAnimationSpec<Float> = <default>,
+      expandedShadowElevation: Dp = <default>,
+      collapsedShadowElevation: Dp = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun VerticalFloatingToolbar(
+      expanded: Boolean,
+      modifier: Modifier = <default>,
+      colors: FloatingToolbarColors = <default>,
+      contentPadding: PaddingValues = <default>,
+      scrollBehavior: FloatingToolbarScrollBehavior? = <default>,
+      shape: Shape = <default>,
+      leadingContent: @Composable (ColumnScope.() -> Unit)? = <default>,
+      trailingContent: @Composable (ColumnScope.() -> Unit)? = <default>,
+      expandedShadowElevation: Dp = <default>,
+      collapsedShadowElevation: Dp = <default>,
+      content: @Composable ColumnScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun VerticalFloatingToolbar(
+      expanded: Boolean,
+      floatingActionButton: @Composable () -> Unit,
+      modifier: Modifier = <default>,
+      colors: FloatingToolbarColors = <default>,
+      contentPadding: PaddingValues = <default>,
+      scrollBehavior: FloatingToolbarScrollBehavior? = <default>,
+      shape: Shape = <default>,
+      floatingActionButtonPosition: FloatingToolbarVerticalFabPosition = <default>,
+      animationSpec: FiniteAnimationSpec<Float> = <default>,
+      expandedShadowElevation: Dp = <default>,
+      collapsedShadowElevation: Dp = <default>,
+      content: @Composable ColumnScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun rememberFloatingToolbarState(
+      initialOffsetLimit: Float = <default>,
+      initialOffset: Float = <default>,
+      initialContentOffset: Float = <default>,
+  ): FloatingToolbarState    [@Composable]
+
+=== INTERFACE androidx/compose/material3/FloatingToolbarScrollBehavior : NestedScrollConnection   [Stable]
+  val exitDirection: FloatingToolbarExitDirection
+  val state: FloatingToolbarState
+  val snapAnimationSpec: AnimationSpec<Float>
+  val flingAnimationSpec: DecayAnimationSpec<Float>
+  val floatingScrollBehaviorModifier: Modifier
+  fun Modifier.floatingScrollBehavior(
+  ): Modifier    [Deprecated(WARNING: Use floatingScrollBehaviorModifier instead.)]
+
+=== COMPANION_OBJECT androidx/compose/material3/FloatingToolbarState.Companion : Any
+
+=== INTERFACE androidx/compose/material3/FloatingToolbarState : Any
+  var offsetLimit: Float
+  var offset: Float
+  var contentOffset: Float
+
+=== COMPANION_OBJECT androidx/compose/material3/FloatingToolbarVerticalFabPosition.Companion : Any
+  val Top: FloatingToolbarVerticalFabPosition
+  val Bottom: FloatingToolbarVerticalFabPosition
+
+=== CLASS androidx/compose/material3/FloatingToolbarVerticalFabPosition : Any   [JvmInline]
+  fun toString(
+  ): String
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== COMPANION_OBJECT androidx/compose/material3/IconButtonDefaults.IconButtonWidthOption.Companion : Any
+  val Narrow: IconButtonDefaults.IconButtonWidthOption
+  val Uniform: IconButtonDefaults.IconButtonWidthOption
+  val Wide: IconButtonDefaults.IconButtonWidthOption
+
+=== CLASS androidx/compose/material3/IconButtonDefaults.IconButtonWidthOption : Any   [JvmInline]
+  fun toString(
+  ): String
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== OBJECT androidx/compose/material3/IconButtonDefaults : Any
+  val standardShape: Shape    [@Composable JvmName]
+  val filledShape: Shape    [@Composable JvmName]
+  val outlinedShape: Shape    [@Composable JvmName]
+  val extraSmallRoundShape: Shape    [@Composable JvmName]
+  val extraSmallSquareShape: Shape    [@Composable JvmName]
+  val extraSmallPressedShape: Shape    [@Composable JvmName]
+  val extraSmallSelectedRoundShape: Shape    [@Composable JvmName]
+  val extraSmallSelectedSquareShape: Shape    [@Composable JvmName]
+  val smallRoundShape: Shape    [@Composable JvmName]
+  val smallSquareShape: Shape    [@Composable JvmName]
+  val smallPressedShape: Shape    [@Composable JvmName]
+  val smallSelectedRoundShape: Shape    [@Composable JvmName]
+  val smallSelectedSquareShape: Shape    [@Composable JvmName]
+  val mediumRoundShape: Shape    [@Composable JvmName]
+  val mediumSquareShape: Shape    [@Composable JvmName]
+  val mediumPressedShape: Shape    [@Composable JvmName]
+  val mediumSelectedRoundShape: Shape    [@Composable JvmName]
+  val mediumSelectedSquareShape: Shape    [@Composable JvmName]
+  val largeRoundShape: Shape    [@Composable JvmName]
+  val largeSquareShape: Shape    [@Composable JvmName]
+  val largePressedShape: Shape    [@Composable JvmName]
+  val largeSelectedRoundShape: Shape    [@Composable JvmName]
+  val largeSelectedSquareShape: Shape    [@Composable JvmName]
+  val extraLargeRoundShape: Shape    [@Composable JvmName]
+  val extraLargeSquareShape: Shape    [@Composable JvmName]
+  val extraLargePressedShape: Shape    [@Composable JvmName]
+  val extraLargeSelectedRoundShape: Shape    [@Composable JvmName]
+  val extraLargeSelectedSquareShape: Shape    [@Composable JvmName]
+  val extraSmallIconSize: Dp
+  val smallIconSize: Dp
+  val mediumIconSize: Dp
+  val largeIconSize: Dp
+  val extraLargeIconSize: Dp
+  fun iconButtonColors(
+  ): IconButtonColors    [@Composable]
+  fun iconButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): IconButtonColors    [@Composable]
+  fun iconButtonVibrantColors(
+  ): IconButtonColors    [@Composable]
+  fun iconButtonVibrantColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): IconButtonColors    [@Composable]
+  fun iconToggleButtonColors(
+  ): IconToggleButtonColors    [@Composable]
+  fun iconToggleButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): IconToggleButtonColors    [@Composable]
+  fun iconToggleButtonVibrantColors(
+  ): IconToggleButtonColors    [@Composable]
+  fun iconToggleButtonVibrantColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): IconToggleButtonColors    [@Composable]
+  fun filledIconButtonColors(
+  ): IconButtonColors    [@Composable]
+  fun filledIconButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): IconButtonColors    [@Composable]
+  fun filledIconToggleButtonColors(
+  ): IconToggleButtonColors    [@Composable]
+  fun filledIconToggleButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): IconToggleButtonColors    [@Composable]
+  fun filledTonalIconButtonColors(
+  ): IconButtonColors    [@Composable]
+  fun filledTonalIconButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): IconButtonColors    [@Composable]
+  fun filledTonalIconToggleButtonColors(
+  ): IconToggleButtonColors    [@Composable]
+  fun filledTonalIconToggleButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): IconToggleButtonColors    [@Composable]
+  fun outlinedIconButtonColors(
+  ): IconButtonColors    [@Composable]
+  fun outlinedIconButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): IconButtonColors    [@Composable]
+  fun outlinedIconButtonVibrantColors(
+  ): IconButtonColors    [@Composable]
+  fun outlinedIconButtonVibrantColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+  ): IconButtonColors    [@Composable]
+  fun outlinedIconToggleButtonColors(
+  ): IconToggleButtonColors    [@Composable]
+  fun outlinedIconToggleButtonColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): IconToggleButtonColors    [@Composable]
+  fun outlinedIconToggleButtonVibrantColors(
+  ): IconToggleButtonColors    [@Composable]
+  fun outlinedIconToggleButtonVibrantColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): IconToggleButtonColors    [@Composable]
+  fun outlinedIconToggleButtonBorder(
+      enabled: Boolean,
+      checked: Boolean,
+  ): BorderStroke?    [@Composable]
+  fun outlinedIconToggleButtonVibrantBorder(
+      enabled: Boolean,
+      checked: Boolean,
+  ): BorderStroke?    [@Composable]
+  fun outlinedIconButtonBorder(
+      enabled: Boolean,
+  ): BorderStroke    [@Composable]
+  fun outlinedIconButtonVibrantBorder(
+      enabled: Boolean,
+  ): BorderStroke    [@Composable]
+  fun shapes(
+      shape: Shape? = <default>,
+      pressedShape: Shape? = <default>,
+  ): IconButtonShapes    [@Composable]
+  fun shapes(
+  ): IconButtonShapes    [@Composable]
+  fun toggleableShapes(
+      shape: Shape? = <default>,
+      pressedShape: Shape? = <default>,
+      checkedShape: Shape? = <default>,
+  ): IconToggleButtonShapes    [@Composable]
+  fun toggleableShapes(
+  ): IconToggleButtonShapes    [@Composable]
+  fun extraSmallContainerSize(
+      widthOption: IconButtonDefaults.IconButtonWidthOption = <default>,
+  ): DpSize
+  fun smallContainerSize(
+      widthOption: IconButtonDefaults.IconButtonWidthOption = <default>,
+  ): DpSize
+  fun mediumContainerSize(
+      widthOption: IconButtonDefaults.IconButtonWidthOption = <default>,
+  ): DpSize
+  fun largeContainerSize(
+      widthOption: IconButtonDefaults.IconButtonWidthOption = <default>,
+  ): DpSize
+  fun extraLargeContainerSize(
+      widthOption: IconButtonDefaults.IconButtonWidthOption = <default>,
+  ): DpSize
+
+=== OBJECT androidx/compose/material3/ListItemDefaults : Any
+  val ContentPadding: PaddingValues
+  val Elevation: Dp    [Deprecated(WARNING: Use `ListItemDefaults.elevation` instead)]    [JvmDeprecated]
+  val shape: Shape    [Deprecated(WARNING: Use `ListItemDefaults.shapes` instead)]    [@Composable JvmName]
+  val containerColor: Color    [@Composable JvmName]
+  val contentColor: Color    [@Composable JvmName]
+  val SegmentedGap: Dp
+  fun colors(
+  ): ListItemColors    [@Composable]
+  fun colors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      leadingContentColor: Color = <default>,
+      trailingContentColor: Color = <default>,
+      overlineContentColor: Color = <default>,
+      supportingContentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      disabledLeadingContentColor: Color = <default>,
+      disabledTrailingContentColor: Color = <default>,
+      disabledOverlineContentColor: Color = <default>,
+      disabledSupportingContentColor: Color = <default>,
+      selectedContainerColor: Color = <default>,
+      selectedContentColor: Color = <default>,
+      selectedLeadingContentColor: Color = <default>,
+      selectedTrailingContentColor: Color = <default>,
+      selectedOverlineContentColor: Color = <default>,
+      selectedSupportingContentColor: Color = <default>,
+      draggedContainerColor: Color = <default>,
+      draggedContentColor: Color = <default>,
+      draggedLeadingContentColor: Color = <default>,
+      draggedTrailingContentColor: Color = <default>,
+      draggedOverlineContentColor: Color = <default>,
+      draggedSupportingContentColor: Color = <default>,
+  ): ListItemColors    [@Composable]
+  fun segmentedColors(
+  ): ListItemColors    [@Composable]
+  fun segmentedColors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      leadingContentColor: Color = <default>,
+      trailingContentColor: Color = <default>,
+      overlineContentColor: Color = <default>,
+      supportingContentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      disabledLeadingContentColor: Color = <default>,
+      disabledTrailingContentColor: Color = <default>,
+      disabledOverlineContentColor: Color = <default>,
+      disabledSupportingContentColor: Color = <default>,
+      selectedContainerColor: Color = <default>,
+      selectedContentColor: Color = <default>,
+      selectedLeadingContentColor: Color = <default>,
+      selectedTrailingContentColor: Color = <default>,
+      selectedOverlineContentColor: Color = <default>,
+      selectedSupportingContentColor: Color = <default>,
+      draggedContainerColor: Color = <default>,
+      draggedContentColor: Color = <default>,
+      draggedLeadingContentColor: Color = <default>,
+      draggedTrailingContentColor: Color = <default>,
+      draggedOverlineContentColor: Color = <default>,
+      draggedSupportingContentColor: Color = <default>,
+  ): ListItemColors    [@Composable]
+  fun shapes(
+  ): ListItemShapes    [@Composable]
+  fun shapes(
+      shape: Shape? = <default>,
+      selectedShape: Shape? = <default>,
+      pressedShape: Shape? = <default>,
+      focusedShape: Shape? = <default>,
+      hoveredShape: Shape? = <default>,
+      draggedShape: Shape? = <default>,
+  ): ListItemShapes    [@Composable]
+  fun segmentedShapes(
+      index: Int,
+      count: Int,
+      defaultShapes: ListItemShapes = <default>,
+  ): ListItemShapes    [@Composable]
+  fun elevation(
+      elevation: Dp = <default>,
+      draggedElevation: Dp = <default>,
+  ): ListItemElevation
+  fun verticalAlignment(
+  ): Alignment.Vertical    [@Composable]
+  fun colors(
+      containerColor: Color = <default>,
+      headlineColor: Color = <default>,
+      leadingIconColor: Color = <default>,
+      overlineColor: Color = <default>,
+      supportingColor: Color = <default>,
+      trailingIconColor: Color = <default>,
+      disabledHeadlineColor: Color = <default>,
+      disabledLeadingIconColor: Color = <default>,
+      disabledTrailingIconColor: Color = <default>,
+  ): ListItemColors    [@Composable]
+
+=== FILE androidx.compose.material3.ListItemKt
+  fun SegmentedListItem(
+      shapes: ListItemShapes,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      leadingContent: @Composable (() -> Unit)? = <default>,
+      trailingContent: @Composable (() -> Unit)? = <default>,
+      overlineContent: @Composable (() -> Unit)? = <default>,
+      supportingContent: @Composable (() -> Unit)? = <default>,
+      verticalAlignment: Alignment.Vertical = <default>,
+      colors: ListItemColors = <default>,
+      elevation: ListItemElevation = <default>,
+      contentPadding: PaddingValues = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun SegmentedListItem(
+      onClick: () -> Unit,
+      shapes: ListItemShapes,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      leadingContent: @Composable (() -> Unit)? = <default>,
+      trailingContent: @Composable (() -> Unit)? = <default>,
+      overlineContent: @Composable (() -> Unit)? = <default>,
+      supportingContent: @Composable (() -> Unit)? = <default>,
+      verticalAlignment: Alignment.Vertical = <default>,
+      onLongClick: (() -> Unit)? = <default>,
+      onLongClickLabel: String? = <default>,
+      colors: ListItemColors = <default>,
+      elevation: ListItemElevation = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun SegmentedListItem(
+      selected: Boolean,
+      onClick: () -> Unit,
+      shapes: ListItemShapes,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      leadingContent: @Composable (() -> Unit)? = <default>,
+      trailingContent: @Composable (() -> Unit)? = <default>,
+      overlineContent: @Composable (() -> Unit)? = <default>,
+      supportingContent: @Composable (() -> Unit)? = <default>,
+      verticalAlignment: Alignment.Vertical = <default>,
+      onLongClick: (() -> Unit)? = <default>,
+      onLongClickLabel: String? = <default>,
+      colors: ListItemColors = <default>,
+      elevation: ListItemElevation = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun SegmentedListItem(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      shapes: ListItemShapes,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      leadingContent: @Composable (() -> Unit)? = <default>,
+      trailingContent: @Composable (() -> Unit)? = <default>,
+      overlineContent: @Composable (() -> Unit)? = <default>,
+      supportingContent: @Composable (() -> Unit)? = <default>,
+      verticalAlignment: Alignment.Vertical = <default>,
+      onLongClick: (() -> Unit)? = <default>,
+      onLongClickLabel: String? = <default>,
+      colors: ListItemColors = <default>,
+      elevation: ListItemElevation = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+
+=== CLASS androidx/compose/material3/ListItemShapes : Any   [Immutable]
+  constructor(shape: Shape, selectedShape: Shape, pressedShape: Shape, focusedShape: Shape, hoveredShape: Shape, draggedShape: Shape)
+  val shape: Shape
+  val selectedShape: Shape
+  val pressedShape: Shape
+  val focusedShape: Shape
+  val hoveredShape: Shape
+  val draggedShape: Shape
+  fun copy(
+      shape: Shape? = <default>,
+      selectedShape: Shape? = <default>,
+      pressedShape: Shape? = <default>,
+      focusedShape: Shape? = <default>,
+      hoveredShape: Shape? = <default>,
+      draggedShape: Shape? = <default>,
+  ): ListItemShapes
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== OBJECT androidx/compose/material3/LoadingIndicatorDefaults : Any   [ExperimentalMaterial3ExpressiveApi]
+  val ContainerWidth: Dp
+  val ContainerHeight: Dp
+  val IndicatorSize: Dp
+  val containerShape: Shape    [@Composable JvmName]
+  val indicatorColor: Color    [@Composable JvmName]
+  val containedIndicatorColor: Color    [@Composable JvmName]
+  val containedContainerColor: Color    [@Composable JvmName]
+  val IndeterminateIndicatorPolygons: List<RoundedPolygon>
+  val DeterminateIndicatorPolygons: List<RoundedPolygon>
+
+=== FILE androidx.compose.material3.LoadingIndicatorKt
+  fun LoadingIndicator(
+      progress: () -> Float,
+      modifier: Modifier = <default>,
+      color: Color = <default>,
+      polygons: List<RoundedPolygon> = <default>,
+  ): Unit    [@Composable ExperimentalMaterial3ExpressiveApi]
+  fun LoadingIndicator(
+      modifier: Modifier = <default>,
+      color: Color = <default>,
+      polygons: List<RoundedPolygon> = <default>,
+  ): Unit    [@Composable ExperimentalMaterial3ExpressiveApi]
+  fun ContainedLoadingIndicator(
+      progress: () -> Float,
+      modifier: Modifier = <default>,
+      containerColor: Color = <default>,
+      indicatorColor: Color = <default>,
+      containerShape: Shape = <default>,
+      polygons: List<RoundedPolygon> = <default>,
+  ): Unit    [@Composable ExperimentalMaterial3ExpressiveApi]
+  fun ContainedLoadingIndicator(
+      modifier: Modifier = <default>,
+      containerColor: Color = <default>,
+      indicatorColor: Color = <default>,
+      containerShape: Shape = <default>,
+      polygons: List<RoundedPolygon> = <default>,
+  ): Unit    [@Composable ExperimentalMaterial3ExpressiveApi]
+
+=== COMPANION_OBJECT androidx/compose/material3/MaterialShapes.Companion : Any
+  val Circle: RoundedPolygon
+  val Square: RoundedPolygon
+  val Slanted: RoundedPolygon
+  val Arch: RoundedPolygon
+  val Fan: RoundedPolygon
+  val Arrow: RoundedPolygon
+  val SemiCircle: RoundedPolygon
+  val Oval: RoundedPolygon
+  val Pill: RoundedPolygon
+  val Triangle: RoundedPolygon
+  val Diamond: RoundedPolygon
+  val ClamShell: RoundedPolygon
+  val Pentagon: RoundedPolygon
+  val Gem: RoundedPolygon
+  val Sunny: RoundedPolygon
+  val VerySunny: RoundedPolygon
+  val Cookie4Sided: RoundedPolygon
+  val Cookie6Sided: RoundedPolygon
+  val Cookie7Sided: RoundedPolygon
+  val Cookie9Sided: RoundedPolygon
+  val Cookie12Sided: RoundedPolygon
+  val Ghostish: RoundedPolygon
+  val Clover4Leaf: RoundedPolygon
+  val Clover8Leaf: RoundedPolygon
+  val Burst: RoundedPolygon
+  val SoftBurst: RoundedPolygon
+  val Boom: RoundedPolygon
+  val SoftBoom: RoundedPolygon
+  val Flower: RoundedPolygon
+  val Puffy: RoundedPolygon
+  val PuffyDiamond: RoundedPolygon
+  val PixelCircle: RoundedPolygon
+  val PixelTriangle: RoundedPolygon
+  val Bun: RoundedPolygon
+  val Heart: RoundedPolygon
+
+=== CLASS androidx/compose/material3/MaterialShapes : Any   [ExperimentalMaterial3ExpressiveApi]
+  constructor()
+
+=== FILE androidx.compose.material3.MaterialShapesKt
+  fun Morph.toPath(
+      progress: Float,
+      path: Path = <default>,
+      startAngle: Int = <default>,
+  ): Path    [ExperimentalMaterial3ExpressiveApi]
+  fun RoundedPolygon.toPath(
+      startAngle: Int = <default>,
+  ): Path    [@Composable ExperimentalMaterial3ExpressiveApi]
+  fun RoundedPolygon.toShape(
+      startAngle: Int = <default>,
+  ): Shape    [@Composable ExperimentalMaterial3ExpressiveApi]
+
+=== CLASS androidx/compose/material3/MaterialTheme.Values : Any   [Immutable]
+  constructor(colorScheme: ColorScheme = <default>, typography: Typography = <default>, shapes: Shapes = <default>, motionScheme: MotionScheme = <default>)
+  val colorScheme: ColorScheme
+  val typography: Typography
+  val shapes: Shapes
+  val motionScheme: MotionScheme
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+  fun toString(
+  ): String
+
+=== OBJECT androidx/compose/material3/MaterialTheme : Any
+  val colorScheme: ColorScheme    [@Composable JvmName]
+  val typography: Typography    [@Composable JvmName]
+  val shapes: Shapes    [@Composable JvmName]
+  val motionScheme: MotionScheme    [@Composable JvmName]
+  val LocalMaterialTheme: CompositionLocal<MaterialTheme.Values>
+
+=== FILE androidx.compose.material3.MaterialThemeKt
+  fun MaterialExpressiveTheme(
+      colorScheme: ColorScheme? = <default>,
+      motionScheme: MotionScheme? = <default>,
+      shapes: Shapes? = <default>,
+      typography: Typography? = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+
+=== CLASS androidx/compose/material3/ModalWideNavigationRailProperties : Any   [Immutable]
+  constructor(securePolicy: SecureFlagPolicy = <default>, shouldDismissOnBackPress: Boolean = <default>)
+  constructor(shouldDismissOnBackPress: Boolean = <default>)
+  val securePolicy: SecureFlagPolicy
+  val shouldDismissOnBackPress: Boolean
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== COMPANION_OBJECT androidx/compose/material3/MotionScheme.Companion : Any
+  fun standard(
+  ): MotionScheme
+  fun expressive(
+  ): MotionScheme
+
+=== INTERFACE androidx/compose/material3/MotionScheme : Any   [Immutable]
+  fun <T> defaultSpatialSpec(
+  ): FiniteAnimationSpec<T>
+  fun <T> fastSpatialSpec(
+  ): FiniteAnimationSpec<T>
+  fun <T> slowSpatialSpec(
+  ): FiniteAnimationSpec<T>
+  fun <T> defaultEffectsSpec(
+  ): FiniteAnimationSpec<T>
+  fun <T> fastEffectsSpec(
+  ): FiniteAnimationSpec<T>
+  fun <T> slowEffectsSpec(
+  ): FiniteAnimationSpec<T>
+
+=== COMPANION_OBJECT androidx/compose/material3/NavigationItemIconPosition.Companion : Any
+  val Top: NavigationItemIconPosition
+  val Start: NavigationItemIconPosition
+
+=== CLASS androidx/compose/material3/NavigationItemIconPosition : Any   [JvmInline]
+  fun toString(
+  ): String
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== OBJECT androidx/compose/material3/OutlinedToggleButtonDefaults : Any
+  val size: ToggleButtonSize
+  val MinHeight: Dp
+  val IconSpacing: Dp
+  val IconSize: Dp
+  val shape: Shape    [@Composable JvmName]
+  val pressedShape: Shape    [@Composable JvmName]
+  val checkedShape: Shape    [@Composable JvmName]
+  fun contentPaddingFor(
+      buttonHeight: Dp,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun contentPaddingFor(
+      buttonSize: ToggleButtonSize,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun shapesFor(
+      buttonHeight: Dp,
+  ): ToggleButtonShapes    [@Composable]
+  fun shapesFor(
+      buttonSize: ToggleButtonSize,
+  ): ToggleButtonShapes    [@Composable]
+  fun colors(
+  ): ToggleButtonColors    [@Composable]
+  fun colors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): ToggleButtonColors    [@Composable]
+  fun border(
+      enabled: Boolean,
+      checked: Boolean,
+  ): BorderStroke?    [@Composable]
+
+=== COMPANION_OBJECT androidx/compose/material3/ShortNavigationBarArrangement.Companion : Any
+  val EqualWeight: ShortNavigationBarArrangement
+  val Centered: ShortNavigationBarArrangement
+
+=== CLASS androidx/compose/material3/ShortNavigationBarArrangement : Any   [JvmInline]
+  fun toString(
+  ): String
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== OBJECT androidx/compose/material3/ShortNavigationBarDefaults : Any
+  val containerColor: Color    [@Composable JvmName]
+  val contentColor: Color    [@Composable JvmName]
+  val arrangement: ShortNavigationBarArrangement
+  val windowInsets: WindowInsets    [@Composable JvmName]
+
+=== OBJECT androidx/compose/material3/ShortNavigationBarItemDefaults : Any
+  fun colors(
+  ): NavigationItemColors    [@Composable]
+  fun colors(
+      selectedIconColor: Color = <default>,
+      selectedTextColorTopIconPosition: Color = <default>,
+      selectedTextColorStartIconPosition: Color = <default>,
+      selectedIndicatorColor: Color = <default>,
+      unselectedIconColor: Color = <default>,
+      unselectedTextColor: Color = <default>,
+      disabledIconColor: Color = <default>,
+      disabledTextColor: Color = <default>,
+  ): NavigationItemColors    [@Composable]
+
+=== FILE androidx.compose.material3.ShortNavigationBarKt
+  fun ShortNavigationBar(
+      modifier: Modifier = <default>,
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      windowInsets: WindowInsets = <default>,
+      arrangement: ShortNavigationBarArrangement = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun ShortNavigationBarItem(
+      selected: Boolean,
+      onClick: () -> Unit,
+      icon: @Composable () -> Unit,
+      label: @Composable (() -> Unit)?,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      iconPosition: NavigationItemIconPosition = <default>,
+      colors: NavigationItemColors = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+  ): Unit    [@Composable]
+
+=== OBJECT androidx/compose/material3/SplitButtonDefaults : Any
+  val LeadingIconSize: Dp
+  val TrailingIconSize: Dp
+  val Spacing: Dp
+  val ExtraSmallInnerCornerSize: CornerSize
+  val SmallInnerCornerSize: CornerSize
+  val MediumInnerCornerSize: CornerSize
+  val LargeInnerCornerSize: CornerSize
+  val ExtraLargeInnerCornerSize: CornerSize
+  val ExtraSmallInnerCornerSizePressed: CornerSize
+  val SmallInnerCornerSizePressed: CornerSize
+  val MediumInnerCornerSizePressed: CornerSize
+  val LargeInnerCornerSizePressed: CornerSize
+  val ExtraLargeInnerCornerSizePressed: CornerSize
+  val OuterCornerSize: CornerSize
+  val ExtraSmallLeadingButtonContentPadding: PaddingValues
+  val SmallLeadingButtonContentPadding: PaddingValues
+  val MediumLeadingButtonContentPadding: PaddingValues
+  val LargeLeadingButtonContentPadding: PaddingValues
+  val ExtraLargeLeadingButtonContentPadding: PaddingValues
+  val ExtraSmallTrailingButtonContentPadding: PaddingValues
+  val SmallTrailingButtonContentPadding: PaddingValues
+  val MediumTrailingButtonContentPadding: PaddingValues
+  val LargeTrailingButtonContentPadding: PaddingValues
+  val ExtraLargeTrailingButtonContentPadding: PaddingValues
+  val ExtraSmallTrailingButtonIconSize: Dp
+  val SmallTrailingButtonIconSize: Dp
+  val MediumTrailingButtonIconSize: Dp
+  val LargeTrailingButtonIconSize: Dp
+  val ExtraLargeTrailingButtonIconSize: Dp
+  val SmallContainerHeight: Dp
+  val ExtraSmallContainerHeight: Dp
+  val MediumContainerHeight: Dp
+  val LargeContainerHeight: Dp
+  val ExtraLargeContainerHeight: Dp
+  fun leadingButtonShapesFor(
+      buttonHeight: Dp,
+  ): SplitButtonShapes    [@Composable]
+  fun trailingButtonShapesFor(
+      buttonHeight: Dp,
+  ): SplitButtonShapes    [@Composable]
+  fun leadingButtonContentPaddingFor(
+      buttonHeight: Dp,
+  ): PaddingValues
+  fun trailingButtonContentPaddingFor(
+      buttonHeight: Dp,
+  ): PaddingValues
+  fun leadingButtonIconSizeFor(
+      buttonHeight: Dp,
+  ): Dp
+  fun trailingButtonIconSizeFor(
+      buttonHeight: Dp,
+  ): Dp
+  fun LeadingButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun TrailingButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun TrailingButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun TonalLeadingButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun TonalTrailingButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun OutlinedLeadingButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun OutlinedTrailingButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun ElevatedLeadingButton(
+      onClick: () -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun ElevatedTrailingButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      shapes: SplitButtonShapes = <default>,
+      colors: ButtonColors = <default>,
+      elevation: ButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+
+=== FILE androidx.compose.material3.SplitButtonKt
+  fun SplitButtonLayout(
+      leadingButton: @Composable () -> Unit,
+      trailingButton: @Composable () -> Unit,
+      modifier: Modifier = <default>,
+      spacing: Dp = <default>,
+  ): Unit    [@Composable]
+
+=== CLASS androidx/compose/material3/SplitButtonShapes : Any
+  constructor(shape: Shape, pressedShape: Shape?, checkedShape: Shape?)
+  val shape: Shape
+  val pressedShape: Shape?
+  val checkedShape: Shape?
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== OBJECT androidx/compose/material3/ToggleButtonDefaults : Any
+  val size: ToggleButtonSize
+  val MinHeight: Dp
+  val IconSpacing: Dp
+  val IconSize: Dp
+  val shape: Shape    [@Composable JvmName]
+  val pressedShape: Shape    [@Composable JvmName]
+  val checkedShape: Shape    [@Composable JvmName]
+  fun contentPaddingFor(
+      buttonHeight: Dp,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun contentPaddingFor(
+      buttonSize: ToggleButtonSize,
+      hasStartIcon: Boolean = <default>,
+      hasEndIcon: Boolean = <default>,
+  ): PaddingValues
+  fun elevation(
+      defaultElevation: Dp = <default>,
+      pressedElevation: Dp = <default>,
+      focusedElevation: Dp = <default>,
+      hoveredElevation: Dp = <default>,
+      disabledElevation: Dp = <default>,
+  ): ToggleButtonElevation    [@Composable]
+  fun colors(
+  ): ToggleButtonColors    [@Composable]
+  fun colors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      disabledContainerColor: Color = <default>,
+      disabledContentColor: Color = <default>,
+      checkedContainerColor: Color = <default>,
+      checkedContentColor: Color = <default>,
+  ): ToggleButtonColors    [@Composable]
+  fun shapesFor(
+      buttonHeight: Dp,
+  ): ToggleButtonShapes    [@Composable]
+  fun shapesFor(
+      buttonSize: ToggleButtonSize,
+  ): ToggleButtonShapes    [@Composable]
+
+=== FILE androidx.compose.material3.ToggleButtonKt
+  fun ToggleButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      buttonSize: ToggleButtonSize = <default>,
+      enabled: Boolean = <default>,
+      icon: @Composable (() -> Unit)? = <default>,
+      shapes: ToggleButtonShapes = <default>,
+      colors: ToggleButtonColors = <default>,
+      elevation: ToggleButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun ElevatedToggleButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      buttonSize: ToggleButtonSize = <default>,
+      enabled: Boolean = <default>,
+      icon: @Composable (() -> Unit)? = <default>,
+      shapes: ToggleButtonShapes = <default>,
+      colors: ToggleButtonColors = <default>,
+      elevation: ToggleButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun FilledTonalToggleButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      buttonSize: ToggleButtonSize = <default>,
+      enabled: Boolean = <default>,
+      icon: @Composable (() -> Unit)? = <default>,
+      shapes: ToggleButtonShapes = <default>,
+      colors: ToggleButtonColors = <default>,
+      elevation: ToggleButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun OutlinedToggleButton(
+      checked: Boolean,
+      onCheckedChange: (Boolean) -> Unit,
+      modifier: Modifier = <default>,
+      buttonSize: ToggleButtonSize = <default>,
+      enabled: Boolean = <default>,
+      icon: @Composable (() -> Unit)? = <default>,
+      shapes: ToggleButtonShapes = <default>,
+      colors: ToggleButtonColors = <default>,
+      elevation: ToggleButtonElevation? = <default>,
+      border: BorderStroke? = <default>,
+      contentPadding: PaddingValues = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      content: @Composable RowScope.() -> Unit,
+  ): Unit    [@Composable]
+
+=== CLASS androidx/compose/material3/ToggleButtonShapes : Any   [Immutable]
+  constructor(shape: Shape, pressedShape: Shape, checkedShape: Shape)
+  val shape: Shape
+  val pressedShape: Shape
+  val checkedShape: Shape
+  fun copy(
+      shape: Shape? = <default>,
+      pressedShape: Shape? = <default>,
+      checkedShape: Shape? = <default>,
+  ): ToggleButtonShapes
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+
+=== COMPANION_OBJECT androidx/compose/material3/ToggleButtonSize.Companion : Any
+  val ExtraSmall: ToggleButtonSize
+  val Small: ToggleButtonSize
+  val Medium: ToggleButtonSize
+  val Large: ToggleButtonSize
+  val ExtraLarge: ToggleButtonSize
+
+=== CLASS androidx/compose/material3/ToggleButtonSize : Any   [JvmInline Immutable]
+  val height: Dp
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+  fun toString(
+  ): String
+
+=== OBJECT androidx/compose/material3/ToggleFloatingActionButtonDefaults : Any
+  fun containerColor(
+      initialColor: Color = <default>,
+      finalColor: Color = <default>,
+  ): (Float) -> Color    [@Composable]
+  fun containerSize(
+      initialSize: Dp,
+      finalSize: Dp = <default>,
+  ): (Float) -> Dp
+  fun containerSize(
+  ): (Float) -> Dp
+  fun containerSizeMedium(
+  ): (Float) -> Dp
+  fun containerSizeLarge(
+  ): (Float) -> Dp
+  fun containerCornerRadius(
+      initialSize: Dp,
+      finalSize: Dp = <default>,
+  ): (Float) -> Dp
+  fun containerCornerRadius(
+  ): (Float) -> Dp
+  fun containerCornerRadiusMedium(
+  ): (Float) -> Dp
+  fun containerCornerRadiusLarge(
+  ): (Float) -> Dp
+  fun iconColor(
+      initialColor: Color = <default>,
+      finalColor: Color = <default>,
+  ): (Float) -> Color    [@Composable]
+  fun iconSize(
+      initialSize: Dp,
+      finalSize: Dp = <default>,
+  ): (Float) -> Dp
+  fun iconSize(
+  ): (Float) -> Dp
+  fun iconSizeMedium(
+  ): (Float) -> Dp
+  fun iconSizeLarge(
+  ): (Float) -> Dp
+  fun Modifier.animateIcon(
+      checkedProgress: () -> Float,
+      color: (Float) -> Color = <default>,
+      size: (Float) -> Dp = <default>,
+  ): Modifier    [@Composable]
+
+=== INTERFACE androidx/compose/material3/ToggleFloatingActionButtonScope : Any
+  val checkedProgress: Float
+
+=== CLASS androidx/compose/material3/Typography : Any   [Immutable]
+  constructor(displayLarge: TextStyle = <default>, displayMedium: TextStyle = <default>, displaySmall: TextStyle = <default>, headlineLarge: TextStyle = <default>, headlineMedium: TextStyle = <default>, headlineSmall: TextStyle = <default>, titleLarge: TextStyle = <default>, titleMedium: TextStyle = <default>, titleSmall: TextStyle = <default>, bodyLarge: TextStyle = <default>, bodyMedium: TextStyle = <default>, bodySmall: TextStyle = <default>, labelLarge: TextStyle = <default>, labelMedium: TextStyle = <default>, labelSmall: TextStyle = <default>, displayLargeEmphasized: TextStyle = <default>, displayMediumEmphasized: TextStyle = <default>, displaySmallEmphasized: TextStyle = <default>, headlineLargeEmphasized: TextStyle = <default>, headlineMediumEmphasized: TextStyle = <default>, headlineSmallEmphasized: TextStyle = <default>, titleLargeEmphasized: TextStyle = <default>, titleMediumEmphasized: TextStyle = <default>, titleSmallEmphasized: TextStyle = <default>, bodyLargeEmphasized: TextStyle = <default>, bodyMediumEmphasized: TextStyle = <default>, bodySmallEmphasized: TextStyle = <default>, labelLargeEmphasized: TextStyle = <default>, labelMediumEmphasized: TextStyle = <default>, labelSmallEmphasized: TextStyle = <default>)
+  constructor(fontFamily: FontFamily, displayLarge: TextStyle? = <default>, displayMedium: TextStyle? = <default>, displaySmall: TextStyle? = <default>, headlineLarge: TextStyle? = <default>, headlineMedium: TextStyle? = <default>, headlineSmall: TextStyle? = <default>, titleLarge: TextStyle? = <default>, titleMedium: TextStyle? = <default>, titleSmall: TextStyle? = <default>, bodyLarge: TextStyle? = <default>, bodyMedium: TextStyle? = <default>, bodySmall: TextStyle? = <default>, labelLarge: TextStyle? = <default>, labelMedium: TextStyle? = <default>, labelSmall: TextStyle? = <default>, displayLargeEmphasized: TextStyle? = <default>, displayMediumEmphasized: TextStyle? = <default>, displaySmallEmphasized: TextStyle? = <default>, headlineLargeEmphasized: TextStyle? = <default>, headlineMediumEmphasized: TextStyle? = <default>, headlineSmallEmphasized: TextStyle? = <default>, titleLargeEmphasized: TextStyle? = <default>, titleMediumEmphasized: TextStyle? = <default>, titleSmallEmphasized: TextStyle? = <default>, bodyLargeEmphasized: TextStyle? = <default>, bodyMediumEmphasized: TextStyle? = <default>, bodySmallEmphasized: TextStyle? = <default>, labelLargeEmphasized: TextStyle? = <default>, labelMediumEmphasized: TextStyle? = <default>, labelSmallEmphasized: TextStyle? = <default>)
+  constructor(displayLarge: TextStyle = <default>, displayMedium: TextStyle = <default>, displaySmall: TextStyle = <default>, headlineLarge: TextStyle = <default>, headlineMedium: TextStyle = <default>, headlineSmall: TextStyle = <default>, titleLarge: TextStyle = <default>, titleMedium: TextStyle = <default>, titleSmall: TextStyle = <default>, bodyLarge: TextStyle = <default>, bodyMedium: TextStyle = <default>, bodySmall: TextStyle = <default>, labelLarge: TextStyle = <default>, labelMedium: TextStyle = <default>, labelSmall: TextStyle = <default>)
+  val displayLarge: TextStyle
+  val displayMedium: TextStyle
+  val displaySmall: TextStyle
+  val headlineLarge: TextStyle
+  val headlineMedium: TextStyle
+  val headlineSmall: TextStyle
+  val titleLarge: TextStyle
+  val titleMedium: TextStyle
+  val titleSmall: TextStyle
+  val bodyLarge: TextStyle
+  val bodyMedium: TextStyle
+  val bodySmall: TextStyle
+  val labelLarge: TextStyle
+  val labelMedium: TextStyle
+  val labelSmall: TextStyle
+  val displayLargeEmphasized: TextStyle
+  val displayMediumEmphasized: TextStyle
+  val displaySmallEmphasized: TextStyle
+  val headlineLargeEmphasized: TextStyle
+  val headlineMediumEmphasized: TextStyle
+  val headlineSmallEmphasized: TextStyle
+  val titleLargeEmphasized: TextStyle
+  val titleMediumEmphasized: TextStyle
+  val titleSmallEmphasized: TextStyle
+  val bodyLargeEmphasized: TextStyle
+  val bodyMediumEmphasized: TextStyle
+  val bodySmallEmphasized: TextStyle
+  val labelLargeEmphasized: TextStyle
+  val labelMediumEmphasized: TextStyle
+  val labelSmallEmphasized: TextStyle
+  fun copy(
+      displayLarge: TextStyle = <default>,
+      displayMedium: TextStyle = <default>,
+      displaySmall: TextStyle = <default>,
+      headlineLarge: TextStyle = <default>,
+      headlineMedium: TextStyle = <default>,
+      headlineSmall: TextStyle = <default>,
+      titleLarge: TextStyle = <default>,
+      titleMedium: TextStyle = <default>,
+      titleSmall: TextStyle = <default>,
+      bodyLarge: TextStyle = <default>,
+      bodyMedium: TextStyle = <default>,
+      bodySmall: TextStyle = <default>,
+      labelLarge: TextStyle = <default>,
+      labelMedium: TextStyle = <default>,
+      labelSmall: TextStyle = <default>,
+      displayLargeEmphasized: TextStyle = <default>,
+      displayMediumEmphasized: TextStyle = <default>,
+      displaySmallEmphasized: TextStyle = <default>,
+      headlineLargeEmphasized: TextStyle = <default>,
+      headlineMediumEmphasized: TextStyle = <default>,
+      headlineSmallEmphasized: TextStyle = <default>,
+      titleLargeEmphasized: TextStyle = <default>,
+      titleMediumEmphasized: TextStyle = <default>,
+      titleSmallEmphasized: TextStyle = <default>,
+      bodyLargeEmphasized: TextStyle = <default>,
+      bodyMediumEmphasized: TextStyle = <default>,
+      bodySmallEmphasized: TextStyle = <default>,
+      labelLargeEmphasized: TextStyle = <default>,
+      labelMediumEmphasized: TextStyle = <default>,
+      labelSmallEmphasized: TextStyle = <default>,
+  ): Typography
+  fun copy(
+      displayLarge: TextStyle = <default>,
+      displayMedium: TextStyle = <default>,
+      displaySmall: TextStyle = <default>,
+      headlineLarge: TextStyle = <default>,
+      headlineMedium: TextStyle = <default>,
+      headlineSmall: TextStyle = <default>,
+      titleLarge: TextStyle = <default>,
+      titleMedium: TextStyle = <default>,
+      titleSmall: TextStyle = <default>,
+      bodyLarge: TextStyle = <default>,
+      bodyMedium: TextStyle = <default>,
+      bodySmall: TextStyle = <default>,
+      labelLarge: TextStyle = <default>,
+      labelMedium: TextStyle = <default>,
+      labelSmall: TextStyle = <default>,
+  ): Typography
+  fun equals(
+      other: Any?,
+  ): Boolean
+  fun hashCode(
+  ): Int
+  fun toString(
+  ): String
+
+=== OBJECT androidx/compose/material3/WavyProgressIndicatorDefaults : Any
+  val ProgressAnimationSpec: AnimationSpec<Float>
+  val indicatorColor: Color    [@Composable JvmName]
+  val trackColor: Color    [@Composable JvmName]
+  val linearIndicatorStroke: Stroke    [@Composable JvmName]
+  val circularIndicatorStroke: Stroke    [@Composable JvmName]
+  val linearTrackStroke: Stroke    [@Composable JvmName]
+  val circularTrackStroke: Stroke    [@Composable JvmName]
+  val LinearDeterminateWavelength: Dp
+  val LinearIndeterminateWavelength: Dp
+  val LinearContainerHeight: Dp
+  val LinearContainerWidth: Dp
+  val LinearTrackStopIndicatorSize: Dp
+  val CircularContainerSize: Dp
+  val CircularWavelength: Dp
+  val LinearIndicatorTrackGapSize: Dp
+  val CircularIndicatorTrackGapSize: Dp
+  val indicatorAmplitude: (@ParameterName Float) -> Float
+
+=== FILE androidx.compose.material3.WavyProgressIndicatorKt
+  fun LinearWavyProgressIndicator(
+      progress: () -> Float,
+      modifier: Modifier = <default>,
+      color: Color = <default>,
+      trackColor: Color = <default>,
+      stroke: Stroke = <default>,
+      trackStroke: Stroke = <default>,
+      gapSize: Dp = <default>,
+      stopSize: Dp = <default>,
+      amplitude: (@ParameterName Float) -> Float = <default>,
+      wavelength: Dp = <default>,
+      waveSpeed: Dp = <default>,
+  ): Unit    [@Composable]
+  fun LinearWavyProgressIndicator(
+      modifier: Modifier = <default>,
+      color: Color = <default>,
+      trackColor: Color = <default>,
+      stroke: Stroke = <default>,
+      trackStroke: Stroke = <default>,
+      gapSize: Dp = <default>,
+      amplitude: Float = <default>,
+      wavelength: Dp = <default>,
+      waveSpeed: Dp = <default>,
+  ): Unit    [@Composable]
+  fun CircularWavyProgressIndicator(
+      progress: () -> Float,
+      modifier: Modifier = <default>,
+      color: Color = <default>,
+      trackColor: Color = <default>,
+      stroke: Stroke = <default>,
+      trackStroke: Stroke = <default>,
+      gapSize: Dp = <default>,
+      amplitude: (@ParameterName Float) -> Float = <default>,
+      wavelength: Dp = <default>,
+      waveSpeed: Dp = <default>,
+  ): Unit    [@Composable]
+  fun CircularWavyProgressIndicator(
+      modifier: Modifier = <default>,
+      color: Color = <default>,
+      trackColor: Color = <default>,
+      stroke: Stroke = <default>,
+      trackStroke: Stroke = <default>,
+      gapSize: Dp = <default>,
+      amplitude: Float = <default>,
+      wavelength: Dp = <default>,
+      waveSpeed: Dp = <default>,
+  ): Unit    [@Composable]
+
+=== OBJECT androidx/compose/material3/WideNavigationRailDefaults : Any
+  val shape: Shape    [@Composable JvmName]
+  val arrangement: Arrangement.Vertical
+  val windowInsets: WindowInsets    [@Composable JvmName]
+  val modalCollapsedShape: Shape    [@Composable JvmName]
+  val modalExpandedShape: Shape    [@Composable JvmName]
+  val ModalExpandedProperties: ModalWideNavigationRailProperties
+  val ContentPadding: PaddingValues
+  fun colors(
+  ): WideNavigationRailColors    [@Composable]
+  fun colors(
+      containerColor: Color = <default>,
+      contentColor: Color = <default>,
+      modalContainerColor: Color = <default>,
+      modalScrimColor: Color = <default>,
+      modalContentColor: Color = <default>,
+  ): WideNavigationRailColors    [@Composable]
+
+=== OBJECT androidx/compose/material3/WideNavigationRailItemDefaults : Any
+  val IndicatorCollapsedPadding: PaddingValues
+  val IndicatorExpandedPadding: PaddingValues
+  fun indicatorPadding(
+      railExpanded: Boolean,
+      collapsedPadding: PaddingValues = <default>,
+      expandedPadding: PaddingValues = <default>,
+  ): PaddingValues    [@Composable]
+  fun iconPositionFor(
+      railExpanded: Boolean,
+  ): NavigationItemIconPosition
+  fun colors(
+  ): NavigationItemColors    [@Composable]
+  fun colors(
+      selectedIconColor: Color = <default>,
+      selectedTextColorTopIconPosition: Color = <default>,
+      selectedTextColorStartIconPosition: Color = <default>,
+      selectedIndicatorColor: Color = <default>,
+      unselectedIconColor: Color = <default>,
+      unselectedTextColor: Color = <default>,
+      disabledIconColor: Color = <default>,
+      disabledTextColor: Color = <default>,
+  ): NavigationItemColors    [@Composable]
+
+=== FILE androidx.compose.material3.WideNavigationRailKt
+  fun WideNavigationRail(
+      modifier: Modifier = <default>,
+      state: WideNavigationRailState = <default>,
+      shape: Shape = <default>,
+      colors: WideNavigationRailColors = <default>,
+      header: @Composable (() -> Unit)? = <default>,
+      windowInsets: WindowInsets = <default>,
+      arrangement: Arrangement.Vertical = <default>,
+      contentPadding: PaddingValues = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun ModalWideNavigationRail(
+      modifier: Modifier = <default>,
+      state: WideNavigationRailState = <default>,
+      hideOnCollapse: Boolean = <default>,
+      collapsedShape: Shape = <default>,
+      expandedShape: Shape = <default>,
+      colors: WideNavigationRailColors = <default>,
+      header: @Composable (() -> Unit)? = <default>,
+      expandedHeaderTopPadding: Dp = <default>,
+      windowInsets: WindowInsets = <default>,
+      arrangement: Arrangement.Vertical = <default>,
+      expandedProperties: ModalWideNavigationRailProperties = <default>,
+      contentPadding: PaddingValues = <default>,
+      content: @Composable () -> Unit,
+  ): Unit    [@Composable]
+  fun WideNavigationRailItem(
+      selected: Boolean,
+      onClick: () -> Unit,
+      icon: @Composable () -> Unit,
+      label: @Composable (() -> Unit)?,
+      railExpanded: Boolean,
+      modifier: Modifier = <default>,
+      enabled: Boolean = <default>,
+      iconPosition: NavigationItemIconPosition = <default>,
+      colors: NavigationItemColors = <default>,
+      interactionSource: MutableInteractionSource? = <default>,
+      indicatorPadding: PaddingValues = <default>,
+  ): Unit    [@Composable]
+
+=== INTERFACE androidx/compose/material3/WideNavigationRailState : Any
+  val isAnimating: Boolean
+  val targetValue: WideNavigationRailValue
+  val currentValue: WideNavigationRailValue
+  suspend fun expand(
+  ): Unit
+  suspend fun collapse(
+  ): Unit
+  suspend fun toggle(
+  ): Unit
+  suspend fun snapTo(
+      targetValue: WideNavigationRailValue,
+  ): Unit
+
+=== FILE androidx.compose.material3.WideNavigationRailStateKt
+  fun rememberWideNavigationRailState(
+      initialValue: WideNavigationRailValue = <default>,
+  ): WideNavigationRailState    [@Composable]
+
+=== ENUM_CLASS androidx/compose/material3/WideNavigationRailValue : Enum<WideNavigationRailValue>
+  entries: Collapsed, Expanded
+
+=== OBJECT androidx/compose/material3/pulltorefresh/PullToRefreshDefaults : Any
+  val shape: Shape    [Deprecated(WARNING: Use indicatorShape instead)]    [JvmDeprecated]
+  val indicatorShape: Shape
+  val containerColor: Color    [Deprecated(WARNING: Use indicatorContainerColor instead)]    [@Composable JvmName]
+  val indicatorContainerColor: Color    [@Composable JvmName]
+  val loadingIndicatorContainerColor: Color    [ExperimentalMaterial3ExpressiveApi]    [@Composable JvmName]
+  val indicatorColor: Color    [@Composable JvmName]
+  val loadingIndicatorColor: Color    [ExperimentalMaterial3ExpressiveApi]    [@Composable JvmName]
+  val PositionalThreshold: Dp
+  val IndicatorMaxDistance: Dp
+  val Elevation: Dp
+  val LoadingIndicatorElevation: Dp
+  fun IndicatorBox(
+      state: PullToRefreshState,
+      isRefreshing: Boolean,
+      modifier: Modifier = <default>,
+      maxDistance: Dp = <default>,
+      shape: Shape = <default>,
+      containerColor: Color = <default>,
+      elevation: Dp = <default>,
+      content: @Composable BoxScope.() -> Unit,
+  ): Unit    [@Composable]
+  fun Indicator(
+      state: PullToRefreshState,
+      isRefreshing: Boolean,
+      modifier: Modifier = <default>,
+      containerColor: Color = <default>,
+      color: Color = <default>,
+      maxDistance: Dp = <default>,
+  ): Unit    [@Composable]
+  fun LoadingIndicator(
+      state: PullToRefreshState,
+      isRefreshing: Boolean,
+      modifier: Modifier = <default>,
+      containerColor: Color = <default>,
+      color: Color = <default>,
+      elevation: Dp = <default>,
+      maxDistance: Dp = <default>,
+  ): Unit    [@Composable ExperimentalMaterial3ExpressiveApi]

@@ -1,0 +1,589 @@
+{
+  "id": "madcow_5x5",
+  "name": "Madcow 5x5 (Bill Starr 5x5, Intermediate/Linear version)",
+  "author": "Madcow2 (adapted from Bill Starr)",
+  "isFree": true,
+  "category": "STRENGTH",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 3,
+  "sessionMinutes": 75,
+  "durationWeeks": null,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench"
+  ],
+  "summary": "A three-day (Mon/Wed/Fri) full-body program using ramped 5x5 sets: Monday ramps to a top set of 5, Wednesday is a lighter day, and Friday repeats the ramp then hits a triple 2.5% heavier plus a back-off set of 8. You start a few weeks below your current 5RMs and add about 2.5% a week until you are setting personal records.",
+  "evidenceNote": "Ramped sets mean only the top one or two sets per lift are hard, so effective weekly volume is moderate: roughly 3-5 hard sets a week each for squat, bench and row and 1-2 each for incline/press and deadlift, plus some arm and trunk assistance. It fits early intermediates moving on from a novice linear program. Its weekly 2.5% jumps eventually outrun recovery, and the author expects resets once most lifts stall.",
+  "sources": [
+    {
+      "title": "Bill Starr 5x5 - Madcow Intermediate or Linear Version (original page, oocities archive)",
+      "url": "https://www.oocities.org/elitemadcow1/5x5_Program/Linear_5x5.htm",
+      "kind": "article"
+    },
+    {
+      "title": "Madcow 5x5 Workout Program Guide (StrongLifts, secondary)",
+      "url": "https://stronglifts.com/madcow-5x5/workout-guide/",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Monday heavy-ish volume (ramped 5x5), Wednesday light (squat ramp stops early; incline or military press and deadlift ramped 4x5), Friday heavy (ramp, then a PR triple and a back-off set of 8). Non-consecutive days.",
+  "progression": {
+    "type": "CUSTOM",
+    "description": "Weekly 2.5% increases on the top set. Put your current 5RMs at week 4 and work backwards 2.5% per week to set weeks 1-3; from week 5 on, each week is a new PR. Friday's triple is 2.5% above Monday's top set of 5 and becomes next Monday's top set. Wednesday's incline/military and deadlift top sets rise by the same percentage week to week. The author's table (lb) shows 200 -> 205 -> 210 -> 215 -> 221 for weeks 4-8. Because increments are percentages, incrementKg is null. Start conservatively, especially on bench. If you are dieting, start lighter or take about 6 weeks rather than 4 to reach your current 5RM.",
+    "incrementKg": {
+      "upper": null,
+      "lower": null
+    },
+    "deload": "If you miss reps, keep the weight the same next week and do not move it up until you get all 5x5. If one lift gives you trouble, cut some warm-up volume or reset only that lift back a few weeks and work up again (do not restart the whole program). When most lifts have stalled (several weeks with no added reps or weight), reset the whole program and build back up to PRs over 4 weeks; the author suggests possibly changing variables (e.g. 3x10) or assistance lifts (front squat on Wednesday, lockouts instead of overhead)."
+  },
+  "days": [
+    {
+      "name": "Monday",
+      "focus": "Ramped 5x5: squat, bench, row",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 5,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Ramp weight set to set (jumps of about 10-15% of the top set, or 12.5%), e.g. 60/70/80/90/100% of the top set, all for 5. Top set should equal last Friday's triple weight. Author: 2-5 min between sets, 5 min after very taxing sets.",
+          "optional": false
+        },
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench",
+          "sets": 5,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Ramp weight set to set (jumps of about 10-15%, 12.5% suggested) up to the top set of 5. Top set should equal last Friday's triple weight.",
+          "optional": false
+        },
+        {
+          "exerciseId": "barbell_row",
+          "name": "Barbell Row",
+          "sets": 5,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Ramp weight set to set (jumps of about 10-15%, 12.5% suggested) up to the top set of 5. Rows at 90 degrees, pulled dynamically. Power cleans may replace rows if you know the Olympic lifts.",
+          "optional": false
+        },
+        {
+          "exerciseId": "back_extension",
+          "name": "Weighted Hypers",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "2 sets; author gives no rep count (10 is a placeholder).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Weighted Sit-ups",
+          "sets": 4,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "4 sets; author gives no rep count (10 is a placeholder).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Wednesday",
+      "focus": "Light: squat, incline or military, deadlift",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 4,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "First 3 sets the same as Monday; 4th set repeats the 3rd set weight (so no set reaches Monday's top weight). Front squat on Wednesday is an author-suggested variation after a full reset.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Incline Bench or Military Press",
+          "sets": 4,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Ramping weight to top set of 5. Push press is an accepted substitute for military.",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 4,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Ramping weight to top set of 5; each rep deweighted on the floor. High pulls may replace deadlifts if you know the Olympic lifts.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Sit-ups",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 sets; author gives no rep count (10 is a placeholder).",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Friday",
+      "focus": "Heavy: squat, bench, row with PR triple",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 6,
+          "repsLow": 3,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "First 4 sets same as Monday's ramp, then a triple 2.5% above Monday's top set of 5 (that triple weight becomes next Monday's top set), then 1x8 with the weight of the 3rd set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench",
+          "sets": 6,
+          "repsLow": 3,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "First 4 sets same as Monday's ramp, then a triple 2.5% above Monday's top set of 5 (that triple weight becomes next Monday's top set), then 1x8 with the weight of the 3rd set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "barbell_row",
+          "name": "Barbell Row",
+          "sets": 6,
+          "repsLow": 3,
+          "repsHigh": 8,
+          "setScheme": [
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 3,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "First 4 sets same as Monday's ramp, then a triple 2.5% above Monday's top set of 5 (that triple weight becomes next Monday's top set), then 1x8 with the weight of the 3rd set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "dip",
+          "name": "Weighted Dips",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 sets of 5-8.",
+          "optional": false
+        },
+        {
+          "exerciseId": "barbell_curl",
+          "name": "Barbell Curls",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 sets. The source's '(8 reps)' could cover only the triceps extensions, and elsewhere the author says one biceps and one triceps exercise for '3 sets of whatever', so 8 reps is a placeholder.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Triceps Extensions",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 sets of 8. Any single triceps exercise is fine per the author; avoid machines.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "notes": "Built from Madcow2's original Linear 5x5 page (the 'Intermediate' version; the 'Advanced' periodized version is separate). The ramp percentages are relative to the day's top set, which is neither a TM nor a 1RM, so setScheme percents are null. Rest: the author gives 2-5 min for most sets (about 1 min for the lightest warm-ups, 5+ min before a near-failure PR set), so restSeconds is null. Substitutions the author allows: incline or push press for military, power cleans for rows and high pulls for deadlifts (if you know the Olympic lifts), chins or pull-ups/pulldowns on Wednesday, extra core work and interval cardio. No machine substitutes. Assistance also needs a dip station and a hyperextension bench, and Wednesday may need an incline bench. The program has no fixed length; run it until progress stalls. sessionMinutes is an estimate.",
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://www.oocities.org/elitemadcow1/5x5_Program/Linear_5x5.htm"
+    ],
+    "changes": [
+      "Checked all exercises, sets x reps (Mon 5x5; Wed squat 4x5 with set 4 repeating set 3, incline/military 4x5, deadlift 4x5; Fri 4x5, 1x3, 1x8), assistance set counts, no AMRAP sets, the 2.5% weekly progression, the week-4 5RM back-calculation and the 200-205-210-215-221 lb table against Madcow2's original page. All match.",
+      "Summary: removed the 'heavy/light/medium' label, which put the days in the wrong order (Friday's triple is the heaviest work, Monday is the volume day, and the source uses no such labels). It now describes each day.",
+      "Deload: added the source's options to cut warm-up volume for a troubled lift, to not restart the whole program for one lift, and its example changes after a full reset (3x10, front squat Wednesday, lockouts instead of overhead).",
+      "Progression: added the source's advice to start conservatively, especially on bench, and that dieters should take about 6 weeks rather than 4 to reach their 5RM.",
+      "Barbell curls: the source's '(8 reps)' is ambiguous and the author elsewhere says '3 sets of whatever' for arms, so the note now says 8 is a placeholder.",
+      "Notes: added rest guidance (2-5 min), allowed substitutions, extra equipment (dip station, hyperextension bench, incline bench) and the open-ended length. Monday squat note now gives the author's 60/70/80/90/100% ramp example.",
+      "isFree true confirmed: the full program and spreadsheet are free on the author's archived page. The equipment list is unchanged because the extra items have no confirmed IDs in this app's equipment vocabulary."
+    ]
+  }
+}

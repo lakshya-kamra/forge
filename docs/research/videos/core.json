@@ -1,0 +1,142 @@
+{
+  "videos": [
+    {
+      "exerciseId": "plank",
+      "items": [
+        {
+          "videoId": "1G0y8D5rFDc",
+          "title": "How To Build A Better Core & Six Pack Abs: Optimal Training Explained",
+          "author": "Jeff Nippard",
+          "why": "Nippard's Technique Tuesday episode on proper plank technique and training the core for strength-endurance (also covers the ab wheel)."
+        },
+        {
+          "videoId": "A2b2EmIg0dA",
+          "title": "How To Plank (Proper Form | Cues | Progressions)",
+          "author": "E3 Rehab",
+          "why": "Physical-therapist walkthrough of forearm-plank form cues, plus three ways to make it harder once it gets easy."
+        },
+        {
+          "videoId": "dspXrd2q28w",
+          "title": "Top 3 Plank Progressions (DO THESE FOR BETTER CORE STABILITY)",
+          "author": "Squat University",
+          "why": "Three plank progressions that raise difficulty and stability demand once the basic hold is mastered."
+        }
+      ]
+    },
+    {
+      "exerciseId": "hanging_leg_raise",
+      "items": [
+        {
+          "videoId": "2RrGnjxSsiA",
+          "title": "Top 3 Science-Based Exercises For Six Pack Abs (Upper vs Lower Abs) ft. Matt Ogus",
+          "author": "Jeff Nippard",
+          "why": "Technique Tuesday segment on the hanging leg raise: roll the hips forward and up instead of just lifting the legs, so the hip flexors don't take over."
+        },
+        {
+          "videoId": "QyVq5oUBpss",
+          "title": "The WORST Ab Training MISTAKES | Leg Raises",
+          "author": "FitnessFAQs",
+          "why": "Incorrect vs correct form for hanging leg and knee raises side by side, focused on removing swing and sloppy reps."
+        },
+        {
+          "videoId": "7FwGZ8qY5OU",
+          "title": "Hanging Straight Leg Raise",
+          "author": "Renaissance Periodization",
+          "why": "RP's 9-second demo clip of the straight-leg version for a quick visual reference."
+        }
+      ]
+    },
+    {
+      "exerciseId": "cable_crunch",
+      "items": [
+        {
+          "videoId": "2RrGnjxSsiA",
+          "title": "Top 3 Science-Based Exercises For Six Pack Abs (Upper vs Lower Abs) ft. Matt Ogus",
+          "author": "Jeff Nippard",
+          "why": "Technique Tuesday segment on the kneeling rope crunch: crunch the rope down and in, let the lower back round, arms act only as connectors."
+        },
+        {
+          "videoId": "Y0nXmTZ1Ibs",
+          "title": "The ONLY 2 Exercises You Need For Six Pack Abs",
+          "author": "Jeremy Ethier",
+          "why": "Rope cable crunch cues: lock the hips at 90 degrees, arms by the ears, fold the chest down without swinging back to the heels, plus a face-away variant."
+        },
+        {
+          "videoId": "6GMKPQVERzw",
+          "title": "Rope Crunch",
+          "author": "Renaissance Periodization",
+          "why": "RP's 10-second kneeling rope crunch demo clip for a quick visual of setup and range of motion."
+        }
+      ]
+    },
+    {
+      "exerciseId": "ab_wheel",
+      "items": [
+        {
+          "videoId": "1G0y8D5rFDc",
+          "title": "How To Build A Better Core & Six Pack Abs: Optimal Training Explained",
+          "author": "Jeff Nippard",
+          "why": "Nippard's Technique Tuesday episode covering ab wheel rollout technique alongside the plank."
+        },
+        {
+          "videoId": "YgIf-8yklUA",
+          "title": "Ab Wheel Roll-Out: Correct Form Mistakes! #abs #technique",
+          "author": "Squat University",
+          "why": "Short physical-therapist clip on common ab wheel rollout form mistakes and how to correct them."
+        },
+        {
+          "videoId": "XWJmFD_AdbM",
+          "title": "STOP Using The Ab Roller Like This! #shorts",
+          "author": "Jeremy Ethier Shorts",
+          "why": "Set a posterior pelvic tilt first, roll only as far as you can hold it, and pull back with the midsection instead of swinging the hips."
+        }
+      ]
+    },
+    {
+      "exerciseId": "power_clean",
+      "items": [
+        {
+          "videoId": "mPsxlNjv7Aw",
+          "title": "How to: Power Clean",
+          "author": "Alan Thrall (Untamed Strength)",
+          "why": "Widely used beginner tutorial that teaches the power clean in three phases."
+        },
+        {
+          "videoId": "5vVSGITznQk",
+          "title": "How to Power Clean [From Olympic Weightlifter Darren Barnes]",
+          "author": "Squat University",
+          "why": "Olympic weightlifter Darren Barnes coaches each phase (setup, first pull, transition, second pull, catch) and common errors."
+        },
+        {
+          "videoId": "37-wjE_c4NU",
+          "title": "Power Clean Series Part 1 - Learning the Three Positions",
+          "author": "Starting Strength",
+          "why": "Part 1 of Rippetoe's step-by-step teaching series: the three positions used to learn the clean (later parts cover the jump, rack and full lift)."
+        }
+      ]
+    },
+    {
+      "exerciseId": "farmers_walk",
+      "items": [
+        {
+          "videoId": "WZl9GuEDPpo",
+          "title": "Farmer's Walks DO's & DON'Ts - Build Grip, Traps, Calves, Core and More All At Once!",
+          "author": "Brian Alsruhe",
+          "why": "Timestamped dos and don'ts from a strongman coach: hand placement, straight arms, bracing and breathing, pickup stance, walking speed and loading."
+        },
+        {
+          "videoId": "xaVkucAW7RA",
+          "title": "Strongman 101 - How to Grip a Farmer's Walk",
+          "author": "Alexander Bromley",
+          "why": "How to hold farmer's handles correctly so grip lasts longer and you can move faster."
+        },
+        {
+          "videoId": "sefvxmekX-Q",
+          "title": "My top 3 tips to move farther with the Farmers Walk. Let me know your cues in the comments! #lhbk",
+          "author": "Mitchell Hooper",
+          "why": "A World's Strongest Man winner's three quick cues for walking farther with the same load."
+        }
+      ]
+    }
+  ]
+}

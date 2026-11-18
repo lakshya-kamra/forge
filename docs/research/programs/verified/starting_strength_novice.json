@@ -1,0 +1,428 @@
+{
+  "id": "starting_strength_novice",
+  "name": "Starting Strength Novice Program",
+  "author": "Mark Rippetoe (Starting Strength)",
+  "isFree": true,
+  "category": "STRENGTH",
+  "level": "BEGINNER",
+  "daysPerWeek": 3,
+  "sessionMinutes": 60,
+  "durationWeeks": null,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "pullup_bar"
+  ],
+  "summary": "A three-day full-body barbell novice program built on the squat, press, bench press, deadlift, power clean and chin-up. You add weight every session for as long as you can, moving through three phases as the deadlift gets too heavy to train three times a week.",
+  "evidenceNote": "Very low volume per muscle: about 9 work sets of squat a week, 3-6 sets each of press and bench (they alternate, so one gets 2 sessions and the other 1 in a 3-day week), 3 sets of deadlift a week in Phase 1 and fewer later (one set every Day A in Phase 2, every other Day A in Phase 3), and no direct arm, rear-delt or upper-back hypertrophy work until chin-ups arrive in Phase 3 (the FAQ tolerates a few sets of arm work on Friday). It suits true novices who mainly want strength on the barbell lifts. For upper-body muscle growth it is light compared with what hypertrophy research favours, and the late-stage sets of 5 get close to failure as linear progression runs out.",
+  "sources": [
+    {
+      "title": "Starting Strength Training Programs (Get Started: Programs)",
+      "url": "https://startingstrength.com/get-started/programs",
+      "kind": "article"
+    },
+    {
+      "title": "Starting Strength FAQ (warm-ups, stalling, exercises)",
+      "url": "https://startingstrength.com/get-started/faq",
+      "kind": "article"
+    },
+    {
+      "title": "Starting Strength Training Programs (Wayback Machine snapshot 2026-08-12; live page is behind a Cloudflare challenge)",
+      "url": "https://web.archive.org/web/20260812132146/https://startingstrength.com/get-started/programs",
+      "kind": "article"
+    },
+    {
+      "title": "Starting Strength FAQ (Wayback Machine snapshot 2026-05-27)",
+      "url": "https://web.archive.org/web/20260527081809/https://startingstrength.com/get-started/faq",
+      "kind": "article"
+    }
+  ],
+  "schedule": "3 non-consecutive days per week (e.g. Mon/Wed/Fri), alternating Day A and Day B. Phase 1 (usually 1-3 weeks): A and B differ only by press vs bench. Phase 2 (several weeks to several months): power clean replaces the deadlift on Day B. Phase 3: deadlift and power clean alternate on Day A and chin-ups go on Day B, so the cycle is A(deadlift), B, A(clean), B.",
+  "progression": {
+    "type": "LINEAR",
+    "description": "Add weight every session. Source (lb): most healthy men 18-35/40 add 10 lb to the squat the first 2-3 times, 15-20 lb to the deadlift the first couple of times then 10 lb for several sessions, after which jumps become 5 lb per workout. Press, bench and power clean may get one 10 lb jump but may need 5 lb from the start, later 2.5 lb or smaller. Converted: squat and deadlift 2.5 kg per session steady-state (early jumps about 5 kg squat for the first 2-3 sessions; deadlift about 7.5-10 kg the first couple of sessions, then about 5 kg for several sessions); press, bench and clean 2.5 kg, then 1.25 kg or smaller. Women and men over 35-40 use smaller jumps. Phase 3 'advanced novice' option: add weight to squats only twice a week and make the middle squat day lighter.",
+    "incrementKg": {
+      "upper": 2.5,
+      "lower": 2.5
+    },
+    "deload": "If you miss the prescribed sets and reps, try the same weight next time. If you miss again, deload that lift by 8-10% and work back up with small jumps. After two or three deloads followed by another stall (with sleep and food in order), linear progression on that lift is probably finished."
+  },
+  "days": [
+    {
+      "name": "Phase 1 - Day A",
+      "focus": "Full body (press day)",
+      "exercises": [
+        {
+          "exerciseId": "low_bar_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 work sets of 5 after warm-ups (FAQ: empty bar 2x5, then four roughly even jumps from the bar to the work weight, e.g. x5, x3, x2, then 3x5 work sets).",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Press and bench press alternate every session.",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 1,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "One work set of 5.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Phase 1 - Day B",
+      "focus": "Full body (bench day)",
+      "exercises": [
+        {
+          "exerciseId": "low_bar_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 work sets of 5 after warm-ups (FAQ: empty bar 2x5, then four roughly even jumps from the bar to the work weight, e.g. x5, x3, x2, then 3x5 work sets).",
+          "optional": false
+        },
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Press and bench press alternate every session.",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 1,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "One work set of 5.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Phase 2 - Day A",
+      "focus": "Full body (press, deadlift)",
+      "exercises": [
+        {
+          "exerciseId": "low_bar_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 work sets of 5 after warm-ups (FAQ: empty bar 2x5, then four roughly even jumps from the bar to the work weight, e.g. x5, x3, x2, then 3x5 work sets).",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Press and bench press alternate every session.",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 1,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "One work set of 5.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Phase 2 - Day B",
+      "focus": "Full body (bench, power clean)",
+      "exercises": [
+        {
+          "exerciseId": "low_bar_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 work sets of 5 after warm-ups (FAQ: empty bar 2x5, then four roughly even jumps from the bar to the work weight, e.g. x5, x3, x2, then 3x5 work sets).",
+          "optional": false
+        },
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Press and bench press alternate every session.",
+          "optional": false
+        },
+        {
+          "exerciseId": "power_clean",
+          "name": "Power Clean",
+          "sets": 5,
+          "repsLow": 3,
+          "repsHigh": 3,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "5 sets of 3. The FAQ says not to swap in barbell rows; lifters 50+ may omit cleans if they cause problems.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Phase 3 - Day A (deadlift)",
+      "focus": "Full body (press, deadlift)",
+      "exercises": [
+        {
+          "exerciseId": "low_bar_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 work sets of 5 after warm-ups (FAQ: empty bar 2x5, then four roughly even jumps from the bar to the work weight, e.g. x5, x3, x2, then 3x5 work sets).",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Press and bench press alternate every session.",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift",
+          "sets": 1,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "One work set of 5.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Phase 3 - Day B",
+      "focus": "Full body (bench, chin-ups)",
+      "exercises": [
+        {
+          "exerciseId": "low_bar_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 work sets of 5 after warm-ups (FAQ: empty bar 2x5, then four roughly even jumps from the bar to the work weight, e.g. x5, x3, x2, then 3x5 work sets).",
+          "optional": false
+        },
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Press and bench press alternate every session.",
+          "optional": false
+        },
+        {
+          "exerciseId": "chin_up",
+          "name": "Chin-ups",
+          "sets": 3,
+          "repsLow": 1,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "Program table lists only 'Chin-ups'; the General Notes describe them as 3 sets of bodyweight chins to fatigue (every set, no fixed rep target; repsLow/repsHigh 1-10 is an app placeholder, not a source number). Once 3x10 at bodyweight is possible, every other chin-up day can be 3x5 weighted, with 3 sets to fatigue at bodyweight on the alternate chin-up days.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Phase 3 - Day A (power clean)",
+      "focus": "Full body (press, power clean)",
+      "exercises": [
+        {
+          "exerciseId": "low_bar_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 work sets of 5 after warm-ups (FAQ: empty bar 2x5, then four roughly even jumps from the bar to the work weight, e.g. x5, x3, x2, then 3x5 work sets).",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Press and bench press alternate every session.",
+          "optional": false
+        },
+        {
+          "exerciseId": "power_clean",
+          "name": "Power Clean",
+          "sets": 5,
+          "repsLow": 3,
+          "repsHigh": 3,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "5 sets of 3. The FAQ says not to swap in barbell rows; lifters 50+ may omit cleans if they cause problems.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "notes": "The program page lists 'Press/Bench Press' on both days and says they alternate every session. Because Day A and Day B also alternate every session, one pressing lift always lands on the same day; which one depends on what you start with (Press on Day A is shown here). The squat is the low-bar squat as taught in the Starting Strength book. sessionMinutes is an estimate; the program page gives no session length or rest periods.",
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://startingstrength.com/get-started/programs",
+      "https://startingstrength.com/get-started/faq",
+      "https://web.archive.org/web/20260812132146/https://startingstrength.com/get-started/programs",
+      "https://web.archive.org/web/20260527081809/https://startingstrength.com/get-started/faq"
+    ],
+    "changes": [
+      "Confirmed against the official program page and FAQ (read via Wayback snapshots because the live site returns a Cloudflare challenge/403 to automated fetches): all three phases, Day A/B contents, squat 3x5, press/bench 3x5 alternating every session, deadlift 1x5, power clean 5x3 (Phase 2 Day B; alternating with deadlift on Day A in Phase 3), chin-ups on Phase 3 Day B, 3 non-consecutive days/week, phase lengths (Phase 1 usually 1-3 weeks, Phase 2 several weeks to months), lb increments, advanced-novice twice-weekly squat progression, stall rule (repeat once, then deload 8-10%, linear progression done after 2-3 deloads), no-barbell-row substitution and 50+ clean omission, isFree true (free on startingstrength.com). No percentages, AMRAP sets or rest periods are given by the source; restSeconds left null.",
+      "Chin-ups: set lastSetAmrap true and rewrote notes: source says bodyweight chins are done for 3 sets to fatigue (every set), and flagged repsLow 1/repsHigh 10 as an app placeholder since the source gives no rep range (10 is only the 3x10 threshold for adding weighted 3x5 days).",
+      "Squat warm-up note: clarified the FAQ method (empty bar 2x5, four roughly even jumps from bar to work weight with descending reps 5/3/2), matching the FAQ example.",
+      "Progression description: kg conversion now also reflects the source's deadlift step of 10 lb (about 5 kg) for several sessions after the first couple of 15-20 lb jumps.",
+      "evidenceNote: '1-3 sets of deadlift' was inaccurate for Phase 3 (deadlift only every other Day A, under one set a week); reworded per phase and noted the FAQ allows a few sets of arm work on Friday.",
+      "Added the two Wayback snapshot URLs to sources as readable copies of the official pages."
+    ]
+  }
+}

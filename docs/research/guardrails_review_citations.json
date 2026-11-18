@@ -1,0 +1,85 @@
+{
+  "reviewedFile": "docs/research/guardrails.json",
+  "reviewDate": "2026-11-17",
+  "lens": "citations: does each source exist and actually say what the rule claims",
+  "method": "Every DOI was resolved via Crossref, and all of them exist. Open-access full texts were read via Europe PMC (ISSN 2026, Roberts 2020, Helms 2014 JISSN, Iraki 2019, Jager 2017, Morton 2018, Iversen 2021, Baz-Valle 2022, Singer 2024, Bell 2023, Rogerson 2024, Schumann 2022, Majmudar 2022, Ferreira 2025). PubMed abstracts were read for the paywalled papers. Web pages were read for NICE NG69, WHO 2023, DGHS Tele MANAS, the ACOG FAQ, the BMJ SCOFF paper, the IOC REDs 2023 statement on bjsports.bmj.com, the KDIGO 2024 PDF and the NEDC PDF. Claims confirmed and not listed as issues: ISSN 2026 LED/VLED bands, 1.6-2.2 and 1.9-3.2 g/kg, at least 3 protein-rich meals, 11-22% / 20-35% BF ranges, plateaus as maintenance practice, 7-day break after each 3-5 kg and 1-3-month phases after each 5-10 kg, Poon meta-analysis -10.80 kcal/d in resistance trainees; Roberts 30 kcal/kg LBM, <=0.5%/wk, 3.5 g/kg for hunger, 2-5 g/kg CHO, 1-2 month regain, cheat meals 'may be contraindicated'; Helms 2014 0.5-1%/wk, 15-30% fat, 2.3-3.1 g/kg LBM, peak-week dehydration warning; Iraki table values; Garthe 19%/30% intake cuts; NICE recs 1.2.4/1.2.5/1.2.6; WHO 25 g fibre and 400 g fruit/veg; WHO 2004 Asian action points; SCOFF wording, 100%/87.5%; Pelland 67 studies and fractional method; Iversen >=4 sets and 6-15 RM (15-40 to failure); ACSM 2009 2-10% load rule, 3-5 min for 1-6 RM, 2-3/3-4/4-5 d/wk; Singer >60 s / >90 s; Robinson, Refalo 2023/2024; Schoenfeld 2016/2019 frequency; Rogerson 5.6 +/- 2.3 wk, 6.4 +/- 1.7 d; Bell pre-planned/autoregulated; Schumann SMDs and 3 h; Majmudar MAE 2.16 +/- 1.54, LoA -5.5/+4.7, n=134; Ferreira n=1273, CCC >= 0.96; Silbernagel (Achilles tendinopathy RCT); Tele MANAS 14416. Not verifiable here, so no issue is raised: CDC 330-400 kcal (the server returned 403), the Muscle and Strength Pyramid figures (rippedbody.com is behind Cloudflare and the Wayback copy was blocked), the full ACOG CO 804 text, and the ACSM 2015 symptom list (paywalled).",
+  "issues": [
+    {
+      "ruleId": "nutrition_protein_upper_soft_cap",
+      "problem": "If kidney disease is flagged, the action caps protein at 1.6 g/kg. The current kidney guideline says to avoid intakes above 1.3 g/kg/d in adults with CKD at risk of progression, and suggests 0.8 g/kg/d for CKD G3-G5. So the 'safe' fallback is itself a high-protein target, which contradicts the rule's own text ('no high-protein target until a clinician approves one'). The cited Jager 2017 also says people in renal failure benefit from protein-restricted diets. The same gap exists in nutrition_protein_surplus_maintenance and nutrition_protein_deficit, which have no kidney exception.",
+      "correction": "Rule: 'Users who report kidney disease get no app-generated protein target above 0.8 g/kg BW/day, and the app never generates a target above 1.3 g/kg/day for them. Any other target must come from their nephrologist or renal dietitian.' Params: add kidneyDiseaseDefaultGPerKg = 0.8 and kidneyDiseaseHardMaxGPerKg = 1.3. Action: 'If kidney disease is flagged, set protein to 0.8 g/kg (never above 1.3 g/kg), suppress the deficit/surplus protein rules, and show a referral note.' Apply the same override in nutrition_protein_surplus_maintenance and nutrition_protein_deficit.",
+      "source": "KDIGO 2024 Clinical Practice Guideline for the Evaluation and Management of CKD, Kidney Int 2024;105(4S):S117-S314, Recommendation 3.3.1.1 and Practice Point 3.3.1.1 - https://doi.org/10.1016/j.kint.2023.10.018 (PDF: https://kdigo.org/wp-content/uploads/2024/03/KDIGO-2024-CKD-Guideline.pdf); Jager et al. 2017, JISSN - https://doi.org/10.1186/s12970-017-0177-8",
+      "severity": "high"
+    },
+    {
+      "ruleId": "nutrition_energy_availability_floor",
+      "problem": "The rule applies 30 kcal/kg FFM/day to all users and cites the IOC 2023 consensus as support. The IOC 2023 statement itself says the 30 kcal/kg FFM threshold came from short-term lab studies in small samples of sedentary females, that a universal 30 cut-off is debated even for females, and that the threshold for males appears lower (~9-25 kcal/kg FFM/day). It also lists 30-45 kcal/kg FFM/day as the expected 'reduced EA for body mass/fat loss' zone, and the updated model moves away from universally applied thresholds. For a male lifter in a planned cut, a fixed 30 line will fire often and is not what the cited consensus supports.",
+      "correction": "Rule: 'Compute EA when FFM is known. For female users, warn when the 7-day average EA is below 30 kcal/kg FFM/day (Roberts 2020; IOC 2023 notes this threshold is a guide, not a diagnostic cut-off). For male users, do not warn on EA alone. Show EA as information and warn only when EA is below 30 together with REDs-type symptoms the user reports (for example low libido, fewer morning erections, recurring illness or injury, performance decline, mood change), because IOC 2023 reports that male thresholds appear lower (~9-25 kcal/kg FFM/day) and are poorly defined.' Params: eaWarnKcalPerKgFfmFemale = 30; eaWarnKcalPerKgFfmMale = null (symptom-gated); averagingWindowDays = 7.",
+      "source": "Mountjoy et al. 2023, IOC consensus statement on REDs, Br J Sports Med 57:1073 - https://doi.org/10.1136/bjsports-2023-106994 (sections 'REDs in male athletes' and 'Assessment of EA'); Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "nutrition_max_deficit_rate_by_body_fat",
+      "problem": "The rule says Garthe 2011 found 0.7%/wk 'better than 1.4%/wk'. 1.4%/wk was only the planned rate. The fast group actually lost 1.0 +/- 0.4%/wk (slow group 0.7 +/- 0.8%/wk). So the evidence for poorer lean-mass and 1RM outcomes applies at about 1.0%/wk, which is exactly the rule's absolute and high-body-fat cap. The participants were also lean elite athletes, so the result applies most directly to the lean tiers.",
+      "correction": "Replace the Garthe sentence with: 'Garthe 2011 (elite athletes) targeted 0.7 vs 1.4%/wk; achieved losses were 0.7 vs 1.0%/wk. Lean mass rose 2.1% in the slow group and was unchanged in the fast group, and the authors recommend about 0.7%/wk for athletes who want to keep or gain lean mass and 1RM.' Add a note that the 1.0%/wk cap is the upper end of Helms 2014 / ISSN 2026, not a rate Garthe showed to be harmless. Params unchanged.",
+      "source": "Garthe et al. 2011, Int J Sport Nutr Exerc Metab 21(2):97-104, abstract - https://doi.org/10.1123/ijsnem.21.2.97 (PMID 21558571)",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "safety_scoff_screen",
+      "problem": "The stored params sensitivityPct = 100 and specificityPct = 87.5 come from the original case-control study, in which cases came from a specialist eating-disorder clinic and were compared with non-clinical controls. A later meta-analysis of 25 validation studies found a pooled sensitivity of 0.86 and specificity of 0.83. It also found lower sensitivity in studies with more men, in binge-eating disorder, and in community samples. This user is a male lifter, so presenting 100% sensitivity overstates how well the screen performs.",
+      "correction": "Rule: 'Score >= 2 = positive screen. Original case-control study: 100% sensitivity, 87.5% specificity for AN/BN (Morgan 1999). Pooled across 25 studies: sensitivity 0.86 (95% CI 0.78-0.91), specificity 0.83 (0.77-0.88), with lower sensitivity in samples with more men and for binge-eating disorder (Kutz 2020). A negative SCOFF does not rule out an eating disorder; the low-intake check-in rule still applies regardless of score.' Params: pooledSensitivity = 0.86, pooledSpecificity = 0.83; keep originalStudySensitivityPct = 100 and originalStudySpecificityPct = 87.5, labelled as original study values.",
+      "source": "Kutz et al. 2020, J Gen Intern Med - https://doi.org/10.1007/s11606-019-05478-6; Morgan, Reid & Lacey 1999, BMJ - https://doi.org/10.1136/bmj.319.7223.1467",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "safety_pregnancy_no_deficit",
+      "problem": "The rule admits its warning-sign list was not checked against ACOG. ACOG's own published list of reasons to stop exercising also includes muscle weakness, which the rule leaves out. The userMessage also leaves out headache, calf pain or swelling, and shortness of breath before exercise.",
+      "correction": "Warning-sign list: 'vaginal bleeding; feeling dizzy or faint; shortness of breath before starting exercise; chest pain; headache; muscle weakness; calf pain or swelling; regular, painful contractions of the uterus; fluid gushing or leaking from the vagina' (stop and call the obstetric care provider). userMessage: '...stop and call them if you notice bleeding, dizziness or faintness, chest pain, headache, muscle weakness, calf pain or swelling, breathlessness before exercise, painful contractions or leaking fluid.' Remove the sentence saying the list was not re-checked.",
+      "source": "ACOG patient FAQ 'Exercise During Pregnancy' (based on Committee Opinion 804) - https://www.acog.org/womens-health/faqs/exercise-during-pregnancy; ACOG Committee Opinion 804, Obstet Gynecol 2020 - https://doi.org/10.1097/AOG.0000000000003772",
+      "severity": "medium"
+    },
+    {
+      "ruleId": "training_weekly_sets_per_muscle",
+      "problem": "Two citations are overstated or incomplete. (1) Schoenfeld 2017: when sets were grouped as <5, 5-9 and 10+ per muscle, the difference was only a trend (P = 0.074). The significant finding was a graded dose-response, with each extra weekly set adding about 0.37% to the gain. (2) Baz-Valle 2022: the rule reports no difference between 12-20 and >20 sets for quadriceps and biceps but leaves out that >20 sets were better for triceps (p = 0.01).",
+      "correction": "Replace with: 'Schoenfeld 2017 found a graded dose-response (each additional weekly set was associated with about 0.37% more muscle gain), with only a trend (P = 0.074) favouring 10+ sets in the <5 / 5-9 / 10+ categorical analysis. Baz-Valle 2022 (trained men) found no difference between 12-20 and >20 weekly sets for quadriceps and biceps, but >20 sets were better for triceps, and suggested 12-20 as a standard recommendation.' Params unchanged; the >20 note should say 'diminishing returns', not 'no benefit'.",
+      "source": "Schoenfeld, Ogborn & Krieger 2017, J Sports Sci 35(11):1073-1082 - https://doi.org/10.1080/02640414.2016.1210197; Baz-Valle et al. 2022, J Hum Kinet 81:199-210 - https://doi.org/10.2478/hukin-2022-0017",
+      "severity": "low"
+    },
+    {
+      "ruleId": "training_rest_intervals",
+      "problem": "The rule says Schoenfeld 2016 found 3-min rest beat 1-min rest 'for strength and hypertrophy'. The strength gains (1RM squat and bench) were significant. For hypertrophy, only anterior-thigh thickness was significantly greater, triceps showed a trend (p = 0.06), and the elbow flexors showed no significant difference.",
+      "correction": "Replace with: 'Schoenfeld 2016 (21 trained men, 8 weeks): 3-min rest gave greater 1RM squat and bench gains than 1-min rest, and greater anterior-thigh thickness (trend for triceps, p = 0.06).' Params unchanged.",
+      "source": "Schoenfeld et al. 2016, J Strength Cond Res 30(7):1805-1812, abstract - https://doi.org/10.1519/JSC.0000000000001272",
+      "severity": "low"
+    },
+    {
+      "ruleId": "nutrition_protein_surplus_maintenance",
+      "problem": "The rule calls the 2.2 g/kg upper figure unverified ('reported in secondary summaries and was not checked against the paper'). The paper itself reports it: breakpoint 1.62 g/kg/day, 95% CI 1.03 to 2.20. The disclaimer is wrong and weakens a rule rated 'strong'.",
+      "correction": "Replace with: 'Morton 2018 (49 RCTs) found no further RET-induced fat-free-mass gain above 1.62 g/kg/day (95% CI 1.03-2.20); the authors note 2.2 g/kg may be a prudent target given that upper bound.' Params unchanged (1.6 / 1.8 / 2.2).",
+      "source": "Morton et al. 2018, Br J Sports Med 52:376-384, Results and Figure 5 - https://doi.org/10.1136/bjsports-2017-097608 (PMC5867436)",
+      "severity": "low"
+    },
+    {
+      "ruleId": "nutrition_calorie_floor_by_sex",
+      "problem": "The rule says both LEDs (800-1200 kcal) and VLEDs (<800 kcal) 'need clinical supervision' (ISSN 2026). In its diet-type table, ISSN 2026 says VLEDs and PSMFs 'may require medical supervision'. For LEDs it lists clinical weight management as the typical use case, but does not state a supervision requirement. The ISSN does warn about lean-mass loss and vitamin, mineral and fibre insufficiencies, as the rule says.",
+      "correction": "Replace the clause with: '...risk more lean-mass loss and micronutrient/fibre shortfalls; ISSN 2026 notes VLEDs may require medical supervision and positions LEDs for clinical weight management.' Params unchanged.",
+      "source": "Aragon et al. 2026, ISSN position stand: diets for body weight reduction, JISSN, position point 2 and Table 1 - https://doi.org/10.1080/15502783.2026.2740266 (Europe PMC PMC13665703)",
+      "severity": "low"
+    },
+    {
+      "ruleId": "nutrition_diet_breaks",
+      "problem": "ISSN 2026 describes the short diet break as 'approximately 7 days of unrestricted but mindful consumption with attention to hunger and fullness cues', not a week at estimated maintenance calories. It gives maintenance phases as '~1-3 months or more'. The meta-analysis behind the '-11 kcal/day' figure is Poon et al. (12 RCTs). Its overall RMR difference was -47.31 kcal/day, and -10.80 kcal/day was the resistance-trainee subgroup.",
+      "correction": "Rule text: 'Offer a diet break of about 7 days after each 3-5 kg lost; ISSN 2026 describes it as unrestricted but mindful eating guided by hunger and fullness, and Forge implements it as a maintenance-calorie week (app convention). After each 5-10 kg, offer a maintenance phase of about 1-3 months or more. In Poon et al.'s meta-analysis (12 RCTs, cited by ISSN 2026), body-composition results were similar to continuous dieting, and RMR was better preserved by -47 kcal/day overall and -10.8 kcal/day in resistance trainees.' Params unchanged.",
+      "source": "Aragon et al. 2026, ISSN position stand, JISSN, sections on diet breaks and plateaus - https://doi.org/10.1080/15502783.2026.2740266 (PMC13665703)",
+      "severity": "low"
+    },
+    {
+      "ruleId": "safety_scoff_positive_response",
+      "problem": "The rule writes the Tele MANAS toll-free number as '1-800-891-4416'. The official Government of India page gives it as '1800-89-14416' (short code 14416). The digits are the same, but the official grouping should be used for display and the tap-to-call string.",
+      "correction": "Rule text: '...India's Tele MANAS helpline (short code 14416 or toll-free 1800-89-14416, 24x7)'. Params: add teleManasTollFree = '18008914416' (dial string) and keep teleManasShortCode = 14416.",
+      "source": "DGHS, MoHFW India, National Mental Health Programme / Tele MANAS - https://dghs.mohfw.gov.in/national-mental-health-programme.php",
+      "severity": "low"
+    }
+  ]
+}

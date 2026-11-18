@@ -1,0 +1,258 @@
+{
+  "id": "gzclp",
+  "name": "GZCLP (GZCL Linear Progression)",
+  "author": "Cody Lefever (GZCL)",
+  "isFree": true,
+  "category": "STRENGTH",
+  "level": "BEGINNER",
+  "daysPerWeek": 3,
+  "sessionMinutes": 60,
+  "durationWeeks": null,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable"
+  ],
+  "summary": "A novice linear progression built on four rotating workouts, each with one heavy T1 lift, one moderate-volume T2 lift and one high-rep T3 back exercise. When a rep scheme stalls you drop to the next scheme (fewer reps, more sets) at the same weight instead of deloading straight away.",
+  "evidenceNote": "Adds more volume and effort than SS or StrongLifts: AMRAP sets are taken to 1-2 reps short of failure and the T3 work is 3x15+, so back muscles get direct high-rep work. Each main lift is trained only about 1.5 times a week, though (once as T1 and once as T2 per four workouts), and there is no direct arm, shoulder-isolation or leg-accessory work in the base template. It suits beginners who can recover from a bit more volume.",
+  "sources": [
+    {
+      "title": "Swole at Every Height: GZCL Applications & Adaptations (GZCLP section)",
+      "url": "https://swoleateveryheight.blogspot.com/2016/02/gzcl-applications-adaptations.html",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Rotate A1, B1, A2, B2 in order, 3 days a week. Author's example month: Week 1 A1, B1, A2; Week 2 B2, A1, B1; Week 3 A2, B2, A1; Week 4 B1, A2, B2.",
+  "progression": {
+    "type": "CUSTOM",
+    "description": "Fixed weight across all sets (never add weight set to set). Weight is only added when you repeat the workout with that movement in the same tier. T1: 3 reps x 5 sets, last set AMRAP (3x5+), adding weight workout to workout until the base volume of 15 is missed (missed because you did not think you could do 1-2 more, not because of actual failure). Then keep that same weight and drop to 2 reps x 6 sets, last AMRAP (2x6+, base 12), adding weight each workout; when base 12 is missed drop to 1 rep x 10 sets, last AMRAP (1x10+, base 10). Only drop a stage when weight can no longer be added to the current one. When base 10 is missed, rest 2-3 days, test a new 5RM and start the next 3x5+ cycle at 85% of it; each repeat cycle is shorter. T2: 10 reps x 3 sets (10x3) adding weight workout to workout until the 30-rep base is missed, then 8x3 (base 24) still adding weight, then 6x3 (base 18). When 6x3 fails, restart at 10x3 for two to three more cycles, each restart at a slightly heavier weight than previously used, no more than 20 lb / 9 kg heavier. T3: last set AMRAP; add weight once that last set reaches 25 reps, using modest jumps. Author's increment guidance: no more than 5 lb / 2.5 kg up to 10 lb / 4.5 kg per workout for novices and early intermediates. This template uses 2.5 kg for upper-body lifts and 5 kg for squat and deadlift; 5 kg is a kg-plate rounding that is slightly above the author's 4.5 kg upper bound, so drop to 2.5 kg if fractional plates are available or progress slows.",
+    "incrementKg": {
+      "upper": 2.5,
+      "lower": 5
+    },
+    "deload": "No percentage deload. A T1 stall moves to the next rep scheme at the same weight (3x5+ -> 2x6+ -> 1x10+); after 1x10+ fails, rest 2-3 days, test a new 5RM and restart 3x5+ at 85% of it. A T2 stall moves 10x3 -> 8x3 -> 6x3 (the source does not state whether the weight stays the same on the drop); after 6x3 fails, restart 10x3 slightly heavier than previously used (max +20 lb / 9 kg). Lifters needing more recovery can leave more reps in the tank on AMRAPs."
+  },
+  "days": [
+    {
+      "name": "A1",
+      "focus": "T1 squat, T2 bench",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat (T1)",
+          "sets": 5,
+          "repsLow": 3,
+          "repsHigh": 3,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T1: 5 sets of 3 at one fixed weight, last set AMRAP (author's notation 3 x 5+). Push the AMRAP to 1-2 reps short of failure and do not go past 10 reps. Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench (T2)",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2: 3 sets of 10 at one fixed weight, no AMRAP (author's notation 10 x 3). Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Lat Pull Down (T3)",
+          "sets": 3,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T3: 3 sets of 15, last set AMRAP. Add weight once the last set reaches 25 reps. Pull-ups can be used if possible.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "B1",
+      "focus": "T1 overhead press, T2 deadlift",
+      "exercises": [
+        {
+          "exerciseId": "overhead_press",
+          "name": "OHP (T1)",
+          "sets": 5,
+          "repsLow": 3,
+          "repsHigh": 3,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T1: 5 sets of 3 at one fixed weight, last set AMRAP (author's notation 3 x 5+). Push the AMRAP to 1-2 reps short of failure and do not go past 10 reps. Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift (T2)",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2: 3 sets of 10 at one fixed weight, no AMRAP (author's notation 10 x 3). Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_row",
+          "name": "DB Row (T3)",
+          "sets": 3,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T3: 3 sets of 15, last set AMRAP. Add weight once the last set reaches 25 reps.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "A2",
+      "focus": "T1 bench, T2 squat",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench (T1)",
+          "sets": 5,
+          "repsLow": 3,
+          "repsHigh": 3,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T1: 5 sets of 3 at one fixed weight, last set AMRAP (author's notation 3 x 5+). Push the AMRAP to 1-2 reps short of failure and do not go past 10 reps. Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat (T2)",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2: 3 sets of 10 at one fixed weight, no AMRAP (author's notation 10 x 3). Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Lat Pull Down (T3)",
+          "sets": 3,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T3: 3 sets of 15, last set AMRAP. Add weight once the last set reaches 25 reps.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "B2",
+      "focus": "T1 deadlift, T2 overhead press",
+      "exercises": [
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift (T1)",
+          "sets": 5,
+          "repsLow": 3,
+          "repsHigh": 3,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T1: 5 sets of 3 at one fixed weight, last set AMRAP (author's notation 3 x 5+). Push the AMRAP to 1-2 reps short of failure and do not go past 10 reps. Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_press",
+          "name": "OHP (T2)",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "T2: 3 sets of 10 at one fixed weight, no AMRAP (author's notation 10 x 3). Start with the bar or your last weight from a previous linear program.",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_row",
+          "name": "DB Row (T3)",
+          "sets": 3,
+          "repsLow": 15,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "T3: 3 sets of 15, last set AMRAP. Add weight once the last set reaches 25 reps.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "notes": "Built from the original 2016 GZCLP section of the author's free blog post. Start with the bar or your last weights from a previous linear program. Rest periods are not given in the source. sessionMinutes is an estimate. The source suggests a back isolation (row, lat pull down, or pull up if possible) as T3. After two to three cycles, the author recommends adding volume from the bottom up (extra T3 movements first) to transition to a full GZCL program. Later community infographics and apps present the same rules in different notation (5x3+, 3x10, 3x15+).",
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://swoleateveryheight.blogspot.com/2016/02/gzcl-applications-adaptations.html"
+    ],
+    "changes": [
+      "Checked exercises, tiers, sets/reps, AMRAP flags, A1/B1/A2/B2 rotation and the example monthly schedule against the author's 2016 GZCLP section: all match.",
+      "Deload: the original said every failed stage moves to the next scheme at the same weight; the source states same-weight only for T1. For T2 it only says drop to 8x3/6x3 and keep adding weight, so the wording now says the T2 weight is unspecified.",
+      "Progression: added the source's rules that sets use a fixed weight, that a stage is dropped only when weight can no longer be added, that a miss counts when 1-2 more reps were not expected, and that repeat T1 cycles are shorter. Reworded the T2 restart to match the source ('slightly heavier than previously used, no more than 20 lb / 9 kg').",
+      "Increments: the author caps novice jumps at 10 lb / 4.5 kg. The 5 kg lower-body increment is kept as a kg-plate rounding but now flagged as slightly above that cap.",
+      "T1 notes: changed 'stop AMRAPs 1-2 reps short' to the source's 'push AMRAPs to 1-2 reps short of failure' (max 10 reps). Added the bar/last-LP-weight starting point to T1 and T2 notes.",
+      "isFree true confirmed: the full template is on the author's free public blog. Rest times remain null because the source gives none. The web-search budget ran out, so later official GZCL infographics could not be checked."
+    ]
+  }
+}

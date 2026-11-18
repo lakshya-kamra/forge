@@ -1,0 +1,371 @@
+{
+  "videos": [
+    {
+      "exerciseId": "bench_press",
+      "items": [
+        {
+          "videoId": "vcBig73ojpE",
+          "title": "How To Get A Huge Bench Press with Perfect Technique",
+          "author": "Jeff Nippard",
+          "why": "Premiere of Nippard's Technique Tuesday: bench press form for muscle and strength while avoiding injury"
+        },
+        {
+          "videoId": "w0XBfuCC2WM",
+          "title": "HOW TO BENCH PRESS",
+          "author": "Calgary Barbell",
+          "why": "Powerlifting coaches' dedicated how-to-bench tutorial"
+        },
+        {
+          "videoId": "UXu-DIG4t2Y",
+          "title": "How to Bench Press (Using Science)",
+          "author": "Stronger By Science",
+          "why": "SBS's Milo reviews the research on bar path, unracking, arching, leg drive, safety and weak-point diagnosis"
+        }
+      ]
+    },
+    {
+      "exerciseId": "close_grip_bench_press",
+      "items": [
+        {
+          "videoId": "Cv5nS1AH_jE",
+          "title": "Close Grip Bench Pressing For Maximum Growth | Targeting The Muscle",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle cues for using the close-grip bench as a hypertrophy movement"
+        },
+        {
+          "videoId": "JeoYZk4EIDk",
+          "title": "10 Close Grip Bench Press Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Ten common close-grip bench errors with a fix for each"
+        },
+        {
+          "videoId": "FiQUzPtS90E",
+          "title": "Narrow Grip Bench Press",
+          "author": "Renaissance Periodization",
+          "why": "13-second clean demo of the narrow-grip bench for a quick form reference"
+        }
+      ]
+    },
+    {
+      "exerciseId": "incline_bench_press",
+      "items": [
+        {
+          "videoId": "lJ2o89kcnxY",
+          "title": "Incline Medium Grip Bench Press",
+          "author": "Renaissance Periodization",
+          "why": "Short clean demo of the medium-grip incline barbell press from RP's exercise library"
+        },
+        {
+          "videoId": "5k_enq6vXGM",
+          "title": "Incline Bench Press: Gym Shorts (How To)",
+          "author": "Barbell Logic",
+          "why": "Quick how-to: about 45-degree bench, more vertical bar path and touch point just below the collarbone"
+        }
+      ]
+    },
+    {
+      "exerciseId": "dumbbell_bench_press",
+      "items": [
+        {
+          "videoId": "QsYre__-aro",
+          "title": "STOP Doing Dumbbell Press Like This (5 Mistakes Slowing Your Chest Gains)",
+          "author": "Jeremy Ethier",
+          "why": "Five flat dumbbell press form mistakes that shift work off the chest, with fixes"
+        },
+        {
+          "videoId": "f0hOKO_eD-Q",
+          "title": "GET MORE RESULTS: Dumbbell Press Master Class",
+          "author": "Renaissance Periodization",
+          "why": "Coached master class on flat and incline dumbbell pressing (first ~6 minutes of the video)"
+        },
+        {
+          "videoId": "YQ2s_Y7g5Qk",
+          "title": "Flat Dumbbell Bench Press",
+          "author": "Renaissance Periodization",
+          "why": "11-second clean demo of the flat dumbbell bench press"
+        }
+      ]
+    },
+    {
+      "exerciseId": "incline_dumbbell_press",
+      "items": [
+        {
+          "videoId": "0f6-uCUKqgA",
+          "title": "Incline Dumbbell Press BETTER | Targeting The Muscle Series",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle cues for getting more upper-chest stimulus from the incline DB press"
+        },
+        {
+          "videoId": "GHcAIiL9J_Y",
+          "title": "8 Incline Dumbbell Press Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Eight incline dumbbell press mistakes and how to fix them"
+        },
+        {
+          "videoId": "5CECBjd7HLQ",
+          "title": "Incline Dumbbell Press",
+          "author": "Renaissance Periodization",
+          "why": "12-second clean demo of the incline dumbbell press"
+        }
+      ]
+    },
+    {
+      "exerciseId": "machine_chest_press",
+      "items": [
+        {
+          "videoId": "SUdQ1roIWz0",
+          "title": "Get The Most Out Of Chest Machines | Targeting The Muscle",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle episode on getting the most pec stimulus out of chest machines"
+        },
+        {
+          "videoId": "NwzUje3z0qY",
+          "title": "Machine Chest Press",
+          "author": "Renaissance Periodization",
+          "why": "11-second clean demo of the machine chest press"
+        }
+      ]
+    },
+    {
+      "exerciseId": "cable_fly",
+      "items": [
+        {
+          "videoId": "mLgYNdxj-Vw",
+          "title": "STOP Doing Chest Flys Like This (5 Mistakes Slowing Your Chest Gains)",
+          "author": "Jeremy Ethier",
+          "why": "Five chest fly mistakes with fixes shown for dumbbell, cable and pec deck versions"
+        },
+        {
+          "videoId": "4mfLHnFL0Uw",
+          "title": "Cable Flye",
+          "author": "Renaissance Periodization",
+          "why": "12-second clean demo of the standard cable flye"
+        },
+        {
+          "videoId": "Wz56ZpaFwec",
+          "title": "How To Build A Massive Chest With Only Cables",
+          "author": "Renaissance Periodization",
+          "why": "Chaptered cable chest session with standard cable flye (1:15) and high cable flye (5:52) technique segments"
+        }
+      ]
+    },
+    {
+      "exerciseId": "pec_deck",
+      "items": [
+        {
+          "videoId": "smu_2CCTcH8",
+          "title": "Basic Exercise Technique 13: The Pec Deck",
+          "author": "Lyle McDonald",
+          "why": "Dedicated pec deck technique video: what it trains, common errors and how Lyle McDonald teaches it for hypertrophy"
+        },
+        {
+          "videoId": "mLgYNdxj-Vw",
+          "title": "STOP Doing Chest Flys Like This (5 Mistakes Slowing Your Chest Gains)",
+          "author": "Jeremy Ethier",
+          "why": "Five chest fly mistakes with fixes, explicitly applied to the pec deck as well as cable and DB flyes"
+        },
+        {
+          "videoId": "O-OBCfyh9Fw",
+          "title": "Pec Deck Flye",
+          "author": "Renaissance Periodization",
+          "why": "13-second clean demo of the pec deck flye"
+        }
+      ]
+    },
+    {
+      "exerciseId": "push_up",
+      "items": [
+        {
+          "videoId": "MO10KOoQx5E",
+          "title": "The Perfect Push-Up To Build Muscle (AVOID THESE MISTAKES!)",
+          "author": "Jeremy Ethier",
+          "why": "Push-up form check: common mistakes such as flared elbows from too-wide hands, and how to fix them"
+        },
+        {
+          "videoId": "5aRHy5ZPjwk",
+          "title": "Maximize Pushups FOR CHEST Growth | Targeting The Muscle",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle cues for making push-ups a chest-growth exercise"
+        },
+        {
+          "videoId": "IvCknxXOgSA",
+          "title": "11 Pushup Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Eleven push-up mistakes and how to fix them"
+        }
+      ]
+    },
+    {
+      "exerciseId": "dip",
+      "items": [
+        {
+          "videoId": "yN6Q1UI_xkE",
+          "title": "How To Do Dips For A Bigger Chest and Shoulders (Fix Mistakes!)",
+          "author": "Jeff Nippard",
+          "why": "Nippard Technique Tuesday on the weighted dip for chest, shoulders and triceps while avoiding injury"
+        },
+        {
+          "videoId": "lt3Wtliiqus",
+          "title": "8 Dips Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Eight common dip mistakes and how to fix them"
+        },
+        {
+          "videoId": "Tw0axi-Jlqc",
+          "title": "Maximize Dip Technique FOR TRICEPS Growth | Targeting The Muscle Series",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle cues for biasing the triceps on dips"
+        }
+      ]
+    },
+    {
+      "exerciseId": "overhead_press",
+      "items": [
+        {
+          "videoId": "_RlRDWO2jfg",
+          "title": "Build Bigger Shoulders With Perfect Training Technique (The Overhead Press)",
+          "author": "Jeff Nippard",
+          "why": "Nippard Technique Tuesday on standing barbell overhead press technique"
+        },
+        {
+          "videoId": "wol7Hko8RhY",
+          "title": "\"How To\" OVERHEAD PRESS",
+          "author": "Alan Thrall (Untamed Strength)",
+          "why": "Coach-led standing press tutorial focused on pressing without low-back or shoulder pain"
+        },
+        {
+          "videoId": "8dacy5hjaE8",
+          "title": "Learning to Press | The Starting Strength Method",
+          "author": "Starting Strength",
+          "why": "Rippetoe's Starting Strength method: the correct positions and movement for the standing press"
+        }
+      ]
+    },
+    {
+      "exerciseId": "seated_dumbbell_press",
+      "items": [
+        {
+          "videoId": "HzIiNhHhhtA",
+          "title": "Seated Dumbbell Shoulder Press",
+          "author": "Renaissance Periodization",
+          "why": "13-second clean demo of the seated dumbbell shoulder press"
+        },
+        {
+          "videoId": "GGpArq725ls",
+          "title": "Overhead Pressing Optimized For Muscle Growth | Targeting The Muscle",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle cues for overhead pressing aimed at delt growth"
+        }
+      ]
+    },
+    {
+      "exerciseId": "lateral_raise",
+      "items": [
+        {
+          "videoId": "4hTUCDUQaNA",
+          "title": "The Only Dumbbell Lateral Raise Guide You Need (For Side Delt Growth)",
+          "author": "Renaissance Periodization",
+          "why": "Complete dumbbell lateral raise guide: elbow angle, body position, thumb angle, ROM, pauses and eccentric speed"
+        },
+        {
+          "videoId": "v_ZkxWzYnMc",
+          "title": "How To Build Capped Shoulders: Optimal Training Explained (Side Delts)",
+          "author": "Jeff Nippard",
+          "why": "Nippard Technique Tuesday on lateral raise technique and fixing mistakes for capped side delts"
+        },
+        {
+          "videoId": "n5dsI9qQXwY",
+          "title": "Lateral Raise Technique For Huge Delts | Targeting The Muscle Series",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle lateral raise cues for side-delt growth"
+        }
+      ]
+    },
+    {
+      "exerciseId": "cable_lateral_raise",
+      "items": [
+        {
+          "videoId": "lq7eLC30b9w",
+          "title": "Leaning Cable Lateral Raise",
+          "author": "Renaissance Periodization",
+          "why": "10-second clean demo of the leaning single-arm cable lateral raise"
+        },
+        {
+          "videoId": "2OMbdPF7mz4",
+          "title": "Cable Cross Body Lateral Raise",
+          "author": "Renaissance Periodization",
+          "why": "12-second clean demo of the cross-body cable lateral raise"
+        }
+      ]
+    },
+    {
+      "exerciseId": "triceps_pushdown",
+      "items": [
+        {
+          "videoId": "yftl1tBWmKk",
+          "title": "10 Tricep Pushdown Mistakes and How To Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Ten triceps pushdown mistakes and how to fix them"
+        },
+        {
+          "videoId": "6Fzep104f0s",
+          "title": "Cable Triceps Pushdown",
+          "author": "Renaissance Periodization",
+          "why": "13-second clean demo of the cable triceps pushdown"
+        },
+        {
+          "videoId": "-xa-6cQaZKY",
+          "title": "Rope Pushdown",
+          "author": "Renaissance Periodization",
+          "why": "12-second clean demo of the rope pushdown variant"
+        }
+      ]
+    },
+    {
+      "exerciseId": "overhead_triceps_extension",
+      "items": [
+        {
+          "videoId": "IaJWPqP-Bjo",
+          "title": "Overhead Tricep Extension For Maximum Growth | Targeting The Muscle",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle cues for the overhead triceps extension for maximal growth"
+        },
+        {
+          "videoId": "2A77zKWdAN4",
+          "title": "11 Overhead Tricep Extension Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Eleven overhead triceps extension mistakes and how to fix them"
+        },
+        {
+          "videoId": "1u18yJELsh0",
+          "title": "Cable Overhead Triceps Extension",
+          "author": "Renaissance Periodization",
+          "why": "12-second clean demo of the cable overhead triceps extension"
+        }
+      ]
+    },
+    {
+      "exerciseId": "skull_crusher",
+      "items": [
+        {
+          "videoId": "8t2a93BjDec",
+          "title": "How to Do SKULLCRUSHERS for BIG Triceps | Targeting The Muscle Series",
+          "author": "Renaissance Periodization",
+          "why": "Dr Mike's Targeting the Muscle walkthrough of skull crusher technique for triceps growth"
+        },
+        {
+          "videoId": "EyM5vs4-ZKk",
+          "title": "8 Skull Crusher Mistakes and How to Fix Them",
+          "author": "Renaissance Periodization",
+          "why": "Eight skull crusher mistakes and how to fix them"
+        },
+        {
+          "videoId": "l3rHYPtMUo8",
+          "title": "Barbell Skullcrusher",
+          "author": "Renaissance Periodization",
+          "why": "14-second clean demo of the barbell skullcrusher"
+        }
+      ]
+    }
+  ]
+}

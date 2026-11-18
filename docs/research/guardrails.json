@@ -1,0 +1,863 @@
+{
+  "rules": [
+    {
+      "id": "nutrition_calorie_floor_by_sex",
+      "domain": "nutrition",
+      "rule": "The app never sets or suggests a daily energy target below 1500 kcal for males or 1200 kcal for females, and never below 800 kcal for anyone under any setting. Targets of 800-1200 kcal/day are 'low-energy diets' and <800 kcal/day are 'very-low-energy diets' (ISSN 2026); both give faster short-term loss but no long-term advantage, risk more lean-mass loss and micronutrient/fibre shortfalls, and need clinical supervision. The 1500/1200 sex-specific floors are a conservative app convention, not a trial-derived threshold.",
+      "params": {
+        "minKcalMale": 1500,
+        "minKcalFemale": 1200,
+        "absoluteMinKcalAnyone": 800,
+        "lowEnergyDietUpperKcal": 1200
+      },
+      "appliesWhen": "Any time a calorie target is generated, edited by the user, or adjusted by the weekly auto-adjust engine.",
+      "action": "Clamp the target to the floor. If the user manually types a lower target, refuse to save it, keep the floor value, and show the message. Never display a lower number as a goal.",
+      "userMessage": "Forge keeps your daily target at or above {floor} kcal. Going lower usually costs muscle, training quality and nutrients without speeding up long-term results. If a doctor or dietitian has prescribed a lower intake for you, follow their plan directly.",
+      "citations": [
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "nutrition_energy_availability_floor",
+      "domain": "nutrition",
+      "rule": "When fat-free mass (FFM) is known, compute energy availability EA = (energy intake - exercise energy expenditure) / FFM in kg. Warn when the planned or 7-day-average logged EA is below 30 kcal/kg FFM/day. Low energy availability underlies Relative Energy Deficiency in Sport (REDs), which affects males and females (hormonal, bone, immune, cardiovascular, mental-health and performance effects). Roberts et al. 2020 recommend >30 kcal/kg lean mass/day for female physique athletes in the off-season to support menstrual recovery; Forge applies 30 as a warning line for all users.",
+      "params": {
+        "eaWarnKcalPerKgFfm": 30,
+        "averagingWindowDays": 7
+      },
+      "appliesWhen": "FFM is available (DXA, BIA, or body-fat estimate x bodyweight) and the user is in a deficit.",
+      "action": "Show a warning and offer to raise the target so EA >= 30 kcal/kg FFM. Do not block if all other floors are met; log the event for the low-intake check-in rule.",
+      "userMessage": "Your planned intake leaves less fuel than your training needs. Over time that can affect hormones, recovery, bones and mood. Forge suggests nudging today's target up to about {suggestedKcal} kcal.",
+      "citations": [
+        "Mountjoy et al. 2023 (IOC consensus statement on REDs), Br J Sports Med - https://doi.org/10.1136/bjsports-2023-106994",
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_max_deficit_rate_by_body_fat",
+      "domain": "nutrition",
+      "rule": "Planned weight loss must not exceed 1.0% of bodyweight per week for anyone. Cap by body-fat tier: males >= 20% BF / females >= 30% BF: max 1.0%/wk; males 12-19.9% / females 22-29.9%: max 0.75%/wk; males < 12% / females < 22%: max 0.5%/wk. Minimum meaningful rate is 0.5%/wk unless already lean (then 0.25-0.5%/wk). The 0.5-1.0%/wk band is from Helms 2014 and ISSN 2026; Garthe 2011 found 0.7%/wk preserved/increased lean mass and 1RM better than 1.4%/wk; Roberts 2020 recommend <= 0.5%/wk for lean competitors. The body-fat tier cut-points are an app convention.",
+      "params": {
+        "absoluteMaxPctBwPerWeek": 1.0,
+        "tierHighMaxPctBwPerWeek": 1.0,
+        "tierMidMaxPctBwPerWeek": 0.75,
+        "tierLeanMaxPctBwPerWeek": 0.5,
+        "maleHighBfThresholdPct": 20,
+        "maleLeanBfThresholdPct": 12,
+        "femaleHighBfThresholdPct": 30,
+        "femaleLeanBfThresholdPct": 22,
+        "defaultMinPctBwPerWeek": 0.5,
+        "leanMinPctBwPerWeek": 0.25
+      },
+      "appliesWhen": "A cutting phase is created or the weekly auto-adjust runs, using the 7-day moving-average bodyweight.",
+      "action": "Set the deficit so predicted loss stays within the tier cap. If the observed 2-week average loss exceeds the cap by more than 0.25%/wk, raise intake at the next adjustment. If body fat is unknown, use the 0.75%/wk tier.",
+      "userMessage": "Forge aims for about {rate}% of your bodyweight per week. Losing weight slower than that keeps more muscle and strength, and it's easier to stick to.",
+      "citations": [
+        "Helms, Aragon & Fitschen 2014, J Int Soc Sports Nutr - https://doi.org/10.1186/1550-2783-11-20",
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266",
+        "Garthe et al. 2011, Int J Sport Nutr Exerc Metab - https://doi.org/10.1123/ijsnem.21.2.97",
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_max_deficit_size",
+      "domain": "nutrition",
+      "rule": "The daily energy deficit must not exceed 25% of estimated maintenance intake (TDEE), even if the rate cap would allow more. In Garthe 2011 the better-performing slow group cut intake by about 19% and the fast group by about 30%. The 25% cap is an app convention that sits between the two.",
+      "params": {
+        "maxDeficitPctOfTdee": 25
+      },
+      "appliesWhen": "Deficit targets are generated or adjusted.",
+      "action": "Clamp the deficit to 25% of TDEE; the stricter of this rule, the rate cap and the calorie floor always wins.",
+      "userMessage": "Forge keeps your deficit moderate so training stays productive. Slow and steady protects your muscle.",
+      "citations": [
+        "Garthe et al. 2011, Int J Sport Nutr Exerc Metab - https://doi.org/10.1123/ijsnem.21.2.97"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "nutrition_surplus_rate_by_training_age",
+      "domain": "nutrition",
+      "rule": "Planned bodyweight gain per month is capped by training age: novice (< 2 years of consistent training) 1.0-1.5% BW/month; intermediate (2-4 years) 0.5-1.0% BW/month; advanced (5+ years) <= 0.5% BW/month. These figures are from the Muscle and Strength Pyramid: Nutrition, as quoted by its co-author. Iraki et al. 2019 give somewhat higher ceilings (novice/intermediate about 0.25-0.5% BW/week; advanced about 0.25%/week); Forge uses the stricter Pyramid values to limit fat gain. The training-age year bands come from secondary summaries and are an app convention.",
+      "params": {
+        "noviceMinPctBwPerMonth": 1.0,
+        "noviceMaxPctBwPerMonth": 1.5,
+        "intermediateMinPctBwPerMonth": 0.5,
+        "intermediateMaxPctBwPerMonth": 1.0,
+        "advancedMaxPctBwPerMonth": 0.5,
+        "noviceMaxTrainingYears": 2,
+        "intermediateMaxTrainingYears": 4,
+        "irakiNoviceIntermediateMaxPctBwPerWeek": 0.5,
+        "irakiAdvancedPctBwPerWeek": 0.25
+      },
+      "appliesWhen": "A lean-gain or bulking phase is created or auto-adjusted, using the 7-day moving-average bodyweight over at least 3 weeks.",
+      "action": "Set the surplus to hit the midpoint of the band. If the observed 4-week rate exceeds the band maximum, reduce intake at the next adjustment.",
+      "userMessage": "For your training experience, gaining about {rate}% of bodyweight per month is the sweet spot. Faster than that mostly adds fat, not extra muscle.",
+      "citations": [
+        "Helms, Morgan & Valdez (year unverified), The Muscle and Strength Pyramid: Nutrition 2nd ed. (book; ranges as quoted by co-author A. Morgan) - https://rippedbody.com/updated-bulking-guidelines/",
+        "Iraki et al. 2019, Sports (Basel) - https://doi.org/10.3390/sports7070154"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "nutrition_surplus_size",
+      "domain": "nutrition",
+      "rule": "The energy surplus is +10-20% above maintenance for novice/intermediate lifters and +5-10% for advanced lifters, and the rate cap (nutrition_surplus_rate_by_training_age) overrides it.",
+      "params": {
+        "noviceIntermediateMinSurplusPct": 10,
+        "noviceIntermediateMaxSurplusPct": 20,
+        "advancedMinSurplusPct": 5,
+        "advancedMaxSurplusPct": 10
+      },
+      "appliesWhen": "A surplus phase starts, before enough weight-trend data exists to auto-adjust.",
+      "action": "Use the band midpoint as the starting surplus, then adjust from the observed weight trend.",
+      "userMessage": "Starting your gaining phase about {pct}% above maintenance. Forge will fine-tune it from your weight trend over the next few weeks.",
+      "citations": [
+        "Iraki et al. 2019, Sports (Basel) - https://doi.org/10.3390/sports7070154"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_protein_surplus_maintenance",
+      "domain": "nutrition",
+      "rule": "In surplus or maintenance, the protein target is 1.6-2.2 g/kg bodyweight/day, and the default is 1.8 g/kg. Morton 2018 found no further fat-free-mass gain above about 1.62 g/kg/day. Its uncertainty extends to about 2.2 g/kg; that upper figure is reported in secondary summaries and was not checked against the paper. Iraki 2019 and ISSN 2026 both give 1.6-2.2 g/kg.",
+      "params": {
+        "minGPerKg": 1.6,
+        "defaultGPerKg": 1.8,
+        "maxGPerKg": 2.2
+      },
+      "appliesWhen": "Goal phase is maintenance or surplus.",
+      "action": "Set the protein target in range. Logged intake below 1.6 g/kg on a 7-day average triggers a gentle tip, never a warning tone.",
+      "userMessage": "Aim for about {grams} g of protein a day. Above roughly 1.6 g per kg, extra protein adds little muscle, so there's no need to force more.",
+      "citations": [
+        "Morton et al. 2018, Br J Sports Med - https://doi.org/10.1136/bjsports-2017-097608",
+        "Iraki et al. 2019, Sports (Basel) - https://doi.org/10.3390/sports7070154",
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "nutrition_protein_deficit",
+      "domain": "nutrition",
+      "rule": "In a deficit, the protein target is 2.3-3.1 g/kg fat-free mass/day when FFM is known, otherwise 1.9-3.2 g/kg bodyweight/day. The default is 2.2 g/kg BW, scaled toward the top of the range as the user gets leaner and the deficit gets larger. The floor is 1.8 g/kg BW. ISSN 2017 also gives 2.3-3.1 g/kg/d for lean-mass retention in trained people during hypocaloric periods.",
+      "params": {
+        "ffmMinGPerKg": 2.3,
+        "ffmMaxGPerKg": 3.1,
+        "bwMinGPerKg": 1.9,
+        "bwMaxGPerKg": 3.2,
+        "bwDefaultGPerKg": 2.2,
+        "bwHardFloorGPerKg": 1.8
+      },
+      "appliesWhen": "Goal phase is a deficit (cut).",
+      "action": "Set the protein target in range; when calories are cut, cut carbohydrate or fat, never protein below the floor.",
+      "userMessage": "While cutting, Forge raises your protein to about {grams} g a day. It helps you keep muscle and stay full.",
+      "citations": [
+        "Helms et al. 2014, Int J Sport Nutr Exerc Metab - https://doi.org/10.1123/ijsnem.2013-0054",
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266",
+        "Jäger et al. 2017 (ISSN position stand: protein and exercise), J Int Soc Sports Nutr - https://doi.org/10.1186/s12970-017-0177-8",
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_protein_upper_soft_cap",
+      "domain": "nutrition",
+      "rule": "Protein targets above 3.5 g/kg BW/day are not generated. Roberts 2020 mention up to 3.5 g/kg only to help control hunger; beyond that there is no evidence of added benefit. Users who report kidney disease get no high-protein target until a clinician approves one.",
+      "params": {
+        "maxTargetGPerKg": 3.5
+      },
+      "appliesWhen": "Protein target generation or manual edit; health profile flags kidney disease.",
+      "action": "Clamp the target to 3.5 g/kg. If kidney disease is flagged, cap the target at the maintenance default (1.6 g/kg) and show a referral note.",
+      "userMessage": "More protein than this doesn't add extra benefit, so Forge keeps your target at {grams} g a day.",
+      "citations": [
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096",
+        "Jäger et al. 2017 (ISSN position stand: protein and exercise), J Int Soc Sports Nutr - https://doi.org/10.1186/s12970-017-0177-8"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "nutrition_protein_distribution",
+      "domain": "nutrition",
+      "rule": "Spread protein over at least 3 protein-rich meals a day (3-6 meals), each with about 0.4-0.55 g/kg BW. ISSN 2026 says at least 3 protein-rich eating occasions may optimise lean-mass retention during sustained deficits. Total daily protein matters most; distribution is secondary.",
+      "params": {
+        "minProteinMealsPerDay": 3,
+        "maxProteinMealsPerDay": 6,
+        "perMealMinGPerKg": 0.4,
+        "perMealMaxGPerKg": 0.55
+      },
+      "appliesWhen": "Meal planning or daily summary.",
+      "action": "Suggest a per-meal protein amount; never flag a day as failed because of meal timing alone.",
+      "userMessage": "Tip: about {grams} g of protein in each of 3 or more meals makes your daily target easier to hit.",
+      "citations": [
+        "Iraki et al. 2019, Sports (Basel) - https://doi.org/10.3390/sports7070154",
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_fat_minimum",
+      "domain": "nutrition",
+      "rule": "Dietary fat target >= 0.5 g/kg BW/day in all phases, and >= 20% of energy in maintenance/surplus. In a deficit fat may drop to 15% of energy but never below 0.5 g/kg. Iraki 2019 give 0.5-1.5 g/kg (and cite ACSM's 20-35% of energy). Helms 2014 give 15-30% of calories during contest prep. Whittaker & Wu 2021 found low-fat diets lowered testosterone in men.",
+      "params": {
+        "minGPerKgAllPhases": 0.5,
+        "maxGPerKgSurplus": 1.5,
+        "minPctKcalMaintenanceSurplus": 20,
+        "minPctKcalDeficit": 15,
+        "maxPctKcalDeficit": 30
+      },
+      "appliesWhen": "Macro targets are generated or edited.",
+      "action": "Clamp fat to the floor; take any further deficit from carbohydrate (subject to its own floor).",
+      "userMessage": "Forge keeps fat at {grams} g or more a day. Some fat is needed for hormones and for absorbing vitamins.",
+      "citations": [
+        "Iraki et al. 2019, Sports (Basel) - https://doi.org/10.3390/sports7070154",
+        "Helms, Aragon & Fitschen 2014, J Int Soc Sports Nutr - https://doi.org/10.1186/1550-2783-11-20",
+        "Whittaker & Wu 2021, J Steroid Biochem Mol Biol - https://doi.org/10.1016/j.jsbmb.2021.105878"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_carbohydrate_floor",
+      "domain": "nutrition",
+      "rule": "Carbohydrate fills the energy left after protein and fat. Soft floors: >= 3 g/kg BW/day in surplus (Iraki 2019: at least 3-5 g/kg), and >= 2 g/kg BW/day in a deficit for lifters (Roberts 2020: realistic range 2-5 g/kg). These are soft floors: the user may pick lower-carbohydrate diets, because ISSN 2026 found that ketogenic through low-fat diets give similar weight loss when calories and protein are matched.",
+      "params": {
+        "surplusSoftMinGPerKg": 3,
+        "deficitSoftMinGPerKg": 2,
+        "deficitSoftMaxGPerKg": 5
+      },
+      "appliesWhen": "Macro targets are generated; user has not chosen a low-carbohydrate preference.",
+      "action": "Show an informational note if carbohydrate falls below the soft floor; do not block.",
+      "userMessage": "Your carbs are on the low side for the amount you train. If your sessions start to feel flat, shifting some calories to carbs can help.",
+      "citations": [
+        "Iraki et al. 2019, Sports (Basel) - https://doi.org/10.3390/sports7070154",
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096",
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_fibre_minimum",
+      "domain": "nutrition",
+      "rule": "Daily fibre target is >= 25 g of naturally occurring dietary fibre for adults (WHO 2023), together with >= 400 g of vegetables and fruit per day. Low-calorie diets are prone to fibre shortfalls (ISSN 2026).",
+      "params": {
+        "minFibreGPerDay": 25,
+        "minFruitVegGPerDay": 400
+      },
+      "appliesWhen": "Daily nutrition summary for adults.",
+      "action": "Show fibre progress; if the 7-day average is below 25 g, suggest fibre-rich Indian staples (dal, rajma, chana, vegetables, fruit, whole grains). Informational only.",
+      "userMessage": "Fibre has averaged {avg} g a day this week. Aiming for 25 g or more helps digestion and keeps you fuller. Dal, chana, vegetables and fruit are easy wins.",
+      "citations": [
+        "WHO 2023, Carbohydrate intake for adults and children: WHO guideline (announcement) - https://www.who.int/news/item/17-07-2023-who-updates-guidelines-on-fats-and-carbohydrates",
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "nutrition_diet_breaks",
+      "domain": "nutrition",
+      "rule": "Offer a diet break of about 7 days at estimated maintenance after each 3-5 kg of weight loss. After each 5-10 kg of loss, offer a longer maintenance phase of 1-3 months; this applies mainly outside contest prep. In MATADOR, 2-week maintenance blocks alternating with 2-week deficit blocks improved fat-loss efficiency in men with obesity. A meta-analysis cited by ISSN 2026 found body-composition results similar to continuous dieting, with a trivial metabolic advantage (about -11 kcal/day in resistance trainees). Breaks are therefore offered mainly for adherence and psychological relief.",
+      "params": {
+        "shortBreakDays": 7,
+        "shortBreakEveryKgLostMin": 3,
+        "shortBreakEveryKgLostMax": 5,
+        "maintenancePhaseMinWeeks": 4,
+        "maintenancePhaseMaxWeeks": 12,
+        "maintenancePhaseEveryKgLostMin": 5,
+        "maintenancePhaseEveryKgLostMax": 10,
+        "matadorBlockWeeks": 2
+      },
+      "appliesWhen": "Cumulative loss since the start of the cut, or since the last break, reaches the threshold; or the user reports high diet fatigue.",
+      "action": "Prompt the user with an optional break and set calories to maintenance for the break if accepted. Breaks never count as 'failure' or reset streaks.",
+      "userMessage": "You've lost {kg} kg so far. This is a good time for a week at maintenance. It doesn't undo your progress, and it often makes the next stretch easier.",
+      "citations": [
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266",
+        "Byrne et al. 2018 (MATADOR), Int J Obes - https://doi.org/10.1038/ijo.2017.206",
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_max_cut_length",
+      "domain": "nutrition",
+      "rule": "A continuous deficit (excluding diet breaks) may last at most 16 weeks. After that, the app requires at least 4 weeks at maintenance before another deficit can start. Roberts 2020 note that contest prep often lasts 4 months or more, and that the rate of loss matters more than duration for fat-free-mass loss. The 16-week and 4-week limits are an app convention to limit diet fatigue and REDs risk.",
+      "params": {
+        "maxContinuousDeficitWeeks": 16,
+        "promptBreakAtWeeks": 12,
+        "minMaintenanceWeeksAfterCut": 4
+      },
+      "appliesWhen": "A cut phase is running or a new cut is requested.",
+      "action": "At week 12 prompt a diet break. At week 16 end the deficit automatically and switch to maintenance. Block a new cut until 4 maintenance weeks have been logged.",
+      "userMessage": "You've been in a deficit for {weeks} weeks. Forge is switching you to maintenance for at least 4 weeks so your body and mind can recover before any further cutting.",
+      "citations": [
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096",
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "nutrition_post_cut_recovery",
+      "domain": "nutrition",
+      "rule": "After a cut ends, raise intake to estimated maintenance in a controlled way. Keep protein high and fibre high, and never suggest unstructured 'cheat days'. Roberts 2020 recommend a controlled regain toward a sustainable, comfortable bodyweight within 1-2 months. They note that binge eating after competitions is common and that unstructured cheat meals may be contraindicated.",
+      "params": {
+        "returnToComfortableWeightMonthsMin": 1,
+        "returnToComfortableWeightMonthsMax": 2
+      },
+      "appliesWhen": "A cut phase ends, whether planned, by the max-length rule, or by a safety block.",
+      "action": "Step calories to maintenance within 1-2 weeks; keep the protein target; never use the words 'cheat' or 'reward' about food.",
+      "userMessage": "Cut complete. Forge is bringing you back to maintenance and keeping your protein high so you hold on to what you've built.",
+      "citations": [
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "nutrition_adjustment_cadence",
+      "domain": "nutrition",
+      "rule": "The auto-adjust engine uses a 7-day moving-average bodyweight. It changes calorie targets at most once every 14 days, by no more than 10% of the current target per change. Weight plateaus are normal: ISSN 2026 describe them as chances to practise maintenance, and Iraki 2019 advise adjusting intake from the observed rate of change. The 14-day and 10% figures are an app convention.",
+      "params": {
+        "weightAveragingDays": 7,
+        "minDaysBetweenAdjustments": 14,
+        "maxAdjustmentPctOfTarget": 10
+      },
+      "appliesWhen": "Weekly check-in during any goal phase.",
+      "action": "Hold the target if fewer than 14 days have passed or there are fewer than 5 weigh-ins in the window; otherwise adjust within the caps.",
+      "userMessage": "Day-to-day weight jumps around with water and food. Forge looks at your 2-week trend before changing anything.",
+      "citations": [
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266",
+        "Iraki et al. 2019, Sports (Basel) - https://doi.org/10.3390/sports7070154"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "safety_bmi_underweight_no_deficit",
+      "domain": "safety",
+      "rule": "If BMI < 18.5 kg/m2 (WHO underweight cut-off, kept as the international classification by the WHO Expert Consultation 2004), the app sets no deficit and no weight-loss goal. It allows only maintenance or surplus. NICE NG69 lists dieting while underweight as a reason to consider eating-disorder assessment.",
+      "params": {
+        "minBmiForDeficit": 18.5
+      },
+      "appliesWhen": "Any time a deficit is requested or active and the latest height and 7-day average weight give BMI < 18.5.",
+      "action": "Block or stop the deficit, switch to maintenance, hide 'weight to lose' displays, and suggest a check-up with a doctor.",
+      "userMessage": "Your current weight is already in the low range for your height, so Forge won't set a calorie deficit. Your plan is set to maintenance or gaining. If you're unsure why your weight is low, a doctor's check-up is a good idea.",
+      "citations": [
+        "WHO Expert Consultation 2004, Lancet - https://doi.org/10.1016/S0140-6736(03)15268-3",
+        "NICE 2017 (NG69, rec. 1.2.6), Eating disorders: recognition and treatment - https://www.nice.org.uk/guidance/ng69/chapter/Recommendations"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "safety_asian_bmi_context",
+      "domain": "safety",
+      "rule": "For users of Asian (including Indian) ancestry, the WHO Expert Consultation identified extra public-health action points at BMI 23.0, 27.5, 32.5 and 37.5. Cardiometabolic risk in many Asian populations starts at BMIs below 25. Forge uses these points only for neutral health context, never for blocking, shaming or appearance commentary.",
+      "params": {
+        "actionPoint1": 23.0,
+        "actionPoint2": 27.5,
+        "actionPoint3": 32.5,
+        "actionPoint4": 37.5
+      },
+      "appliesWhen": "User ancestry is Asian/Indian and BMI is displayed.",
+      "action": "Show BMI with the Asian action-point context in neutral wording; do not label the user.",
+      "userMessage": "For people of South Asian background, health risks can start at a lower BMI than the usual charts suggest. Waist size, fitness and blood tests give a fuller picture than BMI alone.",
+      "citations": [
+        "WHO Expert Consultation 2004, Lancet - https://doi.org/10.1016/S0140-6736(03)15268-3"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "safety_low_body_fat_no_deficit",
+      "domain": "safety",
+      "rule": "No deficit if the best available body-fat estimate is < 8% (male) or < 15% (female). Show a caution (deficit allowed only at <= 0.5%/wk) if the estimate is < 11% (male) or < 20% (female), the lower ends of the healthy reference ranges in ISSN 2026 (about 11-22% men, 20-35% women). ISSN 2026 note that values below these ranges can be healthy in athletes, but that sustained low energy availability in pursuit of excessive leanness can lead to REDs. The < 8% and < 15% block thresholds are an app convention that allows for estimate error (see photo_bf_accuracy_limits).",
+      "params": {
+        "maleBlockBelowPct": 8,
+        "femaleBlockBelowPct": 15,
+        "maleCautionBelowPct": 11,
+        "femaleCautionBelowPct": 20,
+        "cautionMaxLossPctBwPerWeek": 0.5
+      },
+      "appliesWhen": "A deficit is requested or active and a body-fat estimate exists (DXA, BIA, skinfolds or photo estimate).",
+      "action": "Block: stop the deficit and switch to maintenance. Caution: cap the loss rate at 0.5%/wk and show the message once per phase.",
+      "userMessage": "Your body fat is already very low, so Forge won't plan further fat loss right now. At this level, eating more usually supports hormones, recovery and strength better than cutting further.",
+      "citations": [
+        "Aragon et al. 2026 (ISSN position stand: diets for body weight reduction), J Int Soc Sports Nutr - https://doi.org/10.1080/15502783.2026.2740266",
+        "Mountjoy et al. 2023 (IOC consensus statement on REDs), Br J Sports Med - https://doi.org/10.1136/bjsports-2023-106994"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "safety_under_18",
+      "domain": "safety",
+      "rule": "If age < 18 there are no deficit or weight-loss targets, no body-fat estimation from photos, no body-fat or 'ideal weight' goals, and no calorie-deficit language. Training and protein/healthy-eating guidance focus on health and performance. AAP (Golden 2016) says adolescent guidance should focus on a healthy lifestyle rather than weight. NICE NG69 notes eating-disorder risk is highest between ages 13 and 17.",
+      "params": {
+        "minAgeForDeficit": 18,
+        "minAgeForPhotoBodyFat": 18
+      },
+      "appliesWhen": "Date of birth gives age < 18.",
+      "action": "Lock goal phase to maintenance or performance; disable the photo body-fat feature and weight-loss trend gamification.",
+      "userMessage": "Because you're under 18, Forge focuses on training, strength and healthy eating rather than weight-loss or body-fat goals. Your body is still growing, and fuelling it well matters most right now.",
+      "citations": [
+        "Golden et al. 2016 (AAP clinical report), Pediatrics - https://doi.org/10.1542/peds.2016-1649",
+        "NICE 2017 (NG69, rec. 1.2.4), Eating disorders: recognition and treatment - https://www.nice.org.uk/guidance/ng69/chapter/Recommendations"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "safety_pregnancy_no_deficit",
+      "domain": "safety",
+      "rule": "If pregnant: no deficit, no weight-loss goal, no photo body-fat estimation. Weight is expected to rise along the IOM (2009) gestational-weight-gain ranges, so Forge does not track weight against a goal. Exercise may continue as advised by ACOG Committee Opinion 804. The user must stop and contact their obstetric care provider if ACOG warning signs appear: vaginal bleeding, regular painful contractions, fluid leakage, dizziness, chest pain, headache, calf pain or swelling, or shortness of breath before exertion. This sign list is from the ACOG opinion body and was not re-checked against the full text.",
+      "params": {
+        "allowDeficit": 0,
+        "allowPhotoBodyFat": 0
+      },
+      "appliesWhen": "User reports current pregnancy.",
+      "action": "Lock nutrition to maintenance-or-above with no deficit; hide weight-loss displays; add an exercise warning-sign checklist to each session; suggest confirming the plan with an obstetric care provider.",
+      "userMessage": "Congratulations. During pregnancy Forge won't set a calorie deficit or weight-loss goal. Please check your training plan with your doctor or midwife, and stop and call them if you notice bleeding, dizziness, chest pain, painful contractions or leaking fluid.",
+      "citations": [
+        "ACOG 2020 (Committee Opinion 804), Obstet Gynecol - https://doi.org/10.1097/AOG.0000000000003772",
+        "Institute of Medicine 2009, Weight Gain During Pregnancy: Reexamining the Guidelines - https://doi.org/10.17226/12584"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "safety_breastfeeding_no_deficit",
+      "domain": "safety",
+      "rule": "If breastfeeding: the app generates no deficit. Energy target = estimated maintenance + 330-400 kcal/day, the CDC recommendation for well-nourished breastfeeding mothers. Any weight-loss plan must come from the user's clinician or dietitian. The app does not claim a deficit is unsafe; it leaves that decision to a professional.",
+      "params": {
+        "extraKcalMin": 330,
+        "extraKcalMax": 400,
+        "allowAppGeneratedDeficit": 0
+      },
+      "appliesWhen": "User reports currently breastfeeding.",
+      "action": "Set target to maintenance + 330-400 kcal; hide cut goals; show the referral note once.",
+      "userMessage": "While you're breastfeeding, Forge adds about {extra} kcal a day to your maintenance target and won't set a deficit. If you'd like to lose weight during this time, your doctor or a dietitian can plan it safely with you.",
+      "citations": [
+        "CDC (accessed 2026), Maternal Diet - Breastfeeding Special Circumstances - https://www.cdc.gov/breastfeeding-special-circumstances/hcp/diet-micronutrients/maternal-diet.html"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "safety_scoff_screen",
+      "domain": "safety",
+      "rule": "Administer the SCOFF questionnaire verbatim (yes/no, 1 point per 'yes'): Q1 'Do you make yourself Sick because you feel uncomfortably full?' Q2 'Do you worry you have lost Control over how much you eat?' Q3 'Have you recently lost more than One stone in a 3 month period?' Q4 'Do you believe yourself to be Fat when others say you are too thin?' Q5 'Would you say that Food dominates your life?' Score >= 2 = positive screen. In the original study this cut-off detected all anorexia and bulimia cases (100% sensitivity) with 87.5% specificity. Under Q3 the app may add the note '(one stone = about 6.35 kg)'. NICE NG69 says screening tools such as SCOFF must not be the only method used to decide whether someone has an eating disorder.",
+      "params": {
+        "questionCount": 5,
+        "pointsPerYes": 1,
+        "positiveThreshold": 2,
+        "sensitivityPct": 100,
+        "specificityPct": 87.5,
+        "oneStoneKg": 6.35,
+        "rescreenEveryWeeksDuringCut": 12
+      },
+      "appliesWhen": "Onboarding; before the first deficit phase; every 12 weeks during a cut; and whenever the low-intake check-in rule fires.",
+      "action": "Show the five questions exactly as worded, store only the total score and date locally, and route a score >= 2 to safety_scoff_positive_response.",
+      "userMessage": "A few quick questions about eating. There are no right or wrong answers, and your answers stay on this phone.",
+      "citations": [
+        "Morgan, Reid & Lacey 1999, BMJ - https://doi.org/10.1136/bmj.319.7223.1467",
+        "NICE 2017 (NG69, rec. 1.2.5), Eating disorders: recognition and treatment - https://www.nice.org.uk/guidance/ng69/chapter/Recommendations"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "safety_scoff_positive_response",
+      "domain": "safety",
+      "rule": "On a positive SCOFF screen (score >= 2), the app does not diagnose; NICE NG69 says a screening tool alone cannot decide whether someone has an eating disorder. For at least 30 days, or until the user confirms a professional has reviewed them, it: stops any deficit and sets maintenance; hides calorie-deficit and weight-loss trend displays and the photo body-fat feature; keeps training logging available. It then gives help-seeking information: a GP or psychiatrist, and India's Tele MANAS helpline (14416 or 1-800-891-4416, toll-free, 24x7). Helms 2014 note that physique athletes face a higher risk of eating and body-image disorders and should have access to mental-health professionals. The 30-day lock is an app convention.",
+      "params": {
+        "lockDays": 30,
+        "teleManasShortCode": 14416
+      },
+      "appliesWhen": "SCOFF total >= 2.",
+      "action": "Apply the locks above, show the message once with tap-to-call for Tele MANAS, and re-offer SCOFF after the lock period. Never show the score as a 'fail'.",
+      "userMessage": "Thanks for answering honestly. Some of your answers suggest food may be causing you stress. That's common and nothing to be ashamed of, and talking to someone helps. For now Forge has switched to maintenance and paused weight-loss features. You can talk to your doctor, or call Tele MANAS free at 14416 any time.",
+      "citations": [
+        "NICE 2017 (NG69, rec. 1.2.5-1.2.6), Eating disorders: recognition and treatment - https://www.nice.org.uk/guidance/ng69/chapter/Recommendations",
+        "Morgan, Reid & Lacey 1999, BMJ - https://doi.org/10.1136/bmj.319.7223.1467",
+        "Helms, Aragon & Fitschen 2014, J Int Soc Sports Nutr - https://doi.org/10.1186/1550-2783-11-20",
+        "DGHS MoHFW India (accessed 2026), National Mental Health Programme / Tele MANAS - https://dghs.mohfw.gov.in/national-mental-health-programme.php"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "safety_low_intake_rapid_loss_checkin",
+      "domain": "safety",
+      "rule": "Trigger a supportive check-in, and offer the SCOFF re-screen, if: logged intake is below the calorie floor on >= 3 of the last 7 days; or the 7-day-average weight falls by more than 1.5% BW per week for 2 consecutive weeks; or the user sets a manual target below the floor twice in 7 days. NICE NG69 lists rapid weight loss and restrictive eating as reasons to consider assessment. The thresholds are an app convention.",
+      "params": {
+        "daysBelowFloorIn7": 3,
+        "rapidLossPctBwPerWeek": 1.5,
+        "rapidLossConsecutiveWeeks": 2,
+        "belowFloorAttemptsIn7Days": 2
+      },
+      "appliesWhen": "Any active goal phase.",
+      "action": "Show a non-judgemental check-in card with options: 'I'm fine / ill or travelling', 'I'd like to adjust my plan', 'Take the eating check (SCOFF)'. Never show streaks or badges for low intake.",
+      "userMessage": "Checking in: your intake has been lower than your plan for a few days. If you've been unwell or busy, that's okay. If eating has felt stressful lately, we can go through a short check together.",
+      "citations": [
+        "NICE 2017 (NG69, rec. 1.2.6), Eating disorders: recognition and treatment - https://www.nice.org.uk/guidance/ng69/chapter/Recommendations"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "safety_messaging_no_praise_for_restriction",
+      "domain": "safety",
+      "rule": "Coaching copy never praises low intake, skipped meals, hunger, fasting, staying under target, fast scale drops, or 'smaller' numbers. Praise is given only for process and health behaviours: consistent logging, hitting protein, sleep, training performance, recovery, and staying within the planned range. Forge focuses on health and behaviours rather than weight (AAP 2016; NEDC 2024). The app uses no streaks, confetti or badges tied to eating less or weighing less.",
+      "params": {
+        "allowPraiseForUnderTarget": 0,
+        "allowBadgesForWeightLoss": 0
+      },
+      "appliesWhen": "All generated coaching text, notifications, summaries and LLM outputs.",
+      "action": "Run every generated message through a filter. Reject phrases praising restriction (e.g. 'great job eating so little', 'nice, under your calories again', 'you barely ate') and regenerate a neutral version.",
+      "userMessage": "You were within your planned range this week and hit your protein on 6 of 7 days. That's the kind of consistency that drives results.",
+      "citations": [
+        "Golden et al. 2016 (AAP clinical report), Pediatrics - https://doi.org/10.1542/peds.2016-1649",
+        "National Eating Disorders Collaboration 2024, Eating Disorder Safe principles, Section 3 (communicators/platforms) - https://gatewayhealth.org.au/wp-content/uploads/2024/10/Eating-Disorder-Safe-Principles_Section-3_Comms-Media-Platforms.pdf"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "safety_messaging_no_body_shaming",
+      "domain": "safety",
+      "rule": "The app uses size-inclusive, non-stigmatising language. It never uses shaming, moralising or diet-culture terms about bodies or food: no 'fat' as an insult, 'flabby', 'gross', 'disgusting', 'ugly', 'skinny-fat', 'problem areas'; no 'cheat meal', 'bad/junk/clean food', 'guilt', 'earn your food', 'burn it off'. Neutral terms are used instead: 'body fat', 'higher/lower energy foods', 'flexible meal'. NEDC 2024 advise avoiding stigma and diet-culture terms. Roberts 2020 caution that unstructured cheat meals may be contraindicated given post-diet binge risk.",
+      "params": {
+        "allowMoralFoodLabels": 0
+      },
+      "appliesWhen": "All app copy, notifications, food logging labels and LLM-generated text.",
+      "action": "Apply a blocklist plus an LLM safety-classifier pass before showing text; replace flagged wording with neutral equivalents.",
+      "userMessage": "Logged: a higher-energy meal. It fits fine within your week. Back to your usual plan at the next meal.",
+      "citations": [
+        "National Eating Disorders Collaboration 2024, Eating Disorder Safe principles, Section 3 (communicators/platforms) - https://gatewayhealth.org.au/wp-content/uploads/2024/10/Eating-Disorder-Safe-Principles_Section-3_Comms-Media-Platforms.pdf",
+        "Roberts et al. 2020, J Hum Kinet - https://doi.org/10.2478/hukin-2019-0096"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "safety_medical_red_flags_stop",
+      "domain": "safety",
+      "rule": "If the user reports any sign or symptom suggestive of cardiovascular, metabolic or renal disease, the app tells them to stop exercising and seek medical clearance before resuming (ACSM 2015 algorithm, regardless of known disease status). Symptoms: chest/neck/jaw/arm pain or discomfort; shortness of breath at rest or on mild exertion; dizziness or fainting; breathlessness lying flat or waking at night breathless; ankle swelling; palpitations or racing heartbeat; leg pain on walking that eases with rest; known heart murmur; unusual fatigue or breathlessness with usual activities. This list is the ACSM major signs/symptoms list as given in a secondary summary. Chest pain that does not settle within minutes, or fainting, means calling emergency services (112 in India).",
+      "params": {
+        "chestPainEmergencyMinutes": 5
+      },
+      "appliesWhen": "Pre-workout readiness check, in-session 'I feel unwell' button, or symptom text detected in notes.",
+      "action": "End the session immediately; show the emergency banner for chest pain or fainting; lock workouts until the user confirms medical clearance.",
+      "userMessage": "Please stop training now. These symptoms need a doctor's check before you exercise again. If you have chest pain that isn't easing, or you've fainted, call 112 now.",
+      "citations": [
+        "Riebe et al. 2015 (ACSM preparticipation screening), Med Sci Sports Exerc - https://doi.org/10.1249/MSS.0000000000000664"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "safety_no_dehydration_or_weight_cutting",
+      "domain": "safety",
+      "rule": "The app never recommends water restriction, diuretics, sweat suits, saunas for weight loss, or electrolyte manipulation for weight loss or 'peaking'. Helms 2014 warn that dehydration and electrolyte manipulation before competition can be dangerous and may not improve appearance.",
+      "params": {
+        "allowWaterCutAdvice": 0
+      },
+      "appliesWhen": "Any nutrition or peaking request, including free-text questions to the coach.",
+      "action": "Refuse the cutting protocol, explain why briefly, and offer safe alternatives such as gradual fat loss and consistent sodium and water intake.",
+      "userMessage": "Forge doesn't give water-cutting or dehydration plans. They can be dangerous and rarely improve how you look. Steady fat loss with normal hydration is the safer route.",
+      "citations": [
+        "Helms, Aragon & Fitschen 2014, J Int Soc Sports Nutr - https://doi.org/10.1186/1550-2783-11-20"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_set_counting_fractional",
+      "domain": "training",
+      "rule": "Count weekly hard sets per muscle fractionally: a set counts 1.0 for a muscle it directly targets (prime mover, e.g. biceps in curls) and 0.5 for a muscle it trains indirectly (e.g. biceps in rows, triceps in bench press). Only sets ending within about 0-4 reps in reserve count as hard sets; warm-ups count 0. In Pelland et al. 2025/2026 (67 studies) the 'fractional' method best predicted hypertrophy and strength outcomes.",
+      "params": {
+        "directSetWeight": 1.0,
+        "indirectSetWeight": 0.5,
+        "hardSetMaxRir": 4
+      },
+      "appliesWhen": "All weekly volume calculations.",
+      "action": "Each exercise in the library carries direct/indirect muscle maps; volume dashboards use the fractional total.",
+      "userMessage": "Sets that hit a muscle indirectly (like biceps during rows) count as half a set toward that muscle.",
+      "citations": [
+        "Pelland et al. 2025 (online; issue 2026), Sports Med - https://doi.org/10.1007/s40279-025-02344-w"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_weekly_sets_per_muscle",
+      "domain": "training",
+      "rule": "Weekly fractional hard sets per muscle: minimum effective 4; typical productive range 10-20; information note above 20; warning above 30. Increase weekly sets per muscle by no more than 2 per week. Iversen 2021 recommend at least 4 weekly sets per muscle. Schoenfeld 2017 found 10+ sets gave more growth than fewer. Baz-Valle 2022 suggest 12-20 for trained men and found no difference between 12-20 and >20 for quadriceps and biceps. Pelland 2025/2026 found more volume gives more growth with diminishing returns, and strongly diminishing returns for strength. The Pyramid recommends 10-20. The 30-set warning and 2-set step are app conventions.",
+      "params": {
+        "minEffectiveSets": 4,
+        "typicalMinSets": 10,
+        "typicalMaxSets": 20,
+        "infoAboveSets": 20,
+        "warnAboveSets": 30,
+        "maxWeeklyIncreaseSets": 2
+      },
+      "appliesWhen": "Program creation, program edits and weekly review.",
+      "action": "Show a volume bar per muscle. Below 4: suggest adding sets. Above 20: neutral note about diminishing returns and recovery. Above 30: warning and require confirmation. Block increases above 2 sets/muscle/week in auto-progression.",
+      "userMessage": "Chest is at {sets} hard sets this week. Most people grow well on 10-20. Past about 20, extra sets add less and cost more recovery.",
+      "citations": [
+        "Iversen et al. 2021, Sports Med - https://doi.org/10.1007/s40279-021-01490-1",
+        "Schoenfeld, Ogborn & Krieger 2017, J Sports Sci - https://doi.org/10.1080/02640414.2016.1210197",
+        "Baz-Valle et al. 2022, J Hum Kinet - https://doi.org/10.2478/hukin-2022-0017",
+        "Pelland et al. 2025 (online; issue 2026), Sports Med - https://doi.org/10.1007/s40279-025-02344-w",
+        "Helms, Valdez & Morgan (year unverified), The Muscle and Strength Pyramid: Training 2nd ed. (book; 10-20 sets figure verified only via secondary summaries)"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_proximity_to_failure",
+      "domain": "training",
+      "rule": "Target reps in reserve (RIR) by exercise type. Isolation and machine/cable exercises: 0-2 RIR, with momentary failure allowed on the last set. Multi-joint machine and dumbbell compounds: 1-2 RIR. Heavy free-weight barbell compounds (squat, deadlift, bench press, overhead press, barbell row): 1-3 RIR, with no planned failure. Strength-focused heavy sets: 2-4 RIR. Robinson 2024 found hypertrophy improves as sets end closer to failure, while strength gains are similar across a wide RIR range. Refalo 2023 found no hypertrophy advantage of momentary failure over non-failure. Refalo 2024 found 1-2 RIR gave similar quadriceps growth to failure, with less fatigue. The split by exercise type is an app convention (lower risk where a failed rep is dangerous).",
+      "params": {
+        "isolationMinRir": 0,
+        "isolationMaxRir": 2,
+        "machineCompoundMinRir": 1,
+        "machineCompoundMaxRir": 2,
+        "barbellCompoundMinRir": 1,
+        "barbellCompoundMaxRir": 3,
+        "strengthFocusMinRir": 2,
+        "strengthFocusMaxRir": 4
+      },
+      "appliesWhen": "Prescribing and logging working sets.",
+      "action": "Prefill the RIR target by exercise category; if a barbell compound is logged at 0 RIR repeatedly (>= 2 sessions), suggest a safety/load adjustment.",
+      "userMessage": "Stop this set with about {rir} good reps left in the tank. You'll get nearly all the growth with less fatigue and lower injury risk.",
+      "citations": [
+        "Robinson et al. 2024, Sports Med - https://doi.org/10.1007/s40279-024-02069-2",
+        "Refalo et al. 2023, Sports Med - https://doi.org/10.1007/s40279-022-01784-y",
+        "Refalo et al. 2024, J Sports Sci - https://doi.org/10.1080/02640414.2024.2321021"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_frequency_per_muscle",
+      "domain": "training",
+      "rule": "Default programs train each major muscle at least 2x per week. Schoenfeld 2016 found 2x/week beat 1x/week. Schoenfeld 2019 found that when weekly volume is equated, frequency does not meaningfully change hypertrophy, so users may choose. For strength goals, train the main lifts at least 2x/week, because Pelland 2025/2026 found strength rises with frequency (with diminishing returns). If weekly sets for a muscle exceed 10, split them over at least 2 sessions; this split rule is an app convention.",
+      "params": {
+        "defaultMinSessionsPerMusclePerWeek": 2,
+        "strengthLiftMinSessionsPerWeek": 2,
+        "splitAboveWeeklySets": 10
+      },
+      "appliesWhen": "Program generation and edits.",
+      "action": "Generate splits that hit each muscle at least 2x/week; allow 1x/week if the user prefers, with an informational note.",
+      "userMessage": "Hitting each muscle twice a week makes it easier to fit in quality sets. If once a week suits your schedule, total weekly sets matter more than how you split them.",
+      "citations": [
+        "Schoenfeld, Ogborn & Krieger 2016, Sports Med - https://doi.org/10.1007/s40279-016-0543-8",
+        "Schoenfeld, Grgic & Krieger 2019, J Sports Sci - https://doi.org/10.1080/02640414.2018.1555906",
+        "Pelland et al. 2025 (online; issue 2026), Sports Med - https://doi.org/10.1007/s40279-025-02344-w"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_rest_intervals",
+      "domain": "training",
+      "rule": "Minimum rest between working sets is 60 s. Default 2-3 min for compound lifts, 3-5 min for heavy 1-6 RM strength sets, and 1-2 min for isolation exercises. Singer 2024 found a small hypertrophy benefit for rest longer than 60 s and no clear difference beyond about 90 s. Schoenfeld 2016 found 3-min rest beat 1-min rest for strength and hypertrophy in trained men. ACSM 2009 recommend 3-5 min rest for heavy loading.",
+      "params": {
+        "minRestSec": 60,
+        "compoundDefaultMinSec": 120,
+        "compoundDefaultMaxSec": 180,
+        "heavyStrengthMinSec": 180,
+        "heavyStrengthMaxSec": 300,
+        "isolationDefaultMinSec": 60,
+        "isolationDefaultMaxSec": 120
+      },
+      "appliesWhen": "Rest timer defaults and program templates.",
+      "action": "Set rest timer defaults by exercise category; warn if user-configured rest is under 60 s for hypertrophy/strength work (supersets of non-competing muscles exempt).",
+      "userMessage": "Rest {mins} min before the next set. Longer rest helps you keep reps and load up, which drives growth.",
+      "citations": [
+        "Singer et al. 2024, Front Sports Act Living - https://doi.org/10.3389/fspor.2024.1429789",
+        "Schoenfeld et al. 2016, J Strength Cond Res - https://doi.org/10.1519/JSC.0000000000001272",
+        "ACSM 2009 (position stand: progression models in resistance training), Med Sci Sports Exerc - https://doi.org/10.1249/MSS.0b013e3181915670"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_load_progression_cap",
+      "domain": "training",
+      "rule": "Increase load only when the user beats the top of the prescribed rep range by 1-2 reps at the target RIR. Each increase is 2-10% (ACSM 2009); Forge defaults to the smallest available plate increment (about 2.5% for upper body, 5% for lower body) and caps any single-session jump at 10%. Only one variable (load, reps or sets) is progressed per exercise per session. The defaults and the one-variable rule are app conventions.",
+      "params": {
+        "minLoadIncreasePct": 2,
+        "maxLoadIncreasePct": 10,
+        "defaultUpperBodyIncreasePct": 2.5,
+        "defaultLowerBodyIncreasePct": 5,
+        "repsOverTargetToProgressMin": 1,
+        "repsOverTargetToProgressMax": 2,
+        "maxVariablesProgressedPerSession": 1
+      },
+      "appliesWhen": "Auto-progression suggestions after each logged session.",
+      "action": "Suggest the next load within the cap; reject manual auto-progression settings above 10% per session.",
+      "userMessage": "You beat your target reps, so next time add about {kg} kg. Small jumps keep progress steady.",
+      "citations": [
+        "ACSM 2009 (position stand: progression models in resistance training), Med Sci Sports Exerc - https://doi.org/10.1249/MSS.0b013e3181915670"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_beginner_limits",
+      "domain": "training",
+      "rule": "Novices (< 6 months of consistent resistance training): 2-3 sessions/week; loads mainly 8-12 RM; weekly sets per muscle capped at 12 for the first 8 weeks; RIR 2-3 on all exercises (no failure on free-weight compounds) while they learn technique and RIR judgement. ACSM 2009 recommend 8-12 RM loads and 2-3 days/week for novices, 3-4 days/week for intermediates, 4-5 days/week for advanced. The 12-set cap, the 8-week window and the RIR band are app conventions.",
+      "params": {
+        "noviceMaxMonthsTraining": 6,
+        "noviceMinSessionsPerWeek": 2,
+        "noviceMaxSessionsPerWeek": 3,
+        "noviceRepMaxLow": 8,
+        "noviceRepMaxHigh": 12,
+        "noviceMaxWeeklySetsPerMuscle": 12,
+        "noviceCapWeeks": 8,
+        "noviceMinRir": 2,
+        "noviceMaxRir": 3,
+        "intermediateSessionsMin": 3,
+        "intermediateSessionsMax": 4,
+        "advancedSessionsMin": 4,
+        "advancedSessionsMax": 5
+      },
+      "appliesWhen": "User's training age is under 6 months.",
+      "action": "Generate a full-body 2-3 day program within these limits; show the limits as defaults that unlock automatically after 8 weeks of consistent logging.",
+      "userMessage": "For your first couple of months, Forge keeps volume moderate and stops sets a couple of reps short of failure. You'll still grow fast while you learn the lifts.",
+      "citations": [
+        "ACSM 2009 (position stand: progression models in resistance training), Med Sci Sports Exerc - https://doi.org/10.1249/MSS.0b013e3181915670"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "training_rep_range_bounds",
+      "domain": "training",
+      "rule": "Hypertrophy sets should use loads of about 6-15 RM. Lighter loads (up to about 30-40 reps) are allowed only when taken close to failure. Iversen 2021 recommend a 6-15 RM range, or 15-40 reps if training to volitional failure. ACSM 2009 favour emphasis on 6-12 RM for hypertrophy.",
+      "params": {
+        "hypertrophyRepMaxLow": 6,
+        "hypertrophyRepMaxHigh": 15,
+        "lightLoadMaxReps": 40,
+        "lightLoadMaxRir": 1
+      },
+      "appliesWhen": "Program templates and set prescriptions with a hypertrophy goal.",
+      "action": "Warn when a hypertrophy set prescribes more than 15 reps at RIR above 1, because it may not be effective.",
+      "userMessage": "High-rep sets work for growth only if you take them close to failure. Otherwise, a slightly heavier weight works better.",
+      "citations": [
+        "Iversen et al. 2021, Sports Med - https://doi.org/10.1007/s40279-021-01490-1",
+        "ACSM 2009 (position stand: progression models in resistance training), Med Sci Sports Exerc - https://doi.org/10.1249/MSS.0b013e3181915670"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "training_deload_triggers",
+      "domain": "training",
+      "rule": "Planned deload every 4-8 weeks, default 6; this matches surveyed athletes, who deload every 5.6 +/- 2.3 weeks. Deloads last 5-7 days (survey mean 6.4 +/- 1.7 days). Trigger an early deload if any of these occur: (a) a key lift's estimated 1RM or reps at a fixed load fall in 2 consecutive sessions; (b) the user reports joint aches or unusual soreness in 2 or more sessions in 7 days; (c) readiness or fatigue check-in is low for 3 or more consecutive days. During a deload: cut weekly sets by about 40-50%, reduce load, add 2-3 RIR, keep frequency and exercises the same. In the Bell 2023 Delphi, experts agreed deloads can be pre-planned, autoregulated or both, and can be triggered by physical or mental fatigue. In Rogerson 2024, athletes cut sets, reps and load, raised RIR, and kept frequency; their common triggers were a scheduled deload, joint aches or soreness, and stalled performance. The exact percentages and trigger counts are app conventions.",
+      "params": {
+        "plannedEveryWeeksMin": 4,
+        "plannedEveryWeeksMax": 8,
+        "plannedEveryWeeksDefault": 6,
+        "durationDaysMin": 5,
+        "durationDaysMax": 7,
+        "perfDropConsecutiveSessions": 2,
+        "jointAcheReportsIn7Days": 2,
+        "lowReadinessConsecutiveDays": 3,
+        "setReductionPctMin": 40,
+        "setReductionPctMax": 50,
+        "rirIncreaseMin": 2,
+        "rirIncreaseMax": 3
+      },
+      "appliesWhen": "Weekly review and after each logged session.",
+      "action": "Schedule planned deloads in the mesocycle; when an early trigger fires, suggest a deload week the user can accept or postpone once.",
+      "userMessage": "Your performance has dipped and recovery looks stretched. A lighter week now usually means you come back stronger. Forge has prepared one for you.",
+      "citations": [
+        "Bell et al. 2023 (Delphi consensus), Sports Med Open - https://doi.org/10.1186/s40798-023-00633-0",
+        "Rogerson et al. 2024, Sports Med Open - https://doi.org/10.1186/s40798-024-00691-y"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "training_pain_stop_and_refer",
+      "domain": "training",
+      "rule": "Pain handling. STOP the exercise immediately for: sharp or sudden pain; a pop, snap or giving-way; numbness, tingling or radiating pain; visible swelling or deformity; or pain above 5/10 during a set. Swap to a pain-free alternative or end the session. Refer to a physiotherapist or doctor if pain lasts more than 7 days, keeps the user awake at night, gets worse from session to session, or follows a fall or impact. Mild discomfort (5/10 or less) that settles by the next morning may be trained around with reduced load. This follows the pain-monitoring model of Silbernagel 2007, where tendon-loading activity continued with no negative effects when pain was monitored, but that model was tested in Achilles tendinopathy. Applying it to general lifting, and the 7-day referral threshold, are app conventions.",
+      "params": {
+        "maxAcceptablePainScore": 5,
+        "painScaleMax": 10,
+        "referIfPainPersistsDays": 7
+      },
+      "appliesWhen": "Pain is reported in a set, the pre-session check, or exercise notes.",
+      "action": "On a stop criterion: end that exercise, log the body area, suggest a substitute that does not load the painful area, and remove that exercise from the next session pending a check-in. On a referral criterion: show a referral card; the app never diagnoses.",
+      "userMessage": "Let's stop this exercise. Sharp pain, numbness or a joint giving way is your body asking for a check. If it hasn't settled within a week, or it's getting worse, please see a physiotherapist or doctor.",
+      "citations": [
+        "Silbernagel et al. 2007, Am J Sports Med - https://doi.org/10.1177/0363546506298279"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "training_concurrent_cardio",
+      "domain": "training",
+      "rule": "Cardio does not need to be limited for hypertrophy or maximal strength: Schumann 2022 (43 studies) found concurrent aerobic plus strength training did not compromise muscle growth (SMD -0.01) or maximal strength (SMD -0.06). Explosive strength was attenuated (SMD -0.28), more so when both were done in the same session than when sessions were at least 3 h apart. For users with power or explosive goals, schedule hard cardio at least 3 h away from lifting.",
+      "params": {
+        "minHoursBetweenCardioAndLiftingForPowerGoals": 3
+      },
+      "appliesWhen": "User schedules both cardio and lifting.",
+      "action": "Do not warn about cardio for hypertrophy or strength goals; for power goals, suggest at least 3 h separation when both fall on the same day.",
+      "userMessage": "Cardio won't hold back your muscle or strength gains. If jumping or sprinting power matters to you, try to keep hard cardio at least 3 hours away from lifting.",
+      "citations": [
+        "Schumann et al. 2022, Sports Med - https://doi.org/10.1007/s40279-021-01587-7"
+      ],
+      "strength": "strong"
+    },
+    {
+      "id": "photo_bf_accuracy_limits",
+      "domain": "photo",
+      "rule": "Photo-based body-fat estimates are always shown as a range, never as a single exact number: point estimate +/- 5 percentage points. The best purpose-built smartphone 2D-photo CNN had a mean absolute error of 2.16 +/- 1.54 points versus DXA, with 95% limits of agreement of -5.5 to +4.7 points (Majmudar 2022, n=134, standardised capture). Ferreira 2025 (n=1273) reported concordance with DXA of CCC >= 0.96 for a dedicated AI-2D method. No peer-reviewed validation was found for general-purpose LLM vision models estimating body fat from casual photos, so Forge's estimate must be labelled as rough and unvalidated. Photo estimates feed safety blocks conservatively (the low-body-fat block uses the point estimate) but never unlock anything.",
+      "params": {
+        "displayRangeHalfWidthPctPoints": 5,
+        "bestValidatedMaePctPoints": 2.16,
+        "loaLowerPctPoints": -5.5,
+        "loaUpperPctPoints": 4.7,
+        "minDaysBetweenPhotoEstimates": 14
+      },
+      "appliesWhen": "Every photo body-fat estimate.",
+      "action": "Display 'about X-Y%' with the disclaimer. Allow at most one estimate per 14 days to discourage body-checking (app convention). Show the trend only when capture conditions match.",
+      "userMessage": "Estimated body fat: about {low}-{high}%. This is a rough visual estimate, not a measurement. Photo estimates can be off by 5 percentage points or more, and lighting, pose and clothing change them. Use it to follow trends, not as an exact number.",
+      "citations": [
+        "Majmudar et al. 2022, NPJ Digit Med - https://doi.org/10.1038/s41746-022-00628-3",
+        "Ferreira et al. 2025, NPJ Digit Med - https://doi.org/10.1038/s41746-024-01380-6"
+      ],
+      "strength": "moderate"
+    },
+    {
+      "id": "photo_capture_standardisation",
+      "domain": "photo",
+      "rule": "Photo estimates are compared only when captured under matched conditions: same time of day (morning, fasted, after the bathroom), same lighting and background, same camera distance and height, same relaxed front, side and back poses, and similar minimal clothing. Validated photo methods used standardised capture protocols (Majmudar 2022), so casual photos are not comparable.",
+      "params": {
+        "requiredViews": 3,
+        "maxCaptureTimeDifferenceHours": 2
+      },
+      "appliesWhen": "Taking or comparing progress photos for analysis.",
+      "action": "Show a capture checklist and ghost-overlay guide; mark comparisons as 'not comparable' when the metadata or checklist does not match.",
+      "userMessage": "For a fair comparison, take photos in the same spot, light and pose, at the same time of day. Small changes in lighting can look like big changes in your body.",
+      "citations": [
+        "Majmudar et al. 2022, NPJ Digit Med - https://doi.org/10.1038/s41746-022-00628-3"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "photo_no_attractiveness_commentary",
+      "domain": "photo",
+      "rule": "Photo analysis outputs only the body-fat range, neutral measurable observations when asked (e.g. symmetry of training development, posture notes), and progress comparisons with the user's own earlier photos. It never comments on attractiveness, sexiness, 'looking better/worse', body ideals, or comparisons with other people or celebrities, and never ranks or scores appearance. Wording is non-stigmatising and size-inclusive (NEDC 2024). The IOC REDs 2023 consensus includes guidance on safe body-composition assessment.",
+      "params": {
+        "allowAppearanceScoring": 0
+      },
+      "appliesWhen": "Every photo-analysis response, including LLM-generated text.",
+      "action": "Constrain the analysis prompt to the allowed outputs; post-filter for appearance or attractiveness language and regenerate if found.",
+      "userMessage": "Compared with 8 weeks ago, your shoulders and upper back show more muscle, and the estimated body-fat range is similar. Nice training progress.",
+      "citations": [
+        "National Eating Disorders Collaboration 2024, Eating Disorder Safe principles, Section 3 (communicators/platforms) - https://gatewayhealth.org.au/wp-content/uploads/2024/10/Eating-Disorder-Safe-Principles_Section-3_Comms-Media-Platforms.pdf",
+        "Mountjoy et al. 2023 (IOC consensus statement on REDs), Br J Sports Med - https://doi.org/10.1136/bjsports-2023-106994"
+      ],
+      "strength": "expert-opinion"
+    },
+    {
+      "id": "photo_feature_blocked_groups",
+      "domain": "photo",
+      "rule": "Photo body-fat estimation is disabled for users under 18, pregnant users, and for at least 30 days after a positive SCOFF screen. It requires explicit opt-in consent, which can be revoked at any time; photos stay on the device unless the user exports them.",
+      "params": {
+        "minAge": 18,
+        "lockDaysAfterPositiveScoff": 30
+      },
+      "appliesWhen": "User opens the photo-analysis feature.",
+      "action": "Check the age, pregnancy and SCOFF flags before enabling; show the consent screen on first use.",
+      "userMessage": "Photo body-fat estimates aren't available right now. You can still log training, nutrition and progress photos for your own records.",
+      "citations": [
+        "Golden et al. 2016 (AAP clinical report), Pediatrics - https://doi.org/10.1542/peds.2016-1649",
+        "NICE 2017 (NG69, recs. 1.2.4-1.2.6), Eating disorders: recognition and treatment - https://www.nice.org.uk/guidance/ng69/chapter/Recommendations",
+        "Institute of Medicine 2009, Weight Gain During Pregnancy: Reexamining the Guidelines - https://doi.org/10.17226/12584"
+      ],
+      "strength": "expert-opinion"
+    }
+  ]
+}

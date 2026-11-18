@@ -1,0 +1,793 @@
+{
+  "id": "nippard_ultimate_ppl_youtube_2023",
+  "name": "The Ultimate Push Pull Legs Series (2023, free YouTube version)",
+  "author": "Jeff Nippard",
+  "isFree": true,
+  "category": "HYPERTROPHY",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 6,
+  "sessionMinutes": 75,
+  "durationWeeks": 6,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable",
+    "machines",
+    "pullup_bar"
+  ],
+  "summary": "A six-day bodybuilding-focused push/pull/legs week that Nippard published free as a six-video YouTube series in 2023, with each muscle trained twice a week. The powerlifts get only one hard top set a week plus back-off work, and most sets are taken close to or to failure, with techniques like feeder sets, lengthened partials and inter-set stretching.",
+  "evidenceNote": "Each muscle is trained twice a week for roughly 10-15 hard sets (for example chest about 11, quads about 12), many at RPE 9-10, which fits current hypertrophy evidence for intermediates. Strength work is deliberately minimal (one top set per lift per week), so it is not a strength program. Some techniques rest on early or limited evidence: inter-set stretching and lengthened partials are backed by a few small studies the author cites, and the author himself says the press-around's end-range contraction has never been directly studied. Six days a week is a heavy time commitment.",
+  "sources": [
+    {
+      "title": "The Ultimate Push Pull Legs Series (2023) - official YouTube playlist",
+      "url": "https://www.youtube.com/playlist?list=PLp4G6oBUcv8w-v9tpZeF8GSlGcyl_J_gx",
+      "kind": "video"
+    },
+    {
+      "title": "The Ultimate Push Workout For Muscle Growth [Chest, Shoulders, Triceps] (2023)",
+      "url": "https://www.youtube.com/watch?v=c3pbe3qzatQ",
+      "kind": "video"
+    },
+    {
+      "title": "The Ultimate PULL Workout For Muscle Growth [Back, Biceps, Rear Delts] (2023)",
+      "url": "https://www.youtube.com/watch?v=spKGN0XzErU",
+      "kind": "video"
+    },
+    {
+      "title": "The Ultimate Science-Based Leg Day For Muscle Growth (2023)",
+      "url": "https://www.youtube.com/watch?v=H6mRkx1x77k",
+      "kind": "video"
+    },
+    {
+      "title": "The Perfect Push Workout (According To Science)",
+      "url": "https://www.youtube.com/watch?v=b6ouj88iBZs",
+      "kind": "video"
+    },
+    {
+      "title": "The Perfect Pull Workout (According To Science)",
+      "url": "https://www.youtube.com/watch?v=DXL18E7QRbk",
+      "kind": "video"
+    },
+    {
+      "title": "The Perfect Leg Day (According To Science)",
+      "url": "https://www.youtube.com/watch?v=8zWDuWKdBZU",
+      "kind": "video"
+    },
+    {
+      "title": "The Ultimate Push Workout For Muscle Growth (2023) - jeffnippard.com blog",
+      "url": "https://jeffnippard.com/blogs/news/the-ultimate-push-workout-for-muscle-growth-chest-shoulders-triceps-2023",
+      "kind": "article"
+    },
+    {
+      "title": "The Ultimate PULL Workout For Muscle Growth (2023) - jeffnippard.com blog",
+      "url": "https://jeffnippard.com/blogs/news/the-ultimate-pull-workout-for-muscle-growth-back-biceps-rear-delts-2023",
+      "kind": "article"
+    },
+    {
+      "title": "Caption transcript: The Ultimate Science-Based Leg Day For Muscle Growth (2023) - Rosetta",
+      "url": "https://rosetta.to/u/jeffnippard/the-ultimate-science-based-leg-day-for-muscle-growth-2023",
+      "kind": "article"
+    },
+    {
+      "title": "Caption transcript: The Perfect Push Workout (According To Science) - Rosetta",
+      "url": "https://rosetta.to/u/jeffnippard/the-perfect-push-workout-according-to-science",
+      "kind": "article"
+    },
+    {
+      "title": "Caption transcript: The Perfect Pull Workout (According To Science) - Rosetta",
+      "url": "https://rosetta.to/u/jeffnippard/the-perfect-pull-workout-according-to-science",
+      "kind": "article"
+    },
+    {
+      "title": "Caption transcript: The Perfect Leg Day (According To Science) - Rosetta",
+      "url": "https://rosetta.to/u/jeffnippard/the-perfect-leg-day-according-to-science",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Six sessions in playlist order: Push 1, Pull 1, Legs 1, Push 2, Pull 2, Legs 2. The free videos do not say where rest days go. The author says these workouts make up Phase 1 (first 6 weeks) of his paid program, which also comes in 4- and 5-day versions that are not published free.",
+  "progression": {
+    "type": "CUSTOM",
+    "description": "Stated per exercise, with no single global rule. Top sets (squat 1x2-4 at 85-90% 1RM, RPE 8-9; bench 1x3-5 with about 1 rep left; deadlift 1x5 at RPE 8-9) are followed by back-off sets loaded off the top set (paused squat about 75%, Larsen press about 75%, stiff-legged deadlift about 50-60%). For load-focused lifts (EZ-bar curl, floor skull crusher, decline crunch) track weight and reps and add one or the other week to week. Pull-up AMRAP: match or beat last week's reps, adding at least 1 rep a week when cutting. Optional deadlift linear periodization: 5, 4, 3, 2, 1 reps over weeks 1-5 while adding weight each week. Hypertrophy-only lifters can keep the deadlift at 5 reps and add weight or improve technique. The author gives no kg or lb increments, so incrementKg is null.",
+    "incrementKg": {
+      "upper": null,
+      "lower": null
+    },
+    "deload": "Not specified for the free 6-session week. In the optional deadlift linear periodization, week 6 is a deload: 4 reps at a lighter load. The author says the paid 12-week program ends with a full deload week, but that program is out of scope."
+  },
+  "notes": "Source of record: Push 1 and Pull 1 from Nippard's own blog posts (the written versions of those videos); Legs 1, Push 2, Pull 2 and Legs 2 from the video audio via caption transcripts. The playlist order and Legs 2's closing line ('that's a wrap for the six part push-pull leg series') confirm that the six videos form one week. Only the free Phase 1 week is represented: the paid Ultimate Push Pull Legs System (Phases 2-3, spreadsheet, 4- and 5-day versions) is out of scope. The author does not state session length, so sessionMinutes is an estimate. Warm-up: about 5 min on a treadmill or StairMaster before the push and pull days (Pull 1 adds about 10 arm circles and 10 cable external rotations per side) and 5-10 min before the leg days, plus quick dynamic stretches, then a warm-up pyramid before the heavy compound lifts.",
+  "days": [
+    {
+      "name": "Push 1",
+      "focus": "Chest, shoulders, triceps (bench strength top set)",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press (top set)",
+          "sets": 1,
+          "repsLow": 3,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RPE",
+            "value": 9
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Single max-effort top set after a warm-up pyramid: bar speed should slow and you could maybe get 1 more rep. Substitute a flat dumbbell or machine press with the same sets and reps.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Larsen Press",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Bench press with the legs up and no leg drive, at about 75% of the top-set weight. Slightly closer grip, 1-2 s down and 1-2 s up.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Standing Arnold Press",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Load progressively like an overhead press: squeeze the glutes and drive through the heels. A belt and straps help.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Press-Around (+ pec stretch)",
+          "sets": 2,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "One-arm cable press past the midline. After each arm's set, hold a static pec stretch on that side for 30 s at about 7/10 intensity, then switch.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Cross-Body Cable Y-Raise",
+          "sets": 3,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Start with the cable across the body, like drawing a sword, and raise out and back on a diagonal. Do not turn it into a front raise.",
+          "optional": false
+        },
+        {
+          "exerciseId": "triceps_pushdown",
+          "name": "Squeeze-Only Pressdown (superset A1)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 0,
+          "notes": "Bottom-half partials (the lockout part only). Go straight into the stretch-only overhead extension with no rest.",
+          "optional": false
+        },
+        {
+          "exerciseId": "overhead_triceps_extension",
+          "name": "Stretch-Only Overhead Extension (superset A2)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "First-half partials in the stretched position only.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Cross-Body Triceps Extension",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Triceps extension with the arm across the body, for triceps work at a less conventional shoulder angle. The blog does not name the equipment.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Pull 1",
+      "focus": "Lats, upper back, rear delts, biceps",
+      "exercises": [
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Lat Pulldown (feeder sets + 2 failure sets)",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "RPE",
+            "value": 10
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "First do 3 feeder sets of 10 at about RPE 4-5, 6-7 and 7-8 (resting 1-2 min). Then 1 set of 10 to failure, rest 2-3 min, and a second failure set with the same weight (usually 7-8 reps), then strip about 30% for a mini drop set of 4-5 reps. Middle grip, straps or a thumbless grip.",
+          "optional": false
+        },
+        {
+          "exerciseId": "chest_supported_row",
+          "name": "Omni-Grip Chest-Supported Row",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Set 1 wide grip, set 2 slightly closer grip, set 3 neutral or underhand grip.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Bottom-Half DB Pullover (+ static lat stretch)",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 30,
+          "notes": "After each set, stretch each lat for 30 s (swap which side goes first on set 2), then rest 30 s.",
+          "optional": false
+        },
+        {
+          "exerciseId": "face_pull",
+          "name": "Omni-Direction Face Pull",
+          "sets": 3,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Set 1 cable low, pulling low to high; set 2 at shoulder height; set 3 high, pulling down toward the eyes.",
+          "optional": false
+        },
+        {
+          "exerciseId": "barbell_curl",
+          "name": "EZ-Bar Biceps Curl",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Heavy. Track the numbers and add weight or reps each week.",
+          "optional": false
+        },
+        {
+          "exerciseId": "preacher_curl",
+          "name": "Bottom-Half DB Preacher Curl",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Stretched-position partials, one arm at a time: weaker arm first, then match the reps with the stronger arm.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Legs 1",
+      "focus": "Quads, hamstrings, glutes, calves, abs (squat strength top set)",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat (top set)",
+          "sets": 1,
+          "repsLow": 2,
+          "repsHigh": 4,
+          "intensity": {
+            "type": "PERCENT_1RM",
+            "value": 0.85
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "After a 4-5 set warm-up pyramid, one set at 85-90% 1RM, about RPE 8-9. Hypertrophy-only option: hack squat (first choice) or Bulgarian split squat (second) for 4-6 reps.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Paused Squat (back-off)",
+          "sets": 2,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "About 75% of the top-set weight, with a 1-2 s pause in the hole and an explosive drive up.",
+          "optional": false
+        },
+        {
+          "exerciseId": "romanian_deadlift",
+          "name": "Barbell Romanian Deadlift",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Keep the bar tight to the legs and reverse at about knee to mid-shin. Cut the top 10-25% for more hamstring focus.",
+          "optional": false
+        },
+        {
+          "exerciseId": "walking_lunge",
+          "name": "Dumbbell Walking Lunge",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "10 per leg (20 strides). Knee touches the floor, control the negative, and use straps so grip does not limit the load.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_leg_curl",
+          "name": "Seated Leg Curl",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Optional toe positions: out on set 1, in on set 2, straight on set 3. Lean forward to feel the stretch.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Leg Press Toe Press",
+          "sets": 4,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Optional: toes out on set 1, in on set 2, straight on sets 3-4.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Decline Plate Crunch",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Round the lower back and squeeze the abs. Add weight or a rep from session to session.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Push 2",
+      "focus": "Upper chest, shoulders, triceps",
+      "exercises": [
+        {
+          "exerciseId": "incline_bench_press",
+          "name": "Close-Grip Barbell Incline Bench Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "setScheme": [
+            {
+              "reps": 8,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 5,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "percent": null,
+              "of": null,
+              "amrap": false
+            }
+          ],
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Undulating sets: a moderate set of 8, a heavier set of 5, then a light pump set of 15. Rest at least 3-4 min before the set of 5. Grip just outside shoulder width.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Machine Shoulder Press",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RPE",
+            "value": 9
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "First 2 sets at about RPE 9, last set to failure. Arms below parallel, thumbless grip, constant tension.",
+          "optional": false
+        },
+        {
+          "exerciseId": "skull_crusher",
+          "name": "Floor Reset Skull Crusher",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Strength-focused: the bar comes to a dead stop on the floor each rep. Track the numbers and add weight or reps each week.",
+          "optional": false
+        },
+        {
+          "exerciseId": "cable_fly",
+          "name": "Bent-Over Cable Pec Fly",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Hinge forward at the hips and fly straight out for stability.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lateral_raise",
+          "name": "Machine Lateral Raise",
+          "sets": 3,
+          "repsLow": 20,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "First 5 reps with a slow 5 s eccentric, then 15 constant-tension reps (1 s up, 1 s down).",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Plate Front Raise",
+          "sets": 2,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Turn the plate like a steering wheel (internal rotation) to bring in more side delt. Substitute a dumbbell Y-raise if it hurts.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Diamond Push-Up",
+          "sets": 1,
+          "repsLow": null,
+          "repsHigh": null,
+          "intensity": {
+            "type": "RIR",
+            "value": 0
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "One all-out AMRAP set to failure, with a controlled tempo.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Pull 2",
+      "focus": "Lats, upper back, traps, rear delts, biceps",
+      "exercises": [
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "One-Arm Half-Kneeling Lat Pulldown",
+          "sets": 3,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Keep the forearm in line with the cable and stop at the midline.",
+          "optional": false
+        },
+        {
+          "exerciseId": "pull_up",
+          "name": "Pull-Up",
+          "sets": 1,
+          "repsLow": null,
+          "repsHigh": null,
+          "intensity": {
+            "type": "RIR",
+            "value": 0
+          },
+          "lastSetAmrap": true,
+          "restSeconds": null,
+          "notes": "One all-out AMRAP set. Each week match or beat last week's reps (add at least 1 when cutting). Grip about 1.5x shoulder width. Use a band or machine assistance if needed.",
+          "optional": false
+        },
+        {
+          "exerciseId": "dumbbell_row",
+          "name": "Kroc Row",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "A looser dumbbell row with a more upright torso and controlled body English. Stricter form is fine if you prefer.",
+          "optional": false
+        },
+        {
+          "exerciseId": "shrug",
+          "name": "Cable Shrug-In",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Shrug up and in.",
+          "optional": false
+        },
+        {
+          "exerciseId": "rear_delt_fly",
+          "name": "Reverse Pec Deck",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Sweep out and back. Optionally change grip each set: neutral, then pronated, then internally rotated.",
+          "optional": false
+        },
+        {
+          "exerciseId": "cable_curl",
+          "name": "Overhead Cable Biceps Curl",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Kneel and curl with the arm out to the side and overhead. You may add a couple of extra curl sets if you need more biceps volume.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Legs 2",
+      "focus": "Posterior chain, quads, calves, abs (deadlift strength top set)",
+      "exercises": [
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift (top set)",
+          "sets": 1,
+          "repsLow": 5,
+          "repsHigh": 5,
+          "intensity": {
+            "type": "RPE",
+            "value": 8.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "One heavy top set at RPE 8-9 after a warm-up pyramid. Substitutes: trap bar deadlift, barbell hip thrust, or Bulgarian split squat.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Stiff-Legged Deadlift (back-off)",
+          "sets": 2,
+          "repsLow": 8,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "About 50-60% of the top-set weight. Hips high, knees straighter. Start light and stay shy of failure until the technique is comfortable.",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_press",
+          "name": "Leg Press",
+          "sets": 4,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Medium stance, full depth, constant tension (no lockout). Rest no more than 2 min.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Glute Ham Raise",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Cut the top quarter. Substitute a counterweighted setup on a lat pulldown or Nordic ham curls.",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_extension",
+          "name": "Slow Eccentric Leg Extension",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 10,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "3 s eccentric on every rep.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_calf_raise",
+          "name": "Seated Calf Raise",
+          "sets": 4,
+          "repsLow": 15,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Replacing it with standing calf raises is reasonable if there is no machine.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Roman Chair Leg Raise",
+          "sets": 3,
+          "repsLow": 10,
+          "repsHigh": 20,
+          "intensity": {
+            "type": "NONE",
+            "value": null
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Go close to failure and curl the pelvis up. Bend the knees if you cannot get 10 straight-leg reps. Slow the negative to 2-3 s if 20 is easy.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://www.youtube.com/playlist?list=PLp4G6oBUcv8w-v9tpZeF8GSlGcyl_J_gx",
+      "https://jeffnippard.com/blogs/news/the-ultimate-push-workout-for-muscle-growth-chest-shoulders-triceps-2023",
+      "https://jeffnippard.com/blogs/news/the-ultimate-pull-workout-for-muscle-growth-back-biceps-rear-delts-2023",
+      "https://rosetta.to/u/jeffnippard/the-ultimate-science-based-leg-day-for-muscle-growth-2023",
+      "https://rosetta.to/u/jeffnippard/the-perfect-push-workout-according-to-science",
+      "https://rosetta.to/u/jeffnippard/the-perfect-pull-workout-according-to-science",
+      "https://rosetta.to/u/jeffnippard/the-perfect-leg-day-according-to-science"
+    ],
+    "changes": [
+      "All 6 days checked exercise by exercise (names, order, sets, reps, set schemes, RPE/percent targets, AMRAP sets, supersets, stated rests, back-off percentages, per-exercise progression, deadlift linear periodization and week-6 deload) against Nippard's two blog posts and caption transcripts of the other four videos: no prescription errors found.",
+      "Confirmed the playlist holds exactly these six video IDs in the listed order, that Legs 1 closes the 'first half of the full week' and Legs 2 closes 'the six part' series, and that Phase 1 of the paid program 'lasts for the first 6 weeks' (Push 2 and Pull 2 videos), which supports durationWeeks 6 and daysPerWeek 6.",
+      "notes: the warm-up was given as 5-10 min every day; the sources say about 5 min on push and pull days (Pull 1 also lists 10 arm circles and 10 cable external rotations per side) and 5-10 min only on leg days. Fixed.",
+      "Push 1 Cross-Body Triceps Extension notes: removed 'Cable', because the blog does not name the equipment.",
+      "evidenceNote: the author does not call inter-set stretching or stretch-only partials weakly supported (he cites studies for both); he only says the press-around's end-range benefit has never been directly studied. Reworded so it no longer puts that caveat in his mouth.",
+      "isFree true confirmed: all six workouts are free on YouTube, and Push 1 and Pull 1 are also free on jeffnippard.com. The paid 12-week system (Phases 2-3, spreadsheet, 4- and 5-day versions) stays out of scope."
+    ]
+  }
+}

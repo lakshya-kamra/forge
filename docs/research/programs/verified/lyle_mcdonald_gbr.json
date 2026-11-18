@@ -1,0 +1,443 @@
+{
+  "id": "lyle_mcdonald_gbr",
+  "name": "Generic Bulking Routine (GBR)",
+  "author": "Lyle McDonald",
+  "isFree": true,
+  "category": "HYPERTROPHY",
+  "level": "INTERMEDIATE",
+  "daysPerWeek": 4,
+  "sessionMinutes": 75,
+  "durationWeeks": 8,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable",
+    "machines",
+    "pullup_bar"
+  ],
+  "summary": "A 4-day upper/lower split that trains each muscle twice a week with heavy 6-8 rep sets followed by lighter 10-15 rep sets. It runs in 8-week cycles: two easier ramp-up weeks, then six weeks of adding weight, then you reset and go again.",
+  "evidenceNote": "Lyle's 2020 article targets roughly 6-8 sets (40-70 reps) per muscle per session, trained twice a week and stopped 1-2 reps short of failure, which matches current hypertrophy evidence well. As written here (low end of each set range) it is about 5 hard sets per muscle per session (about 10 per week), rising to about 7 per session at the top of the ranges. Direct arm work is minimal (1-2 sets each of biceps and triceps per upper session), exercises are mostly left to the lifter, and JC Deen (not Lyle in the verified text) says it is not for beginners.",
+  "sources": [
+    {
+      "title": "A Look at Some Popular Hypertrophy Programs (Lyle McDonald, 2008, updated 2020)",
+      "url": "https://bodyrecomposition.com/muscle-gain/popular-hypertrophy-programs",
+      "kind": "article"
+    },
+    {
+      "title": "Lyle McDonald's Bulking Routine (JC Deen, reproduces Lyle's forum post)",
+      "url": "https://jcdfitness.com/2009/01/lyle-mcdonalds-bulking-routine/",
+      "kind": "article"
+    }
+  ],
+  "schedule": "Mon Lower, Tue Upper, Thu Lower, Fri Upper. The Thu/Fri workouts either repeat Mon/Tue or use slight substitutions (e.g. a deadlift/leg press combo on Thursday; move incline and pulldown to the start of the second upper day). Doing each workout every 5th day is acceptable for people with poorer recovery. Session length is not stated; 75 min is an estimate.",
+  "progression": {
+    "type": "DOUBLE_PROGRESSION",
+    "description": "Uses Lyle's 2020-updated article as the current version, with the exercise template from his forum post as reproduced by JC Deen. 8-week cycle: 2 submaximal run-up weeks, then 6 weeks of trying to add weight to the bar as consistently as possible; then drop the weight and start a new cycle, aiming for a higher peak. Sets stop 1-2 reps short of failure (some will reach failure as fatigue builds). Add weight once you reach the top of the rep range (JC Deen's restatement; a reader quotes Lyle as adding weight when the first set reaches the top of the range with a rep or two to spare). No increment is specified.",
+    "incrementKg": {
+      "upper": null,
+      "lower": null
+    },
+    "deload": "Built into the cycle: after each 8-week cycle, drop the weights and start over. If the volume is too much, use 2-3x6-8 for the main lifts and 1-2x10-12 for the secondary lifts."
+  },
+  "days": [
+    {
+      "name": "Lower (Mon)",
+      "focus": "Squat, hamstrings, calves",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "SLDL or leg curl",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set. Back extensions are a substitute if SLDLs are a problem.",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_press",
+          "name": "Leg press",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Another leg curl",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "standing_calf_raise",
+          "name": "Calf raise",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_calf_raise",
+          "name": "Seated calf",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Upper (Tue)",
+      "focus": "Bench, row, upper body",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Flat bench",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Row",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set. Any row variation.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Incline bench or shoulder press",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Pulldown/chin",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set. Chin-ups are the listed alternative.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Triceps",
+          "sets": 1,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Author lists 1-2 sets; if that is too much, drop a set. Any triceps isolation.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Biceps",
+          "sets": 1,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Author lists 1-2 sets; if that is too much, drop a set. Any biceps isolation.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Lower (Thu)",
+      "focus": "Repeat Monday or slight substitutions (e.g. deadlift/leg press combo)",
+      "exercises": [
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "SLDL or leg curl",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set. Back extensions are a substitute if SLDLs are a problem.",
+          "optional": false
+        },
+        {
+          "exerciseId": "leg_press",
+          "name": "Leg press",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Another leg curl",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "standing_calf_raise",
+          "name": "Calf raise",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "seated_calf_raise",
+          "name": "Seated calf",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "Upper (Fri)",
+      "focus": "Repeat Tuesday or slight substitutions (incline and pulldown first)",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Flat bench",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Row",
+          "sets": 3,
+          "repsLow": 6,
+          "repsHigh": 8,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 180,
+          "notes": "Author lists 3-4 sets; if that is too much, drop a set. Any row variation.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Incline bench or shoulder press",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set.",
+          "optional": false
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Pulldown/chin",
+          "sets": 2,
+          "repsLow": 10,
+          "repsHigh": 12,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 120,
+          "notes": "Author lists 2-3 sets; if that is too much, drop a set. Chin-ups are the listed alternative.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Triceps",
+          "sets": 1,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Author lists 1-2 sets; if that is too much, drop a set. Any triceps isolation.",
+          "optional": false
+        },
+        {
+          "exerciseId": null,
+          "name": "Biceps",
+          "sets": 1,
+          "repsLow": 12,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1
+          },
+          "lastSetAmrap": false,
+          "restSeconds": 90,
+          "notes": "Author lists 1-2 sets; if that is too much, drop a set. Any biceps isolation.",
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "verdict": "corrected",
+    "checkedAgainst": [
+      "https://bodyrecomposition.com/muscle-gain/popular-hypertrophy-programs",
+      "https://jcdfitness.com/2009/01/lyle-mcdonalds-bulking-routine/"
+    ],
+    "changes": [
+      "evidenceNote: replaced 'About 6-8 sets per muscle per session (12-16 per week)' with the actual template volume; at the chosen low-end set counts each muscle gets about 5 sets per session (e.g. squat 3 + leg press 2, bench 3 + incline 2), about 10 per week; 6-8 is Lyle's stated target from the 2020 article.",
+      "evidenceNote: the not-for-beginners statement is JC Deen's, not Lyle's; reattributed.",
+      "Verified unchanged: all exercises, set ranges (3-4x6-8 main, 2-3x10-12 secondary, 1-2x12-15 arms), rests (3/2/1.5 min = 180/120/90 s), Mon/Tue/Thu/Fri layout and Thu/Fri substitution wording, reduced-volume option (2-3x6-8 and 1-2x10-12), RIR 1 (forum text: about a rep short of failure; 2020 article: 1-2 short), 8-week cycle of 2 run-up weeks + 6 progression weeks, every-5th-day option, no AMRAP sets, no stated increment, isFree true (both sources free).",
+      "Not changed but noted: the template itself is only available via JC Deen's reproduction of Lyle's forum post; Lyle's own article gives the cycle/volume/failure rules but no day-by-day template. The original forum post could not be located in this pass (web search budget exhausted)."
+    ]
+  }
+}

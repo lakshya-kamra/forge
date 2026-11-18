@@ -1,0 +1,782 @@
+{
+  "id": "nuckols_beginner_hypertrophy",
+  "name": "Greg Nuckols Beginner Program (Hypertrophy)",
+  "author": "Greg Nuckols",
+  "isFree": true,
+  "category": "HYPERTROPHY",
+  "level": "BEGINNER",
+  "daysPerWeek": 3,
+  "sessionMinutes": 60,
+  "durationWeeks": 12,
+  "equipment": [
+    "barbell",
+    "rack",
+    "bench",
+    "dumbbells",
+    "cable",
+    "machines",
+    "pullup_bar"
+  ],
+  "summary": "A 12-week, 3-day beginner program that rotates four different full-body workouts, each with three main lifts and two accessories done as a descending-rep pyramid of three sets. This is the hypertrophy variation; the strength variation uses 3-5 / 5-8 / 8-10 on the main lifts, accessories are the same.",
+  "evidenceNote": "Stopping 1-2 reps short of failure on every set fits current evidence for beginners, and the pyramid gives both heavy and moderate-rep exposure. Because four workouts rotate over three days, each main lift is trained less than once a week and most muscles get roughly 4-9 hard sets weekly, which is on the low side for hypertrophy but fine for new lifters. No deload or stall rule is given.",
+  "sources": [
+    {
+      "title": "Greg Nuckols Beginner Program (Boostcamp, free program page, updated Oct 2026)",
+      "url": "https://www.boostcamp.app/greg-nuckols/greg-nuckols-beginner-program",
+      "kind": "article"
+    },
+    {
+      "title": "Greg Nuckols Beginner Program - detailed program guide (Boostcamp)",
+      "url": "https://www.boostcamp.app/greg-nuckols-beginner-program",
+      "kind": "article"
+    }
+  ],
+  "schedule": "3 non-consecutive days (Mon/Wed/Fri). Workouts A, B, C, D rotate continuously: week 1 A-B-C, week 2 D-A-B, week 3 C-D-A, and so on for 12 weeks.",
+  "progression": {
+    "type": "DOUBLE_PROGRESSION",
+    "description": "Program text: within each rep range, keep the same weight and aim for more reps each week until you have mastered it; e.g. in a 5-8 range, stay at the weight until you can do 9 reps, then go heavier but still able to do at least 5. In-app weekly note: start with last week's weights, aim for 1 more rep than before until you hit the top of the target range, then increase weight by 5-10 lb (about 2.5-5 kg here) and work back up within the range. Each set of the pyramid progresses on its own rep range.",
+    "incrementKg": {
+      "upper": 2.5,
+      "lower": 5
+    },
+    "deload": "No deload or stall rule is stated by the author."
+  },
+  "days": [
+    {
+      "name": "Workout A",
+      "focus": "Bench, row, squat, arms",
+      "exercises": [
+        {
+          "exerciseId": "bench_press",
+          "name": "Bench Press (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "barbell_row",
+          "name": "Bent Over Row (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "back_squat",
+          "name": "Squat (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "dumbbell_curl",
+          "name": "Bicep Curl (Dumbbell)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": null,
+          "name": "Tricep Extension (Dumbbell)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Workout B",
+      "focus": "Shoulder press, pulldown, deadlift, lunge, core",
+      "exercises": [
+        {
+          "exerciseId": "seated_dumbbell_press",
+          "name": "Seated Shoulder Press (Dumbbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "lat_pulldown",
+          "name": "Lat Pulldown",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "conventional_deadlift",
+          "name": "Deadlift (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": null,
+          "name": "Lunge (Dumbbell)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": null,
+          "name": "Russian Twist (Dumbbell)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Workout C",
+      "focus": "DB bench, machine row, leg press, arms",
+      "exercises": [
+        {
+          "exerciseId": "dumbbell_bench_press",
+          "name": "Bench Press (Dumbbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": null,
+          "name": "Seated Row (Machine)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "leg_press",
+          "name": "Leg Press",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "hammer_curl",
+          "name": "Hammer Curl",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "triceps_pushdown",
+          "name": "Tricep Pushdown (Cable)",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Workout D",
+      "focus": "Overhead press, pull-up, good morning, goblet squat, core",
+      "exercises": [
+        {
+          "exerciseId": "overhead_press",
+          "name": "Overhead Press (Barbell)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull_up",
+          "name": "Pull-Up (Assisted)",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure. Use assistance as needed.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "good_morning",
+          "name": "Good Morning",
+          "sets": 3,
+          "repsLow": 5,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 8,
+              "repsLow": 5,
+              "repsHigh": 8,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 8,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "goblet_squat",
+          "name": "Goblet Squat",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        },
+        {
+          "exerciseId": "hanging_leg_raise",
+          "name": "Hanging Leg Raise",
+          "sets": 3,
+          "repsLow": 8,
+          "repsHigh": 15,
+          "intensity": {
+            "type": "RIR",
+            "value": 1.5
+          },
+          "lastSetAmrap": false,
+          "restSeconds": null,
+          "notes": "Pyramid: heaviest first set, then ~10% lighter, then ~10% lighter again. Stop 1-2 reps shy of failure.",
+          "optional": false,
+          "setScheme": [
+            {
+              "reps": 10,
+              "repsLow": 8,
+              "repsHigh": 10,
+              "amrap": false
+            },
+            {
+              "reps": 12,
+              "repsLow": 10,
+              "repsHigh": 12,
+              "amrap": false
+            },
+            {
+              "reps": 15,
+              "repsLow": 12,
+              "repsHigh": 15,
+              "amrap": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "verdict": "confirmed",
+    "checkedAgainst": [
+      "https://www.boostcamp.app/coaches/greg-nuckols/greg-nuckols-beginner-program",
+      "https://www.boostcamp.app/greg-nuckols/greg-nuckols-beginner-program",
+      "https://www.boostcamp.app/greg-nuckols-beginner-program"
+    ],
+    "changes": [
+      "No prescription changes. Checked against the full 12-week program data embedded in the official Boostcamp page (programData, variation Hypertrophy, updated_at 2026-10-09, pricing type free): all 20 exercises, 3 single sets each, main lifts 5-8/8-12/12-15, accessories 8-10/10-12/12-15, no AMRAP, no rest times, no percentages, weekdays Mon/Wed/Fri, A-B-C / D-A-B / C-D-A rotation (36 workouts, each workout 9 times), pyramid note (~10% drops, 1-2 reps shy of failure), progression note (+1 rep/week to top of range then +5-10 lb), no deload rule - all match.",
+      "Note only: the second source URL (greg-nuckols-beginner-program detailed guide) now 308-redirects to the same Boostcamp program page, so it is not a separate guide. incrementKg 2.5/5 is an app-side conversion of the source 5-10 lb, not an author number."
+    ]
+  }
+}
