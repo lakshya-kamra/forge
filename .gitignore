@@ -1,0 +1,21 @@
+# Machine-local and secret
+local.properties
+keystore.properties
+*.jks
+*.keystore
+
+# Build output
+.gradle/
+.kotlin/
+build/
+app/build/
+captures/
+*.apk
+*.aab
+
+# IDE
+.idea/
+*.iml
+
+# Claude Code worktrees
+.claude/worktrees/

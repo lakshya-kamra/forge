@@ -1,0 +1,765 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "de51958933bdf46dd3f593f51fd1c502",
+    "entities": [
+      {
+        "tableName": "food_entry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `localDate` TEXT NOT NULL, `name` TEXT NOT NULL, `brand` TEXT, `servingDesc` TEXT NOT NULL, `quantity` REAL NOT NULL, `kcal` REAL NOT NULL, `proteinG` REAL NOT NULL, `carbsG` REAL NOT NULL, `fatG` REAL NOT NULL, `fiberG` REAL NOT NULL, `source` TEXT NOT NULL, `mealSlot` TEXT NOT NULL, `photoPath` TEXT, `confidence` TEXT, `estimateNote` TEXT, `rawKcal` REAL, `barcode` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localDate",
+            "columnName": "localDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brand",
+            "columnName": "brand",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "servingDesc",
+            "columnName": "servingDesc",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantity",
+            "columnName": "quantity",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kcal",
+            "columnName": "kcal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinG",
+            "columnName": "proteinG",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsG",
+            "columnName": "carbsG",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatG",
+            "columnName": "fatG",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fiberG",
+            "columnName": "fiberG",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mealSlot",
+            "columnName": "mealSlot",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "photoPath",
+            "columnName": "photoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "confidence",
+            "columnName": "confidence",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "estimateNote",
+            "columnName": "estimateNote",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "rawKcal",
+            "columnName": "rawKcal",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "barcode",
+            "columnName": "barcode",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_food_entry_localDate",
+            "unique": false,
+            "columnNames": [
+              "localDate"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_food_entry_localDate` ON `${TABLE_NAME}` (`localDate`)"
+          },
+          {
+            "name": "index_food_entry_timestamp",
+            "unique": false,
+            "columnNames": [
+              "timestamp"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_food_entry_timestamp` ON `${TABLE_NAME}` (`timestamp`)"
+          }
+        ]
+      },
+      {
+        "tableName": "weight_entry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `localDate` TEXT NOT NULL, `kg` REAL NOT NULL, `bodyFatPct` REAL, `note` TEXT, `source` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localDate",
+            "columnName": "localDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kg",
+            "columnName": "kg",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bodyFatPct",
+            "columnName": "bodyFatPct",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_weight_entry_timestamp",
+            "unique": false,
+            "columnNames": [
+              "timestamp"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_weight_entry_timestamp` ON `${TABLE_NAME}` (`timestamp`)"
+          },
+          {
+            "name": "index_weight_entry_localDate",
+            "unique": false,
+            "columnNames": [
+              "localDate"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_weight_entry_localDate` ON `${TABLE_NAME}` (`localDate`)"
+          }
+        ]
+      },
+      {
+        "tableName": "program",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `author` TEXT, `sourceFile` TEXT, `notes` TEXT, `createdAt` INTEGER NOT NULL, `isActive` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "sourceFile",
+            "columnName": "sourceFile",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "program_day",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `programId` INTEGER NOT NULL, `name` TEXT NOT NULL, `orderIdx` INTEGER NOT NULL, `focus` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "programId",
+            "columnName": "programId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderIdx",
+            "columnName": "orderIdx",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "focus",
+            "columnName": "focus",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_program_day_programId",
+            "unique": false,
+            "columnNames": [
+              "programId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_program_day_programId` ON `${TABLE_NAME}` (`programId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "program_exercise",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dayId` INTEGER NOT NULL, `name` TEXT NOT NULL, `orderIdx` INTEGER NOT NULL, `sets` INTEGER NOT NULL, `repLow` INTEGER NOT NULL, `repHigh` INTEGER NOT NULL, `rirTarget` REAL, `restSeconds` INTEGER, `notes` TEXT, `substitutions` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dayId",
+            "columnName": "dayId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderIdx",
+            "columnName": "orderIdx",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sets",
+            "columnName": "sets",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repLow",
+            "columnName": "repLow",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repHigh",
+            "columnName": "repHigh",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rirTarget",
+            "columnName": "rirTarget",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "restSeconds",
+            "columnName": "restSeconds",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "substitutions",
+            "columnName": "substitutions",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_program_exercise_dayId",
+            "unique": false,
+            "columnNames": [
+              "dayId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_program_exercise_dayId` ON `${TABLE_NAME}` (`dayId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "workout_session",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `programDayId` INTEGER, `title` TEXT NOT NULL, `startedAt` INTEGER NOT NULL, `endedAt` INTEGER, `localDate` TEXT NOT NULL, `notes` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "programDayId",
+            "columnName": "programDayId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "startedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endedAt",
+            "columnName": "endedAt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "localDate",
+            "columnName": "localDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_workout_session_startedAt",
+            "unique": false,
+            "columnNames": [
+              "startedAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_workout_session_startedAt` ON `${TABLE_NAME}` (`startedAt`)"
+          },
+          {
+            "name": "index_workout_session_localDate",
+            "unique": false,
+            "columnNames": [
+              "localDate"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_workout_session_localDate` ON `${TABLE_NAME}` (`localDate`)"
+          }
+        ]
+      },
+      {
+        "tableName": "set_log",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sessionId` INTEGER NOT NULL, `exerciseName` TEXT NOT NULL, `setIdx` INTEGER NOT NULL, `weightKg` REAL NOT NULL, `reps` INTEGER NOT NULL, `rir` REAL, `isWarmup` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionId",
+            "columnName": "sessionId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exerciseName",
+            "columnName": "exerciseName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "setIdx",
+            "columnName": "setIdx",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weightKg",
+            "columnName": "weightKg",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reps",
+            "columnName": "reps",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rir",
+            "columnName": "rir",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "isWarmup",
+            "columnName": "isWarmup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_set_log_sessionId",
+            "unique": false,
+            "columnNames": [
+              "sessionId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_set_log_sessionId` ON `${TABLE_NAME}` (`sessionId`)"
+          },
+          {
+            "name": "index_set_log_exerciseName",
+            "unique": false,
+            "columnNames": [
+              "exerciseName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_set_log_exerciseName` ON `${TABLE_NAME}` (`exerciseName`)"
+          },
+          {
+            "name": "index_set_log_timestamp",
+            "unique": false,
+            "columnNames": [
+              "timestamp"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_set_log_timestamp` ON `${TABLE_NAME}` (`timestamp`)"
+          }
+        ]
+      },
+      {
+        "tableName": "chat_message",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `role` TEXT NOT NULL, `content` TEXT NOT NULL, `timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "role",
+            "columnName": "role",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_chat_message_timestamp",
+            "unique": false,
+            "columnNames": [
+              "timestamp"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_chat_message_timestamp` ON `${TABLE_NAME}` (`timestamp`)"
+          }
+        ]
+      },
+      {
+        "tableName": "health_daily",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`localDate` TEXT NOT NULL, `steps` INTEGER, `activeKcal` REAL, `totalKcal` REAL, `restingHr` INTEGER, `avgHr` INTEGER, `sleepMinutes` INTEGER, `exerciseMinutes` INTEGER, `distanceMeters` REAL, `syncedAt` INTEGER NOT NULL, PRIMARY KEY(`localDate`))",
+        "fields": [
+          {
+            "fieldPath": "localDate",
+            "columnName": "localDate",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "steps",
+            "columnName": "steps",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "activeKcal",
+            "columnName": "activeKcal",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "totalKcal",
+            "columnName": "totalKcal",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "restingHr",
+            "columnName": "restingHr",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "avgHr",
+            "columnName": "avgHr",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "sleepMinutes",
+            "columnName": "sleepMinutes",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "exerciseMinutes",
+            "columnName": "exerciseMinutes",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "distanceMeters",
+            "columnName": "distanceMeters",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "syncedAt",
+            "columnName": "syncedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "localDate"
+          ]
+        }
+      },
+      {
+        "tableName": "food_cache",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`barcode` TEXT NOT NULL, `name` TEXT NOT NULL, `brand` TEXT, `servingDesc` TEXT NOT NULL, `kcalPer100g` REAL NOT NULL, `proteinPer100g` REAL NOT NULL, `carbsPer100g` REAL NOT NULL, `fatPer100g` REAL NOT NULL, `fiberPer100g` REAL NOT NULL, `servingSizeG` REAL, `cachedAt` INTEGER NOT NULL, PRIMARY KEY(`barcode`))",
+        "fields": [
+          {
+            "fieldPath": "barcode",
+            "columnName": "barcode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brand",
+            "columnName": "brand",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "servingDesc",
+            "columnName": "servingDesc",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "kcalPer100g",
+            "columnName": "kcalPer100g",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "proteinPer100g",
+            "columnName": "proteinPer100g",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carbsPer100g",
+            "columnName": "carbsPer100g",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fatPer100g",
+            "columnName": "fatPer100g",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fiberPer100g",
+            "columnName": "fiberPer100g",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "servingSizeG",
+            "columnName": "servingSizeG",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "cachedAt",
+            "columnName": "cachedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "barcode"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'de51958933bdf46dd3f593f51fd1c502')"
+    ]
+  }
+}
