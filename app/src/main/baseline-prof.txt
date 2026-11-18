@@ -1,0 +1,4 @@
+# Hand-written baseline profile. AGP merges it with the Compose/AndroidX library profiles;
+# profileinstaller writes it on first launch so app code is AOT-compiled on a side-loaded APK.
+HSPLcom/laksh/forge/**;->**(**)**
+Lcom/laksh/forge/**;

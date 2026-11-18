@@ -1,34 +1,39 @@
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.roborazzi)
 }
 
+// The release key lives outside version control. Builds without it still produce an
+// installable debug-signed release, but only the real key can update an existing install.
 val keystoreProps = Properties().apply {
     val f = rootProject.file("keystore.properties")
     if (f.exists()) f.inputStream().use { load(it) }
 }
+val hasReleaseKey = keystoreProps.getProperty("storeFile")?.let { rootProject.file(it).exists() } == true
 
 android {
     namespace = "com.laksh.forge"
-    compileSdk = 36
+    compileSdk = 37
+    compileSdkMinor = 2
 
     defaultConfig {
         applicationId = "com.laksh.forge"
         minSdk = 26
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 37
+        versionCode = 2
+        versionName = "2.0.0"
         vectorDrawables { useSupportLibrary = true }
     }
 
     signingConfigs {
-        create("release") {
-            if (keystoreProps.getProperty("storeFile") != null) {
+        if (hasReleaseKey) {
+            create("release") {
                 storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))
                 storePassword = keystoreProps.getProperty("storePassword")
                 keyAlias = keystoreProps.getProperty("keyAlias")
@@ -39,12 +44,11 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            if (keystoreProps.getProperty("storeFile") != null) {
-                signingConfig = signingConfigs.getByName("release")
-            }
+            signingConfig = if (hasReleaseKey) signingConfigs.getByName("release")
+            else signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = false
@@ -54,17 +58,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-        isCoreLibraryDesugaringEnabled = true
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-        }
     }
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
@@ -73,9 +71,37 @@ android {
                 "/META-INF/{AL2.0,LGPL2.1}",
                 "META-INF/DEPENDENCIES",
                 "META-INF/INDEX.LIST",
+                "META-INF/LICENSE*",
+                "META-INF/NOTICE*",
                 "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
             )
         }
+    }
+
+    lint {
+        disable += "ObsoleteSdkInt"
+        ignoreTestSources = true
+        checkTestSources = false
+    }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+        unitTests.isIncludeAndroidResources = true
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+        freeCompilerArgs.addAll(
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3ExpressiveApi",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            "-opt-in=androidx.compose.animation.ExperimentalSharedTransitionApi",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+        )
     }
 }
 
@@ -85,48 +111,60 @@ ksp {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.exifinterface)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.process)
+    implementation(libs.androidx.activity.compose)
+    // Installs the bundled baseline profile on side-loaded APKs so hot paths are AOT-compiled.
+    implementation(libs.androidx.profileinstaller)
+    implementation(libs.androidx.browser)
 
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.exifinterface:exifinterface:1.4.1")
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.activity:activity-compose:1.11.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.animation)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
-    val composeBom = platform("androidx.compose:compose-bom:2025.09.01")
-    implementation(composeBom)
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.compose.animation:animation")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
-    implementation("androidx.room:room-runtime:2.7.2")
-    implementation("androidx.room:room-ktx:2.7.2")
-    ksp("androidx.room:room-compiler:2.7.2")
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
 
-    implementation("androidx.datastore:datastore-preferences:1.1.7")
-    implementation("androidx.work:work-runtime-ktx:2.10.5")
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.mlkit.barcode)
 
-    implementation("androidx.camera:camera-core:1.5.3")
-    implementation("androidx.camera:camera-camera2:1.5.3")
-    implementation("androidx.camera:camera-lifecycle:1.5.3")
-    implementation("androidx.camera:camera-view:1.5.3")
-    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation(libs.androidx.health.connect)
 
-    implementation("androidx.health.connect:connect-client:1.1.0")
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.okhttp)
+    implementation(libs.coil.compose)
+    implementation(libs.pdfbox.android)
 
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
-
-    implementation("io.coil-kt:coil-compose:2.7.0")
-    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit.rule)
 }
