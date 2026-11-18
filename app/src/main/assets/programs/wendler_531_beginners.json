@@ -1,0 +1,3146 @@
+{
+ "id": "wendler_531_beginners",
+ "name": "5/3/1 for Beginners",
+ "author": "Jim Wendler",
+ "isFree": true,
+ "category": "STRENGTH",
+ "level": "BEGINNER",
+ "daysPerWeek": 3,
+ "sessionMinutes": 75,
+ "durationWeeks": null,
+ "equipment": [
+  "barbell",
+  "rack",
+  "bench",
+  "dumbbells",
+  "pullup_bar"
+ ],
+ "summary": "A three-day full-body version of 5/3/1 where every session trains two main lifts with the 5/3/1 sets followed by 5x5 First Set Last, then push, pull and single-leg/core assistance. Weights come from a submaximal training max that rises a small, fixed amount each cycle.",
+ "evidenceNote": "Squat and bench each get about 16 main-lift sets a week, deadlift and press about 8, plus 150-300 assistance reps a day, so weekly volume is solid for a beginner. Most sets stop well short of failure, with one '+' set per lift as the hard set. TM progression is deliberately slow (2.5/5 kg per cycle), which is far slower than a novice could manage on a linear program. Lifters who want maximum early strength gains may outgrow it, but it is good for building technique and work capacity.",
+ "sources": [
+  {
+   "title": "The 5/3/1 Philosophy for Beginners (Jim Wendler blog)",
+   "url": "https://www.jimwendler.com/blogs/jimwendler-com/101065094-5-3-1-for-a-beginner",
+   "kind": "article"
+  },
+  {
+   "title": "5/3/1: How to Build Pure Strength (T Nation interview with Jim Wendler)",
+   "url": "https://t-nation.com/t/5-3-1-how-to-build-pure-strength/281694",
+   "kind": "article"
+  },
+  {
+   "title": "5/3/1 Training Max Calculator (JimWendler.com)",
+   "url": "https://www.jimwendler.com/pages/5-3-1-training-max-calculator",
+   "kind": "article"
+  },
+  {
+   "title": "5/3/1 for Beginners (The Fitness Wiki, community summary of the Wendler article)",
+   "url": "https://thefitness.wiki/routines/5-3-1-for-beginners/",
+   "kind": "article"
+  }
+ ],
+ "schedule": "Monday, Wednesday, Friday full body: Mon squat + bench, Wed deadlift + press, Fri bench + squat. Off days (Tue/Thu/Sat/Sun): running or conditioning following the 5/3/1 '50% rule'. Before lifting do DeFranco's Agile 8 and 10-15 total box jumps or med-ball throws.",
+ "progression": {
+  "type": "PERCENT_TM",
+  "description": "Training max (TM): the beginner article says to take 80-85% of your max and work up slowly, erring on the side of too light; this template uses 85%. (Wendler's TM calculator labels 85% 'recommended for most' and 90% 'beginner'; the original T Nation 5/3/1 used 90%.) All percentages are of the TM. The beginner article does not list the weekly percentages; they come from the original 5/3/1 (T Nation): week 1 65/75/85% x5/5/5+, week 2 70/80/90% x3/3/3+, week 3 75/85/95% x5/3/1+. Each main lift is followed by 5x5 at that day's first-set percentage (First Set Last). After each cycle add 5 lb (2.5 kg) to the TM for bench and press and 10 lb (5 kg) for squat and deadlift (the original T Nation article adds these amounts to the max and recalculates; The Fitness Wiki applies them to the TM after every 3-week cycle). Every rep must be fast with good form; if any rep in the cycle was slow, grinding or broke form, do not increase that TM.",
+  "incrementKg": {
+   "upper": 2.5,
+   "lower": 5
+  },
+  "deload": "Not specified in the free beginner article. The Fitness Wiki summary runs 3-week cycles back to back (with an optional TM test week after three cycles, which it notes is not in the original article). Week 4 here is the original 5/3/1 deload (40/50/60% x5, T Nation) and is marked optional. Missed or poor-quality reps mean the TM is not increased."
+ },
+ "days": [
+  {
+   "name": "Monday",
+   "focus": "Squat + Bench",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.75,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.85,
+       "of": "TM",
+       "amrap": true
+      }
+     ],
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.85
+     },
+     "lastSetAmrap": true,
+     "restSeconds": null,
+     "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "back_squat",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat - First Set Last (FSL)",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.65
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5x5 at the first-set percentage of the day (65% TM).",
+     "optional": false,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      }
+     ],
+     "rule": "PERCENT",
+     "maxKey": "back_squat",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.75,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.85,
+       "of": "TM",
+       "amrap": true
+      }
+     ],
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.85
+     },
+     "lastSetAmrap": true,
+     "restSeconds": null,
+     "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "bench_press",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench - First Set Last (FSL)",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.65
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5x5 at the first-set percentage of the day (65% TM).",
+     "optional": false,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      }
+     ],
+     "rule": "PERCENT",
+     "maxKey": "bench_press",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Push assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+     "optional": false,
+     "rule": "NONE"
+    },
+    {
+     "exerciseId": null,
+     "name": "Pull assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+     "optional": false,
+     "rule": "NONE"
+    },
+    {
+     "exerciseId": null,
+     "name": "Single-leg/Core assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+     "optional": false,
+     "rule": "NONE"
+    }
+   ]
+  },
+  {
+   "name": "Wednesday",
+   "focus": "Deadlift + Press",
+   "exercises": [
+    {
+     "exerciseId": "conventional_deadlift",
+     "name": "Deadlift",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.75,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.85,
+       "of": "TM",
+       "amrap": true
+      }
+     ],
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.85
+     },
+     "lastSetAmrap": true,
+     "restSeconds": null,
+     "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "conventional_deadlift",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": "conventional_deadlift",
+     "name": "Deadlift - First Set Last (FSL)",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.65
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5x5 at the first-set percentage of the day (65% TM).",
+     "optional": false,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      }
+     ],
+     "rule": "PERCENT",
+     "maxKey": "conventional_deadlift",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": "overhead_press",
+     "name": "Press",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.75,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.85,
+       "of": "TM",
+       "amrap": true
+      }
+     ],
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.85
+     },
+     "lastSetAmrap": true,
+     "restSeconds": null,
+     "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "overhead_press",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "overhead_press",
+     "name": "Press - First Set Last (FSL)",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.65
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5x5 at the first-set percentage of the day (65% TM).",
+     "optional": false,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      }
+     ],
+     "rule": "PERCENT",
+     "maxKey": "overhead_press",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Push assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+     "optional": false,
+     "rule": "NONE"
+    },
+    {
+     "exerciseId": null,
+     "name": "Pull assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+     "optional": false,
+     "rule": "NONE"
+    },
+    {
+     "exerciseId": null,
+     "name": "Single-leg/Core assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+     "optional": false,
+     "rule": "NONE"
+    }
+   ]
+  },
+  {
+   "name": "Friday",
+   "focus": "Bench + Squat",
+   "exercises": [
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.75,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.85,
+       "of": "TM",
+       "amrap": true
+      }
+     ],
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.85
+     },
+     "lastSetAmrap": true,
+     "restSeconds": null,
+     "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "bench_press",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench - First Set Last (FSL)",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.65
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5x5 at the first-set percentage of the day (65% TM).",
+     "optional": false,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      }
+     ],
+     "rule": "PERCENT",
+     "maxKey": "bench_press",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.75,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.85,
+       "of": "TM",
+       "amrap": true
+      }
+     ],
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.85
+     },
+     "lastSetAmrap": true,
+     "restSeconds": null,
+     "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "back_squat",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat - First Set Last (FSL)",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "PERCENT_TM",
+      "value": 0.65
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5x5 at the first-set percentage of the day (65% TM).",
+     "optional": false,
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.65,
+       "of": "TM",
+       "amrap": false
+      }
+     ],
+     "rule": "PERCENT",
+     "maxKey": "back_squat",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": null,
+     "name": "Push assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+     "optional": false,
+     "rule": "NONE"
+    },
+    {
+     "exerciseId": null,
+     "name": "Pull assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+     "optional": false,
+     "rule": "NONE"
+    },
+    {
+     "exerciseId": null,
+     "name": "Single-leg/Core assistance",
+     "sets": 1,
+     "repsLow": 50,
+     "repsHigh": 100,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+     "optional": false,
+     "rule": "NONE"
+    }
+   ]
+  }
+ ],
+ "weeks": [
+  {
+   "week": 1,
+   "label": "5s week",
+   "days": [
+    {
+     "name": "Monday",
+     "focus": "Squat + Bench",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.85
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.65
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (65% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.85
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.65
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (65% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Wednesday",
+     "focus": "Deadlift + Press",
+     "exercises": [
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.85
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "conventional_deadlift",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.65
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (65% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "conventional_deadlift",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.85
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.65
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (65% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Friday",
+     "focus": "Bench + Squat",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.85
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.65
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (65% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.85
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.65
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (65% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.65,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "week": 2,
+   "label": "3s week",
+   "days": [
+    {
+     "name": "Monday",
+     "focus": "Squat + Bench",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "setScheme": [
+        {
+         "reps": 3,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.8,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.9,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.9
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.7
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (70% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "setScheme": [
+        {
+         "reps": 3,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.8,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.9,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.9
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.7
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (70% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Wednesday",
+     "focus": "Deadlift + Press",
+     "exercises": [
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "setScheme": [
+        {
+         "reps": 3,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.8,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.9,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.9
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "conventional_deadlift",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.7
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (70% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "conventional_deadlift",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "setScheme": [
+        {
+         "reps": 3,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.8,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.9,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.9
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.7
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (70% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Friday",
+     "focus": "Bench + Squat",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "setScheme": [
+        {
+         "reps": 3,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.8,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.9,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.9
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.7
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (70% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "setScheme": [
+        {
+         "reps": 3,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.8,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.9,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.9
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.7
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (70% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.7,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "week": 3,
+   "label": "5/3/1 week",
+   "days": [
+    {
+     "name": "Monday",
+     "focus": "Squat + Bench",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 1,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 1,
+         "percent": 0.95,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.95
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.75
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (75% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 1,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 1,
+         "percent": 0.95,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.95
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.75
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (75% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Wednesday",
+     "focus": "Deadlift + Press",
+     "exercises": [
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift",
+       "sets": 3,
+       "repsLow": 1,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 1,
+         "percent": 0.95,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.95
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "conventional_deadlift",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.75
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (75% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "conventional_deadlift",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press",
+       "sets": 3,
+       "repsLow": 1,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 1,
+         "percent": 0.95,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.95
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.75
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (75% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Friday",
+     "focus": "Bench + Squat",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 1,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 1,
+         "percent": 0.95,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.95
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.75
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (75% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 1,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 3,
+         "percent": 0.85,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 1,
+         "percent": 0.95,
+         "of": "TM",
+         "amrap": true
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.95
+       },
+       "lastSetAmrap": true,
+       "restSeconds": null,
+       "notes": "5/3/1 sets; last set is the '+' set (as many good reps as possible).",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat - First Set Last (FSL)",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.75
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5x5 at the first-set percentage of the day (75% TM).",
+       "optional": false,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.75,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": null,
+       "name": "Push assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: dips, push-ups, DB bench/incline/press, triceps extensions/pushdowns.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Pull assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: chin-ups/pull-ups, inverted rows, DB/machine/BB rows, face pulls, band pull-aparts, lat pulldown, curls.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": null,
+       "name": "Single-leg/Core assistance",
+       "sets": 1,
+       "repsLow": 50,
+       "repsHigh": 100,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Author: one exercise per category per day, 50-100 total reps in any number of sets; add a second movement if you cannot reach the reps. Options: any ab work, back raises, reverse hypers, lunges, step-ups, Bulgarian split squats, KB snatches/swings.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "week": 4,
+   "label": "Optional deload (original 5/3/1; not in the beginner article)",
+   "days": [
+    {
+     "name": "Monday",
+     "focus": "Squat + Bench",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.4,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.5,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.6,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.6
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Optional deload week from the original 5/3/1: no '+' set.",
+       "optional": true,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.4,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.5,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.6,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.6
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Optional deload week from the original 5/3/1: no '+' set.",
+       "optional": true,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Wednesday",
+     "focus": "Deadlift + Press",
+     "exercises": [
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.4,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.5,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.6,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.6
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Optional deload week from the original 5/3/1: no '+' set.",
+       "optional": true,
+       "rule": "PERCENT",
+       "maxKey": "conventional_deadlift",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.4,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.5,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.6,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.6
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Optional deload week from the original 5/3/1: no '+' set.",
+       "optional": true,
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Friday",
+     "focus": "Bench + Squat",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.4,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.5,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.6,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.6
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Optional deload week from the original 5/3/1: no '+' set.",
+       "optional": true,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.4,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.5,
+         "of": "TM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.6,
+         "of": "TM",
+         "amrap": false
+        }
+       ],
+       "intensity": {
+        "type": "PERCENT_TM",
+        "value": 0.6
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Optional deload week from the original 5/3/1: no '+' set.",
+       "optional": true,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "incrementKg": 5
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "notes": "The beginner article gives the layout, FSL, TM range, assistance and conditioning but refers to the book for the core percentages; those come from the free T Nation article describing the original 5/3/1, and match The Fitness Wiki summary of the beginner program. Wendler's most important assistance picks: DB squats, DB rows, chins/pull-ups, push-ups, dips, back raises, ab wheel and bodyweight squats. Beginner standards he gives: 10 chin-ups or pull-ups, 35 push-ups, 20 dips, DB squat with half bodyweight for 20. Rest periods are not given. sessionMinutes is an estimate.",
+ "verifiedAgainst": [
+  "https://www.jimwendler.com/blogs/jimwendler-com/101065094-5-3-1-for-a-beginner",
+  "https://t-nation.com/t/5-3-1-how-to-build-pure-strength/281694",
+  "https://www.jimwendler.com/pages/5-3-1-training-max-calculator",
+  "https://thefitness.wiki/routines/5-3-1-for-beginners/"
+ ],
+ "engine": {
+  "model": "WENDLER",
+  "cadence": "SESSION",
+  "failLimit": null,
+  "deloadPct": null,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": 0.85,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": 3,
+  "optionalWeeks": [
+   4
+  ],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": false,
+  "setup": [
+   {
+    "key": "back_squat",
+    "basis": "TM",
+    "label": "Squat",
+    "exerciseId": "back_squat",
+    "reps": 5
+   },
+   {
+    "key": "bench_press",
+    "basis": "TM",
+    "label": "Bench",
+    "exerciseId": "bench_press",
+    "reps": 5
+   },
+   {
+    "key": "conventional_deadlift",
+    "basis": "TM",
+    "label": "Deadlift",
+    "exerciseId": "conventional_deadlift",
+    "reps": 5
+   },
+   {
+    "key": "overhead_press",
+    "basis": "TM",
+    "label": "Press",
+    "exerciseId": "overhead_press",
+    "reps": 5
+   }
+  ]
+ }
+}

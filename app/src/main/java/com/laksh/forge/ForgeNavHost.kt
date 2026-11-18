@@ -8,6 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
+import com.laksh.forge.data.reminders.DeepLinks
 import com.laksh.forge.feature.coach.CoachScreen
 import com.laksh.forge.feature.exercise.ExerciseBrowserScreen
 import com.laksh.forge.feature.exercise.ExerciseDetailScreen
@@ -29,6 +31,8 @@ import com.laksh.forge.feature.train.SessionScreen
 import com.laksh.forge.feature.train.TrainScreen
 import com.laksh.forge.feature.trends.TrendsScreen
 import com.laksh.forge.feature.wearables.WearablesScreen
+import com.laksh.forge.ui.theme.ForgeNavTransitions
+import com.laksh.forge.ui.theme.LocalReduceMotion
 
 /** Every route in the app. Feature code navigates only through these builders. */
 object Routes {
@@ -74,16 +78,27 @@ fun ForgeNavHost(nav: NavHostController, modifier: Modifier = Modifier) {
     val back: () -> Unit = { nav.popBackStack() }
     val openExercise: (String) -> Unit = { nav.navigate(Routes.exercise(it)) }
 
-    NavHost(navController = nav, startDestination = Routes.TODAY, modifier = modifier) {
-        composable(Routes.TODAY) {
+    val reduceMotion = LocalReduceMotion.current
+
+    NavHost(
+        navController = nav,
+        startDestination = Routes.TODAY,
+        modifier = modifier,
+        enterTransition = ForgeNavTransitions.enter(reduceMotion),
+        exitTransition = ForgeNavTransitions.exit(reduceMotion),
+        popEnterTransition = ForgeNavTransitions.popEnter(reduceMotion),
+        popExitTransition = ForgeNavTransitions.popExit(reduceMotion)
+    ) {
+        composable(Routes.TODAY, deepLinks = listOf(navDeepLink { uriPattern = DeepLinks.TODAY })) {
             TodayScreen(
                 onAddFood = { nav.navigate(Routes.LOG) },
                 onOpenEntry = { },
                 onOpenPlan = { nav.navigate(Routes.PLAN) },
-                onOpenProgress = { nav.navigate(Routes.PROGRESS) }
+                onOpenProgress = { nav.navigate(Routes.PROGRESS) },
+                onOpenWearables = { nav.navigate(Routes.WEARABLES) }
             )
         }
-        composable(Routes.TRAIN) {
+        composable(Routes.TRAIN, deepLinks = listOf(navDeepLink { uriPattern = DeepLinks.TRAIN })) {
             TrainScreen(
                 onOpenSession = { nav.navigate(Routes.session(it)) },
                 onOpenLibrary = { nav.navigate(Routes.LIBRARY) },
@@ -94,10 +109,11 @@ fun ForgeNavHost(nav: NavHostController, modifier: Modifier = Modifier) {
         composable(Routes.COACH) { CoachScreen() }
         composable(Routes.SETTINGS) { SettingsScreen(onNavigate = { nav.navigate(it) }) }
 
-        composable(Routes.LOG) { LogScreen(onDone = back) }
+        composable(Routes.LOG, deepLinks = listOf(navDeepLink { uriPattern = DeepLinks.LOG })) { LogScreen(onDone = back) }
         composable(
             Routes.SESSION,
-            arguments = listOf(navArgument("sessionId") { type = NavType.LongType })
+            arguments = listOf(navArgument("sessionId") { type = NavType.LongType }),
+            deepLinks = listOf(navDeepLink { uriPattern = DeepLinks.SESSION_PATTERN })
         ) { e ->
             SessionScreen(
                 sessionId = e.arguments?.getLong("sessionId") ?: 0L,
@@ -134,12 +150,12 @@ fun ForgeNavHost(nav: NavHostController, modifier: Modifier = Modifier) {
             )
         }
         composable(Routes.CHECKIN) { CheckinScreen(onDone = back) }
-        composable(Routes.TOOLS) { ToolsScreen(onBack = back) }
+        composable(Routes.TOOLS, deepLinks = listOf(navDeepLink { uriPattern = DeepLinks.TOOLS })) { ToolsScreen(onBack = back) }
         composable(Routes.SETTINGS_AI) { AiSettingsScreen(onBack = back) }
         composable(Routes.SETTINGS_PROFILE) {
             ProfileSettingsScreen(onBack = back, onRedoOnboarding = { nav.navigate(Routes.ONBOARDING) })
         }
         composable(Routes.SETTINGS_APPEARANCE) { AppearanceSettingsScreen(onBack = back) }
-        composable(Routes.SETTINGS_DATA) { DataSettingsScreen(onBack = back) }
+        composable(Routes.SETTINGS_DATA, deepLinks = listOf(navDeepLink { uriPattern = DeepLinks.SETTINGS_DATA })) { DataSettingsScreen(onBack = back) }
     }
 }

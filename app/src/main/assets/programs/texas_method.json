@@ -1,0 +1,1020 @@
+{
+ "id": "texas_method",
+ "name": "Texas Method",
+ "author": "Mark Rippetoe",
+ "isFree": true,
+ "category": "STRENGTH",
+ "level": "INTERMEDIATE",
+ "daysPerWeek": 3,
+ "sessionMinutes": 75,
+ "durationWeeks": null,
+ "equipment": [
+  "barbell",
+  "rack",
+  "bench",
+  "pullup_bar"
+ ],
+ "summary": "An intermediate program for lifters past novice linear progression: a hard 5x5 volume day on Monday, a light recovery day on Wednesday and a 5RM intensity day on Friday. Loads go up every week instead of every workout.",
+ "evidenceNote": "Squats get 8 work sets a week (5+2+1) and the two pressing lifts 9 sets a week combined (5+3+1). Pulling is one deadlift set of 5, 15 power-clean reps, 3 sets of chin-ups to failure and 5x10 back extensions; arm work is optional. Friday sets are 5RM efforts, so proximity to failure is high once a week. Rippetoe warns the program 'will overtrain your ass very quickly' if eating and sleep are not adequate, and that it does not work forever.",
+ "sources": [
+  {
+   "title": "The Texas Method (Mark Rippetoe, T Nation, 3 Nov 2010)",
+   "url": "https://t-nation.com/t/the-texas-method/284455",
+   "kind": "article"
+  }
+ ],
+ "schedule": "3 days a week with rest days between: Monday volume, Wednesday recovery, Friday intensity. Days can move to fit your schedule, but keep the pattern of work and rest days. Bench press and overhead press alternate each Monday; Wednesday uses the opposite press from Monday, and Friday uses the same press as Monday.",
+ "progression": {
+  "type": "CUSTOM",
+  "description": "Weekly progression (load increases every week, not every workout). Monday: 5x5 across at about 90% of current 5RM. Friday: work up to a new 5RM, or within 2% of it, on squat and the week's press. Wednesday: squat 2x5 at 80% of Monday's weight; opposite press 3x5 at about 80% of Monday's work weight. The Monday deadlift set of 5 should increase every week. The source gives no fixed kg/lb increment for this program, so incrementKg is null.",
+  "incrementKg": {
+   "upper": null,
+   "lower": null
+  },
+  "deload": "The source gives no stall or deload rule. It says recovery (eating and sleeping enough) is what keeps the program working, that neglecting it gets you stuck, and that the Texas Method does not work forever and leads into more complicated advanced programming."
+ },
+ "days": [
+  {
+   "name": "Monday - Volume",
+   "focus": "Squat, Bench Press volume, deadlift",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5 sets of 5 across (same weight every work set) at about 90% of your current 5RM. The weight should let you finish all 5x5 without needing more than 8-10 min rest between sets. Example from the source: 5RM 345 lb -> 315 x 5 x 5.",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "back_squat",
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      }
+     ]
+    },
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench Press",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5 sets of 5 across at about 90% of your 5RM. Bench press and overhead press alternate each Monday.",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "bench_press",
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.9,
+       "of": "5RM",
+       "amrap": false
+      }
+     ]
+    },
+    {
+     "exerciseId": "conventional_deadlift",
+     "name": "Deadlift",
+     "sets": 1,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "One heavy set of 5, done after squats and pressing are finished. The source table marks it with the 90% 5RM footnote, but the text says it will not be a true 5RM and should increase every week. No volume day for deadlifts.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Arm work",
+     "sets": null,
+     "repsLow": null,
+     "repsHigh": null,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Source: 'I'd limit any assistance exercises to some brief arm work on Monday.' No exercise, sets or reps are given.",
+     "optional": true,
+     "rule": "NONE"
+    }
+   ]
+  },
+  {
+   "name": "Wednesday - Recovery",
+   "focus": "Light squat, Press (opposite of Monday), chins, back extensions",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 2,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "2 sets of 5 at 80% of Monday's squat work weight.",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "back_squat",
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.72,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.72,
+       "of": "5RM",
+       "amrap": false
+      }
+     ]
+    },
+    {
+     "exerciseId": "overhead_press",
+     "name": "Press",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Opposite press from Monday, 3 sets of 5. Table footnote: use 80% of Monday's work weight; text: a little lighter than the last 5x5 with this lift, enough to feel the load without tapping recovery. Light overhead presses can be a little heavier relative to 5RM than light benches.",
+     "optional": false,
+     "rule": "PERCENT",
+     "maxKey": "overhead_press",
+     "setScheme": [
+      {
+       "reps": 5,
+       "percent": 0.72,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.72,
+       "of": "5RM",
+       "amrap": false
+      },
+      {
+       "reps": 5,
+       "percent": 0.72,
+       "of": "5RM",
+       "amrap": false
+      }
+     ]
+    },
+    {
+     "exerciseId": "chin_up",
+     "name": "Chin-ups",
+     "sets": 3,
+     "repsLow": null,
+     "repsHigh": null,
+     "intensity": {
+      "type": "RIR",
+      "value": 0
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 300,
+     "notes": "3 sets to failure with five minutes between sets.",
+     "optional": false,
+     "rule": "NONE"
+    },
+    {
+     "exerciseId": "back_extension",
+     "name": "Back Extensions or Glute-Ham Raises",
+     "sets": 5,
+     "repsLow": 10,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "5 sets of 10 back extensions or glute/ham raises to finish the workout.",
+     "optional": false,
+     "rule": "NONE"
+    }
+   ]
+  },
+  {
+   "name": "Friday - Intensity",
+   "focus": "Squat 5RM, Bench Press 5RM (same press as Monday), power clean or power snatch",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 1,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Warm up, then work up to one set of 5 at a new 5RM, or within 2% of it to keep technique quality. Do most warm-ups light (empty bar, then 135 lb), then take doubles or singles up to the work set. Load must be higher than Monday but not so heavy that form breaks down on the last reps.",
+     "optional": false,
+     "rule": "PR_ATTEMPT",
+     "maxKey": "back_squat",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench Press",
+     "sets": 1,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Same press as Monday. Warm up, then work up to one set of 5 at a new 5RM (or within 2%); heavier than Monday without form breakdown on the last reps.",
+     "optional": false,
+     "rule": "PR_ATTEMPT",
+     "maxKey": "bench_press",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "power_clean",
+     "name": "Power Clean",
+     "sets": 5,
+     "repsLow": 3,
+     "repsHigh": 3,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "After warming up, 5 sets of 3 across. Alternative: power snatch, 6 sets of 2.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    }
+   ]
+  }
+ ],
+ "weeks": [
+  {
+   "week": 1,
+   "label": "Bench volume week",
+   "days": [
+    {
+     "name": "Monday - Volume",
+     "focus": "Squat, Bench Press volume, deadlift",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5 sets of 5 across (same weight every work set) at about 90% of your current 5RM. The weight should let you finish all 5x5 without needing more than 8-10 min rest between sets. Example from the source: 5RM 345 lb -> 315 x 5 x 5.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench Press",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5 sets of 5 across at about 90% of your 5RM. Bench press and overhead press alternate each Monday.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift",
+       "sets": 1,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "One heavy set of 5, done after squats and pressing are finished. The source table marks it with the 90% 5RM footnote, but the text says it will not be a true 5RM and should increase every week. No volume day for deadlifts.",
+       "optional": false,
+       "rule": "LINEAR",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Arm work",
+       "sets": null,
+       "repsLow": null,
+       "repsHigh": null,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Source: 'I'd limit any assistance exercises to some brief arm work on Monday.' No exercise, sets or reps are given.",
+       "optional": true,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Wednesday - Recovery",
+     "focus": "Light squat, Press (opposite of Monday), chins, back extensions",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 2,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "2 sets of 5 at 80% of Monday's squat work weight.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Opposite press from Monday, 3 sets of 5. Table footnote: use 80% of Monday's work weight; text: a little lighter than the last 5x5 with this lift, enough to feel the load without tapping recovery. Light overhead presses can be a little heavier relative to 5RM than light benches.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "chin_up",
+       "name": "Chin-ups",
+       "sets": 3,
+       "repsLow": null,
+       "repsHigh": null,
+       "intensity": {
+        "type": "RIR",
+        "value": 0
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 300,
+       "notes": "3 sets to failure with five minutes between sets.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": "back_extension",
+       "name": "Back Extensions or Glute-Ham Raises",
+       "sets": 5,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5 sets of 10 back extensions or glute/ham raises to finish the workout.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Friday - Intensity",
+     "focus": "Squat 5RM, Bench Press 5RM (same press as Monday), power clean or power snatch",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 1,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Warm up, then work up to one set of 5 at a new 5RM, or within 2% of it to keep technique quality. Do most warm-ups light (empty bar, then 135 lb), then take doubles or singles up to the work set. Load must be higher than Monday but not so heavy that form breaks down on the last reps.",
+       "optional": false,
+       "rule": "PR_ATTEMPT",
+       "maxKey": "back_squat",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench Press",
+       "sets": 1,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Same press as Monday. Warm up, then work up to one set of 5 at a new 5RM (or within 2%); heavier than Monday without form breakdown on the last reps.",
+       "optional": false,
+       "rule": "PR_ATTEMPT",
+       "maxKey": "bench_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "power_clean",
+       "name": "Power Clean",
+       "sets": 5,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "After warming up, 5 sets of 3 across. Alternative: power snatch, 6 sets of 2.",
+       "optional": false,
+       "rule": "LINEAR",
+       "incrementKg": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "week": 2,
+   "label": "Press volume week",
+   "days": [
+    {
+     "name": "Monday - Volume",
+     "focus": "Squat, Press volume, deadlift",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5 sets of 5 across (same weight every work set) at about 90% of your current 5RM. The weight should let you finish all 5x5 without needing more than 8-10 min rest between sets. Example from the source: 5RM 345 lb -> 315 x 5 x 5.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press",
+       "sets": 5,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5 sets of 5 across at about 90% of your 5RM. Bench press and overhead press alternate each Monday.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "overhead_press",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.9,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift",
+       "sets": 1,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "One heavy set of 5, done after squats and pressing are finished. The source table marks it with the 90% 5RM footnote, but the text says it will not be a true 5RM and should increase every week. No volume day for deadlifts.",
+       "optional": false,
+       "rule": "LINEAR",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Arm work",
+       "sets": null,
+       "repsLow": null,
+       "repsHigh": null,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Source: 'I'd limit any assistance exercises to some brief arm work on Monday.' No exercise, sets or reps are given.",
+       "optional": true,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Wednesday - Recovery",
+     "focus": "Light squat, Bench Press (opposite of Monday), chins, back extensions",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 2,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "2 sets of 5 at 80% of Monday's squat work weight.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "back_squat",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench Press",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Opposite press from Monday, 3 sets of 5. Table footnote: use 80% of Monday's work weight; text: a little lighter than the last 5x5 with this lift, enough to feel the load without tapping recovery. Light overhead presses can be a little heavier relative to 5RM than light benches.",
+       "optional": false,
+       "rule": "PERCENT",
+       "maxKey": "bench_press",
+       "setScheme": [
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        },
+        {
+         "reps": 5,
+         "percent": 0.72,
+         "of": "5RM",
+         "amrap": false
+        }
+       ]
+      },
+      {
+       "exerciseId": "chin_up",
+       "name": "Chin-ups",
+       "sets": 3,
+       "repsLow": null,
+       "repsHigh": null,
+       "intensity": {
+        "type": "RIR",
+        "value": 0
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 300,
+       "notes": "3 sets to failure with five minutes between sets.",
+       "optional": false,
+       "rule": "NONE"
+      },
+      {
+       "exerciseId": "back_extension",
+       "name": "Back Extensions or Glute-Ham Raises",
+       "sets": 5,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "5 sets of 10 back extensions or glute/ham raises to finish the workout.",
+       "optional": false,
+       "rule": "NONE"
+      }
+     ]
+    },
+    {
+     "name": "Friday - Intensity",
+     "focus": "Squat 5RM, Press 5RM (same press as Monday), power clean or power snatch",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat",
+       "sets": 1,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Warm up, then work up to one set of 5 at a new 5RM, or within 2% of it to keep technique quality. Do most warm-ups light (empty bar, then 135 lb), then take doubles or singles up to the work set. Load must be higher than Monday but not so heavy that form breaks down on the last reps.",
+       "optional": false,
+       "rule": "PR_ATTEMPT",
+       "maxKey": "back_squat",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Press",
+       "sets": 1,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "Same press as Monday. Warm up, then work up to one set of 5 at a new 5RM (or within 2%); heavier than Monday without form breakdown on the last reps.",
+       "optional": false,
+       "rule": "PR_ATTEMPT",
+       "maxKey": "overhead_press",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "power_clean",
+       "name": "Power Clean",
+       "sets": 5,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": null,
+       "notes": "After warming up, 5 sets of 3 across. Alternative: power snatch, 6 sets of 2.",
+       "optional": false,
+       "rule": "LINEAR",
+       "incrementKg": 2.5
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "notes": "Source is Rippetoe's own article, first published on T Nation on 3 Nov 2010 (free to read). Weights in notes are the article's lb examples. sessionMinutes is an estimate, not from the source. Rippetoe's paid books give more detail that is not used here.",
+ "verifiedAgainst": [
+  "https://t-nation.com/t/the-texas-method/284455"
+ ],
+ "engine": {
+  "model": "TEXAS",
+  "cadence": "WEEK",
+  "failLimit": null,
+  "deloadPct": null,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": null,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": null,
+  "optionalWeeks": [],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": true,
+  "setup": [
+   {
+    "key": "back_squat",
+    "basis": "5RM",
+    "label": "Squat",
+    "exerciseId": "back_squat",
+    "reps": 5
+   },
+   {
+    "key": "bench_press",
+    "basis": "5RM",
+    "label": "Bench Press",
+    "exerciseId": "bench_press",
+    "reps": 5
+   },
+   {
+    "key": "deadlift",
+    "basis": "START",
+    "label": "Deadlift",
+    "exerciseId": "conventional_deadlift",
+    "reps": 5
+   },
+   {
+    "key": "overhead_press",
+    "basis": "5RM",
+    "label": "Press",
+    "exerciseId": "overhead_press",
+    "reps": 5
+   },
+   {
+    "key": "power clean",
+    "basis": "START",
+    "label": "Power Clean",
+    "exerciseId": "power_clean",
+    "reps": 3
+   }
+  ]
+ }
+}

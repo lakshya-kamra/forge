@@ -14,8 +14,16 @@ sealed interface AiPart {
     data class Image(val base64: String, val mediaType: String = "image/jpeg") : AiPart
 }
 
-/** Thrown for every AI failure; [message] is always safe to show to the user. */
-class AiException(message: String, val retryable: Boolean = false) : Exception(message)
+/**
+ * Thrown for every AI failure; [message] is always safe to show to the user.
+ * [httpCode] is set when the provider answered with an HTTP error, so callers (and the
+ * OpenAI-compatible provider's parameter fallback) can tell "bad request" from "bad key".
+ */
+open class AiException(
+    message: String,
+    val retryable: Boolean = false,
+    val httpCode: Int? = null
+) : Exception(message)
 
 /**
  * The single AI surface the rest of the app codes against. Implementations route each

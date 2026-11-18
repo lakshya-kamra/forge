@@ -1,0 +1,344 @@
+{
+ "id": "nippard_minimalist_full_body_2x",
+ "name": "Science-Based Minimalist Workout Plan (Under 45 Mins)",
+ "author": "Jeff Nippard",
+ "isFree": true,
+ "category": "HYPERTROPHY",
+ "level": "INTERMEDIATE",
+ "daysPerWeek": 2,
+ "sessionMinutes": 45,
+ "durationWeeks": null,
+ "equipment": [
+  "barbell",
+  "bench",
+  "dumbbells",
+  "cable",
+  "machines"
+ ],
+ "summary": "Two short full-body sessions a week, each under 45 minutes, using 1-2 very hard sets per exercise with drop sets, myo-reps and a superset to save time. The author also explains how to spread the same two workouts over 3, 4 or 5 days.",
+ "evidenceNote": "Direct weekly volume is low, about 3-5 hard sets per major muscle (chest about 4, quads about 3, hamstrings about 3 plus drop sets), which is below the roughly 10+ weekly sets linked to the most growth in dose-response studies but enough for good progress or maintenance when sets go to or near failure. It suits people short on time. Its weak points are that it depends on true failure and good technique on single sets, and the free version gives no progression or deload rule.",
+ "sources": [
+  {
+   "title": "The Best Science-Based Minimalist Workout Plan (Under 45 Mins) - Jeff Nippard (YouTube, 2022-11-01)",
+   "url": "https://www.youtube.com/watch?v=eMjyvIQbn9M",
+   "kind": "video"
+  },
+  {
+   "title": "The Best Science-Based Minimalist Workout Plan (Under 45 Mins) - jeffnippard.com blog (2023-04-24)",
+   "url": "https://jeffnippard.com/blogs/news/the-best-science-based-minimalist-workout-plan-under-45-mins",
+   "kind": "article"
+  },
+  {
+   "title": "How To Train Like A Minimalist (More Gains In Less Time) - Jeff Nippard (YouTube)",
+   "url": "https://www.youtube.com/watch?v=xc4OtzAnVMI",
+   "kind": "video"
+  }
+ ],
+ "schedule": "2 days per week: Full Body Day 1 and Full Body Day 2, run on separate days. Author's other options: 3 days = Full Body 1 + Day 2 split into an upper and a lower day; 4 days = split both full-body days into upper/lower (upper, lower, rest, upper, lower, rest); 5 days = upper/lower plus push/pull/legs. Sets and reps stay the same, and you may add sets or weak-point exercises on the split days.",
+ "progression": {
+  "type": "CUSTOM",
+  "description": "The free video and blog give no formal progression scheme. The method is quality over quantity: take each single set to failure (or within 1 rep of failure) with perfect technique, then use the stated drop sets or myo-reps. A heavy strength set (4-6) comes before a lighter back-off set (8-10) on the dumbbell press and hack squat. The author gives no load increments, so incrementKg is null.",
+  "incrementKg": {
+   "upper": null,
+   "lower": null
+  },
+  "deload": "Not specified in the free video or blog."
+ },
+ "notes": "Uses the jeffnippard.com blog (the written version of the 2022 video) as the source of record. Warm up with 2-3 minutes of brisk walking plus arm and leg swings. The paid 12-week Essentials Program is built on these workouts but is out of scope. Level is a judgement call: the author calls the paid Essentials version suitable for all levels, but the free plan relies on training to failure.",
+ "days": [
+  {
+   "name": "Full Body Day 1",
+   "focus": "Full body (chest, hamstrings, back, quads/glutes, triceps, side delts, calves)",
+   "exercises": [
+    {
+     "exerciseId": "dumbbell_bench_press",
+     "name": "Flat Dumbbell Press (heavy set)",
+     "sets": 1,
+     "repsLow": 4,
+     "repsHigh": 6,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Strength set first. Lower with the elbows tucked 30-45 degrees, flare on the press if comfortable.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "dumbbell_bench_press",
+     "name": "Flat Dumbbell Press (back-off set)",
+     "sets": 1,
+     "repsLow": 8,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Lighter hypertrophy back-off set.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "romanian_deadlift",
+     "name": "Dumbbell Romanian Deadlift",
+     "sets": 2,
+     "repsLow": 8,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Push the hips back and let the dumbbells drop straight down until you feel a big hamstring stretch. Use straps if grip limits you.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lat_pulldown",
+     "name": "2-Grip Lat Pulldown",
+     "sets": 2,
+     "repsLow": 10,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Set 1 overhand middle grip, set 2 underhand close grip. Optional: after set 2, strip the weight back and do some overhead curls for extra biceps work (blog gives no sets/reps for these).",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "step_up",
+     "name": "Dumbbell Step-Up",
+     "sets": 1,
+     "repsLow": 8,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "RIR",
+      "value": 1
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Per leg, one leg at a time. Go to failure or within 1 rep of it, with the front leg doing all the work. Use straps.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "overhead_triceps_extension",
+     "name": "Overhead Cable Triceps Extension",
+     "sets": 1,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 0
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "To failure, then drop the weight 30-40% and go to failure again.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lateral_raise",
+     "name": "Machine Lateral Raise",
+     "sets": 1,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 0
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "To failure, then drop 30-40% and go to failure again. Cable or dumbbell lateral raises work if there is no machine. Stopping at 90 degrees is fine.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Leg Press Toe-Press",
+     "sets": 1,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 0
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Straight-leg calf raise on the leg press. Pause about 1 s at the bottom and squeeze at the top. To failure, then drop 30-40% and go to failure again without bouncing.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Full Body Day 2",
+   "focus": "Full body (quads, chest/shoulders, back, hamstrings, biceps, abs)",
+   "exercises": [
+    {
+     "exerciseId": "hack_squat",
+     "name": "Hack Squat (heavy set)",
+     "sets": 1,
+     "repsLow": 4,
+     "repsHigh": 6,
+     "intensity": {
+      "type": "RPE",
+      "value": 9
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "2-3 warm-up sets. Top set at about RPE 9 (1 rep shy of failure), then rest about 3 min. Full depth, and the knees may travel past the toes.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "hack_squat",
+     "name": "Hack Squat (back-off set)",
+     "sets": 1,
+     "repsLow": 8,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Lighter weight, control the negative and focus on the quads.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "High-Incline Smith Machine Press (superset A1)",
+     "sets": 2,
+     "repsLow": 10,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Bench at 45-60 degrees, slightly closer grip. Superset with the T-bar row, resting 30-60 s between the two exercises if needed. Rest of 60 s is the upper end of the author's 30-60 s 'if needed' rest between the two superset exercises; no separate rest between rounds is given.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "T-Bar Row (superset A2)",
+     "sets": 2,
+     "repsLow": 10,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "One set with a wide grip, one with a close grip. Substitute: chest-supported incline dumbbell row, same sets and reps. Rest of 60 s is the upper end of the author's 30-60 s 'if needed' rest between the two superset exercises; no separate rest between rounds is given.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_leg_curl",
+     "name": "Seated Leg Curl",
+     "sets": 1,
+     "repsLow": 10,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "RIR",
+      "value": 0
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Lean forward for more stretch. To failure, then drop 30-40% and go to failure again.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "barbell_curl",
+     "name": "EZ-Bar Biceps Curl",
+     "sets": 1,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 0
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "To failure, then myo-reps with the same weight: rest 3-4 s, do 4 reps, and repeat until you can no longer get 4.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "cable_crunch",
+     "name": "Cable Crunch (rope, kneeling)",
+     "sets": 1,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 0
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "To failure, drop 30% and go to failure, then drop another 20-30% and go to failure one last time. Let the whole spine round.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  }
+ ],
+ "verifiedAgainst": [
+  "https://jeffnippard.com/blogs/news/the-best-science-based-minimalist-workout-plan-under-45-mins",
+  "https://www.youtube.com/watch?v=eMjyvIQbn9M",
+  "https://www.youtube.com/watch?v=xc4OtzAnVMI"
+ ],
+ "engine": {
+  "model": "DOUBLE",
+  "cadence": "SESSION",
+  "failLimit": null,
+  "deloadPct": null,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": null,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": null,
+  "optionalWeeks": [],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": true,
+  "setup": []
+ }
+}

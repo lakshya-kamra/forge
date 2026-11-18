@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Themed-icon layer (Android 13+). Only alpha matters here, so the core is cut out of the
+    flame with an even-odd fill instead of being drawn in a second colour.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M54,24C57.5,33 66,39.5 70.5,48.5C73.5,54.5 74.5,60 74.5,64C74.5,75.3 65.3,84 54,84C42.7,84 33.5,75.3 33.5,64C33.5,56.5 37,50.5 42,45.5C42,51.5 44.5,55.5 48.5,57.5C47,46.5 49,34 54,24ZM54.5,52C57.5,57 64,61.5 64,68.5C64,74.6 59.7,79 54,79C48.3,79 44,74.6 44,69C44,63.5 48,60.5 50.5,57.5C51.5,61 53,62.5 55,63C54,59 53.8,55.5 54.5,52Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M66,29a3,3 0,1 1,0 6a3,3 0,1 1,0 -6z" />
+</vector>

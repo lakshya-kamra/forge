@@ -5,7 +5,13 @@ import com.laksh.forge.data.db.WeightEntry
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.prefs.GoalMode
 import com.laksh.forge.data.prefs.Sex
+import com.laksh.forge.data.prefs.TrainingAge
+import com.laksh.forge.domain.guardrails.GuardrailFlag
+import com.laksh.forge.domain.guardrails.Guardrails
+import com.laksh.forge.domain.guardrails.Severity
+import java.util.Locale
 import kotlin.math.abs
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 data class MacroTargets(
@@ -27,6 +33,13 @@ data class WeightTrend(
     val latestSmoothed: Double?,
     val latestRaw: Double?,
     val changeOverWindow: Double?
+)
+
+/** Targets plus the guardrail reasoning behind them, for screens that explain adjustments. */
+data class CheckedTargets(
+    val targets: MacroTargets,
+    val rateKgPerWeek: Double,
+    val flags: List<GuardrailFlag>
 )
 
 object NutritionMath {
@@ -81,8 +94,8 @@ object NutritionMath {
     }
 
     /**
-     * Exponentially weighted trend. Daily scale readings are dominated by water, gut
-     * content and sodium; the smoothed line is the thing worth reacting to.
+     * Exponentially weighted trend. Daily scale readings move with water and food; the
+     * smoothed line is the thing worth reacting to.
      */
     fun smooth(sorted: List<WeightEntry>, alpha: Double = 0.25): List<TrendPoint> {
         if (sorted.isEmpty()) return emptyList()
@@ -124,22 +137,49 @@ object NutritionMath {
         )
     }
 
-    /** Recommended weekly rate for a goal, as a fraction of bodyweight per week. */
-    fun defaultRate(goal: GoalMode, weightKg: Double): Double = when (goal) {
-        // ~0.7%/wk keeps lean mass loss low; faster cuts cost muscle.
+    /** Recommended weekly rate for a goal, in kg per week, when the training stage is unknown. */
+    fun defaultRate(goal: GoalMode, weightKg: Double): Double =
+        defaultRate(goal, weightKg, TrainingAge.UNKNOWN)
+
+    /**
+     * Recommended weekly rate for a goal and training stage, in kg per week.
+     *
+     * - Cut: 0.7%/wk, the tier the research uses when body fat is unknown and the rate
+     *   Garthe 2011 recommend; Guardrails lowers it for lean people and caps the deficit.
+     * - Lean gain: the midpoint of the monthly band for the training stage (Pyramid ranges,
+     *   nutrition_surplus_rate_by_training_age), converted to a weekly figure.
+     * - Maingain: a deliberately slow drift (~0.08%/wk, within the onboarding research's
+     *   <= 0.25%/wk), never above the stage's gain cap.
+     */
+    fun defaultRate(goal: GoalMode, weightKg: Double, trainingAge: TrainingAge): Double = when (goal) {
         GoalMode.CUT -> -(weightKg * 0.007)
-        // Deliberately slow upward drift - the point is to stay lean indefinitely.
-        GoalMode.MAINGAIN -> weightKg * 0.0008
-        // ~0.25%/wk is about the ceiling for gaining mostly lean tissue in a trained lifter.
-        GoalMode.LEAN_GAIN -> weightKg * 0.0025
+        GoalMode.LEAN_GAIN -> {
+            val band = Guardrails.gainBand(trainingAge)
+            Guardrails.monthlyPctToKgPerWeek(band.midPctPerMonth, weightKg)
+        }
+        GoalMode.MAINGAIN -> {
+            val cap = Guardrails.monthlyPctToKgPerWeek(Guardrails.gainBand(trainingAge).maxPctPerMonth, weightKg)
+            min(weightKg * 0.0008, cap)
+        }
         GoalMode.MAINTAIN -> 0.0
         GoalMode.RECOMP -> 0.0
     }
 
-    fun targets(settings: ForgeSettings, weightKg: Double, adaptiveTdee: Double?): MacroTargets {
-        if (!settings.useAutoTargets) {
-            return macrosFor(settings.manualKcal.toDouble(), weightKg, settings, "Set manually")
-        }
+    fun targets(settings: ForgeSettings, weightKg: Double, adaptiveTdee: Double?): MacroTargets =
+        checkedTargets(settings, weightKg, adaptiveTdee).targets
+
+    /**
+     * Daily targets after the guardrails, with the flags that explain any change. Every
+     * calorie and macro figure the app shows passes through Guardrails.checkNutrition.
+     */
+    fun checkedTargets(
+        settings: ForgeSettings,
+        weightKg: Double,
+        adaptiveTdee: Double?,
+        bodyFatPct: Double? = null,
+        bodyFatMethod: String? = null
+    ): CheckedTargets {
+        val profile = Guardrails.profileFrom(settings, weightKg, bodyFatPct, bodyFatMethod)
 
         val tdee: Double
         val basisPrefix: String
@@ -151,69 +191,112 @@ object NutritionMath {
             basisPrefix = "Estimated (Mifflin-St Jeor)"
         }
 
-        val rate = if (settings.rateKgPerWeek != 0.0) settings.rateKgPerWeek
-        else defaultRate(settings.goal, weightKg)
+        val proposedKcal: Double
+        val rate: Double
+        if (!settings.useAutoTargets) {
+            proposedKcal = settings.manualKcal.toDouble()
+            // A manual target implies a rate; the guardrails judge the deficit it creates.
+            rate = (proposedKcal - tdee) * 7.0 / KCAL_PER_KG
+        } else {
+            rate = if (settings.rateKgPerWeek != 0.0) settings.rateKgPerWeek
+            else defaultRate(settings.goal, weightKg, settings.trainingAge)
+            proposedKcal = tdee + rate * KCAL_PER_KG / 7.0
+        }
 
-        val dailyAdjust = rate * KCAL_PER_KG / 7.0
-
-        // Never prescribe a dangerously low intake, whatever the arithmetic says.
-        val floor = if (settings.sex == Sex.MALE) 1500.0 else 1200.0
-        val kcal = (tdee + dailyAdjust).coerceAtLeast(floor)
-
-        val sign = if (dailyAdjust >= 0) "+" else ""
-        val basis = "$basisPrefix - TDEE ${tdee.roundToInt()} $sign${dailyAdjust.roundToInt()}"
-        return macrosFor(kcal, weightKg, settings, basis)
-    }
-
-    private fun macrosFor(kcal: Double, weightKg: Double, s: ForgeSettings, basis: String): MacroTargets {
         // Protein is set first and protected: it is the macro that preserves lean mass in a
-        // deficit and the one most often under-eaten.
-        val protein = (s.proteinPerKg * weightKg).roundToInt()
-        val fat = (s.fatPerKg * weightKg).roundToInt()
-        val remaining = kcal - protein * 4 - fat * 9
-        val carbs = (remaining / 4).coerceAtLeast(0.0).roundToInt()
-        // ~14g per 1000 kcal is the usual adequacy reference point.
-        val fiber = (kcal / 1000.0 * 14).roundToInt()
-        return MacroTargets(kcal.roundToInt(), protein, carbs, fat, fiber, basis)
+        // deficit and the one most often under-eaten. The guardrails clamp it into the
+        // evidence range for the phase.
+        val protein = (settings.proteinPerKg * weightKg).roundToInt()
+        val fat = (settings.fatPerKg * weightKg).roundToInt()
+        val carbs = ((proposedKcal - protein * 4 - fat * 9) / 4).coerceAtLeast(0.0).roundToInt()
+
+        val check = Guardrails.checkNutrition(
+            p = profile,
+            kcal = proposedKcal.roundToInt(),
+            proteinG = protein,
+            carbsG = carbs,
+            fatG = fat,
+            rateKgPerWeek = rate,
+            tdee = tdee
+        )
+
+        val adjusted = if (check.wasAdjusted) " (within Forge's safety limits)" else ""
+        val basis = if (!settings.useAutoTargets) {
+            "Set manually$adjusted"
+        } else {
+            val delta = check.kcal - tdee
+            val sign = if (delta >= 0) "+" else ""
+            "$basisPrefix - TDEE ${tdee.roundToInt()} $sign${delta.roundToInt()}$adjusted"
+        }
+
+        return CheckedTargets(
+            targets = MacroTargets(
+                kcal = check.kcal,
+                proteinG = check.proteinG,
+                carbsG = check.carbsG,
+                fatG = check.fatG,
+                // WHO 2023: at least 25 g of fibre a day for adults (nutrition_fibre_minimum).
+                fiberG = Guardrails.MIN_FIBRE_G,
+                basis = basis
+            ),
+            rateKgPerWeek = check.rateKgPerWeek,
+            flags = check.flags
+        )
     }
 
     /**
      * Is the scale actually moving the way the goal intends? Used for the nudge on Trends.
      * Returns null while there is not enough data to say anything honest.
+     *
+     * Wording follows the guardrail messaging rules: no praise for fast drops, adjustments
+     * framed as small changes (no more than 10% of the target, then two weeks to judge).
      */
     fun goalFeedback(goal: GoalMode, trend: WeightTrend, weightKg: Double): String? {
-        if (trend.points.size < 8) return null
+        if (trend.points.size < 8 || weightKg <= 0) return null
         val actual = trend.kgPerWeek
+        val pctPerWeek = actual / weightKg * 100.0
         val intended = defaultRate(goal, weightKg)
+
+        // Rapid loss gets a supportive check-in whatever the goal
+        // (safety_low_intake_rapid_loss_checkin uses 1.5% of bodyweight per week).
+        if (pctPerWeek < -1.5) {
+            return "Your trend is dropping more than 1.5% of bodyweight a week, faster than Forge ever plans for. Eating a bit more protects muscle and energy. If eating has felt stressful lately, it's worth talking to someone."
+        }
 
         return when (goal) {
             GoalMode.CUT -> when {
-                actual > 0.05 -> "You're gaining, not cutting. Intake is likely above maintenance."
-                actual > intended * 0.4 -> "Losing, but slower than target. Consider trimming ~150 kcal."
-                actual < intended * 1.8 -> "Dropping fast. That pace risks lean mass - consider eating more."
-                else -> "On track. Losing about ${fmt(abs(actual))} kg/week."
+                actual > 0.05 -> "Your trend is going up, not down, so intake is likely above maintenance. If it holds for two weeks, a small trim (no more than 10% of your target) is the next step."
+                pctPerWeek < -Guardrails.ABSOLUTE_MAX_LOSS_PCT_PER_WEEK -> "Losing faster than 1% of bodyweight a week, the upper limit Forge plans for. Eating a little more keeps more muscle and strength."
+                actual > intended * 0.4 -> "Losing more slowly than planned. If it holds for two weeks, a small trim (no more than 10% of your target) is the next step."
+                else -> "Trend is down about ${fmt(abs(actual))} kg/week, in line with the plan."
             }
-            GoalMode.LEAN_GAIN -> when {
-                actual < 0 -> "You're losing weight on a gain phase. Add ~200 kcal."
-                actual < intended * 0.4 -> "Gaining slower than target. Add ~150 kcal."
-                actual > intended * 2.0 -> "Gaining fast - more of this will be fat than you want."
-                else -> "On track. Gaining about ${fmt(actual)} kg/week."
+            GoalMode.LEAN_GAIN -> {
+                val maxWeekly = Guardrails.monthlyPctToKgPerWeek(
+                    Guardrails.gainBand(TrainingAge.UNKNOWN).maxPctPerMonth, weightKg
+                )
+                when {
+                    actual < 0 -> "Your trend is going down on a gaining phase. If it holds for two weeks, a small increase (no more than 10% of your target) is the next step."
+                    actual < intended * 0.4 -> "Gaining more slowly than planned. Give it two weeks, then consider a small increase."
+                    // The rule reduces intake once the observed rate passes the band maximum.
+                    actual > maxWeekly ->"Gaining faster than about 1% of bodyweight a month. Faster than that mostly adds fat, not extra muscle, so a small trim helps."
+                    else -> "Trend is up about ${fmt(actual)} kg/week, in line with the plan."
+                }
             }
             GoalMode.MAINGAIN -> when {
-                abs(actual) < 0.12 -> "Holding steady with a slight upward drift. Exactly right."
-                actual > 0.25 -> "Drifting up faster than a maingain. Ease off ~150 kcal."
-                actual < -0.15 -> "Trending down. Add ~150 kcal if you meant to hold."
+                abs(actual) < 0.12 -> "Holding steady with a slight upward drift. That's what a maingain looks like."
+                actual > 0.25 -> "Drifting up faster than a maingain. A small trim (no more than 10% of your target) keeps it slow."
+                actual < -0.15 -> "Trending down. If you meant to hold or drift up, a small increase helps."
                 else -> "Close enough to flat. Keep going."
             }
             GoalMode.MAINTAIN, GoalMode.RECOMP -> when {
-                abs(actual) < 0.15 -> "Bodyweight is stable. Watch strength numbers for progress."
+                abs(actual) < 0.15 -> "Bodyweight is stable. Watch strength numbers and waist for progress."
                 actual > 0 -> "Drifting up ${fmt(actual)} kg/week."
                 else -> "Drifting down ${fmt(abs(actual))} kg/week."
             }
         }
     }
 
-    private fun fmt(v: Double): String = String.format("%.2f", v)
+    private fun fmt(v: Double): String = String.format(Locale.US, "%.2f", v)
 
     private fun dateInRange(localDate: String, fromMs: Long, toMs: Long): Boolean {
         val d = runCatching { java.time.LocalDate.parse(localDate) }.getOrNull() ?: return false
@@ -226,4 +309,7 @@ object NutritionMath {
 
     fun displayToKg(v: Double, unit: com.laksh.forge.data.prefs.WeightUnit): Double =
         if (unit == com.laksh.forge.data.prefs.WeightUnit.LB) v / 2.2046226 else v
+
+    /** True when a flag list changed anything (used for "adjusted" badges). */
+    fun anyAdjustment(flags: List<GuardrailFlag>): Boolean = flags.any { it.severity != Severity.INFO }
 }

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Cloud backup and device-to-device transfer (Android 12+). Same policy as backup_rules.xml:
+    the encrypted secrets file is useless off this device (its Keystore key is non-exportable),
+    and meal/progress photos are never included, so they never leave the phone.
+-->
 <data-extraction-rules>
     <cloud-backup>
         <include domain="database" path="." />
         <include domain="file" path="datastore/" />
+        <exclude domain="file" path="datastore/forge_secrets.preferences_pb" />
     </cloud-backup>
     <device-transfer>
         <include domain="database" path="." />
         <include domain="file" path="datastore/" />
+        <exclude domain="file" path="datastore/forge_secrets.preferences_pb" />
     </device-transfer>
 </data-extraction-rules>

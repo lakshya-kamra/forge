@@ -1,0 +1,930 @@
+{
+ "id": "phat_layne_norton",
+ "name": "PHAT (Power Hypertrophy Adaptive Training)",
+ "author": "Layne Norton",
+ "isFree": true,
+ "category": "POWERBUILDING",
+ "level": "INTERMEDIATE",
+ "daysPerWeek": 5,
+ "sessionMinutes": 90,
+ "durationWeeks": null,
+ "equipment": [
+  "barbell",
+  "rack",
+  "bench",
+  "dumbbells",
+  "cable",
+  "machines",
+  "pullup_bar"
+ ],
+ "summary": "A 5-day split with two heavy upper/lower power days (3-5 reps) followed by three bodybuilding-style hypertrophy days that each open with explosive speed sets. Every muscle is trained twice a week, once heavy and once with higher reps and more volume.",
+ "evidenceNote": "Weekly volume is high (about 17 sets for back, 15 for quads and 13 for chest per week, not counting speed sets), which sits at or above the upper end of what most hypertrophy research supports, so many lifters will need the author's own advice to drop an accessory per day at first. Twice-weekly frequency and stopping 1-2 reps short of failure on most sets match current evidence; the speed work has little direct hypertrophy evidence behind it, and the article gives no numeric load-progression rule.",
+ "sources": [
+  {
+   "title": "PHAT: Power Hypertrophy Adaptive Training (Biolayne, 2016 repost by the author)",
+   "url": "https://biolayne.com/articles/training/phat-power-hypertrophy-adaptive-training/",
+   "kind": "article"
+  },
+  {
+   "title": "Mega Feature: Layne Norton Training Series + Full Power/Hypertrophy Routine (SimplyShredded, 2011; includes the author's FAQ on plateaus, deloads and failure)",
+   "url": "https://simplyshredded.com/mega-feature-layne-norton-training-series-full-powerhypertrophy-routine-updated-2011.html",
+   "kind": "article"
+  }
+ ],
+ "schedule": "Day 1 Upper Power, Day 2 Lower Power, Day 3 Rest, Day 4 Back and Shoulders Hypertrophy, Day 5 Lower Hypertrophy, Day 6 Chest and Arms Hypertrophy, Day 7 Rest. Session length is not stated by the author; 90 min is an estimate.",
+ "progression": {
+  "type": "CUSTOM",
+  "description": "Author's version on Biolayne (posted 5.30.2016) uses the same template as the 2011 SimplyShredded original. Power days: 3-5 reps for 3-5 working sets on one main compound each for lower body, pressing and pulling, resting until fully recovered (5-6 min if needed). Speed work: 6-8 sets of 3 (template shows 6) at 65-70% of your normal 3-5RM on the same power movement used earlier in the week, moved explosively, max 90 s rest; reduce the load if using bands or chains. Hypertrophy work: 8-20 reps, 1-2 min rest, about 50-75% more volume than the power days. Stop 1-2 reps short of failure on most sets; once adapted, take only the last 1-2 sets of each exercise to failure. Avoid failure entirely for the first 2-4 weeks (the FAQ says 3-6 weeks), and do not train to failure consistently for more than 6 weeks in a row. Rotate power movements every 2-3 weeks. Beginners to this volume may cut one assistance/auxiliary exercise per day. The article gives no numeric weight-increase rule, so incrementKg is null.",
+  "incrementKg": {
+   "upper": null,
+   "lower": null
+  },
+  "deload": "Deload once every 6-12 weeks, or as needed (FAQ: not scheduled, taken when needed), for 1-3 weeks: same routine at 60-70% of normal weights. On a plateau, first change power/accessory exercises, then attack sticking points: deficit deadlifts (2-4 in box) or rack pulls from just below the knee, paused below-parallel box squats, good mornings or deep hack squats, triceps work (close-grip presses, dips, skull crushers) or 3-count paused presses; deload if that fails."
+ },
+ "days": [
+  {
+   "name": "Day 1 - Upper Body Power",
+   "focus": "Upper body strength (rows, presses, pulls)",
+   "exercises": [
+    {
+     "exerciseId": "barbell_row",
+     "name": "Rows (bent-over or Pendlay)",
+     "sets": 3,
+     "repsLow": 3,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 300,
+     "notes": "Power movement. Rest until fully recovered (author: can be 5-6 min; 300 s is an approximation). Bent-over or Pendlay rows.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "pull_up",
+     "name": "Weighted pull-ups",
+     "sets": 2,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Rack chins",
+     "sets": 2,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Exercise not described in the source; commonly done as chin-ups with feet supported (bar set low in a rack).",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "dumbbell_bench_press",
+     "name": "Flat dumbbell presses",
+     "sets": 3,
+     "repsLow": 3,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 300,
+     "notes": "Power movement. Rest until fully recovered (author: can be 5-6 min; 300 s is an approximation).",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "dip",
+     "name": "Weighted dips",
+     "sets": 2,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_dumbbell_press",
+     "name": "Seated dumbbell shoulder presses",
+     "sets": 3,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "barbell_curl",
+     "name": "Cambered bar curls",
+     "sets": 3,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "Cambered bar = EZ curl bar (interpretation; source just says cambered bar).",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "skull_crusher",
+     "name": "Skull crushers",
+     "sets": 3,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 2 - Lower Body Power",
+   "focus": "Lower body strength (squat, posterior chain)",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squats",
+     "sets": 3,
+     "repsLow": 3,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 300,
+     "notes": "Power movement. Rest until fully recovered (author: can be 5-6 min; 300 s is an approximation).",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "hack_squat",
+     "name": "Hack squats",
+     "sets": 2,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "leg_extension",
+     "name": "Leg extensions",
+     "sets": 2,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Stiff-legged deadlifts",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lying_leg_curl",
+     "name": "Glute-ham raises or lying leg curls",
+     "sets": 2,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "standing_calf_raise",
+     "name": "Standing calf raises",
+     "sets": 3,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_calf_raise",
+     "name": "Seated calf raises",
+     "sets": 2,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": null,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 4 - Back and Shoulders Hypertrophy",
+   "focus": "Back and shoulders volume, rows speed work",
+   "exercises": [
+    {
+     "exerciseId": "barbell_row",
+     "name": "Rows (speed work)",
+     "sets": 6,
+     "repsLow": 3,
+     "repsHigh": 3,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "65-70% of your normal 3-5RM, move explosively; if the bar slows during the concentric it is too heavy. Rest no more than 90 s. Article text allows 6-8 sets; template shows 6. Use whichever power movement you are currently rotating on.",
+     "optional": false,
+     "rule": "RECENT_RM",
+     "ref": "barbell_row",
+     "setScheme": [
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      }
+     ]
+    },
+    {
+     "exerciseId": null,
+     "name": "Rack chins",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "Hypertrophy work: rest 1-2 min.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_cable_row",
+     "name": "Seated cable rows",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "chest_supported_row",
+     "name": "Dumbbell rows or shrugs (chest supported on incline bench)",
+     "sets": 2,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lat_pulldown",
+     "name": "Close-grip pulldowns",
+     "sets": 2,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_dumbbell_press",
+     "name": "Seated dumbbell presses",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Upright rows",
+     "sets": 2,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lateral_raise",
+     "name": "Side lateral raises (dumbbell or cable)",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 5 - Lower Body Hypertrophy",
+   "focus": "Leg volume, squat speed work",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squats (speed work)",
+     "sets": 6,
+     "repsLow": 3,
+     "repsHigh": 3,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "65-70% of your normal 3-5RM, move explosively; if the bar slows during the concentric it is too heavy. Rest no more than 90 s. Article text allows 6-8 sets; template shows 6. Use whichever power movement you are currently rotating on.",
+     "optional": false,
+     "rule": "RECENT_RM",
+     "ref": "back_squat",
+     "setScheme": [
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      }
+     ]
+    },
+    {
+     "exerciseId": "hack_squat",
+     "name": "Hack squats",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "Hypertrophy work: rest 1-2 min.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "leg_press",
+     "name": "Leg presses",
+     "sets": 2,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "leg_extension",
+     "name": "Leg extensions",
+     "sets": 3,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "romanian_deadlift",
+     "name": "Romanian deadlifts",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lying_leg_curl",
+     "name": "Lying leg curls",
+     "sets": 2,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_leg_curl",
+     "name": "Seated leg curls",
+     "sets": 2,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Donkey calf raises",
+     "sets": 4,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_calf_raise",
+     "name": "Seated calf raises",
+     "sets": 3,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 6 - Chest and Arms Hypertrophy",
+   "focus": "Chest and arm volume, dumbbell press speed work",
+   "exercises": [
+    {
+     "exerciseId": "dumbbell_bench_press",
+     "name": "Flat dumbbell presses (speed work)",
+     "sets": 6,
+     "repsLow": 3,
+     "repsHigh": 3,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "65-70% of your normal 3-5RM, move explosively; if the bar slows during the concentric it is too heavy. Rest no more than 90 s. Article text allows 6-8 sets; template shows 6. Use whichever power movement you are currently rotating on.",
+     "optional": false,
+     "rule": "RECENT_RM",
+     "ref": "dumbbell_bench_press",
+     "setScheme": [
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      },
+      {
+       "reps": 3,
+       "percent": 0.65,
+       "of": "RECENT_RM",
+       "amrap": false
+      }
+     ]
+    },
+    {
+     "exerciseId": "incline_dumbbell_press",
+     "name": "Incline dumbbell presses",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "Hypertrophy work: rest 1-2 min.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "machine_chest_press",
+     "name": "Hammer Strength chest press",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "cable_fly",
+     "name": "Incline cable flyes",
+     "sets": 2,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "preacher_curl",
+     "name": "Cambered bar preacher curls",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Dumbbell concentration curls",
+     "sets": 2,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Spider curls (chest on incline bench)",
+     "sets": 2,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "overhead_triceps_extension",
+     "name": "Seated triceps extensions with cambered bar",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "Source wording: seated tricep extension with cambered bar (overhead is the usual form but not stated).",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "triceps_pushdown",
+     "name": "Cable rope pressdowns",
+     "sets": 2,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Cable kickbacks",
+     "sets": 2,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 90,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  }
+ ],
+ "verifiedAgainst": [
+  "https://biolayne.com/articles/training/phat-power-hypertrophy-adaptive-training/",
+  "https://simplyshredded.com/mega-feature-layne-norton-training-series-full-powerhypertrophy-routine-updated-2011.html"
+ ],
+ "engine": {
+  "model": "DOUBLE",
+  "cadence": "SESSION",
+  "failLimit": null,
+  "deloadPct": null,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": null,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": null,
+  "optionalWeeks": [],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": true,
+  "setup": []
+ }
+}

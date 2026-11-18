@@ -1,0 +1,231 @@
+{
+ "id": "stronglifts_5x5",
+ "name": "StrongLifts 5x5",
+ "author": "Mehdi Hadim (StrongLifts)",
+ "isFree": true,
+ "category": "STRENGTH",
+ "level": "BEGINNER",
+ "daysPerWeek": 3,
+ "sessionMinutes": 60,
+ "durationWeeks": null,
+ "equipment": [
+  "barbell",
+  "rack",
+  "bench"
+ ],
+ "summary": "Two alternating full-body barbell workouts (A and B), done three times a week, using 5 sets of 5 on the squat, bench, row and overhead press and 1 set of 5 on the deadlift. You add a little weight every workout when you complete all your reps.",
+ "evidenceNote": "Squats get about 15 work sets a week while bench, overhead press and rows average about 7-8 each and the deadlift 1-2 sets, so quads get plenty of volume but arms, rear delts and lats get little direct work. Straight 5x5 sets start easy and only approach failure late in the linear run. It suits new or returning lifters who want a simple strength base. Its known weaknesses are lower-body-heavy volume and frequent stalls on pressing when 2.5 kg jumps become too big.",
+ "sources": [
+  {
+   "title": "Stronglifts 5x5 Workout Program: Quick Start Guide",
+   "url": "https://stronglifts.com/stronglifts-5x5/workout-program/",
+   "kind": "article"
+  },
+  {
+   "title": "How to Overcome Failure on Stronglifts 5x5",
+   "url": "https://stronglifts.com/stronglifts-5x5/failure/",
+   "kind": "article"
+  },
+  {
+   "title": "How to Progress on Stronglifts 5x5",
+   "url": "https://stronglifts.com/stronglifts-5x5/progress/",
+   "kind": "article"
+  },
+  {
+   "title": "How to Barbell Row with Proper Form",
+   "url": "https://stronglifts.com/barbell-row/",
+   "kind": "article"
+  }
+ ],
+ "schedule": "Alternate Workout A and Workout B each time you lift, 3 days a week with at least one rest day between workouts (most people use Mon/Wed/Fri). Two workouts a week is allowed if three is not possible.",
+ "progression": {
+  "type": "LINEAR",
+  "description": "Add weight next time on any exercise where you completed 5 reps on every set with good form (deadlift: the one set of 5); otherwise repeat the weight on that exercise only. Each lift progresses independently. Current guide: start by adding 5 lb (2.5 kg) every workout on squat, bench, OHP and row; men can usually add 10 lb (5 kg) on deadlifts for a few weeks, then 5 lb (2.5 kg). Author's ranges: squat and deadlift 2.5-5 kg, bench/OHP/row 1.25-2.5 kg; once progress slows use smaller 2.5 lb (about 1.25 kg) jumps. Starting weights for new lifters: empty 20 kg bar on squat, bench and OHP; deadlift 40-60 kg; row 30-40 kg. Lifters with some experience start with a weight they could lift for 10 reps.",
+  "incrementKg": {
+   "upper": 2.5,
+   "lower": 2.5
+  },
+  "deload": "After a failed workout, repeat the weight next workout (do not deload after a single failure). If you repeat the weight three times and still fail, reduce the weight by about 10% and work back up."
+ },
+ "days": [
+  {
+   "name": "Workout A",
+   "focus": "Full body: squat, bench, row",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Rest about 3 min; 1-2 min after easy sets, 5 min after a set where you struggled for 5 reps. Warm up with 2x5 empty bar, then heavier sets of 5.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench Press",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Rest about 3 min; 1-2 min after easy sets, 5 min after a set where you struggled for 5 reps. Warm up with 2x5 empty bar, then heavier sets of 5.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "barbell_row",
+     "name": "Barbell Row",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Rest about 3 min; 1-2 min after easy sets, 5 min after a set where you struggled for 5 reps. Bar starts on the floor and returns to the floor every rep. Warm up from a light weight, adding about 10-20 kg per set.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Workout B",
+   "focus": "Full body: squat, overhead press, deadlift",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Rest about 3 min; 1-2 min after easy sets, 5 min after a set where you struggled for 5 reps. Warm up with 2x5 empty bar, then heavier sets of 5.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "overhead_press",
+     "name": "Overhead Press",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Rest about 3 min; 1-2 min after easy sets, 5 min after a set where you struggled for 5 reps. Warm up with 2x5 empty bar, then heavier sets of 5.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "conventional_deadlift",
+     "name": "Deadlift",
+     "sets": 1,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "One heavy work set of 5 (not 5x5) after warm-up sets that start light and add about 10-20 kg per set. restSeconds is the app default; the guide gives no separate rest figure for the single deadlift set.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    }
+   ]
+  }
+ ],
+ "notes": "The current quick-start guide also lists optional 'Assistance Work' at the end of both workouts, covered in a separate article; it is not part of the core template here. No AMRAP sets in the program. sessionMinutes is an estimate (15 work sets with about 3 min rest plus about 5 min of warm-up); the guide does not state a session length. The program and spreadsheets are free on stronglifts.com; the Stronglifts Pro app tier is paid but not required.",
+ "verifiedAgainst": [
+  "https://stronglifts.com/stronglifts-5x5/workout-program/",
+  "https://stronglifts.com/stronglifts-5x5/failure/",
+  "https://stronglifts.com/stronglifts-5x5/progress/",
+  "https://stronglifts.com/barbell-row/"
+ ],
+ "engine": {
+  "model": "LINEAR",
+  "cadence": "SESSION",
+  "failLimit": 3,
+  "deloadPct": 0.1,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": null,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": null,
+  "optionalWeeks": [],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": false,
+  "setup": [
+   {
+    "key": "squat",
+    "basis": "START",
+    "label": "Squat",
+    "exerciseId": "back_squat",
+    "reps": 5
+   },
+   {
+    "key": "bench press",
+    "basis": "START",
+    "label": "Bench Press",
+    "exerciseId": "bench_press",
+    "reps": 5
+   },
+   {
+    "key": "barbell row",
+    "basis": "START",
+    "label": "Barbell Row",
+    "exerciseId": "barbell_row",
+    "reps": 5
+   },
+   {
+    "key": "overhead press",
+    "basis": "START",
+    "label": "Overhead Press",
+    "exerciseId": "overhead_press",
+    "reps": 5
+   },
+   {
+    "key": "deadlift",
+    "basis": "START",
+    "label": "Deadlift",
+    "exerciseId": "conventional_deadlift",
+    "reps": 5
+   }
+  ]
+ }
+}

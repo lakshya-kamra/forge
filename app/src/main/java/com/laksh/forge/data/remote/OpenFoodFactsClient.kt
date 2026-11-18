@@ -57,7 +57,7 @@ class OpenFoodFactsClient {
             throw IOException("Could not reach the food database: ${e.message}")
         }
 
-        val root = runCatching { AnthropicClient.JSON.parseToJsonElement(raw).jsonObject }
+        val root = runCatching { com.laksh.forge.data.ai.AiJson.json.parseToJsonElement(raw).jsonObject }
             .getOrElse { throw IOException("Malformed response from food database") }
 
         val status = root["status"]?.jsonPrimitive?.content

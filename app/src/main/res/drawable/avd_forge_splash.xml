@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Splash icon: the flame kindles from its base with an overshoot, the core flares with it,
+    then a spark rises. Under 1 s total, as the splash API requires. Solid colours (no
+    gradients) keep the inline drawable cheap to inflate on the launch path. The static frame
+    (used before Android 12) is the finished mark.
+-->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="108dp"
+            android:height="108dp"
+            android:viewportWidth="108"
+            android:viewportHeight="108">
+            <group
+                android:name="flame"
+                android:pivotX="54"
+                android:pivotY="84">
+                <path
+                    android:fillColor="@color/forge_ember"
+                    android:pathData="M54,24C57.5,33 66,39.5 70.5,48.5C73.5,54.5 74.5,60 74.5,64C74.5,75.3 65.3,84 54,84C42.7,84 33.5,75.3 33.5,64C33.5,56.5 37,50.5 42,45.5C42,51.5 44.5,55.5 48.5,57.5C47,46.5 49,34 54,24Z" />
+                <group
+                    android:name="core"
+                    android:pivotX="54"
+                    android:pivotY="79">
+                    <path
+                        android:fillColor="@color/forge_core"
+                        android:pathData="M54.5,52C57.5,57 64,61.5 64,68.5C64,74.6 59.7,79 54,79C48.3,79 44,74.6 44,69C44,63.5 48,60.5 50.5,57.5C51.5,61 53,62.5 55,63C54,59 53.8,55.5 54.5,52Z" />
+                </group>
+            </group>
+            <group android:name="spark">
+                <path
+                    android:name="sparkPath"
+                    android:fillColor="@color/forge_ember_bright"
+                    android:pathData="M66,29a3,3 0,1 1,0 6a3,3 0,1 1,0 -6z" />
+            </group>
+        </vector>
+    </aapt:attr>
+
+    <target android:name="flame">
+        <aapt:attr name="android:animation">
+            <set android:ordering="together">
+                <objectAnimator
+                    android:duration="560"
+                    android:interpolator="@android:interpolator/overshoot"
+                    android:propertyName="scaleX"
+                    android:valueFrom="0.4"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="560"
+                    android:interpolator="@android:interpolator/overshoot"
+                    android:propertyName="scaleY"
+                    android:valueFrom="0.2"
+                    android:valueTo="1"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="core">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="700"
+                android:interpolator="@android:interpolator/overshoot"
+                android:propertyName="scaleY"
+                android:valueFrom="0.3"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+
+    <target android:name="spark">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="420"
+                android:interpolator="@android:interpolator/decelerate_cubic"
+                android:propertyName="translateY"
+                android:startOffset="420"
+                android:valueFrom="12"
+                android:valueTo="0"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+
+    <target android:name="sparkPath">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:duration="300"
+                android:interpolator="@android:interpolator/linear"
+                android:propertyName="fillAlpha"
+                android:startOffset="420"
+                android:valueFrom="0"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </aapt:attr>
+    </target>
+</animated-vector>

@@ -1,8 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Forge mark: an ember flame with a bright core and a rising spark. Everything sits inside
+    the adaptive-icon safe zone (a 66 dp circle centred in the 108 dp canvas), so no launcher
+    mask crops it.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp" android:height="108dp"
-    android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#FF6B4A" android:pathData="M40,32h30a2,2 0,0 1,2 2v5a2,2 0,0 1,-2 2h-30z" />
-    <path android:fillColor="#FF8A5C" android:pathData="M40,32h4v44h-4z" />
-    <path android:fillColor="#FFB07A" android:pathData="M44,50h22a2,2 0,0 1,2 2v4a2,2 0,0 1,-2 2h-22z" />
-    <path android:fillColor="#FF6B4A" android:pathData="M32,36h6v36h-6z" />
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:pathData="M54,24C57.5,33 66,39.5 70.5,48.5C73.5,54.5 74.5,60 74.5,64C74.5,75.3 65.3,84 54,84C42.7,84 33.5,75.3 33.5,64C33.5,56.5 37,50.5 42,45.5C42,51.5 44.5,55.5 48.5,57.5C47,46.5 49,34 54,24Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54"
+                android:startY="24"
+                android:endX="54"
+                android:endY="84"
+                android:startColor="#FFFF8A5C"
+                android:centerColor="#FFFF6B4A"
+                android:endColor="#FFC2472C" />
+        </aapt:attr>
+    </path>
+    <path android:pathData="M54.5,52C57.5,57 64,61.5 64,68.5C64,74.6 59.7,79 54,79C48.3,79 44,74.6 44,69C44,63.5 48,60.5 50.5,57.5C51.5,61 53,62.5 55,63C54,59 53.8,55.5 54.5,52Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="54"
+                android:startY="52"
+                android:endX="54"
+                android:endY="79"
+                android:startColor="#FFFFE2C8"
+                android:endColor="#FFFFA270" />
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="#FFFF8A5C"
+        android:pathData="M66,29a3,3 0,1 1,0 6a3,3 0,1 1,0 -6z" />
 </vector>

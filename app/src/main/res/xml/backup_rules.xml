@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Auto Backup (Android 11 and lower). The database and settings DataStore are backed up.
+    Excluded on purpose:
+    - forge_secrets: API keys and tokens, sealed with an Android Keystore key that never leaves
+      this device, so a restored copy could not be decrypted anyway.
+    - meal_photos / progress_photos: deliberately not included (only the database and
+      datastore/ are), so body and meal photos stay on this phone only. Lint rejects
+      excludes outside an included path, which is why they are not listed below.
+-->
 <full-backup-content>
     <include domain="database" path="." />
     <include domain="file" path="datastore/" />
+    <exclude domain="file" path="datastore/forge_secrets.preferences_pb" />
 </full-backup-content>

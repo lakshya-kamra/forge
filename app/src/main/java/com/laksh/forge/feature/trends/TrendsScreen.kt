@@ -1,24 +1,20 @@
 package com.laksh.forge.feature.trends
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Insights
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.outlined.Restaurant
+import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,55 +22,95 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.laksh.forge.domain.NutritionMath
+import com.laksh.forge.feature.wearables.WearableTrendsSection
 import com.laksh.forge.ui.components.BarChart
-import com.laksh.forge.ui.components.ChartPoint
+import com.laksh.forge.ui.components.ConnectedChoiceGroup
 import com.laksh.forge.ui.components.EmptyState
+import com.laksh.forge.ui.components.ErrorNotice
 import com.laksh.forge.ui.components.ForgeCard
+import com.laksh.forge.ui.components.IconBadge
 import com.laksh.forge.ui.components.LineChart
-import com.laksh.forge.ui.components.Pill
+import com.laksh.forge.ui.components.LocalFloatingBarClearance
 import com.laksh.forge.ui.components.SectionHeader
+import com.laksh.forge.ui.components.ShimmerCard
 import com.laksh.forge.ui.components.StatTile
 import com.laksh.forge.ui.theme.Macro
-import com.laksh.forge.util.Dates
+import com.laksh.forge.ui.theme.accentFor
+import com.laksh.forge.ui.theme.tintedContainer
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Composable
 fun TrendsScreen(vm: TrendsViewModel = viewModel(factory = TrendsViewModel.Factory)) {
     val state by vm.state.collectAsStateWithLifecycle()
+    TrendsContent(
+        state = state,
+        onWindow = vm::setWindow,
+        onRetry = vm::retry,
+        trainingSlot = { TrainingVolumeSection() },
+        wearableSlot = { WearableTrendsSection() }
+    )
+}
+
+/** Stateless Trends; the training and wearable sections are slots owned by their features. */
+@Composable
+fun TrendsContent(
+    state: TrendsState,
+    onWindow: (Window) -> Unit,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+    trainingSlot: @Composable () -> Unit = {},
+    wearableSlot: @Composable () -> Unit = {}
+) {
+    val clearance = LocalFloatingBarClearance.current
     val unit = state.settings.weightUnit
 
     LazyColumn(
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 120.dp),
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = clearance + 24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        item {
+        item(key = "title", contentType = "title") {
             Text(
                 "Trends",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.displaySmallEmphasized,
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
 
-        item { WindowTabs(state.window, vm::setWindow) }
+        item(key = "window", contentType = "window") {
+            ConnectedChoiceGroup(
+                options = Window.entries,
+                selected = state.window,
+                onSelect = onWindow,
+                label = { it.label }
+            )
+        }
+
+        if (state.error != null) {
+            item(key = "error", contentType = "error") { ErrorNotice(state.error, onRetry = onRetry) }
+            return@LazyColumn
+        }
+
+        if (state.loading) {
+            item(key = "loading", contentType = "loading") { ShimmerCard(lines = 6) }
+            return@LazyColumn
+        }
 
         state.feedback?.let { fb ->
-            item {
-                ForgeCard(color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)) {
+            item(key = "feedback", contentType = "feedback") {
+                ForgeCard(
+                    color = MaterialTheme.colorScheme.tintedContainer(MaterialTheme.colorScheme.primary),
+                    modifier = Modifier.animateItem()
+                ) {
                     Row(verticalAlignment = Alignment.Top) {
-                        Icon(
-                            Icons.Outlined.Insights, null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(Modifier.width(10.dp))
+                        IconBadge(Icons.Outlined.Insights, size = 32.dp)
+                        Spacer(Modifier.width(12.dp))
                         Text(fb, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
@@ -82,11 +118,11 @@ fun TrendsScreen(vm: TrendsViewModel = viewModel(factory = TrendsViewModel.Facto
         }
 
         // -------------------------------------------------- weight
-        item { SectionHeader("Bodyweight") }
-        item {
+        item(key = "weight_header", contentType = "section") { SectionHeader("Bodyweight") }
+        item(key = "weight", contentType = "chart_card") {
             ForgeCard {
                 val trend = state.trend
-                if (trend == null || trend.points.size < 2) {
+                if (trend == null || state.trendPoints.size < 2) {
                     EmptyState(
                         icon = Icons.Outlined.Insights,
                         title = "Log a few weigh-ins",
@@ -95,7 +131,7 @@ fun TrendsScreen(vm: TrendsViewModel = viewModel(factory = TrendsViewModel.Facto
                 } else {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         StatTile(
-                            label = "TREND",
+                            label = "Trend",
                             value = "%.1f %s".format(
                                 NutritionMath.kgToDisplay(trend.latestSmoothed ?: 0.0, unit),
                                 unit.label
@@ -103,14 +139,14 @@ fun TrendsScreen(vm: TrendsViewModel = viewModel(factory = TrendsViewModel.Facto
                             modifier = Modifier.weight(1f)
                         )
                         StatTile(
-                            label = "RATE",
+                            label = "Rate",
                             value = "%+.2f".format(NutritionMath.kgToDisplay(trend.kgPerWeek, unit)),
                             sub = "${unit.label}/week",
                             accent = rateColor(trend.kgPerWeek),
                             modifier = Modifier.weight(1f)
                         )
                         StatTile(
-                            label = "CHANGE",
+                            label = "Change",
                             value = trend.changeOverWindow?.let {
                                 "%+.1f".format(NutritionMath.kgToDisplay(it, unit))
                             } ?: "-",
@@ -119,22 +155,9 @@ fun TrendsScreen(vm: TrendsViewModel = viewModel(factory = TrendsViewModel.Facto
                         )
                     }
                     Spacer(Modifier.height(18.dp))
-                    val smoothed = trend.points.map {
-                        ChartPoint(
-                            x = it.timestamp.toFloat(),
-                            y = NutritionMath.kgToDisplay(it.smoothed, unit).toFloat(),
-                            label = Dates.shortLabel(it.timestamp)
-                        )
-                    }
-                    val raw = trend.points.map {
-                        ChartPoint(
-                            x = it.timestamp.toFloat(),
-                            y = NutritionMath.kgToDisplay(it.raw, unit).toFloat()
-                        )
-                    }
                     LineChart(
-                        points = smoothed,
-                        rawPoints = raw,
+                        points = state.trendPoints,
+                        rawPoints = state.rawPoints,
                         lineColor = MaterialTheme.colorScheme.primary,
                         yFormatter = { "%.1f".format(it) },
                         height = 210.dp
@@ -143,201 +166,86 @@ fun TrendsScreen(vm: TrendsViewModel = viewModel(factory = TrendsViewModel.Facto
                     Text(
                         "Dots are individual weigh-ins; the line is the smoothed trend.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
 
-        // -------------------------------------------------- calories
-        item { SectionHeader("Intake") }
-        item {
+        // -------------------------------------------------- intake
+        item(key = "intake_header", contentType = "section") { SectionHeader("Intake") }
+        item(key = "intake", contentType = "chart_card") {
             ForgeCard {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatTile(
-                        label = "AVG INTAKE",
-                        value = state.avgKcal?.roundToInt()?.toString() ?: "-",
-                        sub = "kcal/day",
-                        modifier = Modifier.weight(1f)
-                    )
-                    StatTile(
-                        label = "AVG PROTEIN",
-                        value = state.avgProtein?.roundToInt()?.toString() ?: "-",
-                        sub = "g/day",
-                        accent = Macro.protein,
-                        modifier = Modifier.weight(1f)
-                    )
-                    StatTile(
-                        label = "MAINTENANCE",
-                        value = state.settings.learnedTdee.takeIf { it > 0 }?.roundToInt()?.toString() ?: "-",
-                        sub = if (state.settings.learnedTdee > 0) "learned" else "need more data",
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                Spacer(Modifier.height(18.dp))
-                BarChart(
-                    points = state.dayTotals.map {
-                        ChartPoint(0f, it.kcal.toFloat(), Dates.shortLabel(it.localDate))
-                    },
-                    target = state.targets?.kcal?.toFloat(),
-                    height = 190.dp
-                )
-                Spacer(Modifier.height(6.dp))
-                Text(
-                    "Dashed line is your daily target.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
-                )
-            }
-        }
-
-        // -------------------------------------------------- training volume
-        if (state.volume.isNotEmpty()) {
-            item { SectionHeader("Training volume") }
-            item {
-                ForgeCard {
-                    val totalSets = state.volume.sumOf { it.sets }
-                    val totalVolume = state.volume.sumOf { it.volume }
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        StatTile(
-                            label = "SESSIONS",
-                            value = state.volume.size.toString(),
-                            modifier = Modifier.weight(1f)
+                when {
+                    state.settings.hideNumbers -> Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Outlined.VisibilityOff, null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp)
                         )
-                        StatTile(
-                            label = "WORKING SETS",
-                            value = totalSets.toString(),
-                            modifier = Modifier.weight(1f)
-                        )
-                        StatTile(
-                            label = "TONNAGE",
-                            value = "${(totalVolume / 1000).roundToInt()}t",
-                            modifier = Modifier.weight(1f)
+                        Spacer(Modifier.width(10.dp))
+                        Text(
+                            "Calorie numbers are hidden. You logged on ${state.loggedDays} days in this window.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Spacer(Modifier.height(18.dp))
-                    BarChart(
-                        points = state.volume.map {
-                            ChartPoint(0f, it.volume.toFloat(), Dates.shortLabel(it.localDate))
-                        },
-                        target = null,
-                        barColor = Macro.fiber,
-                        height = 160.dp,
-                        yFormatter = { "${(it / 1000).roundToInt()}t" }
-                    )
-                }
-            }
-        }
 
-        // -------------------------------------------------- wearable
-        item { SectionHeader("Wearable") }
-        item {
-            ForgeCard {
-                if (state.health.isEmpty()) {
-                    EmptyState(
-                        icon = Icons.Outlined.Sync,
-                        title = "No wearable data",
-                        body = "Turn on Health Connect sync inside the Zepp app, then pull the data in here.",
-                        action = {
-                            Pill(
-                                if (state.syncing) "Syncing..." else "Sync now",
-                                icon = Icons.Outlined.Sync,
-                                filled = true,
-                                onClick = vm::syncHealth
+                    state.dayTotals.isEmpty() -> EmptyState(
+                        icon = Icons.Outlined.Restaurant,
+                        title = "No food logged yet",
+                        body = "Log meals on Today and your daily intake builds up here against your target."
+                    )
+
+                    else -> {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            StatTile(
+                                label = "Avg intake",
+                                value = state.avgKcal?.roundToInt()?.toString() ?: "-",
+                                sub = "kcal/day",
+                                modifier = Modifier.weight(1f)
+                            )
+                            StatTile(
+                                label = "Avg protein",
+                                value = state.avgProtein?.roundToInt()?.toString() ?: "-",
+                                sub = "g/day",
+                                accent = MaterialTheme.colorScheme.accentFor(Macro.protein),
+                                modifier = Modifier.weight(1f)
+                            )
+                            StatTile(
+                                label = "Maintenance",
+                                value = state.settings.learnedTdee.takeIf { it > 0 }?.roundToInt()?.toString() ?: "-",
+                                sub = if (state.settings.learnedTdee > 0) "learned" else "need more data",
+                                modifier = Modifier.weight(1f)
                             )
                         }
-                    )
-                } else {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        StatTile(
-                            label = "AVG STEPS",
-                            value = state.avgSteps?.toString() ?: "-",
-                            modifier = Modifier.weight(1f)
+                        Spacer(Modifier.height(18.dp))
+                        BarChart(
+                            points = state.intakePoints,
+                            target = state.targets?.kcal?.toFloat(),
+                            height = 190.dp
                         )
-                        StatTile(
-                            label = "AVG SLEEP",
-                            value = state.avgSleepMinutes?.let { "${it / 60}h ${it % 60}m" } ?: "-",
-                            accent = Macro.fiber,
-                            modifier = Modifier.weight(1f)
-                        )
-                        StatTile(
-                            label = "RESTING HR",
-                            value = state.health.mapNotNull { it.restingHr }
-                                .takeIf { it.isNotEmpty() }?.average()?.roundToInt()?.toString() ?: "-",
-                            accent = Macro.fat,
-                            modifier = Modifier.weight(1f)
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            if (state.targetsFromPlan) "Dashed line is your plan's daily target."
+                            else "Dashed line is your daily target.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-                    Spacer(Modifier.height(18.dp))
-                    BarChart(
-                        points = state.health.mapNotNull { h ->
-                            h.steps?.let { ChartPoint(0f, it.toFloat(), Dates.shortLabel(h.localDate)) }
-                        },
-                        target = null,
-                        barColor = Macro.protein,
-                        height = 150.dp,
-                        yFormatter = { "${(it / 1000).roundToInt()}k" }
-                    )
-                    Spacer(Modifier.height(14.dp))
-                    Pill(
-                        if (state.syncing) "Syncing..." else "Sync now",
-                        icon = Icons.Outlined.Sync,
-                        onClick = vm::syncHealth
-                    )
-                }
-
-                state.syncMessage?.let { msg ->
-                    Spacer(Modifier.height(12.dp))
-                    Text(
-                        msg,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.clickable { vm.clearSyncMessage() }
-                    )
                 }
             }
         }
+
+        // -------------------------------------------------- feature sections
+        item(key = "training", contentType = "slot") { trainingSlot() }
+        item(key = "wearables", contentType = "slot") { wearableSlot() }
     }
 }
 
 @Composable
 private fun rateColor(kgPerWeek: Double): Color = when {
     abs(kgPerWeek) < 0.1 -> MaterialTheme.colorScheme.onSurface
-    kgPerWeek < 0 -> Macro.protein
-    else -> Macro.carbs
-}
-
-@Composable
-private fun WindowTabs(current: Window, onSelect: (Window) -> Unit) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainer)
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Window.entries.forEach { w ->
-            val selected = w == current
-            Box(
-                Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(11.dp))
-                    .background(
-                        if (selected) MaterialTheme.colorScheme.primary else Color.Transparent
-                    )
-                    .clickable { onSelect(w) }
-                    .padding(vertical = 9.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    w.label,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (selected) MaterialTheme.colorScheme.onPrimary
-                    else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
+    kgPerWeek < 0 -> MaterialTheme.colorScheme.accentFor(Macro.protein)
+    else -> MaterialTheme.colorScheme.accentFor(Macro.carbs)
 }

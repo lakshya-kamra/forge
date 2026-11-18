@@ -1,0 +1,412 @@
+{
+ "id": "bws_full_body_3day",
+ "name": "Built With Science #1 Full Body Workout Plan",
+ "author": "Jeremy Ethier (Built With Science)",
+ "isFree": true,
+ "category": "HYPERTROPHY",
+ "level": "BEGINNER",
+ "daysPerWeek": 3,
+ "sessionMinutes": 70,
+ "durationWeeks": null,
+ "equipment": [
+  "barbell",
+  "rack",
+  "bench",
+  "dumbbells",
+  "cable",
+  "machines"
+ ],
+ "summary": "Three different full-body workouts on Monday, Wednesday and Friday, each built from 3-set exercises and finishing with an isolation superset (the author calls it 6 key exercises per session; Workout 3 has 7 movements counting both superset exercises). It is the updated version of Jeremy Ethier's free full-body plan, published in full on his site with a companion video.",
+ "evidenceNote": "Each muscle is trained 2-3 times a week for roughly 6-9 sets per week for the major muscles (about 3 direct sets for side delts, rear delts, biceps and triceps), enough for beginners and early intermediates but on the lower side for more trained lifters. Proximity to failure is not specified per set; the author only says to push hard, and the last set of every back exercise and of the chest flyes goes past failure with stretched-position partials. Progression is simple double progression with no deload or stall rule; the FAQ only says that if neither gym performance nor body measurements move after 4-6 weeks, nutrition or sleep is the more likely problem. Session length per the author FAQ is about 60-75 minutes.",
+ "sources": [
+  {
+   "title": "The #1 Full Body Workout Plan for Growth (FULLY EXPLAINED) - builtwithscience.com (published Jan 2019, modified May 2026)",
+   "url": "https://builtwithscience.com/best-full-body-workout/",
+   "kind": "article"
+  },
+  {
+   "title": "The #1 Full Body Routine to Build Muscle & Lose Fat - Jeremy Ethier (YouTube)",
+   "url": "https://www.youtube.com/watch?v=B12MXF0bSFo",
+   "kind": "video"
+  }
+ ],
+ "schedule": "Workout 1 Monday, Workout 2 Wednesday, Workout 3 Friday. Pairs marked superset are alternated for 3 rounds.",
+ "progression": {
+  "type": "DOUBLE_PROGRESSION",
+  "description": "Author FAQ: add weight to the bar or dumbbells when you can complete all sets and reps with good form at the top of the recommended rep range (e.g. 12 clean reps on all sets of an 8-12 prescription), then increase the weight slightly next session; track weights and reps each session. Warm-up for the incline dumbbell press and again for the squats: 1 light set of 8-10, then 3-5 reps heavier, then 1-2 reps heavy; the chest-supported row needs only 1-2 quick warm-up sets. Rest per the FAQ: at least 2 minutes on the main compound lifts, 60-90 seconds on isolation exercises and supersets. The increment is only 'slightly'; 2.5 kg is an app default, not from the source.",
+  "incrementKg": {
+   "upper": 2.5,
+   "lower": 2.5
+  },
+  "deload": "No deload or stall rule is stated by the author."
+ },
+ "days": [
+  {
+   "name": "Workout 1",
+   "focus": "Upper chest, quads, mid back, hamstrings (knee flexion), arms",
+   "exercises": [
+    {
+     "exerciseId": "incline_dumbbell_press",
+     "name": "Incline Dumbbell Press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Bench angle by sternum test: flat sternum, 1-2 notches up from flat; steep sternum, 30-45 degrees. Elbows tucked in an arrow shape, press up and back toward the collarbone.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "back_squat",
+     "name": "Barbell Squats",
+     "sets": 3,
+     "repsLow": 6,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Same warm-up ramp as the incline press. Elevate heels on plates if you struggle to squat deep.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "chest_supported_row",
+     "name": "Dumbbell Chest Supported Row",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "45-degree incline bench, elbows out in an arrow shape. Last set: after failure, at least 3-5 half reps in the stretched (bottom) position.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_leg_curl",
+     "name": "Leg Curls",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Seated preferred, lying is fine. Don't fully straighten the knees between reps.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "incline_dumbbell_curl",
+     "name": "Lying Incline Dumbbell Curl",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Superset with overhead extension. Cable option: behind-the-body cable curl.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "overhead_triceps_extension",
+     "name": "Dumbbell Overhead Extension",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Superset with the curl. Cable option: overhead rope extension.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Workout 2",
+   "focus": "Chest strength, hamstrings (hip hinge), upper/outer back, glutes, side delts, abs",
+   "exercises": [
+    {
+     "exerciseId": "bench_press",
+     "name": "Barbell Bench Press",
+     "sets": 3,
+     "repsLow": 4,
+     "repsHigh": 6,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "If heavy benching bothers your shoulders, go lighter for more reps or use flat dumbbell press.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "romanian_deadlift",
+     "name": "Romanian Deadlift",
+     "sets": 3,
+     "repsLow": 6,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Brace, push hips back with knees fairly straight, stop when the hips can't go back further; drive hips forward on the way up.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lat_pulldown",
+     "name": "Lat Pulldown",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Fairly wide grip, lean back slightly, pull to the upper chest. Last set: after failure, 3-5 half reps in the stretched position.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "walking_lunge",
+     "name": "Glute-Focused Walking Lunges",
+     "sets": 3,
+     "repsLow": 6,
+     "repsHigh": 10,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Reps per leg. Wide step, lean forward slightly for glute focus; back knee hovers above the floor.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "cable_lateral_raise",
+     "name": "Behind-the-Body Cable Lateral Raise",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Superset with reverse crunches. Cables 3-4 notches up from the bottom.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Reverse Crunch",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Superset with lateral raise. Legs bent 90 degrees, knees to chest, curl the pelvis, control the way down.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Workout 3",
+   "focus": "Front delts, lats, glutes, quads (rectus femoris), chest, calves, rear delts",
+   "exercises": [
+    {
+     "exerciseId": "seated_dumbbell_press",
+     "name": "Seated Dumbbell Shoulder Press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Bench 1-2 notches down from upright.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "dumbbell_row",
+     "name": "Lat-Focused Dumbbell Row",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Elbow tight to the side, sweep toward the hip, forearm vertical. Last set: after failure, as many half reps as you can in the stretched position.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "hip_thrust",
+     "name": "Hip Thrust",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 120,
+     "notes": "Don't arch the lower back. Swap: dumbbell step-ups with a slight forward lean.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "leg_extension",
+     "name": "Leg Extensions",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Lean back if the machine allows.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "cable_fly",
+     "name": "Chest Flyes",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Seated cable fly preferred (pec deck alternative). Last set: after failure, as many half reps as you can in the stretched position.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "standing_calf_raise",
+     "name": "Standing Calf Raises",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Superset with reverse cable flyes. Leg press, Smith machine or single-leg with a dumbbell; legs straight, pause at the bottom for a deep stretch.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "rear_delt_fly",
+     "name": "Reverse Cable Flyes",
+     "sets": 3,
+     "repsLow": 10,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 75,
+     "notes": "Superset with calf raises. Cables slightly above shoulder height, cross the cables.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  }
+ ],
+ "verifiedAgainst": [
+  "https://builtwithscience.com/best-full-body-workout/",
+  "https://www.youtube.com/watch?v=B12MXF0bSFo"
+ ],
+ "engine": {
+  "model": "DOUBLE",
+  "cadence": "SESSION",
+  "failLimit": null,
+  "deloadPct": null,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": null,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": null,
+  "optionalWeeks": [],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": true,
+  "setup": []
+ }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Forge "Today" widget: calories left ring, protein, quick "Log food".
+    Responsive: 2x2 shows the ring and a Log button, 3x2 and wider adds protein and totals.
+    initialLayout is Glance's own loading layout (shipped in glance-appwidget).
+    updatePeriodMillis = 30 min, the platform minimum; data-change refreshes come from
+    ForgeWidgets.start(), so this only covers date rollover and plan changes.
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="110dp"
+    android:minHeight="110dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="110dp"
+    android:targetCellWidth="3"
+    android:targetCellHeight="2"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen"
+    android:description="@string/widget_today_description"
+    android:updatePeriodMillis="1800000"
+    android:initialLayout="@layout/glance_default_loading_layout" />

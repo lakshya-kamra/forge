@@ -1,13 +1,14 @@
 package com.laksh.forge.ui.components
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,16 +26,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.laksh.forge.ui.theme.ForgeEasing
+import com.laksh.forge.ui.theme.LocalReduceMotion
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -46,8 +48,13 @@ data class ChartPoint(val x: Float, val y: Float, val label: String = "")
 // ---------------------------------------------------------------- calorie ring
 
 /**
- * The headline figure on Today. Sweeps on first composition, and turns amber then red as
- * the target is passed so going over is legible at a glance without reading the number.
+ * The headline figure on Today. Sweeps with the theme's slow spatial spring (it overshoots a
+ * hair and settles, which reads as "alive" rather than mechanical) and turns to the error
+ * colour as the target is passed, so going over is legible without reading the number.
+ *
+ * All animated values are read inside the Canvas draw lambda: the sweep re-draws one node and
+ * never recomposes the card. [centerContent] replaces the three text lines when a screen wants
+ * richer content (e.g. an [AnimatedCounter]) in the hole.
  */
 @Composable
 fun CalorieRing(
@@ -58,12 +65,14 @@ fun CalorieRing(
     overColor: Color = MaterialTheme.colorScheme.error,
     centerTop: String,
     centerMain: String,
-    centerBottom: String
+    centerBottom: String,
+    centerContent: (@Composable ColumnScope.() -> Unit)? = null
 ) {
     val fraction = if (target <= 0) 0f else (consumed / target).toFloat()
-    val animated by animateFloatAsState(
+    val reduce = LocalReduceMotion.current
+    val animated = animateFloatAsState(
         targetValue = fraction.coerceIn(0f, 1.5f),
-        animationSpec = tween(900, easing = FastOutSlowInEasing),
+        animationSpec = if (reduce) snap<Float>() else MaterialTheme.motionScheme.slowSpatialSpec<Float>(),
         label = "ring"
     )
     val track = MaterialTheme.colorScheme.surfaceContainerHighest
@@ -76,6 +85,7 @@ fun CalorieRing(
             val inset = stroke / 2
             val arcSize = Size(size.width - stroke, size.height - stroke)
             val topLeft = Offset(inset, inset)
+            val value = animated.value.coerceAtLeast(0f)
 
             drawArc(
                 color = track,
@@ -84,59 +94,63 @@ fun CalorieRing(
                 useCenter = false,
                 topLeft = topLeft,
                 size = arcSize,
-                style = Stroke(width = stroke, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                style = Stroke(width = stroke, cap = StrokeCap.Round)
             )
 
-            val sweep = 270f * animated.coerceAtMost(1f)
-            if (sweep > 0f) {
+            val sweep = 270f * value.coerceAtMost(1f)
+            if (sweep > 0.5f) {
                 drawArc(
                     brush = Brush.sweepGradient(
                         listOf(
                             activeColor.copy(alpha = 0.65f),
                             activeColor,
                             activeColor.copy(alpha = 0.65f)
-                        )
+                        ),
+                        center = center
                     ),
                     startAngle = 135f,
                     sweepAngle = sweep,
                     useCenter = false,
                     topLeft = topLeft,
                     size = arcSize,
-                    style = Stroke(width = stroke, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                    style = Stroke(width = stroke, cap = StrokeCap.Round)
                 )
             }
 
-            // Overshoot draws a second, brighter lap so "how far over" stays readable.
-            if (animated > 1f) {
+            // Overshoot draws a second, thinner lap so "how far over" stays readable.
+            if (value > 1f) {
                 drawArc(
                     color = overColor,
                     startAngle = 135f,
-                    sweepAngle = 270f * (animated - 1f).coerceAtMost(1f),
+                    sweepAngle = 270f * (value - 1f).coerceAtMost(1f),
                     useCenter = false,
                     topLeft = topLeft,
                     size = arcSize,
-                    style = Stroke(width = stroke / 2.6f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                    style = Stroke(width = stroke / 2.6f, cap = StrokeCap.Round)
                 )
             }
         }
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                centerTop,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                centerMain,
-                style = MaterialTheme.typography.displayMedium,
-                fontWeight = FontWeight.Bold,
-                color = if (isOver) overColor else MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                centerBottom,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            if (centerContent != null) {
+                centerContent()
+            } else {
+                Text(
+                    centerTop,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    centerMain,
+                    style = MaterialTheme.typography.displayMediumEmphasized,
+                    color = if (isOver) overColor else MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    centerBottom,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }
@@ -178,10 +192,11 @@ fun LineChart(
     val axisText = MaterialTheme.colorScheme.onSurfaceVariant
     val rawColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)
 
-    val progress = remember(points) { Animatable(0f) }
+    // The reveal wipes left to right once per data set; reduce-motion shows it complete.
+    val reduce = LocalReduceMotion.current
+    val progress = remember(points) { Animatable(if (reduce) 1f else 0f) }
     LaunchedEffect(points) {
-        progress.snapTo(0f)
-        progress.animateTo(1f, tween(850, easing = FastOutSlowInEasing))
+        if (progress.value < 1f) progress.animateTo(1f, tween(850, easing = ForgeEasing.Emphasized))
     }
 
     BoxWithConstraints(modifier.fillMaxWidth().height(height)) {
@@ -257,7 +272,7 @@ fun LineChart(
                 drawPath(
                     path,
                     color = lineColor,
-                    style = Stroke(width = 2.5.dp.toPx(), cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                    style = Stroke(width = 2.5.dp.toPx(), cap = StrokeCap.Round)
                 )
             }
 
@@ -309,10 +324,10 @@ fun BarChart(
     val axisText = MaterialTheme.colorScheme.onSurfaceVariant
     val trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
 
-    val progress = remember(points) { Animatable(0f) }
+    val reduce = LocalReduceMotion.current
+    val progress = remember(points) { Animatable(if (reduce) 1f else 0f) }
     LaunchedEffect(points) {
-        progress.snapTo(0f)
-        progress.animateTo(1f, tween(700, easing = FastOutSlowInEasing))
+        if (progress.value < 1f) progress.animateTo(1f, tween(700, easing = ForgeEasing.Emphasized))
     }
 
     Box(modifier.fillMaxWidth().height(height)) {

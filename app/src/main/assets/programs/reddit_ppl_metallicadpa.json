@@ -1,0 +1,785 @@
+{
+ "id": "reddit_ppl_metallicadpa",
+ "name": "Reddit PPL (A Linear Progression Based PPL Program for Beginners)",
+ "author": "u/Metallicadpa (r/Fitness)",
+ "isFree": true,
+ "category": "HYPERTROPHY",
+ "level": "BEGINNER",
+ "daysPerWeek": 6,
+ "sessionMinutes": 75,
+ "durationWeeks": null,
+ "equipment": [
+  "barbell",
+  "rack",
+  "bench",
+  "dumbbells",
+  "cable",
+  "machines",
+  "pullup_bar"
+ ],
+ "summary": "A 6-day push/pull/legs routine where each day opens with a barbell lift that gets heavier every session, followed by higher-rep bodybuilding accessories. It is meant for beginners and run until linear progression stops working.",
+ "evidenceNote": "Each muscle is trained twice a week with roughly 10-20 weekly sets for most groups (arms and rear delts get a lot of direct work: 16 sets of curls and 10 of face pulls), which fits current volume evidence; accessories in the 8-12 range taken near failure are well supported. Six sessions a week is a big time commitment for a beginner, and per-session linear progression stalls quickly for lifters who start too heavy.",
+ "sources": [
+  {
+   "title": "A Linear Progression Based PPL Program for Beginners (r/Fitness wiki archive of the original post; the archive credits 'u/Metallicdpa', spelling differs from the commonly used u/Metallicadpa)",
+   "url": "https://thefitness.wiki/reddit-archive/a-linear-progression-based-ppl-program-for-beginners/",
+   "kind": "wiki"
+  },
+  {
+   "title": "Original r/Fitness post (post ID 37ylk5; the thefitness.wiki archive links to this URL. reddit.com itself could not be fetched during verification, so the post date is not verified here)",
+   "url": "https://www.reddit.com/r/Fitness/comments/37ylk5/a_linear_progression_based_ppl_program_for/",
+   "kind": "article"
+  }
+ ],
+ "schedule": "6 days a week as PPLRPPL or PPLPPLR (author prefers Pull, Push, Legs order). The main pull lift alternates deadlift and barbell row, and the main push lift alternates bench and overhead press; both legs days are the same. Optional ab work (weighted planks, ab wheel, hanging leg raises) can be added on squat and deadlift days. Session length is not stated; 75 min is an estimate.",
+ "progression": {
+  "type": "LINEAR",
+  "description": "Main lifts add weight every session, as written by the author: 2.5 kg / 5 lb for bench, row and overhead press; 2.5 kg / 5 lb for squat; 5 kg / 10 lb for deadlift (incrementKg.lower is 2.5 kg for the squat; deadlift uses 5 kg). The last set of each main lift is AMRAP while keeping good form, not grinding. Accessories: when you hit 3 sets of 12 with good form, add weight; if you can't stay in 8-12, lower the weight. Start: begin with the bar and add weight in sets of 5 until the bar slows, back off 2.5 kg / 5 lb, and start there (the author rejects starting the program at the empty bar).",
+  "incrementKg": {
+   "upper": 2.5,
+   "lower": 2.5
+  },
+  "deload": "A missed session from poor sleep, food or recovery doesn't count; retry when fresh. If you fail the same session 3 times in a row, take 10% off that lift's working weight and work back up. Move on to an intermediate program when linear progression stalls and recovery between sessions gets harder."
+ },
+ "days": [
+  {
+   "name": "Pull A",
+   "focus": "Back and biceps, deadlift main lift",
+   "exercises": [
+    {
+     "exerciseId": "conventional_deadlift",
+     "name": "Deadlifts",
+     "sets": 1,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": true,
+     "restSeconds": 180,
+     "notes": "1x5+: the only set is AMRAP with good form, no grinding. Alternates with barbell rows on the next pull day. Rest 3-5 min before the first exercise.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 5.0
+    },
+    {
+     "exerciseId": "lat_pulldown",
+     "name": "Pulldowns OR pull-ups OR chin-ups",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Rest 1-3 min between accessory sets.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "seated_cable_row",
+     "name": "Seated cable rows OR chest supported rows",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "face_pull",
+     "name": "Face pulls",
+     "sets": 5,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "hammer_curl",
+     "name": "Hammer curls",
+     "sets": 4,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "dumbbell_curl",
+     "name": "Dumbbell curls",
+     "sets": 4,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    }
+   ]
+  },
+  {
+   "name": "Push A",
+   "focus": "Chest, shoulders, triceps, bench main lift",
+   "exercises": [
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench press",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": true,
+     "restSeconds": 180,
+     "notes": "4x5, 1x5+: last set AMRAP with good form. Alternates with overhead press as the main lift on the next push day.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "overhead_press",
+     "name": "Overhead press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Opposite of the day's main lift.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "incline_dumbbell_press",
+     "name": "Incline dumbbell press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "triceps_pushdown",
+     "name": "Triceps pushdowns",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with the lateral raises that follow.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "lateral_raise",
+     "name": "Lateral raises",
+     "sets": 3,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with triceps pushdowns.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "overhead_triceps_extension",
+     "name": "Overhead triceps extensions",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with the lateral raises that follow.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "lateral_raise",
+     "name": "Lateral raises",
+     "sets": 3,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with overhead triceps extensions.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    }
+   ]
+  },
+  {
+   "name": "Legs",
+   "focus": "Quads, hamstrings, calves, squat main lift",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": true,
+     "restSeconds": 180,
+     "notes": "2x5, 1x5+: last set AMRAP with good form.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "romanian_deadlift",
+     "name": "Romanian deadlift",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "leg_press",
+     "name": "Leg press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": null,
+     "name": "Leg curls",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Any leg curl variation.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": null,
+     "name": "Calf raises",
+     "sets": 5,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    }
+   ]
+  },
+  {
+   "name": "Pull B",
+   "focus": "Back and biceps, barbell row main lift",
+   "exercises": [
+    {
+     "exerciseId": "barbell_row",
+     "name": "Barbell rows",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": true,
+     "restSeconds": 180,
+     "notes": "4x5, 1x5+: last set AMRAP with good form. Alternates with deadlifts on the next pull day.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lat_pulldown",
+     "name": "Pulldowns OR pull-ups OR chin-ups",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Rest 1-3 min between accessory sets.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "seated_cable_row",
+     "name": "Seated cable rows OR chest supported rows",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "face_pull",
+     "name": "Face pulls",
+     "sets": 5,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "hammer_curl",
+     "name": "Hammer curls",
+     "sets": 4,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "dumbbell_curl",
+     "name": "Dumbbell curls",
+     "sets": 4,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    }
+   ]
+  },
+  {
+   "name": "Push B",
+   "focus": "Shoulders, chest, triceps, overhead press main lift",
+   "exercises": [
+    {
+     "exerciseId": "overhead_press",
+     "name": "Overhead press",
+     "sets": 5,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": true,
+     "restSeconds": 180,
+     "notes": "4x5, 1x5+: last set AMRAP with good form. Alternates with bench press as the main lift on the next push day.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Opposite of the day's main lift.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "incline_dumbbell_press",
+     "name": "Incline dumbbell press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "triceps_pushdown",
+     "name": "Triceps pushdowns",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with the lateral raises that follow.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "lateral_raise",
+     "name": "Lateral raises",
+     "sets": 3,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with triceps pushdowns.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "overhead_triceps_extension",
+     "name": "Overhead triceps extensions",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with the lateral raises that follow.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "lateral_raise",
+     "name": "Lateral raises",
+     "sets": 3,
+     "repsLow": 15,
+     "repsHigh": 20,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Superset with overhead triceps extensions.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    }
+   ]
+  },
+  {
+   "name": "Legs",
+   "focus": "Quads, hamstrings, calves, squat main lift",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat",
+     "sets": 3,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": true,
+     "restSeconds": 180,
+     "notes": "2x5, 1x5+: last set AMRAP with good form.",
+     "optional": false,
+     "rule": "LINEAR",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "romanian_deadlift",
+     "name": "Romanian deadlift",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": "leg_press",
+     "name": "Leg press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": null,
+     "name": "Leg curls",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "Any leg curl variation.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    },
+    {
+     "exerciseId": null,
+     "name": "Calf raises",
+     "sets": 5,
+     "repsLow": 8,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "NONE",
+      "value": null
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 60,
+     "notes": "",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5,
+     "dropBelowLow": true
+    }
+   ]
+  }
+ ],
+ "verifiedAgainst": [
+  "https://thefitness.wiki/reddit-archive/a-linear-progression-based-ppl-program-for-beginners/"
+ ],
+ "engine": {
+  "model": "LINEAR",
+  "cadence": "SESSION",
+  "failLimit": 3,
+  "deloadPct": 0.1,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": null,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": null,
+  "optionalWeeks": [],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": false,
+  "setup": [
+   {
+    "key": "deadlifts",
+    "basis": "START",
+    "label": "Deadlifts",
+    "exerciseId": "conventional_deadlift",
+    "reps": 5
+   },
+   {
+    "key": "bench press",
+    "basis": "START",
+    "label": "Bench press",
+    "exerciseId": "bench_press",
+    "reps": 5
+   },
+   {
+    "key": "squat",
+    "basis": "START",
+    "label": "Squat",
+    "exerciseId": "back_squat",
+    "reps": 5
+   },
+   {
+    "key": "barbell rows",
+    "basis": "START",
+    "label": "Barbell rows",
+    "exerciseId": "barbell_row",
+    "reps": 5
+   },
+   {
+    "key": "overhead press",
+    "basis": "START",
+    "label": "Overhead press",
+    "exerciseId": "overhead_press",
+    "reps": 5
+   }
+  ]
+ }
+}

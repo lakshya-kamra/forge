@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Forge</string>
+    <string name="widget_today_label">Forge · Today</string>
+    <string name="widget_today_description">Calories left, protein, and a one-tap Log food button.</string>
+    <string name="widget_next_workout_label">Forge · Next workout</string>
+    <string name="widget_next_workout_description">The next day of your active program, or the session in progress.</string>
 </resources>

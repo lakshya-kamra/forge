@@ -1,4 +1,9 @@
 <resources>
+    <!-- Window and splash backdrop: the brand ink, so the splash reads as Forge in either mode. -->
     <color name="forge_bg">#FF0B0D10</color>
     <color name="ic_launcher_background">#FF0B0D10</color>
+    <color name="forge_ember">#FFFF6B4A</color>
+    <color name="forge_ember_bright">#FFFF8A5C</color>
+    <color name="forge_ember_dim">#FFC2472C</color>
+    <color name="forge_core">#FFFFC7A0</color>
 </resources>

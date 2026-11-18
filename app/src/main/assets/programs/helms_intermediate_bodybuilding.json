@@ -1,0 +1,2346 @@
+{
+ "id": "helms_intermediate_bodybuilding",
+ "name": "Intermediate Bodybuilding Program (Muscle & Strength Pyramid)",
+ "author": "Eric Helms, Andy Morgan, Andrea Valdez",
+ "isFree": true,
+ "category": "HYPERTROPHY",
+ "level": "INTERMEDIATE",
+ "daysPerWeek": 5,
+ "sessionMinutes": 60,
+ "durationWeeks": 12,
+ "equipment": [
+  "barbell",
+  "rack",
+  "bench",
+  "dumbbells",
+  "cable",
+  "machines",
+  "pullup_bar"
+ ],
+ "summary": "A five-day Lower / Upper / Lower / Push / Pull program from the Muscle and Strength Pyramid authors, with compound lifts wave-loaded over 3-week waves and isolation work on double progression. Every fourth week is an optional deload decided by a short fatigue checklist.",
+ "evidenceNote": "Most muscles get about 10-16 sets per week across two sessions at roughly 2 RIR on the first set, squarely in the evidence-based range for intermediates. Wave loading gives built-in heavy-to-moderate variation and planned fatigue management. Weak points: direct side-delt work is absent (overhead presses and face pulls only), and the 4x3-5 squat and deadlift on the same day is demanding.",
+ "sources": [
+  {
+   "title": "Intermediate Bodybuilding Program (RippedBody.com, Andy Morgan, updated 28 Dec 2025)",
+   "url": "https://rippedbody.com/intermediate-bodybuilding-program/",
+   "kind": "article"
+  },
+  {
+   "title": "Intermediate Bodybuilding Program by Eric Helms (Boostcamp, official Muscle and Strength Pyramid account)",
+   "url": "https://www.boostcamp.app/muscle-and-strength-pyramid/intermediate-bodybuilding-program",
+   "kind": "article"
+  }
+ ],
+ "schedule": "Day 1 Lower, Day 2 Upper, Day 3 Lower, Day 4 Push, Day 5 Pull, once each per week; RippedBody advises training no more than three days in a row. Boostcamp stores weekdays as indices 1,2,4,5,6, most likely Mon, Tue, Thu, Fri, Sat (index mapping not stated, so unverified). Run the 4-week block (3 loading weeks + optional deload) three times for 12 weeks, then repeat.",
+ "progression": {
+  "type": "CUSTOM",
+  "description": "Exercises, sets and rep ranges match the authors' RippedBody page (updated 28 Dec 2025; sample program from the 2nd edition of The Muscle and Strength Pyramid: Training) and the official Boostcamp version. First-set target is 2 RIR (= RPE 8); use the same weight for the remaining sets (Boostcamp). Compounds and 8-12 accessories wave-load (Boostcamp description): start at a weight where all sets hit the top of the range without failing; each following week add load and drop one rep per set (two reps for 8-12 ranges), e.g. 3-5: 5/4/3, 4-6: 6/5/4, 5-7: 7/6/5, 6-8: 8/7/6, 8-12: 12/10/8. Load step: Boostcamp week notes say +5 kg (10 lb) per week for barbell squat and deadlift and +2.5 kg (5 lb) for every other exercise, including lower-body accessories; the incrementKg.lower value of 5 applies only to squat and deadlift. Deload week uses the lowest weight (week 1) and lowest reps (week 3) of the block with about one third fewer sets. The next block starts at week-1 reps, 2.5 kg (5 kg for squat/deadlift) heavier than the previous block's week 1. 12-15 isolation slots (seated calf raise, flys, face pulls) use double progression: start with a load close to but short of 15 reps on every set, add reps each session until every set reaches 15, then add weight and restart lower. RippedBody itself gives only a simpler rule (add a little weight whenever you can, then switch to autoregulated double progression) and points to the book for the wave details.",
+  "incrementKg": {
+   "upper": 2.5,
+   "lower": 5
+  },
+  "deload": "Optional deload every 4th week (weeks 4, 8, 12). Checklist: dreading the gym? sleeping worse than normal? loads/reps decreasing? stress worse than normal? aches and pains worse than normal? Yes to 2 or more = deload: cut sets by about one third and use the lowest weight and reps of the previous 3 weeks. Yes to 0-1 = skip it and start the next block."
+ },
+ "days": [
+  {
+   "name": "Day 1 - Lower",
+   "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+   "exercises": [
+    {
+     "exerciseId": "back_squat",
+     "name": "Squat (Barbell)",
+     "sets": 4,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Squat variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": "conventional_deadlift",
+     "name": "Deadlift (Barbell)",
+     "sets": 4,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Deadlift variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 5
+    },
+    {
+     "exerciseId": "bulgarian_split_squat",
+     "name": "Bulgarian Split Squat (Dumbbell)",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Single-leg variant slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Leg Curl",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "standing_calf_raise",
+     "name": "Standing Calf Raise",
+     "sets": 5,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 2 - Upper",
+   "focus": "Bench, row, overhead press, chins, arms",
+   "exercises": [
+    {
+     "exerciseId": "bench_press",
+     "name": "Bench Press (Barbell)",
+     "sets": 4,
+     "repsLow": 5,
+     "repsHigh": 5,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Horizontal push slot. ~82.5% 1RM as a reference (Boostcamp version).",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "barbell_row",
+     "name": "Barbell Row",
+     "sets": 4,
+     "repsLow": 6,
+     "repsHigh": 6,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Horizontal pull slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "overhead_press",
+     "name": "Overhead Press (Barbell)",
+     "sets": 3,
+     "repsLow": 7,
+     "repsHigh": 7,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Vertical push slot. ~77.5% 1RM as a reference (Boostcamp version).",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "chin_up",
+     "name": "Chin-Up (Weighted)",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "triceps_pushdown",
+     "name": "Tricep Pushdown (Cable)",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "Triceps slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "dumbbell_curl",
+     "name": "Bicep Curl (Dumbbell)",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "Biceps slot. 8-12 wave: 12/10/8 reps over weeks 1-3 (Boostcamp's workout data shows 10 in week 3 and the deload, which contradicts its own stated -2 reps rule used for the paired triceps pushdown).",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 3 - Lower",
+   "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+   "exercises": [
+    {
+     "exerciseId": "hip_thrust",
+     "name": "Hip Thrust (Barbell)",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Hip hinge variant slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "leg_press",
+     "name": "Leg Press",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Leg press variant slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "leg_extension",
+     "name": "Leg Extension",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Leg Curl",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "seated_calf_raise",
+     "name": "Seated Calf Raise",
+     "sets": 5,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "Double progression (12-15): start near (not quite) 15 reps on all 5 sets, add reps each session until all 5 sets reach 15, then add weight and restart near 12. Boostcamp week targets read 15/13/12 but its notes say to follow double progression.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 4 - Push",
+   "focus": "Overhead press, dumbbell bench, dips, flys",
+   "exercises": [
+    {
+     "exerciseId": "overhead_press",
+     "name": "Overhead Press (Barbell)",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Vertical push slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "dumbbell_bench_press",
+     "name": "Bench Press (Dumbbell)",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Horizontal push slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "dip",
+     "name": "Dip (Weighted)",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": null,
+     "name": "Chest Fly",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "Fly slot (cable or machine). Double progression (12-15): start near (not quite) 3 x 15, add reps each session until 3 x 15, then add weight and restart near 12.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  },
+  {
+   "name": "Day 5 - Pull",
+   "focus": "Row, pulldown, back extension, face pull",
+   "exercises": [
+    {
+     "exerciseId": "seated_cable_row",
+     "name": "Seated Row",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Horizontal pull slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "lat_pulldown",
+     "name": "Lat Pulldown",
+     "sets": 3,
+     "repsLow": 8,
+     "repsHigh": 8,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 180,
+     "notes": "Vertical pull slot.",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "back_extension",
+     "name": "Back Extension (Weighted)",
+     "sets": 3,
+     "repsLow": 12,
+     "repsHigh": 12,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "",
+     "optional": false,
+     "rule": "WAVE",
+     "incrementKg": 2.5
+    },
+    {
+     "exerciseId": "face_pull",
+     "name": "Face Pull",
+     "sets": 2,
+     "repsLow": 12,
+     "repsHigh": 15,
+     "intensity": {
+      "type": "RIR",
+      "value": 2
+     },
+     "lastSetAmrap": false,
+     "restSeconds": 105,
+     "notes": "Double progression (12-15): start near (not quite) 2 x 15, add reps each session until 2 x 15, then add weight and restart near 12.",
+     "optional": false,
+     "rule": "DOUBLE",
+     "incrementKg": 2.5
+    }
+   ]
+  }
+ ],
+ "weeks": [
+  {
+   "week": 1,
+   "label": "Wave week 1 (top of rep ranges)",
+   "days": [
+    {
+     "name": "Day 1 - Lower",
+     "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat (Barbell)",
+       "sets": 4,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Squat variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift (Barbell)",
+       "sets": 4,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deadlift variant slot. ~82.5% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bulgarian_split_squat",
+       "name": "Bulgarian Split Squat (Dumbbell)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Single-leg variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "standing_calf_raise",
+       "name": "Standing Calf Raise",
+       "sets": 5,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 2 - Upper",
+     "focus": "Bench, row, overhead press, chins, arms",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench Press (Barbell)",
+       "sets": 4,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal push slot. ~82.5% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "barbell_row",
+       "name": "Barbell Row",
+       "sets": 4,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical push slot. ~77.5% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "chin_up",
+       "name": "Chin-Up (Weighted)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "triceps_pushdown",
+       "name": "Tricep Pushdown (Cable)",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 12,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Triceps slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_curl",
+       "name": "Bicep Curl (Dumbbell)",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 12,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Biceps slot. 8-12 wave: 12/10/8 reps over weeks 1-3 (Boostcamp's workout data shows 10 in week 3 and the deload, which contradicts its own stated -2 reps rule used for the paired triceps pushdown).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 3 - Lower",
+     "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+     "exercises": [
+      {
+       "exerciseId": "hip_thrust",
+       "name": "Hip Thrust (Barbell)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Hip hinge variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_press",
+       "name": "Leg Press",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Leg press variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_extension",
+       "name": "Leg Extension",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 12,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 12,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "seated_calf_raise",
+       "name": "Seated Calf Raise",
+       "sets": 5,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Double progression (12-15): start near (not quite) 15 reps on all 5 sets, add reps each session until all 5 sets reach 15, then add weight and restart near 12. Boostcamp week targets read 15/13/12 but its notes say to follow double progression.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 4 - Push",
+     "focus": "Overhead press, dumbbell bench, dips, flys",
+     "exercises": [
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_bench_press",
+       "name": "Bench Press (Dumbbell)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dip",
+       "name": "Dip (Weighted)",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 12,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Chest Fly",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Fly slot (cable or machine). Double progression (12-15): start near (not quite) 3 x 15, add reps each session until 3 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 5 - Pull",
+     "focus": "Row, pulldown, back extension, face pull",
+     "exercises": [
+      {
+       "exerciseId": "seated_cable_row",
+       "name": "Seated Row",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "lat_pulldown",
+       "name": "Lat Pulldown",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_extension",
+       "name": "Back Extension (Weighted)",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 12,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "face_pull",
+       "name": "Face Pull",
+       "sets": 2,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Double progression (12-15): start near (not quite) 2 x 15, add reps each session until 2 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "week": 2,
+   "label": "Wave week 2 (-1 rep, +load)",
+   "days": [
+    {
+     "name": "Day 1 - Lower",
+     "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat (Barbell)",
+       "sets": 4,
+       "repsLow": 4,
+       "repsHigh": 4,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Squat variant slot. ~85% 1RM as a reference (Boostcamp version). Add 5 kg (10 lb) over last week.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift (Barbell)",
+       "sets": 4,
+       "repsLow": 4,
+       "repsHigh": 4,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deadlift variant slot. ~85% 1RM as a reference (Boostcamp version). Add 5 kg (10 lb) over last week.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bulgarian_split_squat",
+       "name": "Bulgarian Split Squat (Dumbbell)",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Single-leg variant slot. Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "standing_calf_raise",
+       "name": "Standing Calf Raise",
+       "sets": 5,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 2 - Upper",
+     "focus": "Bench, row, overhead press, chins, arms",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench Press (Barbell)",
+       "sets": 4,
+       "repsLow": 4,
+       "repsHigh": 4,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal push slot. ~85% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "barbell_row",
+       "name": "Barbell Row",
+       "sets": 4,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical push slot. ~80% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "chin_up",
+       "name": "Chin-Up (Weighted)",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "triceps_pushdown",
+       "name": "Tricep Pushdown (Cable)",
+       "sets": 3,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Triceps slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_curl",
+       "name": "Bicep Curl (Dumbbell)",
+       "sets": 3,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Biceps slot. 8-12 wave: 12/10/8 reps over weeks 1-3 (Boostcamp's workout data shows 10 in week 3 and the deload, which contradicts its own stated -2 reps rule used for the paired triceps pushdown).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 3 - Lower",
+     "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+     "exercises": [
+      {
+       "exerciseId": "hip_thrust",
+       "name": "Hip Thrust (Barbell)",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Hip hinge variant slot. Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_press",
+       "name": "Leg Press",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Leg press variant slot. Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_extension",
+       "name": "Leg Extension",
+       "sets": 3,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 3,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "seated_calf_raise",
+       "name": "Seated Calf Raise",
+       "sets": 5,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Double progression (12-15): start near (not quite) 15 reps on all 5 sets, add reps each session until all 5 sets reach 15, then add weight and restart near 12. Boostcamp week targets read 15/13/12 but its notes say to follow double progression.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 4 - Push",
+     "focus": "Overhead press, dumbbell bench, dips, flys",
+     "exercises": [
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_bench_press",
+       "name": "Bench Press (Dumbbell)",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dip",
+       "name": "Dip (Weighted)",
+       "sets": 3,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Chest Fly",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Fly slot (cable or machine). Double progression (12-15): start near (not quite) 3 x 15, add reps each session until 3 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 5 - Pull",
+     "focus": "Row, pulldown, back extension, face pull",
+     "exercises": [
+      {
+       "exerciseId": "seated_cable_row",
+       "name": "Seated Row",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "lat_pulldown",
+       "name": "Lat Pulldown",
+       "sets": 3,
+       "repsLow": 7,
+       "repsHigh": 7,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_extension",
+       "name": "Back Extension (Weighted)",
+       "sets": 3,
+       "repsLow": 10,
+       "repsHigh": 10,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "face_pull",
+       "name": "Face Pull",
+       "sets": 2,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Double progression (12-15): start near (not quite) 2 x 15, add reps each session until 2 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "week": 3,
+   "label": "Wave week 3 (-1 rep, +load)",
+   "days": [
+    {
+     "name": "Day 1 - Lower",
+     "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat (Barbell)",
+       "sets": 4,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Squat variant slot. ~87.5% 1RM as a reference (Boostcamp version). Add 5 kg (10 lb) over last week.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift (Barbell)",
+       "sets": 4,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deadlift variant slot. ~87.5% 1RM as a reference (Boostcamp version). Add 5 kg (10 lb) over last week.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bulgarian_split_squat",
+       "name": "Bulgarian Split Squat (Dumbbell)",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Single-leg variant slot. Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "standing_calf_raise",
+       "name": "Standing Calf Raise",
+       "sets": 5,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 2 - Upper",
+     "focus": "Bench, row, overhead press, chins, arms",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench Press (Barbell)",
+       "sets": 4,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal push slot. ~87.5% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "barbell_row",
+       "name": "Barbell Row",
+       "sets": 4,
+       "repsLow": 4,
+       "repsHigh": 4,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 3,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical push slot. ~82.5% 1RM as a reference (Boostcamp version).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "chin_up",
+       "name": "Chin-Up (Weighted)",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical pull slot. Use bands if too hard, add weight if too easy.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "triceps_pushdown",
+       "name": "Tricep Pushdown (Cable)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Triceps slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_curl",
+       "name": "Bicep Curl (Dumbbell)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Biceps slot. 8-12 wave: 12/10/8 reps over weeks 1-3 (Boostcamp's workout data shows 10 in week 3 and the deload, which contradicts its own stated -2 reps rule used for the paired triceps pushdown).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 3 - Lower",
+     "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+     "exercises": [
+      {
+       "exerciseId": "hip_thrust",
+       "name": "Hip Thrust (Barbell)",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Hip hinge variant slot. Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_press",
+       "name": "Leg Press",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Leg press variant slot. Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_extension",
+       "name": "Leg Extension",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Add 2.5 kg (5 lb) over last week (the 5 kg jump is only for barbell squat and deadlift).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "seated_calf_raise",
+       "name": "Seated Calf Raise",
+       "sets": 5,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Double progression (12-15): start near (not quite) 15 reps on all 5 sets, add reps each session until all 5 sets reach 15, then add weight and restart near 12. Boostcamp week targets read 15/13/12 but its notes say to follow double progression.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 4 - Push",
+     "focus": "Overhead press, dumbbell bench, dips, flys",
+     "exercises": [
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_bench_press",
+       "name": "Bench Press (Dumbbell)",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dip",
+       "name": "Dip (Weighted)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Chest Fly",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Fly slot (cable or machine). Double progression (12-15): start near (not quite) 3 x 15, add reps each session until 3 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 5 - Pull",
+     "focus": "Row, pulldown, back extension, face pull",
+     "exercises": [
+      {
+       "exerciseId": "seated_cable_row",
+       "name": "Seated Row",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "lat_pulldown",
+       "name": "Lat Pulldown",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Vertical pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_extension",
+       "name": "Back Extension (Weighted)",
+       "sets": 3,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "face_pull",
+       "name": "Face Pull",
+       "sets": 2,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "RIR",
+        "value": 2
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Double progression (12-15): start near (not quite) 2 x 15, add reps each session until 2 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "week": 4,
+   "label": "Optional deload",
+   "days": [
+    {
+     "name": "Day 1 - Lower",
+     "focus": "Squat, deadlift, single-leg, hamstrings, calves",
+     "exercises": [
+      {
+       "exerciseId": "back_squat",
+       "name": "Squat (Barbell)",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Squat variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "conventional_deadlift",
+       "name": "Deadlift (Barbell)",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Deadlift variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 5
+      },
+      {
+       "exerciseId": "bulgarian_split_squat",
+       "name": "Bulgarian Split Squat (Dumbbell)",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Single-leg variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "standing_calf_raise",
+       "name": "Standing Calf Raise",
+       "sets": 3,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 2 - Upper",
+     "focus": "Bench, row, overhead press, chins, arms",
+     "exercises": [
+      {
+       "exerciseId": "bench_press",
+       "name": "Bench Press (Barbell)",
+       "sets": 3,
+       "repsLow": 3,
+       "repsHigh": 3,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "barbell_row",
+       "name": "Barbell Row",
+       "sets": 3,
+       "repsLow": 4,
+       "repsHigh": 4,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 2,
+       "repsLow": 5,
+       "repsHigh": 5,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "chin_up",
+       "name": "Chin-Up (Weighted)",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical pull slot. Use bands if too hard, add weight if too easy.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "triceps_pushdown",
+       "name": "Tricep Pushdown (Cable)",
+       "sets": 2,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Triceps slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_curl",
+       "name": "Bicep Curl (Dumbbell)",
+       "sets": 2,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Biceps slot. 8-12 wave: 12/10/8 reps over weeks 1-3 (Boostcamp's workout data shows 10 in week 3 and the deload, which contradicts its own stated -2 reps rule used for the paired triceps pushdown).",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 3 - Lower",
+     "focus": "Hip hinge, leg press, quad and hamstring isolation, calves",
+     "exercises": [
+      {
+       "exerciseId": "hip_thrust",
+       "name": "Hip Thrust (Barbell)",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Hip hinge variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_press",
+       "name": "Leg Press",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Leg press variant slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "leg_extension",
+       "name": "Leg Extension",
+       "sets": 2,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Leg Curl",
+       "sets": 2,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "seated_calf_raise",
+       "name": "Seated Calf Raise",
+       "sets": 3,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Double progression (12-15): start near (not quite) 15 reps on all 5 sets, add reps each session until all 5 sets reach 15, then add weight and restart near 12. Boostcamp week targets read 15/13/12 but its notes say to follow double progression.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 4 - Push",
+     "focus": "Overhead press, dumbbell bench, dips, flys",
+     "exercises": [
+      {
+       "exerciseId": "overhead_press",
+       "name": "Overhead Press (Barbell)",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dumbbell_bench_press",
+       "name": "Bench Press (Dumbbell)",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal push slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "dip",
+       "name": "Dip (Weighted)",
+       "sets": 2,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": null,
+       "name": "Chest Fly",
+       "sets": 2,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Fly slot (cable or machine). Double progression (12-15): start near (not quite) 3 x 15, add reps each session until 3 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    },
+    {
+     "name": "Day 5 - Pull",
+     "focus": "Row, pulldown, back extension, face pull",
+     "exercises": [
+      {
+       "exerciseId": "seated_cable_row",
+       "name": "Seated Row",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Horizontal pull slot.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "lat_pulldown",
+       "name": "Lat Pulldown",
+       "sets": 2,
+       "repsLow": 6,
+       "repsHigh": 6,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 180,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Vertical pull slot. Boostcamp lists 3 deload sets here; 2 follows the stated reduce-sets-by-1/3 rule.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "back_extension",
+       "name": "Back Extension (Weighted)",
+       "sets": 2,
+       "repsLow": 8,
+       "repsHigh": 8,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Boostcamp lists 3 deload sets here; 2 follows the stated reduce-sets-by-1/3 rule.",
+       "optional": false,
+       "rule": "WAVE",
+       "incrementKg": 2.5
+      },
+      {
+       "exerciseId": "face_pull",
+       "name": "Face Pull",
+       "sets": 2,
+       "repsLow": 12,
+       "repsHigh": 15,
+       "intensity": {
+        "type": "NONE",
+        "value": null
+       },
+       "lastSetAmrap": false,
+       "restSeconds": 105,
+       "notes": "Deload: use the lowest weight from the past 3 weeks. Double progression (12-15): start near (not quite) 2 x 15, add reps each session until 2 x 15, then add weight and restart near 12.",
+       "optional": false,
+       "rule": "DOUBLE",
+       "incrementKg": 2.5
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "verifiedAgainst": [
+  "https://rippedbody.com/intermediate-bodybuilding-program/",
+  "https://www.boostcamp.app/muscle-and-strength-pyramid/intermediate-bodybuilding-program"
+ ],
+ "engine": {
+  "model": "WAVE",
+  "cadence": "SESSION",
+  "failLimit": null,
+  "deloadPct": null,
+  "bounceBack": false,
+  "scope": "SLOT",
+  "tmOfMax": null,
+  "amrapRules": [],
+  "allRepsKeys": [],
+  "cycleWeeks": 4,
+  "optionalWeeks": [
+   4
+  ],
+  "deloadWeeks": [],
+  "deloadSets": null,
+  "deloadChecklist": [
+   "Dreading the gym?",
+   "Sleeping worse than normal?",
+   "Loads or reps decreasing?",
+   "Stress worse than normal?",
+   "Aches and pains worse than normal?"
+  ],
+  "missedRepCutPct": null,
+  "projectionWeek": null,
+  "projectionFactors": {},
+  "rotation": null,
+  "incrementIsAppDefault": false,
+  "setup": [
+   {
+    "key": "squat (barbell)",
+    "basis": "START",
+    "label": "Squat (Barbell)",
+    "exerciseId": "back_squat",
+    "reps": 5
+   },
+   {
+    "key": "deadlift (barbell)",
+    "basis": "START",
+    "label": "Deadlift (Barbell)",
+    "exerciseId": "conventional_deadlift",
+    "reps": 5
+   },
+   {
+    "key": "bench press (barbell)",
+    "basis": "START",
+    "label": "Bench Press (Barbell)",
+    "exerciseId": "bench_press",
+    "reps": 5
+   },
+   {
+    "key": "barbell row",
+    "basis": "START",
+    "label": "Barbell Row",
+    "exerciseId": "barbell_row",
+    "reps": 6
+   },
+   {
+    "key": "overhead press (barbell)",
+    "basis": "START",
+    "label": "Overhead Press (Barbell)",
+    "exerciseId": "overhead_press",
+    "reps": 7
+   },
+   {
+    "key": "hip thrust (barbell)",
+    "basis": "START",
+    "label": "Hip Thrust (Barbell)",
+    "exerciseId": "hip_thrust",
+    "reps": 8
+   },
+   {
+    "key": "leg press",
+    "basis": "START",
+    "label": "Leg Press",
+    "exerciseId": "leg_press",
+    "reps": 8
+   }
+  ]
+ }
+}

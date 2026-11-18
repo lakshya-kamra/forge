@@ -2,15 +2,18 @@ package com.laksh.forge.feature.train
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,16 +21,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Timer
+import androidx.compose.material.icons.outlined.EmojiEvents
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -36,24 +37,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.laksh.forge.data.db.ProgramExercise
-import com.laksh.forge.data.db.SetLog
 import com.laksh.forge.data.prefs.WeightUnit
-import com.laksh.forge.domain.NutritionMath
-import com.laksh.forge.ui.components.ForgeCard
+import com.laksh.forge.domain.exercise.ExerciseCatalog
+import com.laksh.forge.ui.components.EmptyState
 import com.laksh.forge.ui.components.Pill
-import com.laksh.forge.ui.theme.Macro
 import com.laksh.forge.util.Dates
+import kotlinx.coroutines.delay
 
 @Composable
 fun SessionScreen(
@@ -66,346 +68,207 @@ fun SessionScreen(
     onOpenExercise: (String) -> Unit = {}
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val haptics = LocalHapticFeedback.current
     var showFinish by remember { mutableStateOf(false) }
-    var newExercise by remember { mutableStateOf("") }
 
     LaunchedEffect(state.finished) {
         if (state.finished) onExit()
     }
 
-    Column(Modifier.fillMaxWidth()) {
-        // Header
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(Modifier.weight(1f)) {
-                Text(
-                    state.session?.title ?: "Session",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    buildString {
-                        state.session?.let { append(Dates.durationLabel(it.startedAt, null)) }
-                        val working = state.sets.count { !it.isWarmup }
-                        if (working > 0) append(if (working == 1) " · 1 set" else " · $working sets")
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+    // A personal record gets a double pulse and a short-lived badge, then gets out of the way.
+    val pr = state.pr
+    LaunchedEffect(pr?.id) {
+        if (pr != null) {
+            if (state.haptics) {
+                haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                delay(120)
+                haptics.performHapticFeedback(HapticFeedbackType.Confirm)
             }
-            Pill("Finish", icon = Icons.Outlined.Check, filled = true, onClick = { showFinish = true })
+            delay(2_800)
+            vm.clearPr()
         }
+    }
+    // Keep the last event on screen while the exit animation runs.
+    // A plain holder, not state: it only needs to outlive the event, not trigger recomposition.
+    val lastPr = remember { PrHolder() }
+    if (pr != null) lastPr.event = pr
 
-        AnimatedVisibility(
-            visible = state.restRemaining > 0,
-            enter = expandVertically(),
-            exit = shrinkVertically()
-        ) {
-            RestBanner(
-                remaining = state.restRemaining,
-                total = state.restTotal,
-                onSkip = vm::stopRest,
-                onAdd = { vm.startRest(state.restRemaining + 30) }
-            )
-        }
-
-        LazyColumn(
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 120.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(state.exercises, key = { "p_${it.id}" }) { ex ->
-                ExerciseCard(
-                    name = ex.name,
-                    prescription = prescriptionOf(ex),
-                    notes = ex.notes,
-                    substitutions = ex.substitutions,
-                    sets = state.setsFor(ex.name),
-                    last = state.lastTime[ex.name],
-                    unit = state.unit,
-                    onAddSet = { w, r, rir, warm -> vm.addSet(ex.name, w, r, rir, warm) },
-                    onDeleteSet = vm::deleteSet
-                )
-            }
-
-            items(state.extraExercises, key = { "x_$it" }) { name ->
-                ExerciseCard(
-                    name = name,
-                    prescription = null,
-                    notes = null,
-                    substitutions = null,
-                    sets = state.setsFor(name),
-                    last = state.lastTime[name],
-                    unit = state.unit,
-                    onAddSet = { w, r, rir, warm -> vm.addSet(name, w, r, rir, warm) },
-                    onDeleteSet = vm::deleteSet
-                )
-            }
-
-            item {
-                ForgeCard {
-                    Text(
-                        "Add an exercise",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+    Box(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
+            SessionHeader(state = state, onFinish = { showFinish = true })
+            RestArea(vm)
+            when {
+                state.loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    LoadingIndicator(Modifier.size(64.dp))
+                }
+                state.error != null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    EmptyState(
+                        icon = Icons.Outlined.ErrorOutline,
+                        title = "Couldn't open this session",
+                        body = state.error.orEmpty(),
+                        action = { Pill("Back", filled = true, onClick = onExit) }
                     )
-                    Spacer(Modifier.height(8.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        OutlinedTextField(
-                            value = newExercise,
-                            onValueChange = { newExercise = it },
-                            placeholder = { Text("Cable fly") },
-                            singleLine = true,
-                            modifier = Modifier.weight(1f)
+                }
+                else -> LazyColumn(
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 120.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(state.slots, key = { it.key }, contentType = { if (it.index >= 0) "slot" else "extra" }) { slot ->
+                        SlotCard(
+                            slot = slot,
+                            unit = state.unit,
+                            roundingKg = state.roundingKg,
+                            prSetIds = state.prSetIds,
+                            haptics = state.haptics,
+                            onLog = { w, r, rir, rpe, warm -> vm.logSet(slot.key, w, r, rir, rpe, warm) },
+                            onDelete = { vm.deleteSet(it) },
+                            onHowTo = { onOpenExercise(slot.exerciseId ?: ExerciseCatalog.keyFor(slot.name)) },
+                            onSwap = if (slot.index >= 0) ({ vm.openSwap(slot.key) }) else null,
+                            modifier = Modifier.animateItem()
                         )
-                        Spacer(Modifier.width(10.dp))
-                        Pill(
-                            "Add",
-                            icon = Icons.Outlined.Add,
-                            filled = true,
-                            onClick = {
-                                vm.addExercise(newExercise)
-                                newExercise = ""
-                            }
-                        )
+                    }
+                    item(key = "add", contentType = "add") {
+                        AddExerciseCard(onAdd = vm::addExercise, modifier = Modifier.animateItem())
                     }
                 }
             }
+        }
+
+        AnimatedVisibility(
+            visible = pr != null,
+            enter = scaleIn(MaterialTheme.motionScheme.fastSpatialSpec(), initialScale = 0.8f) +
+                fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+            exit = scaleOut(MaterialTheme.motionScheme.fastSpatialSpec(), targetScale = 0.9f) +
+                fadeOut(MaterialTheme.motionScheme.fastEffectsSpec()),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 72.dp, start = 16.dp, end = 16.dp)
+        ) {
+            lastPr.event?.let { PrCelebration(it, state.unit, state.reduceMotion) }
         }
     }
 
     if (showFinish) {
         FinishDialog(
-            hasSets = state.sets.isNotEmpty(),
+            hasSets = state.slots.any { it.sets.isNotEmpty() },
             onDismiss = { showFinish = false },
-            onFinish = { notes -> showFinish = false; vm.finish(notes) },
-            onDiscard = { showFinish = false; vm.discard() }
+            onFinish = { notes ->
+                showFinish = false
+                if (state.haptics) haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                vm.finish(notes)
+            },
+            onDiscard = {
+                showFinish = false
+                vm.discard()
+            }
         )
     }
-}
 
-private fun prescriptionOf(ex: ProgramExercise): String = buildString {
-    append("${ex.sets} × ")
-    if (ex.repLow == ex.repHigh) append("${ex.repLow}") else append("${ex.repLow}-${ex.repHigh}")
-    ex.rirTarget?.let { append(" @ ${trimNumber(it)} RIR") }
-    ex.restSeconds?.let { append(" · ${it / 60}:${(it % 60).toString().padStart(2, '0')} rest") }
-}
-
-private fun trimNumber(v: Double): String =
-    if (v % 1.0 == 0.0) v.toInt().toString() else "%.1f".format(v)
-
-@Composable
-private fun RestBanner(remaining: Int, total: Int, onSkip: () -> Unit, onAdd: () -> Unit) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp)
-            .clip(RoundedCornerShape(18.dp))
-            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
-            .padding(16.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                Icons.Outlined.Timer, null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                "Rest  ${remaining / 60}:${(remaining % 60).toString().padStart(2, '0')}",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(Modifier.weight(1f))
-            Pill("+30s", onClick = onAdd)
-            Spacer(Modifier.width(6.dp))
-            Pill("Skip", onClick = onSkip)
-        }
-        Spacer(Modifier.height(10.dp))
-        LinearProgressIndicator(
-            progress = { if (total == 0) 0f else remaining.toFloat() / total },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(4.dp)
-                .clip(CircleShape),
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
-        )
-    }
-}
-
-@Composable
-private fun ExerciseCard(
-    name: String,
-    prescription: String?,
-    notes: String?,
-    substitutions: String?,
-    sets: List<SetLog>,
-    last: LastTime?,
-    unit: WeightUnit,
-    onAddSet: (Double, Int, Double?, Boolean) -> Unit,
-    onDeleteSet: (SetLog) -> Unit
-) {
-    // Pre-fill from the previous set so repeat sets are one tap. `last` is loaded
-    // asynchronously, so it has to be part of the key or the prefill never lands.
-    val lastSet = sets.lastOrNull { !it.isWarmup }
-    var weight by remember(lastSet?.id, name, last?.topWeightKg) {
-        mutableStateOf(
-            lastSet?.let { trimNumber(NutritionMath.kgToDisplay(it.weightKg, unit)) }
-                ?: last?.let { trimNumber(NutritionMath.kgToDisplay(it.topWeightKg, unit)) }
-                ?: ""
-        )
-    }
-    var reps by remember(lastSet?.id, name, last?.topReps) {
-        mutableStateOf((lastSet?.reps ?: last?.topReps)?.toString() ?: "")
-    }
-    var rir by remember(name) { mutableStateOf("") }
-    var warmup by remember(name) { mutableStateOf(false) }
-
-    ForgeCard {
-        Text(name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-        prescription?.let {
-            Spacer(Modifier.height(2.dp))
-            Text(
-                it,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-        last?.let {
-            Spacer(Modifier.height(4.dp))
-            Text(
-                "Last time (${it.label}): ${trimNumber(NutritionMath.kgToDisplay(it.topWeightKg, unit))} ${unit.label} × ${it.topReps}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-        notes?.takeIf { it.isNotBlank() }?.let {
-            Spacer(Modifier.height(6.dp))
-            Text(
-                it,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
-            )
-        }
-        substitutions?.takeIf { it.isNotBlank() }?.let {
-            Spacer(Modifier.height(4.dp))
-            Text(
-                "Alt: $it",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f)
-            )
-        }
-
-        if (sets.isNotEmpty()) {
-            Spacer(Modifier.height(12.dp))
-            sets.forEachIndexed { i, s ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        Modifier
-                            .size(24.dp)
-                            .clip(CircleShape)
-                            .background(
-                                if (s.isWarmup) MaterialTheme.colorScheme.surfaceContainerHighest
-                                else MaterialTheme.colorScheme.primary.copy(alpha = 0.18f)
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            if (s.isWarmup) "W" else "${i + 1}",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = if (s.isWarmup) MaterialTheme.colorScheme.onSurfaceVariant
-                            else MaterialTheme.colorScheme.primary
-                        )
-                    }
+    if (state.finishing) {
+        AlertDialog(
+            onDismissRequest = {},
+            confirmButton = {},
+            title = { Text("Saving session") },
+            text = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    LoadingIndicator(Modifier.size(32.dp))
                     Spacer(Modifier.width(12.dp))
-                    Text(
-                        "${trimNumber(NutritionMath.kgToDisplay(s.weightKg, unit))} ${unit.label} × ${s.reps}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium
-                    )
-                    s.rir?.let {
-                        Spacer(Modifier.width(8.dp))
-                        Text(
-                            "${trimNumber(it)} RIR",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Macro.carbs
-                        )
-                    }
-                    Spacer(Modifier.weight(1f))
-                    Icon(
-                        Icons.Outlined.Close,
-                        "Delete set",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                        modifier = Modifier
-                            .size(18.dp)
-                            .clip(CircleShape)
-                            .clickable { onDeleteSet(s) }
-                    )
+                    Text("Updating your progression...")
                 }
             }
-        }
+        )
+    }
 
-        Spacer(Modifier.height(12.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            NumInput(weight, { weight = it }, unit.label, Modifier.weight(1.1f))
-            Spacer(Modifier.width(8.dp))
-            NumInput(reps, { reps = it }, "reps", Modifier.weight(0.9f))
-            Spacer(Modifier.width(8.dp))
-            NumInput(rir, { rir = it }, "RIR", Modifier.weight(0.8f))
-        }
-        Spacer(Modifier.height(10.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Pill(
-                if (warmup) "Warm-up ✓" else "Warm-up",
-                filled = warmup,
-                color = if (warmup) Macro.carbs else MaterialTheme.colorScheme.onSurfaceVariant,
-                onClick = { warmup = !warmup }
-            )
-            Spacer(Modifier.weight(1f))
-            val w = weight.replace(',', '.').toDoubleOrNull()
-            val r = reps.toIntOrNull()
-            Pill(
-                "Log set",
-                icon = Icons.Outlined.Add,
-                filled = true,
-                onClick = {
-                    if (w != null && r != null && r > 0) {
-                        onAddSet(w, r, rir.replace(',', '.').toDoubleOrNull(), warmup)
-                        rir = ""
-                        warmup = false
-                    }
-                }
-            )
-        }
+    state.summary?.let { summary ->
+        SummaryDialog(summary, state.unit, onDone = vm::closeSummary)
+    }
+
+    state.swap?.let { sheet ->
+        SwapSheetContent(
+            sheet = sheet,
+            onPick = { info ->
+                if (state.haptics) haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                vm.swap(sheet.key, info)
+            },
+            onDismiss = vm::closeSwap
+        )
     }
 }
 
 @Composable
-private fun NumInput(
-    value: String,
-    onValue: (String) -> Unit,
-    label: String,
-    modifier: Modifier = Modifier
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = { onValue(it.filter { c -> c.isDigit() || c == '.' || c == ',' }) },
-        label = { Text(label, style = MaterialTheme.typography.labelSmall) },
-        singleLine = true,
-        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-            keyboardType = KeyboardType.Decimal
-        ),
-        modifier = modifier
-    )
+private fun SessionHeader(state: SessionState, onFinish: () -> Unit) {
+    // The elapsed label only needs minute resolution; tick twice a minute, not every frame.
+    val now by produceState(System.currentTimeMillis()) {
+        while (true) {
+            delay(30_000)
+            value = System.currentTimeMillis()
+        }
+    }
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(
+                state.session?.title ?: "Session",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            val sub = listOfNotNull(
+                state.programName,
+                state.weekLabel
+            ).joinToString(" · ")
+            if (sub.isNotBlank()) {
+                Text(
+                    sub,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Text(
+                buildString {
+                    state.session?.let { append(Dates.durationLabel(it.startedAt, now)) }
+                    val n = state.workingSetCount
+                    if (n > 0) append(if (n == 1) " · 1 set" else " · $n sets")
+                    state.dayFocus?.takeIf { it.isNotBlank() }?.let { append(" · ").append(it) }
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Pill("Finish", icon = Icons.Outlined.Check, filled = true, onClick = onFinish)
+    }
+}
+
+/** Collects the rest flow on its own so the per-second tick recomposes only this banner. */
+@Composable
+private fun RestArea(vm: SessionViewModel) {
+    val rest by vm.rest.collectAsStateWithLifecycle()
+    val haptics = LocalHapticFeedback.current
+    var wasRunning by remember { mutableStateOf(false) }
+    LaunchedEffect(rest.remaining) {
+        if (rest.remaining > 0) wasRunning = true
+        else if (wasRunning) {
+            wasRunning = false
+            // Only a timer that ran out (not one that was skipped) buzzes.
+            if (rest.total > 0 && vm.state.value.haptics) haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+        }
+    }
+    AnimatedVisibility(
+        visible = rest.remaining > 0,
+        enter = expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()) + fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+        exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
+    ) {
+        RestBanner(rest = rest, onSkip = vm::stopRest, onAdd = { vm.addRest(30) })
+    }
 }
 
 @Composable
@@ -415,7 +278,7 @@ private fun FinishDialog(
     onFinish: (String?) -> Unit,
     onDiscard: () -> Unit
 ) {
-    var notes by remember { mutableStateOf("") }
+    var notes by rememberSaveable { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(if (hasSets) "Finish session?" else "Nothing logged") },
@@ -445,13 +308,47 @@ private fun FinishDialog(
             if (hasSets) {
                 TextButton(onClick = { onFinish(notes) }) { Text("Finish") }
             } else {
-                TextButton(onClick = onDiscard) {
-                    Text("Discard", color = MaterialTheme.colorScheme.error)
+                TextButton(onClick = onDiscard) { Text("Discard", color = MaterialTheme.colorScheme.error) }
+            }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Keep going") } }
+    )
+}
+
+@Composable
+private fun SummaryDialog(summary: SessionSummary, unit: WeightUnit, onDone: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDone,
+        title = { Text("Session saved") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    "${summary.workingSets} working set${if (summary.workingSets == 1) "" else "s"} · " +
+                        "${displayKg(summary.volumeKg, unit)} ${unit.label} total volume",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                if (summary.prs.isNotEmpty()) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Outlined.EmojiEvents, null, tint = MaterialTheme.colorScheme.tertiary, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(6.dp))
+                        Text("Personal records", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                    }
+                    summary.prs.forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
+                }
+                if (summary.changes.isNotEmpty()) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.AutoMirrored.Outlined.TrendingUp, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(6.dp))
+                        Text("Program updates", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                    }
+                    summary.changes.forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
                 }
             }
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Keep going") }
-        }
+        confirmButton = { TextButton(onClick = onDone) { Text("Done") } }
     )
+}
+
+private class PrHolder {
+    var event: PrEvent? = null
 }

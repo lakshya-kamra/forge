@@ -1,8 +1,23 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+    <!--
+        Window theme behind Compose. Bars are transparent because the app draws edge-to-edge;
+        icon contrast is set at runtime from the in-app theme (ForgeTheme), not from here.
+    -->
     <style name="Theme.Forge" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/forge_bg</item>
     </style>
-    <style name="Theme.Forge.Splash" parent="Theme.Forge" />
+
+    <!--
+        Launch theme (core-splashscreen). The flame kindles in the animated icon; MainActivity
+        holds the splash until settings are read and then plays the exit animation.
+        windowSplashScreenAnimationDuration only matters on Android 12L and below.
+    -->
+    <style name="Theme.Forge.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/forge_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_forge_splash</item>
+        <item name="windowSplashScreenAnimationDuration">800</item>
+        <item name="postSplashScreenTheme">@style/Theme.Forge</item>
+    </style>
 </resources>

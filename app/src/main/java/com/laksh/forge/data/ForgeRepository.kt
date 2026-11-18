@@ -9,11 +9,12 @@ import com.laksh.forge.data.db.Program
 import com.laksh.forge.data.db.ProgramDay
 import com.laksh.forge.data.db.ProgramExercise
 import com.laksh.forge.data.db.WeightEntry
+import com.laksh.forge.data.ai.ForgeAi
+import com.laksh.forge.data.ai.MultiProviderAi
 import com.laksh.forge.data.health.HealthConnectManager
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.prefs.SettingsStore
 import com.laksh.forge.data.prefs.WeightUnit
-import com.laksh.forge.data.remote.AnthropicClient
 import com.laksh.forge.data.remote.FoodEstimate
 import com.laksh.forge.data.remote.LabelReading
 import com.laksh.forge.data.remote.OpenFoodFactsClient
@@ -46,9 +47,12 @@ class ForgeRepository(
 
     @Volatile private var cachedSettings: ForgeSettings = ForgeSettings()
 
-    val ai: com.laksh.forge.data.ai.ForgeAi = AnthropicClient(
-        apiKeyProvider = { cachedSettings.apiKey },
-        modelProvider = { task -> cachedSettings.tier.modelFor(task) }
+    // Routes every task to the provider of whatever key the user saved (Settings -> AI). Reads
+    // the cached settings snapshot so describe()/isConfigured never suspend.
+    val ai: ForgeAi = MultiProviderAi(
+        context = context,
+        settings = { cachedSettings },
+        settingsStore = settingsStore
     )
 
     fun updateSettingsCache(s: ForgeSettings) { cachedSettings = s }
@@ -221,30 +225,9 @@ class ForgeRepository(
 
     // ------------------------------------------------------------------ health
 
-    /** Pull wearable data and merge any scale weights we do not already have. */
-    suspend fun syncHealth(): Int {
-        val dailies = health.readDailies(45)
-        if (dailies.isNotEmpty()) healthDao.upsertAll(dailies)
-
-        var importedWeights = 0
-        health.readWeights(90).forEach { w ->
-            val date = Dates.dayOf(w.timeMillis)
-            if (weightDao.countOn(date) == 0) {
-                weightDao.insert(
-                    WeightEntry(
-                        timestamp = w.timeMillis,
-                        localDate = date,
-                        kg = w.kg,
-                        source = "HEALTH_CONNECT"
-                    )
-                )
-                importedWeights++
-            }
-        }
-        settingsStore.setLastHealthSync(System.currentTimeMillis())
-        if (importedWeights > 0) recomputeAdaptiveTdee()
-        return dailies.size
-    }
+    /** Kept for source compatibility; all wearable syncing goes through WearableSync. */
+    suspend fun syncHealth(): Int =
+        com.laksh.forge.data.wearables.WearableSync.syncAll().days
 
     // ------------------------------------------------------------------ programs
 
@@ -374,18 +357,22 @@ class ForgeRepository(
             appendLine()
 
             if (healthRows.isNotEmpty()) {
-                appendLine("Wearable (last 7 days, from Health Connect):")
+                appendLine("Wearable (last 7 days, merged from connected sources):")
                 healthRows.forEach { h ->
                     val parts = buildList {
                         h.steps?.let { add("$it steps") }
                         h.activeKcal?.let { add("${it.roundToInt()} active kcal") }
                         h.sleepMinutes?.let { add("${it / 60}h${it % 60}m sleep") }
                         h.restingHr?.let { add("RHR $it") }
+                        h.hrvMs?.let { add("HRV ${it.roundToInt()} ms (RMSSD)") }
+                        h.recoveryScore?.let { add("recovery ${it.roundToInt()} (WHOOP)") }
+                        h.strain?.let { add("strain ${"%.1f".format(it)}") }
+                        h.vo2max?.let { add("VO2 max ${"%.1f".format(it)}") }
                     }
                     if (parts.isNotEmpty()) appendLine("  ${Dates.shortLabel(h.localDate)}: ${parts.joinToString(", ")}")
                 }
             } else {
-                appendLine("Wearable: no Health Connect data (Zepp sync may be off)")
+                appendLine("Wearable: no wearable data synced yet")
             }
             appendLine("</user_data>")
         }

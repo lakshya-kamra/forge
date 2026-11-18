@@ -1,5 +1,10 @@
 package com.laksh.forge.data.remote
 
+import com.laksh.forge.data.ai.CostEstimator
+import com.laksh.forge.data.ai.ModelRouter
+import com.laksh.forge.data.ai.ProviderRegistry
+import java.time.LocalDate
+
 /** The distinct jobs Forge asks a model to do. Each has its own difficulty and frequency. */
 enum class Task {
     FOOD_PHOTO,
@@ -14,45 +19,44 @@ enum class Task {
 }
 
 /**
- * Cost tiers for Anthropic keys. Other providers map tiers to their own models in the
- * provider registry (data/ai).
+ * Cost tiers. Every provider maps them to its own models through the registry in data/ai
+ * (economy / balanced / max picks per job from docs/research/providers.json).
  *
  * The tasks differ enormously in how much model they need: reading a printed nutrition panel
  * is transcription, judging portion size from a photo is judgement, and the onboarding plan
- * is rare but consequential.
+ * is rare but consequential. So labels always use the economy pick, whatever the tier.
  */
 enum class CostTier(val label: String, val blurb: String) {
     ECONOMY(
         "Economy",
-        "Haiku 5.5 for everything. Pennies a month; estimates get slightly rougher."
+        "The cheapest capable model for every job. Pennies a month; estimates get slightly rougher."
     ),
     BALANCED(
         "Balanced",
-        "Sonnet 5.5 for judgement, Haiku 5.5 for transcription. The recommended default."
+        "A stronger model for judgement (photos, coach, plans), the cheap one for transcription. Recommended."
     ),
     MAXIMUM(
         "Maximum",
-        "Opus 5.5 for photos, coaching and planning. Best quality, highest cost."
+        "The provider's top models for photos, coaching and planning. Best quality, highest cost."
     );
 
-    fun modelFor(task: Task): String = when (this) {
-        ECONOMY -> HAIKU
-        BALANCED -> when (task) {
-            Task.LABEL, Task.PING -> HAIKU
-            else -> SONNET
-        }
-        MAXIMUM -> when (task) {
-            Task.LABEL, Task.PING -> HAIKU   // transcription; a bigger model buys nothing here
-            else -> OPUS
-        }
-    }
+    /**
+     * The Anthropic model for [task] at this tier. Kept for v1 call sites; other providers
+     * route through [ModelRouter] with their own registry entry.
+     */
+    fun modelFor(task: Task): String =
+        runCatching {
+            ModelRouter.pick(ProviderRegistry.anthropic, this, task, emptyMap(), needsVision = false).model
+        }.getOrDefault(HAIKU)
 
-    /** Rough monthly estimate at ~4 photo logs and ~3 coach questions a day. */
+    /**
+     * Rough monthly figure at Anthropic prices (~4 photo logs, ~3 coach messages and 1 label a
+     * day), computed from the registry rather than hand-typed so it can't drift from the prices.
+     */
     val roughMonthly: String
-        get() = when (this) {
-            ECONOMY -> "under $0.50 / month"
-            BALANCED -> "about $4-6 / month"
-            MAXIMUM -> "about $12-20 / month"
+        get() {
+            val total = CostEstimator.monthly(ProviderRegistry.anthropic, this, emptyMap(), LocalDate.now()).totalUsd
+            return if (total == null) "price unknown" else "about ${CostEstimator.formatUsd(total)} / month"
         }
 
     companion object {

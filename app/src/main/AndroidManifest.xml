@@ -10,7 +10,7 @@
 
     <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
-    <!-- Health Connect (Amazfit / Zepp sync source) -->
+    <!-- Health Connect (every phone/watch source that writes to it) -->
     <uses-permission android:name="android.permission.health.READ_STEPS" />
     <uses-permission android:name="android.permission.health.READ_HEART_RATE" />
     <uses-permission android:name="android.permission.health.READ_RESTING_HEART_RATE" />
@@ -22,6 +22,13 @@
     <uses-permission android:name="android.permission.health.READ_BODY_FAT" />
     <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION" />
     <uses-permission android:name="android.permission.health.READ_DISTANCE" />
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE_VARIABILITY" />
+    <uses-permission android:name="android.permission.health.READ_VO2_MAX" />
+    <uses-permission android:name="android.permission.health.READ_RESPIRATORY_RATE" />
+    <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS" />
+    <uses-permission android:name="android.permission.health.READ_SKIN_TEMPERATURE" />
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY" />
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND" />
     <uses-permission android:name="android.permission.health.WRITE_WEIGHT" />
     <uses-permission android:name="android.permission.health.WRITE_NUTRITION" />
 
@@ -29,6 +36,10 @@
         <package android:name="com.google.android.apps.healthdata" />
         <intent>
             <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+        </intent>
+        <!-- Lets androidx.browser find a Custom Tabs browser on Android 11+ (WHOOP sign-in, sources). -->
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService" />
         </intent>
     </queries>
 
@@ -68,6 +79,51 @@
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
             </intent-filter>
         </activity-alias>
+
+        <!-- WHOOP OAuth redirect (forge://whoop/callback): hands the code to WhoopAuth, then
+             returns to MainActivity, which closes the Custom Tab. -->
+        <activity
+            android:name=".data.wearables.whoop.WhoopCallbackActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="forge"
+                    android:host="whoop"
+                    android:path="/callback" />
+            </intent-filter>
+        </activity>
+
+        <!-- Home-screen widgets (Glance). Exported so the launcher can bind them; they only
+             accept the system's APPWIDGET_UPDATE broadcast. -->
+        <receiver
+            android:name=".feature.widgets.TodayWidgetReceiver"
+            android:exported="true"
+            android:label="@string/widget_today_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/forge_today_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".feature.widgets.NextWorkoutWidgetReceiver"
+            android:exported="true"
+            android:label="@string/widget_next_workout_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/forge_next_workout_widget_info" />
+        </receiver>
 
         <provider
             android:name="androidx.core.content.FileProvider"

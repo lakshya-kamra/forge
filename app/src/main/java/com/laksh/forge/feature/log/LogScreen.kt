@@ -4,12 +4,14 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,25 +19,32 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material.icons.outlined.PhotoLibrary
-import androidx.compose.material.icons.outlined.QrCodeScanner
+import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,25 +52,36 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.laksh.forge.ui.components.AnimatedCounter
+import com.laksh.forge.ui.components.ConnectedChoiceGroup
+import com.laksh.forge.ui.components.ExpressiveLoading
 import com.laksh.forge.ui.components.ForgeCard
+import com.laksh.forge.ui.components.ForgeSubScreen
+import com.laksh.forge.ui.components.IconBadge
 import com.laksh.forge.ui.components.MacroBar
 import com.laksh.forge.ui.components.Pill
 import com.laksh.forge.ui.components.SectionHeader
+import com.laksh.forge.ui.components.bounceClick
 import com.laksh.forge.ui.theme.Macro
+import com.laksh.forge.ui.theme.accentFor
+import com.laksh.forge.ui.theme.tintedContainer
 import com.laksh.forge.util.ImageUtils
 import kotlin.math.roundToInt
 
@@ -72,6 +92,16 @@ private val SLOTS = listOf(
     "SNACK" to "Snack"
 )
 
+/** What the body of the screen is showing; AnimatedContent morphs between these. */
+private enum class Stage { INPUT, WORKING, ESTIMATE, PRODUCT }
+
+private fun stageOf(s: LogState): Stage = when {
+    s.phase == Phase.WORKING -> Stage.WORKING
+    s.phase == Phase.RESULT && s.estimate != null -> Stage.ESTIMATE
+    s.phase == Phase.RESULT && s.product != null -> Stage.PRODUCT
+    else -> Stage.INPUT
+}
+
 @Composable
 fun LogScreen(
     onDone: () -> Unit,
@@ -79,10 +109,12 @@ fun LogScreen(
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val haptics = LocalHapticFeedback.current
 
-    // Camera capture writes into app cache and is exposed through FileProvider.
-    var captureUri by remember { mutableStateOf<Uri?>(null) }
-    var captureForLabel by remember { mutableStateOf(false) }
+    // Camera capture writes into app cache and is exposed through FileProvider. Saved across
+    // process death: the camera app can outlive us.
+    var captureUri by rememberSaveable { mutableStateOf<Uri?>(null) }
+    var captureForLabel by rememberSaveable { mutableStateOf(false) }
 
     val takePicture = rememberLauncherForActivityResult(
         ActivityResultContracts.TakePicture()
@@ -122,107 +154,87 @@ fun LogScreen(
 
     LaunchedEffect(state.phase) {
         if (state.phase == Phase.SAVED) {
+            haptics.performHapticFeedback(HapticFeedbackType.Confirm)
             onDone()
             vm.reset()
         }
     }
 
-    Column(
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 40.dp)
-    ) {
-        Spacer(Modifier.height(8.dp))
-        Text(
-            "Log food",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(Modifier.height(14.dp))
+    val stage = stageOf(state)
+    val motion = MaterialTheme.motionScheme
+    val enterScale = motion.defaultSpatialSpec<Float>()
+    val effects = motion.defaultEffectsSpec<Float>()
+    val fastEffects = motion.fastEffectsSpec<Float>()
 
-        ModeTabs(state.mode, vm::setMode)
-        Spacer(Modifier.height(14.dp))
+    ForgeSubScreen(
+        title = "Log food",
+        subtitle = SLOTS.firstOrNull { it.first == state.mealSlot }?.second,
+        onBack = onDone
+    ) { padding ->
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .consumeWindowInsets(padding)
+                .imePadding()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
+                .padding(top = 4.dp, bottom = 32.dp)
+        ) {
+            ConnectedChoiceGroup(
+                options = LogMode.entries,
+                selected = state.mode,
+                onSelect = vm::setMode,
+                label = { it.label }
+            )
+            Spacer(Modifier.height(12.dp))
+            MealSlotRow(state.mealSlot, vm::setMealSlot)
+            Spacer(Modifier.height(16.dp))
 
-        MealSlotRow(state.mealSlot, vm::setMealSlot)
-        Spacer(Modifier.height(16.dp))
-
-        when {
-            state.phase == Phase.WORKING -> WorkingCard(state.statusText)
-
-            state.phase == Phase.RESULT && state.estimate != null ->
-                EstimateCard(state = state, vm = vm)
-
-            state.phase == Phase.RESULT && state.product != null ->
-                ProductCard(state = state, vm = vm)
-
-            else -> {
-                if (state.phase == Phase.ERROR) {
-                    ErrorCard(
-                        message = state.error.orEmpty(),
-                        showLabelFallback = state.missingBarcode != null,
-                        onRetry = vm::dismissError,
-                        onScanLabel = { launchCamera(forLabel = true) },
-                        onPickLabel = { launchPicker(forLabel = true) }
-                    )
-                    Spacer(Modifier.height(14.dp))
+            AnimatedContent(
+                targetState = stage,
+                transitionSpec = {
+                    (fadeIn(effects) + scaleIn(enterScale, initialScale = 0.94f))
+                        .togetherWith(fadeOut(fastEffects) + scaleOut(fastEffects, targetScale = 0.98f))
+                },
+                label = "logStage"
+            ) { target ->
+                when (target) {
+                    Stage.WORKING -> WorkingCard(state.statusText)
+                    Stage.ESTIMATE -> EstimateCard(state = state, vm = vm)
+                    Stage.PRODUCT -> ProductCard(state = state, vm = vm)
+                    Stage.INPUT -> Column {
+                        if (state.phase == Phase.ERROR) {
+                            ErrorCard(
+                                message = state.error.orEmpty(),
+                                showLabelFallback = state.missingBarcode != null,
+                                onRetry = vm::dismissError,
+                                onScanLabel = { launchCamera(forLabel = true) },
+                                onPickLabel = { launchPicker(forLabel = true) }
+                            )
+                            Spacer(Modifier.height(14.dp))
+                        }
+                        when (state.mode) {
+                            LogMode.PHOTO -> PhotoMode(
+                                hint = state.hint,
+                                onHint = vm::setHint,
+                                storePhotos = state.storePhotos,
+                                onCamera = { launchCamera(false) },
+                                onGallery = { launchPicker(false) }
+                            )
+                            LogMode.BARCODE -> BarcodeMode(onBarcode = vm::onBarcode)
+                            LogMode.LABEL -> LabelMode(
+                                onCamera = { launchCamera(true) },
+                                onGallery = { launchPicker(true) }
+                            )
+                            LogMode.MANUAL -> ManualMode(
+                                text = state.manualText,
+                                onText = vm::setManualText,
+                                onEstimate = vm::analyseText
+                            )
+                        }
+                    }
                 }
-                when (state.mode) {
-                    LogMode.PHOTO -> PhotoMode(
-                        hint = state.hint,
-                        onHint = vm::setHint,
-                        storePhotos = state.storePhotos,
-                        onCamera = { launchCamera(false) },
-                        onGallery = { launchPicker(false) }
-                    )
-                    LogMode.BARCODE -> BarcodeMode(onBarcode = vm::onBarcode)
-                    LogMode.MANUAL -> ManualMode(
-                        text = state.manualText,
-                        onText = vm::setManualText,
-                        onEstimate = vm::analyseText
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun ModeTabs(mode: LogMode, onSelect: (LogMode) -> Unit) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainer)
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        listOf(
-            LogMode.PHOTO to "Photo",
-            LogMode.BARCODE to "Barcode",
-            LogMode.MANUAL to "Describe"
-        ).forEach { (m, label) ->
-            val selected = m == mode
-            Box(
-                Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(11.dp))
-                    .background(
-                        if (selected) MaterialTheme.colorScheme.primary
-                        else Color.Transparent
-                    )
-                    .clickable { onSelect(m) }
-                    .padding(vertical = 10.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    label,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (selected) MaterialTheme.colorScheme.onPrimary
-                    else MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
         }
     }
@@ -252,32 +264,18 @@ private fun PhotoMode(
     onGallery: () -> Unit
 ) {
     ForgeCard {
-        Text(
-            "Photograph your meal",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
+        Text("Photograph your meal", style = MaterialTheme.typography.titleLargeEmphasized)
         Spacer(Modifier.height(4.dp))
         Text(
             "Get the whole plate in frame. Estimates lean deliberately high, so you're more likely to over-count than under-count.",
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(16.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            BigAction(
-                icon = Icons.Outlined.PhotoCamera,
-                label = "Camera",
-                modifier = Modifier.weight(1f),
-                onClick = onCamera
-            )
-            BigAction(
-                icon = Icons.Outlined.PhotoLibrary,
-                label = "Gallery",
-                modifier = Modifier.weight(1f),
-                onClick = onGallery
-            )
+            BigAction(Icons.Outlined.PhotoCamera, "Camera", Modifier.weight(1f), onCamera)
+            BigAction(Icons.Outlined.PhotoLibrary, "Gallery", Modifier.weight(1f), onGallery)
         }
 
         Spacer(Modifier.height(16.dp))
@@ -288,17 +286,36 @@ private fun PhotoMode(
             placeholder = { Text("e.g. cooked in ghee, large bowl") },
             modifier = Modifier.fillMaxWidth(),
             minLines = 1,
-            maxLines = 3
+            maxLines = 3,
+            shape = RoundedCornerShape(16.dp)
         )
         Spacer(Modifier.height(10.dp))
         Text(
             if (storePhotos)
-                "Photos are kept on this phone only, and sent to Anthropic solely to produce the estimate."
+                "Photos are kept on this phone only, and sent to your AI provider solely to produce the estimate."
             else
                 "Photo storage is off - images are analysed and then discarded.",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+@Composable
+private fun LabelMode(onCamera: () -> Unit, onGallery: () -> Unit) {
+    ForgeCard {
+        Text("Read a nutrition label", style = MaterialTheme.typography.titleLargeEmphasized)
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Photograph the printed nutrition panel straight on. The values are read directly, then you choose how much you had.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(Modifier.height(16.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            BigAction(Icons.Outlined.Receipt, "Photograph", Modifier.weight(1f), onCamera)
+            BigAction(Icons.Outlined.PhotoLibrary, "Gallery", Modifier.weight(1f), onGallery)
+        }
     }
 }
 
@@ -308,7 +325,7 @@ private fun BarcodeMode(onBarcode: (String) -> Unit) {
         Modifier
             .fillMaxWidth()
             .aspectRatio(0.78f)
-            .clip(RoundedCornerShape(22.dp))
+            .clip(RoundedCornerShape(28.dp))
             .background(Color.Black)
     ) {
         BarcodeScannerView(onBarcode = onBarcode, modifier = Modifier.fillMaxSize())
@@ -318,15 +335,11 @@ private fun BarcodeMode(onBarcode: (String) -> Unit) {
 @Composable
 private fun ManualMode(text: String, onText: (String) -> Unit, onEstimate: () -> Unit) {
     ForgeCard {
-        Text(
-            "Describe what you ate",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
+        Text("Describe what you ate", style = MaterialTheme.typography.titleLargeEmphasized)
         Spacer(Modifier.height(4.dp))
         Text(
             "Be as specific as you can about portions and cooking method.",
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(14.dp))
@@ -336,63 +349,52 @@ private fun ManualMode(text: String, onText: (String) -> Unit, onEstimate: () ->
             placeholder = { Text("2 rotis, a bowl of dal, half a cup of rice") },
             modifier = Modifier.fillMaxWidth(),
             minLines = 3,
-            maxLines = 6
+            maxLines = 6,
+            shape = RoundedCornerShape(16.dp)
         )
         Spacer(Modifier.height(14.dp))
-        Pill(
-            text = "Estimate",
-            icon = Icons.Outlined.AutoAwesome,
-            filled = true,
+        Button(
             onClick = onEstimate,
+            enabled = text.isNotBlank(),
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.align(Alignment.End)
-        )
+        ) {
+            Icon(Icons.Outlined.AutoAwesome, null, Modifier.size(ButtonDefaults.IconSize))
+            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
+            Text("Estimate")
+        }
     }
 }
 
 @Composable
 private fun BigAction(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     label: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Column(
         modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-            .clickable(onClick = onClick)
-            .padding(vertical = 22.dp),
+            .clip(RoundedCornerShape(20.dp))
+            .bounceClick(onClick = onClick, pressedScale = 0.94f)
+            .background(MaterialTheme.colorScheme.tintedContainer(MaterialTheme.colorScheme.primary, 0.10f))
+            .padding(vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            icon, null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(26.dp)
-        )
-        Spacer(Modifier.height(8.dp))
-        Text(label, style = MaterialTheme.typography.labelLarge)
+        IconBadge(icon, size = 48.dp)
+        Spacer(Modifier.height(10.dp))
+        Text(label, style = MaterialTheme.typography.labelLargeEmphasized)
     }
 }
 
 @Composable
 private fun WorkingCard(status: String) {
-    ForgeCard(contentPadding = PaddingValues(28.dp)) {
-        Column(
-            Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.primary,
-                strokeWidth = 3.dp,
-                modifier = Modifier.size(38.dp)
-            )
-            Spacer(Modifier.height(16.dp))
-            Text(
-                status.ifBlank { "Working..." },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
+    ForgeCard(contentPadding = PaddingValues(vertical = 36.dp, horizontal = 24.dp)) {
+        ExpressiveLoading(
+            modifier = Modifier.fillMaxWidth(),
+            message = status.ifBlank { "Working..." },
+            size = 64.dp
+        )
     }
 }
 
@@ -404,22 +406,46 @@ private fun ErrorCard(
     onScanLabel: () -> Unit,
     onPickLabel: () -> Unit
 ) {
-    ForgeCard(color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.25f)) {
+    ForgeCard(color = MaterialTheme.colorScheme.errorContainer) {
         Text(
             message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onErrorContainer
         )
         Spacer(Modifier.height(14.dp))
+        val tint = MaterialTheme.colorScheme.onErrorContainer
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             if (showLabelFallback) {
-                Pill("Photograph label", icon = Icons.Outlined.PhotoCamera, filled = true, onClick = onScanLabel)
-                Pill("From gallery", icon = Icons.Outlined.PhotoLibrary, onClick = onPickLabel)
+                Pill("Photograph label", icon = Icons.Outlined.PhotoCamera, filled = true, color = tint, onClick = onScanLabel)
+                Pill("From gallery", icon = Icons.Outlined.PhotoLibrary, color = tint, onClick = onPickLabel)
             } else {
-                Pill("Try again", icon = Icons.Outlined.Refresh, filled = true, onClick = onRetry)
+                Pill("Try again", icon = Icons.Outlined.Refresh, filled = true, color = tint, onClick = onRetry)
             }
         }
     }
+}
+
+/** A save failure shown inside a review card, so the edits on it survive. */
+@Composable
+private fun InlineError(message: String?, onDismiss: () -> Unit) {
+    if (message.isNullOrBlank()) return
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.errorContainer)
+            .padding(start = 14.dp, end = 6.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            message,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onErrorContainer,
+            modifier = Modifier.weight(1f)
+        )
+        Pill("OK", color = MaterialTheme.colorScheme.onErrorContainer, onClick = onDismiss)
+    }
+    Spacer(Modifier.height(12.dp))
 }
 
 /** Editable review of an AI estimate. Nothing is saved until the user confirms. */
@@ -433,15 +459,19 @@ private fun EstimateCard(state: LogState, vm: LogViewModel) {
     var fat by remember(est) { mutableStateOf(est.fatG.roundToInt().toString()) }
 
     ForgeCard {
+        InlineError(state.error, vm::clearError)
+
         state.photo?.let { bmp ->
+            // remember: asImageBitmap wraps the bitmap; doing it per recomposition is waste.
+            val image = remember(bmp) { bmp.asImageBitmap() }
             Image(
-                bitmap = bmp.asImageBitmap(),
+                bitmap = image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(170.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(20.dp))
             )
             Spacer(Modifier.height(16.dp))
         }
@@ -452,16 +482,17 @@ private fun EstimateCard(state: LogState, vm: LogViewModel) {
             label = { Text("What it was") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = false,
-            maxLines = 2
+            maxLines = 2,
+            shape = RoundedCornerShape(16.dp)
         )
 
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(8.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             ConfidenceDot(est.confidence)
             Spacer(Modifier.width(6.dp))
             Text(
                 "${est.confidence.lowercase().replaceFirstChar { it.uppercase() }} confidence · ${est.servingDesc}",
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -476,7 +507,7 @@ private fun EstimateCard(state: LogState, vm: LogViewModel) {
         }
 
         if (est.components.size > 1) {
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(4.dp))
             SectionHeader("On the plate")
             est.components.forEach { c ->
                 Row(
@@ -493,8 +524,7 @@ private fun EstimateCard(state: LogState, vm: LogViewModel) {
                     )
                     Text(
                         "${c.kcal.roundToInt()}",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Medium
+                        style = MaterialTheme.typography.bodySmallEmphasized
                     )
                 }
             }
@@ -515,30 +545,25 @@ private fun EstimateCard(state: LogState, vm: LogViewModel) {
                 Text(
                     "Includes a ${state.safetyMarginPct}% safety margin (model said ${raw.roundToInt()} kcal).",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
 
         Spacer(Modifier.height(18.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Pill("Discard", onClick = vm::reset)
-            Spacer(Modifier.weight(1f))
-            Pill(
-                "Save",
-                icon = Icons.Outlined.Check,
-                filled = true,
-                onClick = {
-                    vm.saveEstimate(
-                        editedName = name,
-                        editedKcal = kcal.toDoubleOrNull() ?: est.kcal,
-                        protein = protein.toDoubleOrNull() ?: est.proteinG,
-                        carbs = carbs.toDoubleOrNull() ?: est.carbsG,
-                        fat = fat.toDoubleOrNull() ?: est.fatG
-                    )
-                }
-            )
-        }
+        ReviewActions(
+            saving = state.saving,
+            onDiscard = vm::reset,
+            onSave = {
+                vm.saveEstimate(
+                    editedName = name,
+                    editedKcal = kcal.toDoubleOrNull() ?: est.kcal,
+                    protein = protein.toDoubleOrNull() ?: est.proteinG,
+                    carbs = carbs.toDoubleOrNull() ?: est.carbsG,
+                    fat = fat.toDoubleOrNull() ?: est.fatG
+                )
+            }
+        )
     }
 }
 
@@ -550,11 +575,9 @@ private fun ProductCard(state: LogState, vm: LogViewModel) {
     val f = grams / 100.0
 
     ForgeCard {
-        Text(
-            p.name,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
+        InlineError(state.error, vm::clearError)
+
+        Text(p.name, style = MaterialTheme.typography.titleLargeEmphasized)
         p.brand?.let {
             Text(
                 it,
@@ -568,11 +591,10 @@ private fun ProductCard(state: LogState, vm: LogViewModel) {
             value = state.grams,
             onValueChange = vm::setGrams,
             label = { Text("Amount (g)") },
-            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
-            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp)
         )
         p.servingSizeG?.let {
             Spacer(Modifier.height(6.dp))
@@ -586,18 +608,19 @@ private fun ProductCard(state: LogState, vm: LogViewModel) {
         Spacer(Modifier.height(18.dp))
         Row(
             Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            Text(
-                "${(p.kcalPer100g * f).roundToInt()}",
-                style = MaterialTheme.typography.displaySmall,
-                fontWeight = FontWeight.Bold
+            // Rolls as the gram amount is typed, so the effect of a portion change is felt.
+            AnimatedCounter(
+                value = (p.kcalPer100g * f).roundToInt(),
+                style = MaterialTheme.typography.displaySmallEmphasized
             )
+            Spacer(Modifier.width(6.dp))
             Text(
                 "kcal",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 6.dp)
             )
         }
 
@@ -605,16 +628,52 @@ private fun ProductCard(state: LogState, vm: LogViewModel) {
         MacroBar("Protein", p.proteinPer100g * f, (p.proteinPer100g * f).roundToInt().coerceAtLeast(1), Macro.protein)
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            Text("C ${(p.carbsPer100g * f).roundToInt()}g", style = MaterialTheme.typography.labelMedium, color = Macro.carbs)
-            Text("F ${(p.fatPer100g * f).roundToInt()}g", style = MaterialTheme.typography.labelMedium, color = Macro.fat)
-            Text("Fibre ${(p.fiberPer100g * f).roundToInt()}g", style = MaterialTheme.typography.labelMedium, color = Macro.fiber)
+            val scheme = MaterialTheme.colorScheme
+            Text("C ${(p.carbsPer100g * f).roundToInt()}g", style = MaterialTheme.typography.labelLarge, color = scheme.accentFor(Macro.carbs))
+            Text("F ${(p.fatPer100g * f).roundToInt()}g", style = MaterialTheme.typography.labelLarge, color = scheme.accentFor(Macro.fat))
+            Text("Fibre ${(p.fiberPer100g * f).roundToInt()}g", style = MaterialTheme.typography.labelLarge, color = scheme.accentFor(Macro.fiber))
         }
 
         Spacer(Modifier.height(18.dp))
-        Row {
-            Pill("Discard", onClick = vm::reset)
-            Spacer(Modifier.weight(1f))
-            Pill("Save", icon = Icons.Outlined.Check, filled = true, onClick = vm::saveProduct)
+        ReviewActions(
+            saving = state.saving,
+            saveEnabled = grams > 0.0,
+            onDiscard = vm::reset,
+            onSave = vm::saveProduct
+        )
+    }
+}
+
+@Composable
+private fun ReviewActions(
+    saving: Boolean,
+    onDiscard: () -> Unit,
+    onSave: () -> Unit,
+    saveEnabled: Boolean = true
+) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        OutlinedButton(
+            onClick = onDiscard,
+            enabled = !saving,
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier
+                .weight(1f)
+                .heightIn(min = ButtonDefaults.MediumContainerHeight)
+        ) { Text("Discard") }
+        Button(
+            onClick = onSave,
+            enabled = saveEnabled && !saving,
+            shapes = ButtonDefaults.shapes(),
+            modifier = Modifier
+                .weight(1.4f)
+                .heightIn(min = ButtonDefaults.MediumContainerHeight)
+        ) {
+            Icon(Icons.Rounded.Check, null, Modifier.size(ButtonDefaults.IconSize))
+            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
+            Text(if (saving) "Saving..." else "Save", style = MaterialTheme.typography.titleSmallEmphasized)
         }
     }
 }
@@ -631,24 +690,24 @@ private fun NumField(
         onValueChange = { onValue(it.filter { c -> c.isDigit() || c == '.' }) },
         label = { Text(label, style = MaterialTheme.typography.labelSmall) },
         singleLine = true,
-        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-            keyboardType = KeyboardType.Decimal
-        ),
-        modifier = modifier
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        modifier = modifier,
+        shape = RoundedCornerShape(14.dp)
     )
 }
 
 @Composable
 private fun ConfidenceDot(confidence: String) {
+    val scheme = MaterialTheme.colorScheme
     val color = when (confidence.uppercase()) {
-        "HIGH" -> Macro.protein
-        "LOW" -> MaterialTheme.colorScheme.error
-        else -> Macro.carbs
+        "HIGH" -> scheme.accentFor(Macro.protein)
+        "LOW" -> scheme.error
+        else -> scheme.accentFor(Macro.carbs)
     }
     Box(
         Modifier
             .size(8.dp)
-            .clip(androidx.compose.foundation.shape.CircleShape)
+            .clip(CircleShape)
             .background(color)
     )
 }

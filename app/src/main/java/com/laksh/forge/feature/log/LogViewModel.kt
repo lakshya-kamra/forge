@@ -9,6 +9,7 @@ import com.laksh.forge.data.ForgeRepository
 import com.laksh.forge.data.remote.FoodEstimate
 import com.laksh.forge.data.remote.ProductInfo
 import com.laksh.forge.data.remote.ProductNotFound
+import com.laksh.forge.data.remote.Task
 import com.laksh.forge.ui.forgeFactory
 import com.laksh.forge.util.Dates
 import com.laksh.forge.util.ImageUtils
@@ -20,7 +21,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-enum class LogMode { PHOTO, BARCODE, MANUAL }
+/** How the user is logging. LABEL reads a printed nutrition panel directly with vision. */
+enum class LogMode(val label: String) {
+    PHOTO("Photo"), BARCODE("Barcode"), LABEL("Label"), MANUAL("Describe")
+}
 
 enum class Phase { IDLE, WORKING, RESULT, ERROR, SAVED }
 
@@ -40,6 +44,8 @@ data class LogState(
     /** Set when a barcode scan misses, so the UI can offer the label-photo fallback. */
     val missingBarcode: String? = null,
     val savedName: String? = null,
+    /** True while a save is in flight, so a double tap can't log the meal twice. */
+    val saving: Boolean = false,
     val hasApiKey: Boolean = true,
     val safetyMarginPct: Int = 12,
     val storePhotos: Boolean = true
@@ -64,14 +70,31 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
     }
 
     fun setMode(mode: LogMode) = _state.update {
-        it.copy(mode = mode, phase = Phase.IDLE, error = null, estimate = null, product = null)
+        it.copy(
+            mode = mode,
+            phase = Phase.IDLE,
+            error = null,
+            estimate = null,
+            product = null,
+            photo = null,
+            missingBarcode = null
+        )
     }
+
+    /**
+     * Whether an AI provider is usable. Prefers the AI layer's own answer; the settings flag
+     * covers the moment between saving a key and the AI layer picking it up.
+     */
+    private fun aiReady(settings: com.laksh.forge.data.prefs.ForgeSettings): Boolean =
+        runCatching { repo.ai.isConfigured }.getOrDefault(false) || settings.hasApiKey
 
     fun setMealSlot(slot: String) = _state.update { it.copy(mealSlot = slot) }
     fun setHint(v: String) = _state.update { it.copy(hint = v) }
     fun setManualText(v: String) = _state.update { it.copy(manualText = v) }
     fun setGrams(v: String) = _state.update { it.copy(grams = v) }
     fun dismissError() = _state.update { it.copy(error = null, phase = Phase.IDLE) }
+    /** Clears a save error shown on the review card without leaving the review. */
+    fun clearError() = _state.update { it.copy(error = null) }
 
     fun reset() = _state.update {
         LogState(
@@ -87,8 +110,8 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
 
     fun analysePhoto(uri: Uri) = viewModelScope.launch {
         val settings = repo.settings()
-        if (!settings.hasApiKey) {
-            _state.update { it.copy(phase = Phase.ERROR, error = "Add your Anthropic API key in Settings to use photo estimates.") }
+        if (!aiReady(settings)) {
+            _state.update { it.copy(phase = Phase.ERROR, error = "Add an AI provider key in Settings > AI to use photo estimates.") }
             return@launch
         }
         _state.update { it.copy(phase = Phase.WORKING, statusText = "Reading the photo...", error = null) }
@@ -129,8 +152,8 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
         val text = _state.value.manualText.trim()
         if (text.isBlank()) return@launch
         val settings = repo.settings()
-        if (!settings.hasApiKey) {
-            _state.update { it.copy(phase = Phase.ERROR, error = "Add your Anthropic API key in Settings to estimate from a description.") }
+        if (!aiReady(settings)) {
+            _state.update { it.copy(phase = Phase.ERROR, error = "Add an AI provider key in Settings > AI to estimate from a description.") }
             return@launch
         }
         _state.update { it.copy(phase = Phase.WORKING, statusText = "Estimating...", error = null) }
@@ -195,8 +218,8 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
     /** Fallback path: read the printed nutrition panel with vision. */
     fun analyseLabel(uri: Uri) = viewModelScope.launch {
         val settings = repo.settings()
-        if (!settings.hasApiKey) {
-            _state.update { it.copy(phase = Phase.ERROR, error = "Add your Anthropic API key in Settings to read labels.") }
+        if (!aiReady(settings)) {
+            _state.update { it.copy(phase = Phase.ERROR, error = "Add an AI provider key in Settings > AI to read labels.") }
             return@launch
         }
         _state.update { it.copy(phase = Phase.WORKING, statusText = "Reading the label...", error = null) }
@@ -231,38 +254,68 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
     ) = viewModelScope.launch {
         val s = _state.value
         val base = s.estimate ?: return@launch
-        val settings = repo.settings()
+        if (s.saving) return@launch
+        _state.update { it.copy(saving = true) }
 
-        val photoPath = if (settings.storePhotos && s.photo != null) {
-            runCatching { ImageUtils.savePhoto(ForgeApp.instance, s.photo) }.getOrNull()
-        } else null
+        runCatching {
+            val settings = repo.settings()
+            val photoPath = if (settings.storePhotos && s.photo != null) {
+                runCatching { ImageUtils.savePhoto(ForgeApp.instance, s.photo) }.getOrNull()
+            } else null
 
-        val finalEstimate = base.copy(
-            name = editedName.ifBlank { base.name },
-            kcal = editedKcal,
-            proteinG = protein,
-            carbsG = carbs,
-            fatG = fat
-        )
+            val finalEstimate = base.copy(
+                name = editedName.ifBlank { base.name },
+                kcal = editedKcal,
+                proteinG = protein,
+                carbsG = carbs,
+                fatG = fat
+            )
 
-        repo.logEstimate(
-            est = finalEstimate,
-            rawKcal = s.rawKcal,
-            photoPath = photoPath,
-            mealSlot = s.mealSlot,
-            source = if (s.mode == LogMode.PHOTO) "PHOTO" else "MANUAL"
-        )
-        repo.recomputeAdaptiveTdee()
-        _state.update { it.copy(phase = Phase.SAVED, savedName = finalEstimate.name) }
+            val id = repo.logEstimate(
+                est = finalEstimate,
+                rawKcal = s.rawKcal,
+                photoPath = photoPath,
+                mealSlot = s.mealSlot,
+                source = if (s.mode == LogMode.PHOTO) "PHOTO" else "MANUAL"
+            )
+            // Record which provider/model produced a photo estimate, so estimate quality can
+            // be audited later. Best effort: a failure here must not lose the logged meal.
+            if (s.mode == LogMode.PHOTO) {
+                runCatching {
+                    val estimator = repo.ai.describe(Task.FOOD_PHOTO)
+                    repo.foodDao.byId(id)?.let { repo.foodDao.update(it.copy(estimator = estimator)) }
+                }
+            }
+            runCatching { repo.recomputeAdaptiveTdee() }
+            finalEstimate.name
+        }.onSuccess { name ->
+            _state.update { it.copy(phase = Phase.SAVED, saving = false, savedName = name) }
+        }.onFailure { e ->
+            // Stay on the review card so nothing typed is lost; the card shows the message.
+            _state.update { it.copy(saving = false, error = e.message ?: "Couldn't save that entry.") }
+        }
     }
 
     fun saveProduct() = viewModelScope.launch {
         val s = _state.value
         val product = s.product ?: return@launch
         val grams = s.grams.replace(',', '.').toDoubleOrNull() ?: return@launch
-        repo.logProduct(product, grams, s.mealSlot)
-        repo.recomputeAdaptiveTdee()
-        _state.update { it.copy(phase = Phase.SAVED, savedName = product.name) }
+        if (grams <= 0.0 || s.saving) return@launch
+        _state.update { it.copy(saving = true) }
+
+        runCatching {
+            val id = repo.logProduct(product, grams, s.mealSlot)
+            // logProduct records every product as a barcode hit; a label read is its own source.
+            if (s.mode == LogMode.LABEL || product.barcode.startsWith("label_")) {
+                repo.foodDao.byId(id)?.let { repo.foodDao.update(it.copy(source = "LABEL")) }
+            }
+            runCatching { repo.recomputeAdaptiveTdee() }
+        }.onSuccess {
+            _state.update { it.copy(phase = Phase.SAVED, saving = false, savedName = product.name) }
+        }.onFailure { e ->
+            // Stay on the review card so nothing typed is lost; the card shows the message.
+            _state.update { it.copy(saving = false, error = e.message ?: "Couldn't save that entry.") }
+        }
     }
 
     /**
