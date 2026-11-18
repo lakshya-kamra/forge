@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.laksh.forge.data.ForgeRepository
 import com.laksh.forge.data.prefs.TrainingAge
+import com.laksh.forge.domain.plan.PlanProfileStore
+import com.laksh.forge.domain.plan.libraryEquipment
 import com.laksh.forge.domain.program.LibraryProgram
 import com.laksh.forge.domain.program.ProgramLibrary
 import com.laksh.forge.ui.forgeFactory
@@ -29,7 +31,14 @@ data class LibraryFilters(
 }
 
 /** What the recommendation was based on, shown so the pick never feels arbitrary. */
-data class Profile(val level: String, val goal: String, val days: Int?, val levelKnown: Boolean)
+data class Profile(
+    val level: String,
+    val goal: String,
+    val days: Int?,
+    val levelKnown: Boolean,
+    /** Equipment the person has (from onboarding); null = a full gym, nothing filtered. */
+    val available: Set<String>? = null
+)
 
 data class LibraryState(
     val loading: Boolean = true,
@@ -67,7 +76,10 @@ class LibraryViewModel(private val repo: ForgeRepository) : ViewModel() {
                     loading = false,
                     all = all,
                     visible = all.filter { matches(it, f) },
-                    recommended = ProgramLibrary.rank(all, data.profile.level, data.profile.goal, data.profile.days).take(3),
+                    recommended = ProgramLibrary.rank(
+                        all.filter { ProgramLibrary.fitsEquipment(it, data.profile.available) },
+                        data.profile.level, data.profile.goal, data.profile.days
+                    ).take(3),
                     profile = data.profile,
                     filters = f,
                     categories = all.map { it.category }.distinct().sorted(),
@@ -106,8 +118,10 @@ class LibraryViewModel(private val repo: ForgeRepository) : ViewModel() {
         val since = System.currentTimeMillis() - 28L * 86_400_000
         val recent = repo.workoutDao.observeSessions(60).first()
             .count { it.endedAt != null && it.startedAt >= since }
-        val days = if (recent >= 4) ((recent + 2) / 4).coerceIn(2, 6) else null
-        return Profile(level, s.goal.name, days, s.trainingAge != TrainingAge.UNKNOWN)
+        // With no history yet, the days and equipment answered in onboarding are the best signal.
+        val plan = PlanProfileStore.current()
+        val days = if (recent >= 4) ((recent + 2) / 4).coerceIn(2, 6) else plan.daysPerWeek.takeIf { it in 2..6 }
+        return Profile(level, s.goal.name, days, s.trainingAge != TrainingAge.UNKNOWN, plan.equipment.libraryEquipment)
     }
 
     private fun matches(p: LibraryProgram, f: LibraryFilters): Boolean =

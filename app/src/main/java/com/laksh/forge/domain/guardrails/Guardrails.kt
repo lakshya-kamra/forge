@@ -292,7 +292,30 @@ object Guardrails {
         if (p.edScreenPositive) add(edLockFlag())
         // Adult BMI categories are never applied to minors, who are already blocked above.
         if (!p.isMinor && p.heightCm > 0 && p.weightKg > 0 && p.bmi < 18.5) add(underweightFlag())
+        // The rule also covers the END of the cut: refuse one whose slowest meaningful rate over
+        // the planned weeks would still finish below BMI 18.5.
+        else if ((maxLossPctForHealthyBmi(p, CUT_PLAN_WEEKS) ?: Double.MAX_VALUE) < MIN_CUT_RATE_PCT) {
+            add(projectedUnderweightFlag())
+        }
         if (lowBodyFatBlock(p)) add(lowBodyFatFlag())
+    }
+
+    /** Weeks a cut is planned for before reassessment (PlanBuilder.plannedWeeks). */
+    const val CUT_PLAN_WEEKS = 12
+
+    /** The slowest loss rate (% BW/wk) worth planning as a cut (guardrails lean-tier minimum). */
+    const val MIN_CUT_RATE_PCT = 0.25
+
+    /**
+     * safety_bmi_underweight_no_deficit: the fastest weekly loss (% of current weight, linear
+     * like the plan's fixed kg/week) that keeps the projected weight after [weeks] at an adult
+     * BMI of 18.5 or more. Null when it doesn't apply (minors, missing height or weight).
+     */
+    fun maxLossPctForHealthyBmi(p: GuardrailProfile, weeks: Int): Double? {
+        if (p.isMinor || p.heightCm <= 0 || p.weightKg <= 0 || weeks <= 0) return null
+        val h = p.heightCm / 100.0
+        val minKg = 18.5 * h * h
+        return ((p.weightKg - minKg) / weeks / p.weightKg * 100.0).coerceAtLeast(0.0)
     }
 
     private fun lowBodyFatBlock(p: GuardrailProfile): Boolean {
@@ -1114,6 +1137,40 @@ object Guardrails {
     fun neutralizeLanguage(text: String): String =
         neutralReplacements.fold(text) { acc, (re, replacement) -> re.replace(acc, replacement) }
 
+    /**
+     * safety_messaging_no_praise_for_restriction and no_body_shaming: the post-generation check
+     * every coach reply passes. True when [text] praises restriction, uses diet-culture or
+     * body-shaming words that neutralizeLanguage can't rewrite, or names a daily intake below
+     * [calorieFloor]. The caller regenerates once, then falls back to a neutral reply.
+     */
+    fun unsafeReply(text: String, calorieFloor: Int?): Boolean {
+        val t = text.lowercase()
+        if (replyBlocklist.any { it.containsMatchIn(t) }) return true
+        if (restrictionPraise.any { it.containsMatchIn(t) }) return true
+        if (calorieFloor != null) {
+            dailyKcal.findAll(t).forEach { m ->
+                val kcal = m.groupValues[1].replace(",", "").toIntOrNull() ?: return@forEach
+                if (kcal in 300 until calorieFloor) return true
+            }
+        }
+        return false
+    }
+
+    private val replyBlocklist: List<Regex> = listOf(
+        "earn (?:your|the) (?:food|meal|calories|dinner|treat)", "burn (?:it|that) off", "\\bguilt", "\\bflabby\\b",
+        "\\bgross\\b", "\\bdisgusting\\b", "clean food", "clean eating", "\\bcheat (?:meal|day)", "junk food",
+        "skinny[- ]fat", "problem areas?", "bad foods?", "ideal body", "perfect body", "beach body", "make up for (?:it|eating)"
+    ).map { Regex(it) }
+
+    private val restrictionPraise: List<Regex> = listOf(
+        // "Great job staying under 1,000 kcal", "well done eating only 800 calories"
+        Regex("""\b(?:great|good|nice|well done|proud|awesome|amazing|impressive|excellent)\b[^.!?\n]{0,60}\b(?:under|below|only|just|barely)\s+[\d,]{3,5}\s*(?:k?cals?|calories)"""),
+        // praise next to skipping meals, fasting or not eating
+        Regex("""\b(?:great|good|nice|well done|proud|awesome|amazing|impressive|excellent)\b[^.!?\n]{0,40}\b(?:skip(?:ped|ping)? (?:a |your )?(?:meal|breakfast|lunch|dinner)s?|fasted|barely ate|didn'?t eat|not eating|restrict(?:ed|ing))""")
+    )
+
+    private val dailyKcal = Regex("""([\d,]{3,5})\s*(?:k?cals?|calories)\s*(?:(?:a|per|each)\s*day|daily)""")
+
     // ------------------------------------------------------------------ prompt rules
 
     /** Rules appended to every AI system prompt that can produce advice or numbers. */
@@ -1273,6 +1330,12 @@ object Guardrails {
     private fun underweightFlag() = GuardrailFlag(
         "safety_bmi_underweight_no_deficit", Severity.BLOCK,
         "Your current weight is already in the low range for your height, so Forge won't set a calorie deficit. Your plan is set to maintenance or gaining. If you're unsure why your weight is low, a doctor's check-up is a good idea.",
+        Cite.join(Cite.WHO_2004, Cite.NICE_NG69)
+    )
+
+    private fun projectedUnderweightFlag() = GuardrailFlag(
+        "safety_bmi_underweight_no_deficit", Severity.BLOCK,
+        "Even a slow cut would take your weight into the low range for your height, so Forge won't set a calorie deficit. Maintenance or building muscle are the better options from here.",
         Cite.join(Cite.WHO_2004, Cite.NICE_NG69)
     )
 

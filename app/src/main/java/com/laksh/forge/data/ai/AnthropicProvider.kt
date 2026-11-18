@@ -118,8 +118,10 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
     private fun body(req: AiRequest, stream: Boolean): JsonObject = buildJsonObject {
         put("model", req.model)
         put("max_tokens", req.maxTokens)
-        putJsonObject("output_config") {
-            put("effort", effortFor(req.task))
+        val effort = supportsEffort(req.model, req.modelSpec != null)
+        if (effort || req.json != null) putJsonObject("output_config") {
+            // Older models (Sonnet/Haiku 4.5 from the model list) reject effort with a 400.
+            if (effort) put("effort", effortFor(req.task))
             req.json?.let { j ->
                 putJsonObject("format") {
                     put("type", "json_schema")
@@ -215,10 +217,13 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
     }
 
     /** Opus and Sonnet 5.5 can retry a refused request on a fallback model server-side; Haiku 5.5 can't. */
+    private fun supportsEffort(model: String, inRegistry: Boolean): Boolean =
+        inRegistry || effortCapable(model)
+
     private fun hasServerFallback(model: String): Boolean =
         model.startsWith("claude-opus-5-5") || model.startsWith("claude-sonnet-5-5")
 
-    private fun refusal(task: Task): AiException = AiException(
+    private fun refusal(task: Task): AiException = AiRefusal(
         when (task) {
             Task.BODY -> "Claude declined to assess this. Try again without the photos, using measurements only."
             Task.FOOD_PHOTO, Task.LABEL -> "Claude declined to read this photo. Try a different photo, or log it by text."
@@ -227,6 +232,25 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
     )
 
     companion object {
+        private val VERSIONED = Regex("""^claude-(opus|sonnet|haiku)-(\d+)(?:-(\d+))?(?:$|-)""")
+
+        /**
+         * output_config.effort is accepted by Opus 4.5 and every 4.6+ family model; earlier
+         * models (and unrecognised ids) get no effort field.
+         */
+        fun effortCapable(model: String): Boolean {
+            val m = VERSIONED.find(model) ?: return false
+            val family = m.groupValues[1]
+            val major = m.groupValues[2].toIntOrNull() ?: return false
+            // A date suffix (claude-sonnet-4-20250514) is not a minor version.
+            val minor = m.groupValues[3].takeIf { it.length <= 2 }?.toIntOrNull() ?: 0
+            return when {
+                major >= 5 -> true
+                major == 4 -> minor >= 6 || (family == "opus" && minor >= 5)
+                else -> false
+            }
+        }
+
         const val API_VERSION = "2026-10-21"
         private const val FALLBACK_BETA = "server-side-fallback-2026-07-01"
     }

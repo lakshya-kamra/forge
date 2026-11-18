@@ -26,6 +26,12 @@ open class AiException(
 ) : Exception(message)
 
 /**
+ * The model declined (a safety classifier stop). Any text streamed before it must be
+ * discarded, never saved or shown as a finished answer.
+ */
+class AiRefusal(message: String) : AiException(message)
+
+/**
  * The single AI surface the rest of the app codes against. Implementations route each
  * [Task] to a provider and model (Anthropic natively, or any OpenAI-compatible provider),
  * so features never know which vendor answered.

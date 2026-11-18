@@ -20,6 +20,10 @@ import com.laksh.forge.domain.plan.PlanProfile
 import com.laksh.forge.domain.plan.PlanProfileStore
 import com.laksh.forge.domain.plan.PlanStore
 import com.laksh.forge.domain.plan.details
+import com.laksh.forge.domain.plan.CutHistory
+import com.laksh.forge.util.Dates
+import java.time.LocalDate
+import com.laksh.forge.domain.plan.edScreenLockActive
 import com.laksh.forge.ui.forgeFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -56,12 +60,14 @@ class ProfileSettingsViewModel(private val repo: ForgeRepository) : ViewModel() 
         repo.settingsStore.settings,
         PlanProfileStore.profile,
         repo.weightDao.observeLatest(),
-        PlanStore.planDao.observeActivePlan()
-    ) { s, profile, latest, plan ->
+        PlanStore.planDao.observeActivePlan(),
+        PlanStore.planDao.observePlans()
+    ) { s, profile, latest, plan, plans ->
         val weightKg = latest?.kg ?: plan?.details()?.weightKgAtStart ?: 70.0
         val gp = PlanStore.guardrailProfile(s, weightKg, plan?.details()?.bodyFat?.low)
-        val allowed = PlanStore.allowedPhases(gp, profile, s)
-        val targets = NutritionMath.targets(s, weightKg, s.learnedTdee.takeIf { it > 0 })
+        val newCutBlock = CutHistory.of(plans, LocalDate.parse(Dates.today())).newCutFlag
+        val allowed = PlanStore.allowedPhases(gp, profile, s, newCutBlock)
+        val targets = NutritionMath.targets(s, weightKg, s.learnedTdee.takeIf { it > 0 }, profile.kidneyDisease)
         val (tdee, _) = PlanStore.maintenance(s, weightKg)
         val checked = PlanStore.check(
             gp, targets.kcal, targets.proteinG, targets.carbsG, targets.fatG,
@@ -182,7 +188,7 @@ class ProfileSettingsViewModel(private val repo: ForgeRepository) : ViewModel() 
             message.value = "Thanks for answering honestly. Forge has switched to maintenance and paused weight-loss features. Support lines are just below."
             return@launch
         }
-        val lockActive = s.edScreenPositive && now - s.edScreenAt < PlanProfile.CRISIS_LOCK_MS
+        val lockActive = edScreenLockActive(s, now)
         if (lockActive || profile.crisisLockActive(now)) {
             message.value = "Thanks. The pause on weight-loss features stays for at least 30 days from when it started."
         } else {
@@ -196,7 +202,7 @@ class ProfileSettingsViewModel(private val repo: ForgeRepository) : ViewModel() 
     fun setGoal(v: GoalMode) = viewModelScope.launch {
         val st = state.value
         if (v == GoalMode.CUT && !st.deficitAllowed) {
-            message.value = "Forge won't set a deficit with your current details."
+            message.value = PlanStore.newCutBlock()?.message ?: "Forge won't set a deficit with your current details."
             return@launch
         }
         store.setGoal(v)

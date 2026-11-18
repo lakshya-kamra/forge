@@ -31,6 +31,18 @@ enum class Equipment(val label: String) {
     MINIMAL("Bodyweight / bands only")
 }
 
+/**
+ * The program-library equipment ids this setup covers (assets/programs "equipment"); null for a
+ * full gym, which has everything. A home rack setup has no cables or machines; bodyweight and
+ * bands cover none of the barbell templates.
+ */
+val Equipment.libraryEquipment: Set<String>?
+    get() = when (this) {
+        Equipment.FULL_GYM -> null
+        Equipment.HOME_WEIGHTS -> setOf("barbell", "rack", "bench", "dumbbells", "pullup_bar")
+        Equipment.MINIMAL -> setOf("pullup_bar")
+    }
+
 /** Progress-photo poses. Stored verbatim in ProgressPhoto.pose. */
 enum class Pose(val label: String, val instruction: String) {
     FRONT("Front", "Face the camera, arms in a slight 'A' away from the torso, relaxed, breathing normally."),

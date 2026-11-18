@@ -121,7 +121,9 @@ fun ForgeNavHost(nav: NavHostController, modifier: Modifier = Modifier) {
                 onOpenExercise = openExercise
             )
         }
-        composable(Routes.ONBOARDING) { OnboardingFlow(onDone = back) }
+        composable(Routes.ONBOARDING) {
+            OnboardingFlow(onDone = back, onOpenProgram = { nav.navigate(Routes.program(it)) })
+        }
         composable(Routes.LIBRARY) {
             LibraryScreen(onBack = back, onOpenProgram = { nav.navigate(Routes.program(it)) })
         }
@@ -146,7 +148,8 @@ fun ForgeNavHost(nav: NavHostController, modifier: Modifier = Modifier) {
             PlanScreen(
                 onBack = back,
                 onCheckin = { nav.navigate(Routes.CHECKIN) },
-                onReplan = { nav.navigate(Routes.ONBOARDING) }
+                onReplan = { nav.navigate(Routes.ONBOARDING) },
+                onOpenProgram = { nav.navigate(Routes.program(it)) }
             )
         }
         composable(Routes.CHECKIN) { CheckinScreen(onDone = back) }

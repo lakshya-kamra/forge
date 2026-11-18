@@ -165,8 +165,14 @@ object NutritionMath {
         GoalMode.RECOMP -> 0.0
     }
 
-    fun targets(settings: ForgeSettings, weightKg: Double, adaptiveTdee: Double?): MacroTargets =
-        checkedTargets(settings, weightKg, adaptiveTdee).targets
+    /** [kidneyDisease] comes from PlanProfileStore (not a settings field); pass it whenever known. */
+    fun targets(
+        settings: ForgeSettings,
+        weightKg: Double,
+        adaptiveTdee: Double?,
+        kidneyDisease: Boolean = false
+    ): MacroTargets =
+        checkedTargets(settings, weightKg, adaptiveTdee, kidneyDisease = kidneyDisease).targets
 
     /**
      * Daily targets after the guardrails, with the flags that explain any change. Every
@@ -177,9 +183,13 @@ object NutritionMath {
         weightKg: Double,
         adaptiveTdee: Double?,
         bodyFatPct: Double? = null,
-        bodyFatMethod: String? = null
+        bodyFatMethod: String? = null,
+        kidneyDisease: Boolean = false
     ): CheckedTargets {
+        // nutrition_protein_upper_soft_cap: kidney disease keeps protein at 0.8 g/kg and
+        // suppresses the other protein floors, exactly as PlanStore.check does for plans.
         val profile = Guardrails.profileFrom(settings, weightKg, bodyFatPct, bodyFatMethod)
+            .let { if (kidneyDisease) it.copy(kidneyDisease = true) else it }
 
         val tdee: Double
         val basisPrefix: String

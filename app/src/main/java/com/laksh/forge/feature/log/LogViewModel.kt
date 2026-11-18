@@ -19,6 +19,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.Dispatchers
 import kotlin.math.roundToInt
 
 /** How the user is logging. LABEL reads a printed nutrition panel directly with vision. */
@@ -108,9 +111,20 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
 
     // ---------------------------------------------------------------- photo
 
+    /**
+     * Read the image, then delete it at once if it was this app's camera capture: with
+     * "store photos" off, only the in-memory copy may remain (settings contract).
+     */
+    private suspend fun prepareAndDiscard(uri: Uri, edge: Int): ImageUtils.Prepared = try {
+        ImageUtils.prepare(ForgeApp.instance, uri, edge)
+    } finally {
+        withContext(NonCancellable + Dispatchers.IO) { ImageUtils.discardCapture(ForgeApp.instance, uri) }
+    }
+
     fun analysePhoto(uri: Uri) = viewModelScope.launch {
         val settings = repo.settings()
         if (!aiReady(settings)) {
+            ImageUtils.discardCapture(ForgeApp.instance, uri)
             _state.update { it.copy(phase = Phase.ERROR, error = "Add an AI provider key in Settings > AI to use photo estimates.") }
             return@launch
         }
@@ -118,7 +132,7 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
 
         runCatching {
             val ctx = ForgeApp.instance
-            val prepared = ImageUtils.prepare(ctx, uri)
+            val prepared = prepareAndDiscard(uri, ImageUtils.EDGE_FOOD)
             _state.update { it.copy(photo = prepared.bitmap, statusText = "Estimating calories...") }
 
             val context = buildBodyContext()
@@ -219,13 +233,14 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
     fun analyseLabel(uri: Uri) = viewModelScope.launch {
         val settings = repo.settings()
         if (!aiReady(settings)) {
+            ImageUtils.discardCapture(ForgeApp.instance, uri)
             _state.update { it.copy(phase = Phase.ERROR, error = "Add an AI provider key in Settings > AI to read labels.") }
             return@launch
         }
         _state.update { it.copy(phase = Phase.WORKING, statusText = "Reading the label...", error = null) }
 
         runCatching {
-            val prepared = ImageUtils.prepare(ForgeApp.instance, uri, ImageUtils.EDGE_LABEL)
+            val prepared = prepareAndDiscard(uri, ImageUtils.EDGE_LABEL)
             _state.update { it.copy(photo = prepared.bitmap) }
             repo.ai.readNutritionLabel(prepared.base64, prepared.mediaType)
         }.onSuccess { label ->

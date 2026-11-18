@@ -2,6 +2,7 @@ package com.laksh.forge.feature.widgets
 
 import com.laksh.forge.ForgeApp
 import com.laksh.forge.domain.NutritionMath
+import com.laksh.forge.domain.plan.PlanProfileStore
 import com.laksh.forge.domain.plan.PlanTargets
 import com.laksh.forge.util.Dates
 import kotlinx.coroutines.CancellationException
@@ -56,7 +57,8 @@ object WidgetData {
         val targets = planTargets ?: NutritionMath.targets(
             s,
             repo.weightDao.observeLatest().first()?.kg ?: 75.0,
-            s.learnedTdee.takeIf { it > 0 }
+            s.learnedTdee.takeIf { it > 0 },
+            runCatching { PlanProfileStore.current().kidneyDisease }.getOrDefault(false)
         )
         TodaySnapshot(
             onboarded = s.onboarded,

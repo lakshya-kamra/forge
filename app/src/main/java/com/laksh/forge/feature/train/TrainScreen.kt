@@ -63,7 +63,6 @@ import com.laksh.forge.data.db.ProgramDay
 import com.laksh.forge.data.prefs.WeightUnit
 import com.laksh.forge.domain.NutritionMath
 import com.laksh.forge.domain.program.MaxEntry
-import com.laksh.forge.domain.program.ProgressionEngine
 import com.laksh.forge.domain.program.Strength
 import com.laksh.forge.ui.components.EmptyState
 import com.laksh.forge.ui.components.ForgeCard
@@ -88,8 +87,12 @@ fun TrainScreen(
     }
     val importPdf = { pickPdf.launch(arrayOf("application/pdf")) }
     val start: (ProgramDay?) -> Unit = { day ->
-        haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-        vm.startSession(day, onOpenSession)
+        if (state.trainingHold) {
+            haptics.performHapticFeedback(HapticFeedbackType.Reject)
+        } else {
+            haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+            vm.startSession(day, onOpenSession)
+        }
     }
 
     LazyColumn(
@@ -106,6 +109,18 @@ fun TrainScreen(
             ) {
                 Text("Train", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold)
                 Pill("Import PDF", icon = Icons.Outlined.UploadFile, filled = true, onClick = importPdf)
+            }
+        }
+
+        if (state.trainingHold) {
+            item(key = "hold", contentType = "notice") {
+                ForgeCard(Modifier.animateItem(), color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.6f)) {
+                    Text("Training is paused", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                    Spacer(Modifier.height(4.dp))
+                    Text(MEDICAL_HOLD_TEXT, style = MaterialTheme.typography.bodyMedium)
+                    Spacer(Modifier.height(8.dp))
+                    Pill("A doctor has cleared me to train", onClick = vm::confirmClearance)
+                }
             }
         }
 
@@ -215,6 +230,7 @@ fun TrainScreen(
                     info = active,
                     onStart = start,
                     onRounding = vm::setRounding,
+                    unit = state.unit,
                     modifier = Modifier.animateItem()
                 )
             }
@@ -395,6 +411,7 @@ private fun ActiveProgramCard(
     info: ActiveInfo,
     onStart: (ProgramDay) -> Unit,
     onRounding: (Double) -> Unit,
+    unit: WeightUnit = WeightUnit.KG,
     modifier: Modifier = Modifier
 ) {
     val haptics = LocalHapticFeedback.current
@@ -447,11 +464,11 @@ private fun ActiveProgramCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.weight(1f)
                 )
-                listOf(ProgressionEngine.DEFAULT_INCREMENT_KG, 1.25).forEach { step ->
+                Strength.plateSteps(unit).forEach { (step, label) ->
                     Spacer(Modifier.width(6.dp))
                     Pill(
-                        "${Strength.fmt(step)} kg",
-                        filled = info.roundingKg == step,
+                        label,
+                        filled = Strength.sameStep(info.roundingKg, step),
                         onClick = {
                             haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
                             onRounding(step)

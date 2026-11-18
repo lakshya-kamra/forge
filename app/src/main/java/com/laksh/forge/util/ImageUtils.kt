@@ -55,12 +55,15 @@ object ImageUtils {
         return Base64.encodeToString(out.toByteArray(), Base64.NO_WRAP)
     }
 
-    /** Persist a meal photo into app-private storage. Only called when the user allows it. */
-    fun savePhoto(context: Context, bitmap: Bitmap): String {
+    /**
+     * Persist a meal photo into app-private storage. Only called when the user allows it.
+     * JPEG encoding plus the write takes tens of ms, so it never runs on the main thread.
+     */
+    suspend fun savePhoto(context: Context, bitmap: Bitmap): String = withContext(Dispatchers.IO) {
         val dir = File(context.filesDir, "meal_photos").apply { mkdirs() }
         val file = File(dir, "meal_${System.currentTimeMillis()}.jpg")
         FileOutputStream(file).use { bitmap.compress(Bitmap.CompressFormat.JPEG, 88, it) }
-        return file.absolutePath
+        file.absolutePath
     }
 
     fun deletePhoto(path: String?) {
@@ -70,8 +73,38 @@ object ImageUtils {
 
     /** A temp file for the camera intent to write into, exposed through FileProvider. */
     fun newCaptureFile(context: Context): File {
-        val dir = File(context.cacheDir, "captures").apply { mkdirs() }
+        val dir = capturesDir(context).apply { mkdirs() }
         return File(dir, "capture_${System.currentTimeMillis()}.jpg")
+    }
+
+    private fun capturesDir(context: Context) = File(context.cacheDir, "captures")
+
+    /**
+     * Delete a full-resolution camera capture once it has been read. Captures can carry EXIF
+     * location and, for body photos, are exactly what must not linger outside the managed
+     * folders. Only files inside cacheDir/captures are touched - never a gallery original -
+     * whether [uri] is a file URI (in-app camera) or this app's FileProvider URI (camera app).
+     */
+    fun discardCapture(context: Context, uri: Uri?) {
+        if (uri == null) return
+        runCatching {
+            val file = when (uri.scheme) {
+                "file" -> uri.path?.let { File(it) }
+                "content" -> if (uri.authority == "${context.packageName}.fileprovider") {
+                    // file_paths.xml maps cache-path "cache" to cacheDir.
+                    uri.path?.removePrefix("/cache/")?.let { File(context.cacheDir, it) }
+                } else null
+                else -> null
+            } ?: return
+            val f = file.canonicalFile
+            if (f.path.startsWith(capturesDir(context).canonicalPath + File.separator)) f.delete()
+        }
+    }
+
+    /** Remove captures abandoned by a cancelled or crashed flow (older than [maxAgeMs]). */
+    fun clearStaleCaptures(context: Context, maxAgeMs: Long = 10 * 60_000L) {
+        val cutoff = System.currentTimeMillis() - maxAgeMs
+        capturesDir(context).listFiles()?.forEach { if (it.lastModified() < cutoff) it.delete() }
     }
 
     private fun sampleSize(w: Int, h: Int, maxEdge: Int): Int {

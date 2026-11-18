@@ -18,6 +18,17 @@ class KeyDetectorTest {
         assertThat(KeyDetector.detect("   \n ")).isEqualTo(KeyDetection.Empty)
     }
 
+    @Test fun smartQuotesAroundKeyAreStripped() {
+        val m = match("“sk-ant-api03-AbCdEf_123-xyz”")
+        assertThat(m.provider.id).isEqualTo("anthropic")
+    }
+
+    @Test fun nonAsciiKeyIsRejectedBeforeAnyNetworkCall() {
+        // A truncated dashboard copy: OkHttp would throw IllegalArgumentException on the header.
+        assertThat(KeyDetector.detect("sk-…abcd")).isInstanceOf(KeyDetection.Rejected::class.java)
+        assertThat(KeyDetector.detect("AIza…")).isInstanceOf(KeyDetection.Rejected::class.java)
+    }
+
     @Test fun anthropicKey() {
         val m = match("sk-ant-api03-AbCdEf_123-xyz")
         assertThat(m.provider.id).isEqualTo("anthropic")

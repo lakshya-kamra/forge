@@ -5,6 +5,7 @@ import com.laksh.forge.domain.MacroTargets
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 /**
  * Cross-feature API: the active plan's daily targets, including every check-in adjustment
@@ -12,9 +13,11 @@ import kotlinx.coroutines.flow.map
  * Today and Trends prefer this over NutritionMath.targets.
  */
 object PlanTargets {
-    @Suppress("UNUSED_PARAMETER") // repo is part of the contract so callers need no DB wiring
     fun observe(repo: ForgeRepository): Flow<MacroTargets?> =
         PlanStore.planDao.observeActivePlan()
+            // A cut past 16 weeks ends here even if no check-in is ever saved; the switch
+            // re-emits the new maintenance plan.
+            .onStart { runCatching { PlanStore.enforceCutLimit(repo) } }
             .map { plan -> plan?.toMacroTargets() }
             .distinctUntilChanged()
 }

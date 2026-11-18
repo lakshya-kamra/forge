@@ -121,6 +121,9 @@ class DataSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
                 throw e
             } catch (e: Exception) {
                 transient.update { it.copy(error = e.message ?: "Something went wrong.") }
+            } catch (e: OutOfMemoryError) {
+                // A huge wrong file picked for import; the buffers are unreachable again here.
+                transient.update { it.copy(error = "That file is too large to open on this phone.") }
             } finally {
                 transient.update { it.copy(task = null) }
             }

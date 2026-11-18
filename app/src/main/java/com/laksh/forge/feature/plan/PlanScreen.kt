@@ -1,6 +1,7 @@
 package com.laksh.forge.feature.plan
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,7 +59,12 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Composable
-fun PlanScreen(onBack: () -> Unit, onCheckin: () -> Unit, onReplan: () -> Unit) {
+fun PlanScreen(
+    onBack: () -> Unit,
+    onCheckin: () -> Unit,
+    onReplan: () -> Unit,
+    onOpenProgram: (String) -> Unit = {}
+) {
     val vm: PlanViewModel = viewModel(factory = PlanViewModel.Factory)
     val state by vm.state.collectAsStateWithLifecycle()
     var confirmReplan by rememberSaveable { mutableStateOf(false) }
@@ -92,7 +98,7 @@ fun PlanScreen(onBack: () -> Unit, onCheckin: () -> Unit, onReplan: () -> Unit) 
                     Button(onClick = onReplan, shapes = ButtonDefaults.shapes()) { Text("Build my plan") }
                 }
             )
-            else -> PlanContent(state, inner, onCheckin, onReplan = { confirmReplan = true })
+            else -> PlanContent(state, inner, onCheckin, onReplan = { confirmReplan = true }, onOpenProgram = onOpenProgram)
         }
     }
 
@@ -116,7 +122,8 @@ private fun PlanContent(
     state: PlanUiState,
     inner: androidx.compose.foundation.layout.PaddingValues,
     onCheckin: () -> Unit,
-    onReplan: () -> Unit
+    onReplan: () -> Unit,
+    onOpenProgram: (String) -> Unit
 ) {
     val plan = state.plan ?: return
     val d = state.details
@@ -260,10 +267,24 @@ private fun PlanContent(
                     if (d.programNames.isNotEmpty()) {
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "Programs that fit: ${d.programNames.joinToString(", ")} (Train → Library)",
-                            style = MaterialTheme.typography.bodySmall,
+                            "Programs that fit",
+                            style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                        d.programNames.forEachIndexed { i, name ->
+                            val id = d.programIds.getOrNull(i)
+                            Spacer(Modifier.height(6.dp))
+                            Text(
+                                name,
+                                style = MaterialTheme.typography.titleSmall,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                                    .then(if (id != null) Modifier.clickable { onOpenProgram(id) } else Modifier)
+                                    .padding(12.dp)
+                            )
+                        }
                     }
                 }
             }

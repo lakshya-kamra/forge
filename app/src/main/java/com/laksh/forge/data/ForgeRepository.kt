@@ -286,7 +286,8 @@ class ForgeRepository(
         val weights = weightDao.since(System.currentTimeMillis() - 120L * 86_400_000)
         val trend = NutritionMath.trend(weights)
         val adaptive = s.learnedTdee.takeIf { it > 0 }
-        val targets = NutritionMath.targets(s, weightKg, adaptive)
+        val kidney = runCatching { com.laksh.forge.domain.plan.PlanProfileStore.current().kidneyDisease }.getOrDefault(false)
+        val targets = NutritionMath.targets(s, weightKg, adaptive, kidney)
 
         val totals14 = foodDao.observeTotalsRange(Dates.daysAgo(14), today).first()
         val todayTotals = totals14.firstOrNull { it.localDate == today }

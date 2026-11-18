@@ -18,6 +18,7 @@ import com.laksh.forge.domain.program.ProgramSchedule
 import com.laksh.forge.domain.program.ProgramStore
 import com.laksh.forge.domain.program.ProgressionConfig
 import com.laksh.forge.ui.forgeFactory
+import com.laksh.forge.domain.plan.PlanProfileStore
 import com.laksh.forge.util.Dates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,7 +62,9 @@ data class TrainState(
     val importStatus: String = "",
     val importError: String? = null,
     /** What the last program action changed (skip week, max edit), shown once. */
-    val notice: List<String> = emptyList()
+    val notice: List<String> = emptyList(),
+    /** safety_medical_red_flags_stop: no new session until clearance is confirmed. */
+    val trainingHold: Boolean = false
 )
 
 private data class ImportState(val phase: ImportPhase = ImportPhase.IDLE, val status: String = "", val error: String? = null)
@@ -116,8 +119,8 @@ class TrainViewModel(private val repo: ForgeRepository) : ViewModel() {
         activeInfo,
         repo.workoutDao.observeSessions(30),
         combine(repo.workoutDao.observeOpenSession(), repo.settingsStore.settings.map { it.weightUnit }) { o, u -> o to u },
-        combine(importState, notice) { i, n -> i to n }
-    ) { programs, active, sessions, (open, unit), (imp, note) ->
+        combine(importState, notice, PlanProfileStore.trainingHold) { i, n, h -> Triple(i, n, h) }
+    ) { programs, active, sessions, (open, unit), (imp, note, hold) ->
         TrainState(
             loading = false,
             programs = programs,
@@ -128,7 +131,8 @@ class TrainViewModel(private val repo: ForgeRepository) : ViewModel() {
             importPhase = imp.phase,
             importStatus = imp.status,
             importError = imp.error,
-            notice = note
+            notice = note,
+            trainingHold = hold
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TrainState())
 
@@ -179,8 +183,11 @@ class TrainViewModel(private val repo: ForgeRepository) : ViewModel() {
 
     fun deleteProgram(program: Program) = viewModelScope.launch { repo.programDao.deleteProgram(program) }
 
+    fun confirmClearance() = viewModelScope.launch { PlanProfileStore.clearTrainingHold() }
+
     /** Start a session from a program day, or a free-form one when day is null. */
     fun startSession(day: ProgramDay?, onStarted: (Long) -> Unit) = viewModelScope.launch {
+        if (PlanProfileStore.current().trainingHold) return@launch
         val now = System.currentTimeMillis()
         val active = state.value.active
         val inProgram = day != null && active != null && day.programId == active.program.id

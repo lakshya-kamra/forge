@@ -119,7 +119,9 @@ object PlanAi {
                 add(AiPart.Image(base64, "image/jpeg"))
             }
         }
-        val obj = ai.structured(Task.BODY, system, parts, "body_fat_estimate", BODY_SCHEMA, maxTokens = 1200)
+        // A ceiling, not a cost: adaptive thinking / reasoning tokens count toward it, and a
+        // multi-image judgement can think well past a thousand tokens before the JSON.
+        val obj = ai.structured(Task.BODY, system, parts, "body_fat_estimate", BODY_SCHEMA, maxTokens = 12000)
         val usable = obj["usable"]?.jsonPrimitive?.booleanOrNull ?: false
         val est = obj["estimate_pct"]?.jsonPrimitive?.doubleOrNull
             ?: throw PlanAiRejected("The photo estimate came back without a number.")
@@ -223,7 +225,9 @@ object PlanAi {
             }
             if (c.guardrailNotes.isNotEmpty()) appendLine("Safety notes already applied: ${c.guardrailNotes.joinToString(" ")}")
         }
-        val obj = ai.structured(Task.PLAN, system, listOf(AiPart.Text(user)), "phase_plan", planSchema(candidates), maxTokens = 2000)
+        // PLAN runs at high effort; thinking counts toward max_tokens, so a tight cap cuts the
+        // JSON off and onboarding silently falls back to the rules (still billed).
+        val obj = ai.structured(Task.PLAN, system, listOf(AiPart.Text(user)), "phase_plan", planSchema(candidates), maxTokens = 16000)
 
         val phase = obj["phase"]?.jsonPrimitive?.contentOrNull
         if (phase == null || phase !in candidates) {

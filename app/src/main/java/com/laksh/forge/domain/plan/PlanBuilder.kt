@@ -35,7 +35,9 @@ data class BuildInput(
     val fatPerKg: Double,
     /** A rate chosen by the AI or the person; clamped to the phase band. */
     val ratePctOverride: Double? = null,
-    val postDiet: Boolean = false
+    val postDiet: Boolean = false,
+    /** For the projected-BMI cap on a cut (safety_bmi_underweight_no_deficit); null skips it. */
+    val heightCm: Double? = null
 )
 
 /** The numeric half of a plan, before guardrails. */
@@ -117,6 +119,12 @@ object PlanBuilder {
         else -> RateBand(-0.25, 0.25, 0.0)
     }
 
+    /** Fastest loss (% BW/wk) whose projected weight after [weeks] keeps an adult BMI >= 18.5. */
+    fun projectedBmiCapPct(weightKg: Double, heightCm: Double, weeks: Int): Double {
+        val h = heightCm / 100.0
+        return ((weightKg - 18.5 * h * h) / weeks.coerceAtLeast(1) / weightKg * 100.0).coerceAtLeast(0.0)
+    }
+
     /** Planned length before a full reassessment: re-run the rules at phase end or 12 weeks. */
     fun plannedWeeks(phase: String, postDiet: Boolean): Int = when (phase) {
         Phases.DIET_BREAK -> 2
@@ -136,6 +144,13 @@ object PlanBuilder {
 
         when (input.phase) {
             Phases.CUT -> {
+                val bmiCap = input.heightCm?.takeIf { input.age >= 18 }?.let { h ->
+                    projectedBmiCapPct(w, h, plannedWeeks(input.phase, input.postDiet))
+                }
+                if (bmiCap != null && abs(ratePct) > bmiCap) {
+                    ratePct = -bmiCap
+                    notes += "The rate is slowed so your weight at the end of the plan stays in the healthy range for your height."
+                }
                 var deficit = abs(ratePct) / 100.0 * w * KCAL_PER_KG / 7.0
                 // nutrition_max_deficit_size: min(25% of TDEE, 500 kcal, TDEE - floor).
                 val cap = minOf(0.25 * tdee, 500.0, max(tdee - floor, 0.0))

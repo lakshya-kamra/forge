@@ -37,8 +37,8 @@ object ReminderScheduler {
 
     /**
      * Keeps the WorkManager queue in step with the settings for the life of the process. Call
-     * once from Application.onCreate; it also re-anchors every reminder at launch, which heals
-     * any job the OS dropped.
+     * once from Application.onCreate; it also re-enqueues (KEEP) every reminder at launch, which
+     * heals any job the OS dropped without cancelling one that is running.
      */
     fun start(context: Context, scope: CoroutineScope) {
         val app = context.applicationContext
@@ -61,16 +61,33 @@ object ReminderScheduler {
         apply(app, ReminderType.entries.associateWith { it.isEnabled(settings) }, prefs)
     }
 
+    /** Minutes-of-day last scheduled per reminder in this process; absent means not yet applied. */
+    private val applied = mutableMapOf<ReminderType, Int>()
+
     private fun apply(context: Context, enabled: Map<ReminderType, Boolean>, prefs: ReminderPrefs) {
         ReminderNotifications.ensureChannel(context)
         enabled.forEach { (type, on) ->
             if (on) {
-                scheduleNext(context, type, prefs.minutesFor(type), ExistingWorkPolicy.REPLACE)
+                val minutes = prefs.minutesFor(type)
+                val policy = synchronized(applied) { policyFor(applied.put(type, minutes), minutes) }
+                scheduleNext(context, type, minutes, policy)
             } else {
+                synchronized(applied) { applied.remove(type) }
                 WorkManager.getInstance(context).cancelUniqueWork(workName(type))
             }
         }
     }
+
+    /**
+     * KEEP unless the user moved the time while this process is alive. WorkManager often
+     * starts the process to run a due reminder, and Application.onCreate re-anchors first:
+     * REPLACE there would cancel the very job that woke the app, dropping today's reminder.
+     * KEEP still enqueues when the job is missing, finished or cancelled, so launch heals
+     * a dropped job.
+     */
+    internal fun policyFor(previousMinutes: Int?, minutes: Int): ExistingWorkPolicy =
+        if (previousMinutes != null && previousMinutes != minutes) ExistingWorkPolicy.REPLACE
+        else ExistingWorkPolicy.KEEP
 
     /**
      * Enqueue the next run of [type]. From inside the running job use APPEND_OR_REPLACE: it

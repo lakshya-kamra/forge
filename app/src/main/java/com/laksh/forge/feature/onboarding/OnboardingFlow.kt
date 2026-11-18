@@ -1,5 +1,7 @@
 package com.laksh.forge.feature.onboarding
 
+import com.laksh.forge.feature.settings.AiSettingsScreen
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
@@ -60,7 +62,7 @@ import kotlinx.coroutines.delay
  * from Routes.ONBOARDING for "Re-plan" / "Redo onboarding".
  */
 @Composable
-fun OnboardingFlow(onDone: () -> Unit) {
+fun OnboardingFlow(onDone: () -> Unit, onOpenProgram: ((String) -> Unit)? = null) {
     val vm: OnboardingViewModel = viewModel(factory = OnboardingViewModel.Factory)
     val state by vm.state.collectAsStateWithLifecycle()
     val haptics = LocalHapticFeedback.current
@@ -76,7 +78,9 @@ fun OnboardingFlow(onDone: () -> Unit) {
         }
     }
 
-    BackHandler(enabled = capturing == null && state.stepIndex > 0 && !state.saving && !state.done) {
+    BackHandler(enabled = state.connectingAi) { vm.closeAiSetup() }
+
+    BackHandler(enabled = capturing == null && !state.connectingAi && state.stepIndex > 0 && !state.saving && !state.done) {
         haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
         vm.back()
     }
@@ -86,6 +90,12 @@ fun OnboardingFlow(onDone: () -> Unit) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 LoadingIndicator(Modifier.size(72.dp))
             }
+            return@Surface
+        }
+
+        if (state.connectingAi) {
+            // The same screen as Settings > AI, so detection, probing and Test behave identically.
+            AiSettingsScreen(onBack = vm::closeAiSetup)
             return@Surface
         }
 
@@ -123,7 +133,8 @@ fun OnboardingFlow(onDone: () -> Unit) {
                     step = step,
                     state = state,
                     vm = vm,
-                    onCapture = { capturing = it }
+                    onCapture = { capturing = it },
+                    onOpenProgram = onOpenProgram
                 )
             }
             FlowBottomBar(state, vm)

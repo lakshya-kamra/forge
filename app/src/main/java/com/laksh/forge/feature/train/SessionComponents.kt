@@ -461,7 +461,10 @@ private fun SetEditor(
     var rpeMode by rememberSaveable(editorKey) { mutableStateOf(false) }
     var effort by rememberSaveable(editorKey) { mutableStateOf<Double?>(null) }
     var warmup by rememberSaveable(editorKey) { mutableStateOf(false) }
-    val stepDisplay = if (unit == WeightUnit.KG) roundingKg else roundingKg * 2
+    val stepDisplay = Strength.stepInDisplay(roundingKg, unit)
+    // The text is rounded to 0.1 for display; logging the untouched prefill must store the
+    // exact prescribed kg (52.5 kg, not 115.7 lb -> 52.48 kg) so the set isn't judged a miss.
+    val prefillText = prefillKg?.let { displayKg(it, unit) }
     fun tick(type: HapticFeedbackType) { if (haptics) hapticFeedback.performHapticFeedback(type) }
 
     Surface(
@@ -579,7 +582,8 @@ private fun SetEditor(
                     onClick = {
                         if (w != null && r != null && r > 0) {
                             tick(HapticFeedbackType.Confirm)
-                            onLog(w, r, if (rpeMode) null else effort, if (rpeMode) effort else null, warmup)
+                            val exact = if (prefillKg != null && weight == prefillText) NutritionMath.kgToDisplay(prefillKg, unit) else w
+                            onLog(exact, r, if (rpeMode) null else effort, if (rpeMode) effort else null, warmup)
                             effort = null
                             warmup = false
                         } else {

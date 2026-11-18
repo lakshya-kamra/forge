@@ -9,7 +9,11 @@ import com.laksh.forge.data.remote.Task
 import com.laksh.forge.domain.KnowledgeBase
 import com.laksh.forge.domain.guardrails.GuardrailFlag
 import com.laksh.forge.domain.guardrails.Guardrails
+import com.laksh.forge.data.ai.AiRefusal
+import com.laksh.forge.data.prefs.GoalMode
+import com.laksh.forge.domain.plan.PhaseCopy
 import com.laksh.forge.domain.plan.PlanProfileStore
+import com.laksh.forge.domain.plan.PlanStore
 import com.laksh.forge.ui.forgeFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -18,6 +22,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -170,12 +175,17 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
 
                 var lockApplied = false
                 if (crisis) {
-                    // safety_crisis_disclosure applies the same 30-day locks as a positive
-                    // SCOFF. The plan feature keeps that lock as crisisFlaggedAt (the words
-                    // themselves are never stored), so the coach records it the same way.
-                    runCatching {
-                        PlanProfileStore.update { it.copy(crisisFlaggedAt = System.currentTimeMillis()) }
-                    }.onSuccess { lockApplied = true }
+                    // safety_crisis_disclosure applies the same locks as a positive SCOFF: the
+                    // screen flag (weigh-in reminders, hidden numbers, body-fat views, the
+                    // no-plan targets) stays on until a negative re-screen after 30 days, any
+                    // deficit stops now, and the plan moves to maintenance. The words themselves
+                    // are never stored beyond the chat history the person can clear.
+                    lockApplied = runCatching { applyCrisisLocks() }.isSuccess
+                }
+                if (medical != null) {
+                    // safety_medical_red_flags_stop: Train and Session stay locked until the
+                    // person confirms a doctor has cleared them.
+                    runCatching { PlanProfileStore.holdTraining() }
                 }
                 val notices = buildList {
                     if (crisis) add(CoachNotice.Crisis(lockApplied || settings.edScreenPositive))
@@ -186,6 +196,16 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
                     local.update { it.copy(notices = it.notices + (id to notices)) }
                 }
 
+                if (crisis) {
+                    // No coaching output on a crisis turn: the card plus a fixed supportive
+                    // message, never a model reply that could carry numbers or advice.
+                    val savedId = saveReply(Guardrails.CRISIS_MESSAGE)
+                    local.update {
+                        it.copy(phase = Phase.SETTLING, streamingText = Guardrails.CRISIS_MESSAGE, settlingId = savedId)
+                    }
+                    return@launch
+                }
+
                 if (!configured) {
                     local.update {
                         it.copy(phase = Phase.IDLE, error = "Set up an AI provider in Settings for the coach to reply.")
@@ -194,27 +214,40 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
                 }
 
                 val snapshot = runCatching { CoachContext.build(repo) }.getOrNull()
-                val system = systemPrompt(snapshot, crisis, medical ?: pain)
+                val system = systemPrompt(snapshot, false, medical ?: pain)
                 val history = history()
                 val model = runCatching { repo.ai.describe(Task.COACH) }.getOrDefault("")
+                val floor = snapshot?.profile?.let { runCatching { Guardrails.calorieFloor(it) }.getOrNull() }
 
                 val builder = StringBuilder()
+                var unsafe = false
                 try {
-                    repo.ai.chatStream(system, history, message).collect { delta ->
-                        builder.append(delta)
-                        val shown = Guardrails.neutralizeLanguage(builder.toString())
-                        local.update { it.copy(phase = Phase.STREAMING, streamingText = shown, streamingModel = model) }
-                    }
+                    repo.ai.chatStream(system, history, message)
+                        // Stops the stream (and billing) as soon as the reply fails the filter.
+                        .takeWhile { !unsafe }
+                        .collect { delta ->
+                            builder.append(delta)
+                            val shown = Guardrails.neutralizeLanguage(builder.toString())
+                            if (Guardrails.unsafeReply(shown, floor)) {
+                                unsafe = true
+                                local.update { it.copy(phase = Phase.WAITING, streamingText = "") }
+                            } else {
+                                local.update { it.copy(phase = Phase.STREAMING, streamingText = shown, streamingModel = model) }
+                            }
+                        }
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    // Keep whatever streamed before the failure rather than losing it.
+                    // A refusal's partial text must be discarded; other failures keep whatever
+                    // streamed (if it passed the filter) rather than losing it.
                     val partial = Guardrails.neutralizeLanguage(builder.toString()).trim()
-                    val savedId = if (partial.isNotEmpty()) saveReply(partial) else null
+                    val keep = e !is AiRefusal && !unsafe && partial.isNotEmpty() && !Guardrails.unsafeReply(partial, floor)
+                    val savedId = if (keep) saveReply(partial) else null
                     local.update {
                         it.copy(
                             phase = if (savedId != null) Phase.SETTLING else Phase.IDLE,
                             settlingId = savedId,
+                            streamingText = if (savedId != null) partial else "",
                             models = if (savedId != null) it.models + (savedId to model) else it.models,
                             error = e.message ?: "The coach couldn't reply."
                         )
@@ -222,7 +255,10 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
                     return@launch
                 }
 
-                val reply = Guardrails.neutralizeLanguage(builder.toString()).trim()
+                var reply = Guardrails.neutralizeLanguage(builder.toString()).trim()
+                if (unsafe || Guardrails.unsafeReply(reply, floor)) {
+                    reply = regenerateSafely(system, history, message, floor)
+                }
                 if (reply.isEmpty()) {
                     local.update { it.copy(phase = Phase.IDLE, error = "The coach returned an empty reply. Try again.") }
                     return@launch
@@ -245,6 +281,47 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
         }
     }
 
+    /** Same locks as CheckinViewModel.persist for a crisis or positive screen. */
+    private suspend fun applyCrisisLocks() {
+        val now = System.currentTimeMillis()
+        PlanProfileStore.update { it.copy(crisisFlaggedAt = now) }
+        repo.settingsStore.setEdScreen(true, now)
+        val plan = PlanStore.planDao.activePlan()
+        if (plan != null) {
+            if (PhaseCopy.isDeficit(plan.phase)) {
+                PlanStore.switchToMaintenance(
+                    repo,
+                    "Forge has switched to maintenance and paused weight-loss features for now. Training stays the focus."
+                )
+            }
+        } else {
+            // Without a plan, Today falls back to the legacy goal and rate.
+            val s = repo.settings()
+            if (s.goal == GoalMode.CUT || s.rateKgPerWeek < 0) {
+                repo.settingsStore.setGoal(GoalMode.MAINTAIN)
+                repo.settingsStore.setRate(0.0)
+            }
+        }
+    }
+
+    /**
+     * One silent retry with an explicit reminder, then a neutral fallback, for a reply that
+     * failed the post-generation filter (safety_messaging_no_praise_for_restriction).
+     */
+    private suspend fun regenerateSafely(
+        system: String,
+        history: List<Pair<String, String>>,
+        message: String,
+        floor: Int?
+    ): String {
+        val retry = runCatching {
+            val b = StringBuilder()
+            repo.ai.chatStream(system + "\n\n" + SAFE_RETRY, history, message).collect { b.append(it) }
+            Guardrails.neutralizeLanguage(b.toString()).trim()
+        }.getOrNull()
+        return if (retry != null && retry.isNotEmpty() && !Guardrails.unsafeReply(retry, floor)) retry else SAFE_FALLBACK
+    }
+
     private suspend fun saveReply(text: String): Long = repo.chatDao.insert(
         ChatMessage(role = "assistant", content = text, timestamp = System.currentTimeMillis())
     )
@@ -255,11 +332,21 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
      * turn, because chat APIs reject anything else.
      */
     private suspend fun history(): List<Pair<String, String>> {
-        val turns = repo.chatDao.lastN(MAX_HISTORY + 1)
+        val raw = repo.chatDao.lastN(MAX_HISTORY + 1)
             .sortedBy { it.timestamp }
             .dropLast(1)
             .map { it.role to it.content }
-            .dropWhile { it.first != "user" }
+        // A crisis turn and its fixed reply are never sent to a provider again.
+        val kept = ArrayList<Pair<String, String>>()
+        var skipReply = false
+        raw.forEach { turn ->
+            when {
+                turn.first == "user" && Guardrails.detectCrisis(turn.second) -> skipReply = true
+                skipReply && turn.first == "assistant" -> skipReply = false
+                else -> { skipReply = false; kept += turn }
+            }
+        }
+        val turns = kept.dropWhile { it.first != "user" }
         val merged = ArrayList<Pair<String, String>>()
         turns.forEach { (role, content) ->
             val last = merged.lastOrNull()
@@ -317,6 +404,16 @@ class CoachViewModel(private val repo: ForgeRepository) : ViewModel() {
             "Why is my weight up?",
             "How much protein today?"
         )
+
+        private const val SAFE_RETRY =
+            "<this_turn>Your previous draft was withheld by Forge's safety filter. Do not praise eating little, " +
+                "skipping meals or staying under a number; do not use the words guilt, earn, burn it off, clean food, " +
+                "cheat, junk or any body-shaming term; never suggest a daily intake below the calorie floor.</this_turn>"
+
+        private const val SAFE_FALLBACK =
+            "I'd rather not put it the way my first draft did. Food is fuel for your training, not something to earn " +
+                "or make up for, and your daily intake should stay at or above your calorie floor. Ask me again and " +
+                "I'll keep it practical."
 
         private val CRISIS_TURN = """
             <this_turn>

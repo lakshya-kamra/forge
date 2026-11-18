@@ -242,7 +242,7 @@ class OpenAiCompatProvider(
         if (finish == "error") throw AiException("$name stopped with an error. Try again.", retryable = true)
         val message = choice["message"] as? JsonObject
         val refusal = (message?.get("refusal") as? JsonPrimitive)?.contentOrNull
-        if (!refusal.isNullOrBlank()) throw AiException("$name declined this request: ${refusal.take(200)}")
+        if (!refusal.isNullOrBlank()) throw AiRefusal("$name declined this request: ${refusal.take(200)}")
         val text = contentText(message?.get("content")).orEmpty().trim()
         return Completion(text, truncated = finish == "length")
     }

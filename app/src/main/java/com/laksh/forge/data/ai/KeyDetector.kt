@@ -45,20 +45,32 @@ object KeyDetector {
      * an env-file "NAME=" prefix, and line breaks from wrapped text. Keys never contain
      * whitespace, so all of it goes.
      */
+    // Notes apps and word processors turn pasted quotes into curly ones.
+    private val QUOTES = charArrayOf('"', '\'', '`', '“', '”', '‘', '’')
+
     fun clean(raw: String): String {
         var k = raw.trim()
         // OPENAI_API_KEY=sk-... copied from a .env file
         val envMatch = Regex("^[A-Z][A-Z0-9_]*\\s*=\\s*(.+)$").find(k)
         if (envMatch != null) k = envMatch.groupValues[1].trim()
-        k = k.trim('"', '\'', '`', ' ')
+        k = k.trim(*QUOTES, ' ')
         if (k.startsWith("Bearer ", ignoreCase = true)) k = k.substring(7)
-        return k.filter { !it.isWhitespace() }.trim('"', '\'', '`')
+        return k.filter { !it.isWhitespace() }.trim(*QUOTES)
     }
 
     fun detect(raw: String): KeyDetection {
         val key = clean(raw)
         if (key.isEmpty()) return KeyDetection.Empty
         val r = ProviderRegistry
+        // Keys are printable ASCII; anything else (a "…" from a shortened dashboard copy, a
+        // stray smart quote) can't go in an HTTP header and would never authenticate.
+        if (key.any { it.code !in 0x21..0x7E }) {
+            return KeyDetection.Rejected(
+                null,
+                "That key contains characters a real key never has (an ellipsis, smart quotes or " +
+                    "accented letters). Copy the full key again from the provider's dashboard."
+            )
+        }
 
         if (key.startsWith("sk-ant-")) return KeyDetection.Match(r.anthropic, confident = true)
 

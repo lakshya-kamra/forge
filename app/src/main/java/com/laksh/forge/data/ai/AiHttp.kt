@@ -58,8 +58,9 @@ object AiHttp {
     suspend fun execute(providerName: String, build: () -> Request): String {
         var attempt = 0
         while (true) {
+            val request = safeBuild(build)
             val failure: AiException = try {
-                client.newCall(build()).await().use { r ->
+                client.newCall(request).await().use { r ->
                     val raw = r.body?.string().orEmpty()
                     if (r.isSuccessful) return raw
                     errorFor(providerName, r.code, raw, r.header("retry-after"))
@@ -69,12 +70,25 @@ object AiHttp {
             } catch (e: AiException) {
                 throw e
             } catch (e: IOException) {
-                networkError(providerName, e)
+                val error = networkError(providerName, e)
+                // A generation POST that was sent may still be running (and billed) server-side:
+                // a read timeout or a dropped connection after sending is not retried, so a long
+                // non-streaming job is never paid for three times.
+                if (request.method != "GET" && !failedBeforeSend(e)) {
+                    AiException(error.message ?: "Network error talking to $providerName.", retryable = false)
+                } else error
             }
             if (!failure.retryable || attempt >= MAX_RETRIES) throw failure
             delay(backoffMillis(attempt, failure))
             attempt++
         }
+    }
+
+    /** The request never reached the server: DNS, refused or unreachable, connect timeout. */
+    internal fun failedBeforeSend(e: IOException): Boolean = when (e) {
+        is UnknownHostException, is java.net.ConnectException, is java.net.NoRouteToHostException -> true
+        is java.net.SocketTimeoutException -> e.message?.contains("connect", ignoreCase = true) == true
+        else -> false
     }
 
     /**
@@ -86,7 +100,7 @@ object AiHttp {
     suspend fun openStream(providerName: String, build: () -> Request): Response {
         var attempt = 0
         while (true) {
-            val call = client.newCall(build())
+            val call = client.newCall(safeBuild(build))
             val handle = currentCoroutineContext().job.invokeOnCompletion { call.cancel() }
             val failure: AiException = try {
                 val r = call.await()
@@ -110,7 +124,7 @@ object AiHttp {
     /** GET [url] and report whether the key was accepted: true on 2xx, false on 401/403. */
     suspend fun probe(providerName: String, build: () -> Request): Boolean {
         val response = try {
-            client.newCall(build()).await()
+            client.newCall(safeBuild(build)).await()
         } catch (e: CancellationException) {
             throw e
         } catch (e: IOException) {
@@ -134,6 +148,20 @@ object AiHttp {
                 }
             }
         }
+    }
+
+    /**
+     * OkHttp refuses header values outside printable ASCII with IllegalArgumentException, which
+     * would otherwise escape every AiException handler and kill the process. A pasted key with
+     * smart quotes or an ellipsis is the usual cause.
+     */
+    private fun safeBuild(build: () -> Request): Request = try {
+        build()
+    } catch (e: IllegalArgumentException) {
+        throw AiException(
+            "That key contains characters that can't be sent (smart quotes, an ellipsis or " +
+                "accented letters). Copy the full key again from the provider's dashboard."
+        )
     }
 
     private fun backoffMillis(attempt: Int, failure: AiException): Long {

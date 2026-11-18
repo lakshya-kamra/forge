@@ -1,5 +1,7 @@
 package com.laksh.forge.domain.program
 
+import com.laksh.forge.data.prefs.WeightUnit
+
 import com.laksh.forge.domain.guardrails.GuardrailFlag
 import kotlinx.serialization.Serializable
 import kotlin.math.ceil
@@ -121,6 +123,34 @@ object Strength {
     fun roundTo(kg: Double, step: Double): Double {
         if (step <= 0.0) return kg
         return floor(kg / step + 0.5 + 1e-9) * step
+    }
+
+    /** Exact kg in a pound (international avoirdupois pound). */
+    const val KG_PER_LB = 0.45359237
+
+    /**
+     * Plate steps for lifters on pound plates. Targets rounded to these land on whole 5 / 2.5 lb
+     * loads (230 lb, not 231.5 lb), since rounding happens in kg against an lb-sized step.
+     */
+    const val STEP_5_LB = 5 * KG_PER_LB
+    const val STEP_2_5_LB = 2.5 * KG_PER_LB
+
+    /** Plate-step choices in the lifter's unit, as (kg value, label). The first is the default. */
+    fun plateSteps(unit: WeightUnit): List<Pair<Double, String>> =
+        if (unit == WeightUnit.LB) listOf(STEP_5_LB to "5 lb", STEP_2_5_LB to "2.5 lb")
+        else listOf(2.5 to "2.5 kg", 1.25 to "1.25 kg")
+
+    fun defaultStep(unit: WeightUnit): Double = plateSteps(unit).first().first
+
+    fun sameStep(a: Double, b: Double): Boolean = kotlin.math.abs(a - b) < 1e-6
+
+    /** One plate step in the display unit, for the editor's +/- buttons. */
+    fun stepInDisplay(roundingKg: Double, unit: WeightUnit): Double = when {
+        unit == WeightUnit.KG -> roundingKg
+        // An lb step: exactly 5 or 2.5.
+        sameStep(roundingKg, STEP_5_LB) || sameStep(roundingKg, STEP_2_5_LB) -> round(roundingKg / KG_PER_LB * 100) / 100
+        // A kg step on an lb display (older programs): the nearest lb plate pair.
+        else -> roundingKg * 2
     }
 
     /** nSuns' sheet rounds training maxes up (CEILING) to the plate step. */

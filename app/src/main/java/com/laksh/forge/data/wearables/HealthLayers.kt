@@ -68,35 +68,46 @@ object HealthMerge {
 
     /**
      * Rebuild one health_daily row. A field no layer reports keeps whatever the existing row had,
-     * so rows written before layering existed (v1 syncs) are never blanked.
+     * so rows written before layering existed (v1 syncs) are never blanked - except the fields
+     * in [retracted]: a source used to report them for this day and no longer does (deleted or
+     * corrected in Health Connect, rescored by WHOOP), so the stale value must go too.
      */
-    fun merge(date: String, layers: Map<Layer, DayValues>, existing: HealthDaily?, now: Long): HealthDaily {
+    fun merge(
+        date: String,
+        layers: Map<Layer, DayValues>,
+        existing: HealthDaily?,
+        now: Long,
+        retracted: Set<HealthField> = emptySet()
+    ): HealthDaily {
         val chosen = HealthField.entries.filter { it.inDaily }.associateWith { pick(it, layers) }
         fun d(f: HealthField): Double? = chosen[f]?.v
         fun l(f: HealthField): Long? = chosen[f]?.v?.roundToLong()
+        // A retracted field is written as null rather than falling back to the old value.
+        fun <T> or(f: HealthField, chosenValue: T?, old: HealthDaily.() -> T?): T? =
+            chosenValue ?: if (f in retracted) null else existing?.old()
 
         val origins = chosen.values.filterNotNull().map { it.o }.distinct().sorted()
         return HealthDaily(
             localDate = date,
-            steps = l(HealthField.STEPS) ?: existing?.steps,
-            activeKcal = d(HealthField.ACTIVE_KCAL) ?: existing?.activeKcal,
-            totalKcal = d(HealthField.TOTAL_KCAL) ?: existing?.totalKcal,
-            restingHr = l(HealthField.RESTING_HR) ?: existing?.restingHr,
-            avgHr = l(HealthField.AVG_HR) ?: existing?.avgHr,
-            sleepMinutes = l(HealthField.SLEEP_MIN) ?: existing?.sleepMinutes,
-            exerciseMinutes = l(HealthField.EXERCISE_MIN) ?: existing?.exerciseMinutes,
-            distanceMeters = d(HealthField.DISTANCE_M) ?: existing?.distanceMeters,
+            steps = or(HealthField.STEPS, l(HealthField.STEPS)) { steps },
+            activeKcal = or(HealthField.ACTIVE_KCAL, d(HealthField.ACTIVE_KCAL)) { activeKcal },
+            totalKcal = or(HealthField.TOTAL_KCAL, d(HealthField.TOTAL_KCAL)) { totalKcal },
+            restingHr = or(HealthField.RESTING_HR, l(HealthField.RESTING_HR)) { restingHr },
+            avgHr = or(HealthField.AVG_HR, l(HealthField.AVG_HR)) { avgHr },
+            sleepMinutes = or(HealthField.SLEEP_MIN, l(HealthField.SLEEP_MIN)) { sleepMinutes },
+            exerciseMinutes = or(HealthField.EXERCISE_MIN, l(HealthField.EXERCISE_MIN)) { exerciseMinutes },
+            distanceMeters = or(HealthField.DISTANCE_M, d(HealthField.DISTANCE_M)) { distanceMeters },
             syncedAt = now,
-            hrvMs = d(HealthField.HRV_RMSSD) ?: existing?.hrvMs,
-            vo2max = d(HealthField.VO2MAX) ?: existing?.vo2max,
-            spo2Pct = d(HealthField.SPO2) ?: existing?.spo2Pct,
-            respiratoryRate = d(HealthField.RESP_RATE) ?: existing?.respiratoryRate,
-            skinTempDeltaC = d(HealthField.SKIN_TEMP_DELTA) ?: existing?.skinTempDeltaC,
-            bodyFatPct = d(HealthField.BODY_FAT) ?: existing?.bodyFatPct,
-            leanMassKg = d(HealthField.LEAN_MASS) ?: existing?.leanMassKg,
-            recoveryScore = d(HealthField.RECOVERY) ?: existing?.recoveryScore,
-            strain = d(HealthField.STRAIN) ?: existing?.strain,
-            sources = if (origins.isNotEmpty()) origins.joinToString(",") else existing?.sources
+            hrvMs = or(HealthField.HRV_RMSSD, d(HealthField.HRV_RMSSD)) { hrvMs },
+            vo2max = or(HealthField.VO2MAX, d(HealthField.VO2MAX)) { vo2max },
+            spo2Pct = or(HealthField.SPO2, d(HealthField.SPO2)) { spo2Pct },
+            respiratoryRate = or(HealthField.RESP_RATE, d(HealthField.RESP_RATE)) { respiratoryRate },
+            skinTempDeltaC = or(HealthField.SKIN_TEMP_DELTA, d(HealthField.SKIN_TEMP_DELTA)) { skinTempDeltaC },
+            bodyFatPct = or(HealthField.BODY_FAT, d(HealthField.BODY_FAT)) { bodyFatPct },
+            leanMassKg = or(HealthField.LEAN_MASS, d(HealthField.LEAN_MASS)) { leanMassKg },
+            recoveryScore = or(HealthField.RECOVERY, d(HealthField.RECOVERY)) { recoveryScore },
+            strain = or(HealthField.STRAIN, d(HealthField.STRAIN)) { strain },
+            sources = if (origins.isNotEmpty()) origins.joinToString(",") else if (retracted.isEmpty()) existing?.sources else null
         )
     }
 
@@ -155,25 +166,26 @@ internal object HealthLayerStore {
     /**
      * Replace this layer's values for every date in [replaceDates] with [days] (a date in
      * [replaceDates] but missing from [days] is cleared - the source no longer reports it).
-     * Returns the dates whose layer content actually changed.
+     * Returns the dates whose layer content actually changed, each with the fields it dropped.
      */
     suspend fun update(
         context: Context,
         layer: Layer,
         days: Map<String, DayValues>,
         replaceDates: Set<String>
-    ): Set<String> = mutex.withLock {
+    ): Map<String, Set<HealthField>> = mutex.withLock {
         withContext(Dispatchers.IO) {
             val current = load(context, layer)
-            val changed = HashSet<String>()
+            // Changed date -> the fields this layer reported before and no longer does.
+            val changed = HashMap<String, Set<HealthField>>()
             (replaceDates + days.keys).forEach { date ->
                 val next = days[date]?.let { HealthMerge.clean(it) }.orEmpty()
                 val prev = current[date]
                 if (next.isEmpty()) {
-                    if (prev != null) { current.remove(date); changed += date }
+                    if (prev != null) { current.remove(date); changed[date] = prev.keys }
                 } else if (prev != next) {
                     current[date] = next
-                    changed += date
+                    changed[date] = prev.orEmpty().keys - next.keys
                 }
             }
             if (changed.isNotEmpty()) save(context, layer, current)
@@ -234,7 +246,7 @@ internal object WearableMerger {
         val dao = ForgeDatabase.get(context).wearableDao()
         val now = System.currentTimeMillis()
         var written = 0
-        for (chunk in affected.sorted().chunked(300)) {
+        for (chunk in affected.keys.sorted().chunked(300)) {
             val layered = HealthLayerStore.daysFor(context, chunk)
             val existing = dao.days(chunk).associateBy { it.localDate }
             val rows = chunk.mapNotNull { date ->
@@ -242,7 +254,7 @@ internal object WearableMerger {
                 // Nothing reports this day any more and there is no row: leave it absent rather
                 // than inserting an empty row that charts would read as a real zero.
                 if (layers.isEmpty() && existing[date] == null) null
-                else HealthMerge.merge(date, layers, existing[date], now)
+                else HealthMerge.merge(date, layers, existing[date], now, affected[date].orEmpty())
             }
             if (rows.isNotEmpty()) {
                 dao.upsertAll(rows)

@@ -4,6 +4,9 @@ import com.laksh.forge.data.db.DayTotals
 import com.laksh.forge.data.db.HealthDaily
 import com.laksh.forge.data.db.WeightEntry
 import com.laksh.forge.domain.NutritionMath
+import com.laksh.forge.domain.guardrails.GuardrailFlag
+import com.laksh.forge.domain.guardrails.GuardrailProfile
+import com.laksh.forge.domain.guardrails.Guardrails
 import com.laksh.forge.domain.guardrails.Phases
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -68,6 +71,61 @@ object CheckinEngine {
     /** ISO week start (Monday) for [date], the key stored in settings.lastCheckinWeek. */
     fun weekStart(date: LocalDate): String =
         date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).toString()
+
+    /**
+     * 7-day-average weight change in % of bodyweight per week for the last two weeks, oldest
+     * first, from the last 21 days of weigh-ins. A week without weigh-ins leaves its change out.
+     */
+    fun weeklyChangePct(today: LocalDate, weights: List<WeightEntry>): List<Double> {
+        fun avg(fromDaysAgo: Long, toDaysAgo: Long): Double? {
+            val from = today.minusDays(fromDaysAgo).toString()
+            val to = today.minusDays(toDaysAgo).toString()
+            return weights.filter { it.localDate in from..to }.map { it.kg }.takeIf { it.isNotEmpty() }?.average()
+        }
+        val w2 = avg(20, 14)
+        val w1 = avg(13, 7)
+        val w0 = avg(6, 0)
+        return listOfNotNull(
+            if (w2 != null && w1 != null) (w1 - w2) / w2 * 100.0 else null,
+            if (w1 != null && w0 != null) (w0 - w1) / w1 * 100.0 else null
+        )
+    }
+
+    /**
+     * Safety prompts for the weekly check-in, any phase:
+     * safety_low_intake_rapid_loss_checkin triggers (a) and (b), nutrition_diet_breaks after
+     * 3 kg lost in a deficit, and safety_pregnancy_no_deficit's falling-average alert.
+     * Returns (supportive check-in flag or null, extra notes).
+     */
+    fun safetyPrompts(
+        profile: GuardrailProfile,
+        phase: String,
+        today: LocalDate,
+        weights: List<WeightEntry>,
+        totals: List<DayTotals>,
+        weightKgAtStart: Double?,
+        avgWeightKg: Double?,
+        weeksInPhase: Int,
+        pregnant: Boolean,
+        weightChangeKg: Double?
+    ): Pair<GuardrailFlag?, List<String>> {
+        val d7 = today.minusDays(6).toString()
+        val last7Kcal = totals.filter { it.localDate in d7..today.toString() }.map { it.kcal }
+        val check = Guardrails.lowIntakeCheckinFlag(profile, last7Kcal)
+            ?: Guardrails.rapidLossFlag(weeklyChangePct(today, weights))
+        val notes = buildList {
+            if (pregnant && weightChangeKg != null && weightChangeKg < 0) {
+                add(
+                    "Your 7-day average weight has gone down this week. During pregnancy weight is expected to rise, " +
+                        "so you may need to eat more. Please mention it to your doctor or midwife."
+                )
+            }
+            if (phase == Phases.CUT && weeksInPhase < 12 && weightKgAtStart != null && avgWeightKg != null) {
+                Guardrails.dietBreakFlag(weightKgAtStart - avgWeightKg, weeksInPhase)?.let { add(it.message) }
+            }
+        }
+        return check to notes
+    }
 
     fun summarize(
         today: LocalDate,
@@ -138,10 +196,8 @@ object CheckinEngine {
         val trend = data.trendKgPerWeek
         val observedPct = trend?.let { it / weightKg * 100.0 }
 
-        if (observedPct != null && phase == Phases.CUT && observedPct < -1.5) {
-            notes += "Your weight has been dropping faster than planned. If you've been unwell or busy, that's " +
-                "okay. If eating has felt stressful lately, the Support section in Profile has people you can talk to."
-        }
+        // Rapid loss is judged by the caller with Guardrails.rapidLossFlag over two consecutive
+        // weekly averages, for every phase (safety_low_intake_rapid_loss_checkin).
 
         if (daysSinceLastChange < MIN_DAYS_BETWEEN_CHANGES) {
             return CheckinProposal(

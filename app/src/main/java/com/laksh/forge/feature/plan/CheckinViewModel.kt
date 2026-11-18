@@ -6,6 +6,7 @@ import com.laksh.forge.data.ForgeRepository
 import com.laksh.forge.data.db.PhasePlan
 import com.laksh.forge.data.db.WeeklyCheckin
 import com.laksh.forge.data.prefs.ForgeSettings
+import com.laksh.forge.data.prefs.PregnancyStatus
 import com.laksh.forge.domain.guardrails.Guardrails
 import com.laksh.forge.domain.guardrails.Phases
 import com.laksh.forge.domain.plan.AdjustKind
@@ -19,6 +20,7 @@ import com.laksh.forge.domain.plan.PlanDetails
 import com.laksh.forge.domain.plan.PlanProfileStore
 import com.laksh.forge.domain.plan.PlanStore
 import com.laksh.forge.domain.plan.details
+import com.laksh.forge.domain.plan.edScreenLockActive
 import com.laksh.forge.feature.onboarding.attempt
 import com.laksh.forge.ui.forgeFactory
 import com.laksh.forge.util.Dates
@@ -53,7 +55,12 @@ data class CheckinUiState(
     val saved: WeeklyCheckin? = null,
     /** True after a crisis disclosure or positive screen: show support, no numbers. */
     val support: Boolean = false,
-    val outcome: String? = null
+    val outcome: String? = null,
+    /** safety_low_intake_rapid_loss_checkin fired: the supportive check-in card is shown. */
+    val safetyCheck: String? = null,
+    val safetyFired: Boolean = false,
+    /** Pregnancy, diet-break and similar prompts from the guardrails, shown with the proposal. */
+    val safetyNotes: List<String> = emptyList()
 ) {
     val scoffComplete: Boolean get() = !scoffNeeded || scoff.all { it != null }
 }
@@ -126,7 +133,22 @@ class CheckinViewModel(private val repo: ForgeRepository) : ViewModel() {
         } else null
 
         val twelveWeeksMs = 12L * 7 * 86_400_000L
+        val (check, safetyNotes) = CheckinEngine.safetyPrompts(
+            profile = PlanStore.guardrailProfile(settings, weightKg, details?.bodyFat?.low),
+            phase = plan.phase,
+            today = today,
+            weights = weights,
+            totals = totals,
+            weightKgAtStart = details?.weightKgAtStart,
+            avgWeightKg = data.avgWeightKg,
+            weeksInPhase = weeksIn,
+            pregnant = settings.pregnancyStatus == PregnancyStatus.PREGNANT,
+            weightChangeKg = data.weightChangeKg
+        )
         return CheckinUiState(
+            safetyCheck = check?.message,
+            safetyFired = check != null,
+            safetyNotes = safetyNotes,
             loading = false,
             plan = plan,
             details = details,
@@ -143,6 +165,12 @@ class CheckinViewModel(private val repo: ForgeRepository) : ViewModel() {
     fun setHunger(v: Int) = _state.update { it.copy(hunger = v) }
     fun setPerformance(v: Int) = _state.update { it.copy(performance = v) }
     fun setNotes(v: String) = _state.update { it.copy(notes = v) }
+
+    /** "I'm fine, or I've been ill or travelling": the card goes; the event is still recorded. */
+    fun dismissSafetyCheck() = _state.update { it.copy(safetyCheck = null) }
+
+    /** "Take the eating check": the SCOFF questions join this check-in. */
+    fun startScoff() = _state.update { it.copy(scoffNeeded = true) }
     fun setScoff(i: Int, yes: Boolean) = _state.update { s ->
         s.copy(scoff = s.scoff.toMutableList().also { it[i] = yes })
     }
@@ -177,6 +205,12 @@ class CheckinViewModel(private val repo: ForgeRepository) : ViewModel() {
         var applied = 0
         val outcome: String
         val support = crisis || scoffPositive
+        // The supportive check-in opens a safety event (read by photo analysis); a negative
+        // screen closes it.
+        when {
+            s.safetyFired -> PlanProfileStore.update { it.copy(safetyEventAt = now) }
+            s.scoffNeeded && !scoffPositive && !crisis -> PlanProfileStore.update { it.copy(safetyEventAt = 0L) }
+        }
         if (support) {
             // safety_crisis_disclosure / safety_scoff_positive_response: no coaching numbers this
             // turn, stop any deficit and pause weight-loss features for at least 30 days.
@@ -190,7 +224,8 @@ class CheckinViewModel(private val repo: ForgeRepository) : ViewModel() {
             }
             outcome = "Your check-in is saved. Forge has paused weight-loss features for now."
         } else {
-            if (s.scoffNeeded) store.setEdScreen(false, now)
+            // A negative screen never lifts a lock inside its first 30 days.
+            if (s.scoffNeeded && !edScreenLockActive(s.settings, now)) store.setEdScreen(false, now)
             when {
                 proposal.kind == AdjustKind.END_CUT -> {
                     PlanStore.switchToMaintenance(repo, proposal.message)

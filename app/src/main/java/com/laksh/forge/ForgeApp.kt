@@ -14,6 +14,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ForgeApp : Application() {
@@ -66,6 +67,16 @@ class ForgeApp : Application() {
         // opens the app after a break would see a stale figure. Recompute once on launch.
         appScope.launch {
             runCatching { repository.recomputeAdaptiveTdee() }
+        }
+
+        // The exercise catalog (~240 KB of JSON) is parsed lazily on first use; warm it on IO
+        // so a tap on "How to" or an added exercise never parses it on the main thread.
+        appScope.launch(Dispatchers.IO) {
+            runCatching { com.laksh.forge.domain.exercise.ExerciseCatalog.preload() }
+        }
+        // Abandoned full-resolution camera captures (meal, label, body) never outlive a launch.
+        appScope.launch(Dispatchers.IO) {
+            runCatching { com.laksh.forge.util.ImageUtils.clearStaleCaptures(this@ForgeApp) }
         }
     }
 

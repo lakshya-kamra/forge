@@ -9,7 +9,13 @@ import com.laksh.forge.ForgeApp
 import com.laksh.forge.data.ForgeRepository
 import com.laksh.forge.data.db.SetLog
 import com.laksh.forge.data.db.WorkoutSession
+import com.laksh.forge.data.prefs.PregnancyStatus
 import com.laksh.forge.data.prefs.WeightUnit
+import com.laksh.forge.domain.guardrails.GuardrailFlag
+import com.laksh.forge.domain.guardrails.Guardrails
+import com.laksh.forge.domain.plan.PlanProfileStore
+import com.laksh.forge.domain.program.ProgramSchedule
+import com.laksh.forge.domain.training.TrainingWeeks
 import com.laksh.forge.domain.NutritionMath
 import com.laksh.forge.domain.exercise.ExerciseCatalog
 import com.laksh.forge.domain.exercise.ExerciseInfo
@@ -33,6 +39,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -87,7 +94,9 @@ data class SessionSummary(
     val workingSets: Int,
     val volumeKg: Double,
     val prs: List<String>,
-    val changes: List<String>
+    val changes: List<String>,
+    /** Training guardrail nudges (deload, failure, rep range) from this and recent sessions. */
+    val guidance: List<String> = emptyList()
 )
 
 data class SessionState(
@@ -108,7 +117,12 @@ data class SessionState(
     val swap: SwapSheet? = null,
     val finishing: Boolean = false,
     val summary: SessionSummary? = null,
-    val finished: Boolean = false
+    val finished: Boolean = false,
+    /** safety_medical_red_flags_stop: workouts are locked until clearance is confirmed. */
+    val medicalHold: Boolean = false,
+    /** safety_pregnancy_no_deficit: warning-sign checklist and supine swaps apply. */
+    val pregnant: Boolean = false,
+    val pregnancyChecklistDone: Boolean = false
 ) {
     val workingSetCount: Int get() = slots.sumOf { it.working.size }
 }
@@ -144,6 +158,9 @@ class SessionViewModel(
     private var sets: List<SetLog> = emptyList()
     private var swaps: Map<Int, ExerciseInfo> = emptyMap()
     private var extras: List<String> = emptyList()
+    /** Catalog ids for added exercises, resolved once off the main thread (null = no match). */
+    private val extraIds = mutableMapOf<String, String?>()
+    private val extraIdsRequested = mutableSetOf<String>()
     private var lastTime: Map<String, LastTime> = emptyMap()
     private val lastTimeRequested = mutableSetOf<String>()
     private var prescriptions: Map<Int, Prescription> = emptyMap()
@@ -168,6 +185,9 @@ class SessionViewModel(
 
     private suspend fun load() {
         val settings = repo.settings()
+        val hold = runCatching { PlanProfileStore.current().trainingHold }.getOrDefault(false)
+        // Parsed off the main thread before rebuild() needs it.
+        runCatching { ExerciseCatalog.preload() }
         val p = ProgramStore.buildSessionPlan(repo, sessionId)
         val config = p.config
         val data = withContext(Dispatchers.IO) {
@@ -193,7 +213,9 @@ class SessionViewModel(
                 unit = settings.weightUnit,
                 roundingKg = config?.state?.roundingKg ?: 2.5,
                 haptics = settings.haptics,
-                reduceMotion = settings.reduceMotion
+                reduceMotion = settings.reduceMotion,
+                medicalHold = hold,
+                pregnant = settings.pregnancyStatus == PregnancyStatus.PREGNANT
             )
         }
         loaded = true
@@ -264,7 +286,7 @@ class SessionViewModel(
                 sets = logged,
                 lastTime = lastTime[name],
                 restSeconds = ps.slot.restSeconds?.takeIf { it > 0 } ?: DEFAULT_REST,
-                notes = ps.slot.notes
+                notes = listOfNotNull(supineNote(name, _state.value.pregnant), ps.slot.notes).joinToString("\n").ifBlank { null }
             )
         }
         // Added exercises: the ones added this visit plus any logged earlier in this session
@@ -278,6 +300,12 @@ class SessionViewModel(
             lastTimeRequested += unknown
             loadLastTimeForExtras(unknown)
         }
+        val unresolved = allExtras.filter { it !in extraIdsRequested }
+        if (unresolved.isNotEmpty()) {
+            extraIdsRequested += unresolved
+            resolveExtras(unresolved)
+        }
+        val pregnant = _state.value.pregnant
         val extraCards = allExtras.map { name ->
             val logged = sets.filter { it.exerciseName.equals(name, ignoreCase = true) }
             SlotUi(
@@ -285,17 +313,27 @@ class SessionViewModel(
                 index = -1,
                 name = name,
                 swappedFrom = null,
-                exerciseId = ExerciseCatalog.resolve(name)?.id,
+                exerciseId = extraIds[name],
                 optional = false,
                 prescription = Prescription(sets = emptyList(), suggestedKg = lastTime[name]?.topWeightKg),
                 sets = logged,
                 lastTime = lastTime[name],
                 restSeconds = DEFAULT_REST,
-                notes = null
+                notes = supineNote(name, pregnant)
             )
         }
         prescriptions = newPrescriptions
         _state.update { it.copy(slots = cards + extraCards, prSetIds = prSetIds) }
+    }
+
+    /**
+     * Fuzzy name matching (typo distance against every catalog key) is too slow for every
+     * logged set on the main thread, so each added name is resolved once on Default.
+     */
+    private fun resolveExtras(names: List<String>) = viewModelScope.launch {
+        val found = withContext(Dispatchers.Default) { names.associateWith { ExerciseCatalog.resolve(it)?.id } }
+        extraIds.putAll(found)
+        if (loaded && found.values.any { it != null }) rebuild()
     }
 
     /** A substitute keeps the slot's sets and reps; its load comes from its own history. */
@@ -516,6 +554,7 @@ class SessionViewModel(
                     .getOrElse { listOf("Progression wasn't updated: ${it.message ?: "unknown error"}") }
             } else emptyList()
             val working = sets.filter { !it.isWarmup }
+            val guidance = runCatching { guidance(p, working) }.getOrDefault(emptyList())
             _state.update {
                 it.copy(
                     finishing = false,
@@ -523,7 +562,8 @@ class SessionViewModel(
                         workingSets = working.size,
                         volumeKg = working.sumOf { s -> s.weightKg * s.reps },
                         prs = prLabels.toList(),
-                        changes = changes
+                        changes = changes,
+                        guidance = guidance
                     )
                 )
             }
@@ -531,6 +571,41 @@ class SessionViewModel(
     }
 
     fun closeSummary() = _state.update { it.copy(finished = true) }
+
+    /** The person confirms a doctor has cleared them; workouts unlock everywhere. */
+    fun confirmClearance() = viewModelScope.launch {
+        PlanProfileStore.clearTrainingHold()
+        _state.update { it.copy(medicalHold = false) }
+    }
+
+    fun acknowledgePregnancyChecklist() = _state.update { it.copy(pregnancyChecklistDone = true) }
+
+    /**
+     * Training guardrails for the finished session: rep-range and proximity-to-failure nudges
+     * from the logged sets, and a deload reminder from how long training has run without a
+     * lighter week.
+     */
+    private suspend fun guidance(p: SessionPlan?, working: List<SetLog>): List<String> = withContext(Dispatchers.IO) {
+        val flags = mutableListOf<GuardrailFlag?>()
+        working.forEach { flags += Guardrails.repRangeFlag(it.reps, it.rir) }
+        // training_proximity_to_failure: barbell lifts taken to 0 RIR in 2+ sessions.
+        working.filter { it.rir != null && it.rir <= 0.0 }
+            .distinctBy { it.exerciseName.lowercase() }
+            .forEach { set ->
+                val info = set.exerciseId?.let { ExerciseCatalog.get(it) } ?: ExerciseCatalog.resolve(set.exerciseName)
+                if (info == null || "barbell" !in info.equipment) return@forEach
+                val earlier = ProgramStore.training.allWorkingSets(set.exerciseId, set.exerciseName, sessionId)
+                    .filter { it.rir != null && it.rir <= 0.0 && it.timestamp >= System.currentTimeMillis() - 28L * 86_400_000 }
+                    .map { it.sessionId }.distinct().size
+                flags += Guardrails.barbellFailureFlag(earlier + 1)
+            }
+        val deloadNow = p?.config != null && ProgramSchedule.isDeloadWeek(p.config)
+        if (!deloadNow) {
+            val sessions = repo.workoutDao.observeSessions(200).first().filter { it.endedAt != null || it.id == sessionId }
+            flags += Guardrails.deloadFlag(TrainingWeeks.consecutiveWeeks(sessions.map { it.startedAt }, System.currentTimeMillis()))
+        }
+        flags.filterNotNull().distinctBy { it.id }.map { it.message }
+    }
 
     /** Delete a session that was started and never logged into. */
     fun discard() = viewModelScope.launch {
@@ -548,6 +623,24 @@ class SessionViewModel(
     companion object {
         private const val DEFAULT_REST = 150
         private const val MAX_PR_REPS = 12
+
+        /**
+         * ACOG (safety_pregnancy_no_deficit): avoid lying flat on the back for long, so
+         * supine lifts carry a swap hint. Name-based because the catalog has no position field.
+         */
+        private val SUPINE = Regex(
+            "bench press|lying|supine|skull ?crusher|floor press|hip thrust|glute bridge|crunch|dead ?bug|" +
+                "(dumbbell|chest|db) fly|pullover",
+            RegexOption.IGNORE_CASE
+        )
+        private val UPRIGHT = Regex("incline|seated|standing", RegexOption.IGNORE_CASE)
+
+        internal fun isSupine(name: String): Boolean = SUPINE.containsMatchIn(name) && !UPRIGHT.containsMatchIn(name)
+
+        private fun supineNote(name: String, pregnant: Boolean): String? =
+            if (pregnant && isSupine(name)) {
+                "Pregnancy: avoid lying flat on your back for long. Use an incline or seated version (tap Swap)."
+            } else null
 
         fun factory(sessionId: Long): ViewModelProvider.Factory = viewModelFactory {
             initializer { SessionViewModel(ForgeApp.instance.repository, sessionId) }

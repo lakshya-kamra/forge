@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.laksh.forge.ForgeApp
 import com.laksh.forge.data.ForgeRepository
+import androidx.room.withTransaction
 import com.laksh.forge.data.db.BodyMeasurement
+import com.laksh.forge.data.db.ForgeDatabase
+import com.laksh.forge.data.db.WeightEntry
 import com.laksh.forge.data.db.ProgressPhoto
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.prefs.PregnancyStatus
@@ -39,6 +42,8 @@ import com.laksh.forge.domain.plan.PlanProfileStore
 import com.laksh.forge.domain.plan.PlanStore
 import com.laksh.forge.domain.plan.Pose
 import com.laksh.forge.domain.plan.TrainingGoal
+import com.laksh.forge.domain.plan.edScreenLockActive
+import com.laksh.forge.domain.plan.libraryEquipment
 import com.laksh.forge.domain.program.LibraryProgramSummary
 import com.laksh.forge.domain.program.ProgramLibrary
 import com.laksh.forge.feature.progress.ProgressPhotoFiles
@@ -53,6 +58,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 enum class OnboardingStep(val label: String) {
@@ -127,7 +133,11 @@ data class AnalysisResult(
     /** Why the photo estimate did not run or failed; shown calmly, never blocks progress. */
     val photoNote: String? = null,
     /** Set when body fat is deliberately not estimated (under 18). */
-    val skippedReason: String? = null
+    val skippedReason: String? = null,
+    /** The 14-day rule stopped the estimate; retrying can't help, so no retry is offered. */
+    val photoRateLimited: Boolean = false,
+    /** A fresh AI photo estimate is part of this result (persisted as the last estimate on save). */
+    val photoEstimated: Boolean = false
 )
 
 data class PlanProposal(
@@ -156,6 +166,10 @@ data class OnboardingUiState(
     val crisisDisclosed: Boolean = false,
     /** A crisis flag from an earlier session that is still inside its 30-day lock. */
     val priorCrisisLock: Boolean = false,
+    /** A positive SCOFF from an earlier session still inside its 30-day lock; a redo can't lift it. */
+    val priorEdLock: Boolean = false,
+    /** An open low-intake / rapid-loss safety event from the weekly check-in. */
+    val priorSafetyEvent: Boolean = false,
     val showErrors: Boolean = false,
     val photoBusy: Boolean = false,
     val photoError: String? = null,
@@ -167,14 +181,19 @@ data class OnboardingUiState(
     val saving: Boolean = false,
     val saveError: String? = null,
     val done: Boolean = false,
+    /** Settings > AI is open on top of onboarding so a first-run user can add a key. */
+    val connectingAi: Boolean = false,
     val baseSettings: ForgeSettings = ForgeSettings(),
     val lastPhotoEstimateAt: Long = 0L
 ) {
-    val eatingConcern: Boolean get() = draft.scoffPositive || crisisDisclosed || priorCrisisLock
+    val eatingConcern: Boolean get() = draft.scoffPositive || crisisDisclosed || priorCrisisLock || priorEdLock
+
+    /** Only a concern raised in this run starts a new 30-day lock; an inherited one keeps its date. */
+    val newEatingConcern: Boolean get() = draft.scoffPositive || crisisDisclosed
 
     /** guardrails photo_feature_blocked_groups: minors, pregnancy, a positive screen or open crisis. */
     val photoAnalysisAllowed: Boolean
-        get() = !draft.isMinor && draft.effectivePregnancy != PregnancyStatus.PREGNANT && !eatingConcern
+        get() = !draft.isMinor && draft.effectivePregnancy != PregnancyStatus.PREGNANT && !eatingConcern && !priorSafetyEvent
 
     /** Photos are skipped entirely for minors and after an eating concern, to avoid body-checking. */
     val showPhotoStep: Boolean get() = !draft.isMinor && !eatingConcern
@@ -249,9 +268,18 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
     /** The AI's answer is kept so switching phases away and back does not lose its words. */
     private var aiChoice: AiPlanChoice? = null
 
+    /**
+     * The photo estimate for one photo set: reused when other answers change, so going back to
+     * fix a typo neither spends a second estimate nor trips the 14-day rule on the first.
+     */
+    private data class PhotoEstimate(val key: Any, val range: BodyFatRange, val confidence: String?, val issues: String?)
+    private var photoEstimate: PhotoEstimate? = null
+
     private val app get() = ForgeApp.instance
 
     init {
+        // Warm the program library off the main thread; recommend() reads it later.
+        viewModelScope.launch(Dispatchers.IO) { runCatching { ProgramLibrary.all() } }
         viewModelScope.launch {
             val s = repo.settings()
             val profile = PlanProfileStore.current()
@@ -265,6 +293,8 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
                     bodyModel = runCatching { repo.ai.describe(Task.BODY) }.getOrDefault(""),
                     baseSettings = s,
                     priorCrisisLock = profile.crisisLockActive(),
+                    priorEdLock = edScreenLockActive(s),
+                    priorSafetyEvent = profile.safetyEventOpen(),
                     lastPhotoEstimateAt = profile.lastPhotoEstimateAt,
                     draft = if (!redo) OnboardingDraft(unit = s.weightUnit) else OnboardingDraft(
                         sex = s.sex,
@@ -336,10 +366,41 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
     }
 
     private fun goTo(step: OnboardingStep) {
+        // A key can be added from the AI card on these steps (or Settings) after init ran.
+        if (step == OnboardingStep.ANALYSIS || step == OnboardingStep.RECOMMENDATION) refreshAiConfigured()
         _state.update { it.copy(step = step, showErrors = false) }
         when (step) {
             OnboardingStep.ANALYSIS -> runAnalysis()
             OnboardingStep.RECOMMENDATION -> runRecommendation()
+            else -> Unit
+        }
+    }
+
+    private fun refreshAiConfigured() {
+        val configured = repo.ai.isConfigured
+        if (configured == _state.value.aiConfigured) return
+        _state.update { it.copy(aiConfigured = configured) }
+        viewModelScope.launch {
+            val model = runCatching { repo.ai.describe(Task.BODY) }.getOrDefault("")
+            _state.update { it.copy(bodyModel = model) }
+        }
+    }
+
+    fun openAiSetup() = _state.update { it.copy(connectingAi = true) }
+
+    fun closeAiSetup() {
+        _state.update { it.copy(connectingAi = false) }
+        onAiConnected()
+    }
+
+    /** Called after a key is saved from onboarding: re-run whatever the missing key held back. */
+    fun onAiConnected() {
+        val was = _state.value.aiConfigured
+        refreshAiConfigured()
+        if (was || !repo.ai.isConfigured) return
+        when (_state.value.step) {
+            OnboardingStep.ANALYSIS -> retryAnalysis()
+            OnboardingStep.RECOMMENDATION -> retryPlan()
             else -> Unit
         }
     }
@@ -436,14 +497,26 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         var confidence: String? = null
         var issues: String? = null
         var photoNote: String? = null
+        var rateLimited = false
+        var estimated = false
         val minGapMs = 14L * 86_400_000L
+        val photoKey = listOf(d.photos, d.photoConsent)
+        val cached = photoEstimate?.takeIf { it.key == photoKey }
         when {
             d.photos.isEmpty() -> Unit
             !s.photoAnalysisAllowed -> photoNote = "Photo analysis is off for you right now; your photos are saved for your own record only."
             !d.photoConsent -> photoNote = "You didn't allow photo analysis, so your photos are saved for your own record only."
+            cached != null -> {
+                photo = cached.range
+                confidence = cached.confidence
+                issues = cached.issues
+                estimated = true
+            }
             !repo.ai.isConfigured -> photoNote = "No AI provider is set up, so your photos are saved without analysis."
-            System.currentTimeMillis() - s.lastPhotoEstimateAt < minGapMs ->
+            System.currentTimeMillis() - s.lastPhotoEstimateAt < minGapMs -> {
                 photoNote = "Forge allows one photo estimate every 14 days, so this time your photos are saved without analysis."
+                rateLimited = true
+            }
             else -> {
                 val settings = draftSettings(s)
                 val weightKg = d.weightKg ?: 70.0
@@ -461,12 +534,16 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
                         photos = images
                     )
                 }.onSuccess { est ->
-                    photo = BodyFatCombiner.photoRange(est.estimatePct, est.lowPct, est.highPct)
+                    val range = BodyFatCombiner.photoRange(est.estimatePct, est.lowPct, est.highPct)
+                    photo = range
                     confidence = est.confidence
                     issues = est.photoIssues.ifBlank { null }
-                    val now = System.currentTimeMillis()
-                    PlanProfileStore.update { it.copy(lastPhotoEstimateAt = now) }
-                    _state.update { it.copy(lastPhotoEstimateAt = now) }
+                    estimated = true
+                    photoEstimate = PhotoEstimate(photoKey, range, confidence, issues)
+                    // Held in memory only: a different photo set in this run counts against the
+                    // 14 days, but the stored date is written on save so abandoning onboarding
+                    // doesn't lock the estimate for two weeks.
+                    _state.update { it.copy(lastPhotoEstimateAt = System.currentTimeMillis()) }
                 }.onFailure { e ->
                     photoNote = (e.message ?: "The photo estimate didn't work.") + " Your tape estimate is used on its own."
                 }
@@ -478,7 +555,9 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
             bodyFat = combined.takeIf { navy != null || photo != null },
             photoConfidence = confidence,
             photoIssues = issues,
-            photoNote = photoNote
+            photoNote = photoNote,
+            photoRateLimited = rateLimited,
+            photoEstimated = estimated
         )
     }
 
@@ -513,9 +592,10 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         val heightCm = d.heightD ?: throw IllegalStateException("Your height is missing - go back to About you.")
         val profile = draftProfile(s, PlanProfileStore.current())
         val bf = s.analysis?.bodyFat
-        val bfDecision = bf?.forDecision
+        // Safety inputs never use a photo-raised lower bound (photo_bf_accuracy_limits).
+        val bfDecision = bf?.forSafety
         val gp = PlanStore.guardrailProfile(settings, weightKg, bfDecision?.low)
-        val allowed = PlanStore.allowedPhases(gp, profile, settings)
+        val allowed = PlanStore.allowedPhases(gp, profile, settings, PlanStore.newCutBlock())
         val holds = PlanStore.safetyHolds(settings, profile)
 
         val decision = PhaseRules.decide(
@@ -581,7 +661,7 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
                 val weightKg = s.draft.weightKg ?: return@attempt null
                 val profile = draftProfile(s, PlanProfileStore.current())
                 val bf = s.analysis?.bodyFat
-                val gp = PlanStore.guardrailProfile(settings, weightKg, bf?.forDecision?.low)
+                val gp = PlanStore.guardrailProfile(settings, weightKg, bf?.forSafety?.low)
                 val (tdee, basis) = PlanStore.maintenance(settings, weightKg)
                 val ai = aiChoice
                 val source = when {
@@ -628,7 +708,7 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         }
     }
 
-    private fun assemble(
+    private suspend fun assemble(
         s: OnboardingUiState,
         settings: ForgeSettings,
         profile: PlanProfile,
@@ -645,7 +725,7 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         val d = s.draft
         val weightKg = d.weightKg ?: throw IllegalStateException("Your weight is missing - go back to About you.")
         val ai = aiChoice?.takeIf { it.phase == phase && source == "AI" }
-        val bfDecision = if (d.isMinor) null else bf?.forDecision
+        val bfDecision = if (d.isMinor) null else bf?.forSafety
         val built = PlanBuilder.build(
             BuildInput(
                 phase = phase,
@@ -660,16 +740,20 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
                 baselineSteps = baselineSteps,
                 fatPerKg = settings.fatPerKg,
                 ratePctOverride = ai?.ratePctPerWeek,
-                postDiet = d.recentDiet
+                postDiet = d.recentDiet,
+                heightCm = d.heightD
             )
         )
         val checked = PlanStore.check(
             gp, built.kcal, built.proteinG, built.carbsG, built.fatG, built.rateKgPerWeek, tdee, weightKg, d.kidneyDisease
         )
         val (ruleStops, ruleNext) = PlanBuilder.stopConditions(phase, d.sex)
-        val programs = runCatching {
-            ProgramLibrary.recommend(PhaseCopy.level(d.trainingAge), phase, d.daysPerWeek).take(3)
-        }.getOrDefault(emptyList())
+        // The library is ~1 MB of JSON parsed on first use; never on the main thread.
+        val programs = withContext(Dispatchers.IO) {
+            runCatching {
+                ProgramLibrary.recommend(PhaseCopy.level(d.trainingAge), phase, d.daysPerWeek, d.equipment.libraryEquipment)
+            }.getOrDefault(emptyList())
+        }
         val rationale = when {
             ai != null -> ai.rationale
             phase == decision.recommended -> decision.explanation
@@ -750,47 +834,69 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         val weightKg = d.weightKg ?: throw IllegalStateException("Your weight is missing.")
         val store = repo.settingsStore
 
-        repo.logWeight(d.weight.toDouble(), d.unit, null, "Start of ${PhaseCopy.name(p.phase).lowercase()} plan")
+        // Files first, recorded in the draft as they move: commit() is idempotent for a photo
+        // already in private storage, so a retry after a later failure finds every file again.
+        val committed = if (s.showPhotoStep) {
+            d.photos.entries.sortedBy { it.key.ordinal }.map { (pose, staged) ->
+                val path = ProgressPhotoFiles.commit(app, staged)
+                if (path != staged) {
+                    _state.update { it.copy(draft = it.draft.copy(photos = it.draft.photos + (pose to path))) }
+                }
+                pose to path
+            }
+        } else emptyList()
 
-        val anyMeasurement = listOf(d.waist, d.neck, d.hips, d.chest, d.arm, d.thigh).any { d.cm(it) != null }
-        if (anyMeasurement) {
-            val navy = if (d.isMinor) null else s.analysis?.navyRaw
-            PlanStore.bodyDao.insertMeasurement(
-                BodyMeasurement(
+        // Every row in one transaction: a failure leaves nothing behind, so a retry can't
+        // duplicate the start weight (which would skew adaptive TDEE) or the measurement.
+        ForgeDatabase.get(app).withTransaction {
+            repo.weightDao.insert(
+                WeightEntry(
                     timestamp = now,
-                    localDate = today,
-                    waistCm = d.cm(d.waist),
-                    neckCm = d.cm(d.neck),
-                    hipsCm = d.cm(d.hips),
-                    chestCm = d.cm(d.chest),
-                    armCm = d.cm(d.arm),
-                    thighCm = d.cm(d.thigh),
-                    bodyFatPct = navy?.let { (it * 10).roundToInt() / 10.0 },
-                    bodyFatMethod = if (navy != null) "NAVY" else null,
-                    note = d.cm(d.healthWaist)?.let { "Health-site waist ${it} cm" }
+                    localDate = Dates.dayOf(now),
+                    kg = NutritionMath.displayToKg(d.weight.toDouble(), d.unit),
+                    bodyFatPct = null,
+                    note = "Start of ${PhaseCopy.name(p.phase).lowercase()} plan"
                 )
             )
-        }
 
-        if (s.showPhotoStep) {
-            d.photos.entries.sortedBy { it.key.ordinal }.forEach { (pose, staged) ->
-                val path = ProgressPhotoFiles.commit(app, staged)
+            val anyMeasurement = listOf(d.waist, d.neck, d.hips, d.chest, d.arm, d.thigh).any { d.cm(it) != null }
+            if (anyMeasurement) {
+                val navy = if (d.isMinor) null else s.analysis?.navyRaw
+                PlanStore.bodyDao.insertMeasurement(
+                    BodyMeasurement(
+                        timestamp = now,
+                        localDate = today,
+                        waistCm = d.cm(d.waist),
+                        neckCm = d.cm(d.neck),
+                        hipsCm = d.cm(d.hips),
+                        chestCm = d.cm(d.chest),
+                        armCm = d.cm(d.arm),
+                        thighCm = d.cm(d.thigh),
+                        bodyFatPct = navy?.let { (it * 10).roundToInt() / 10.0 },
+                        bodyFatMethod = if (navy != null) "NAVY" else null,
+                        note = d.cm(d.healthWaist)?.let { "Health-site waist ${it} cm" }
+                    )
+                )
+            }
+
+            committed.forEach { (pose, path) ->
                 PlanStore.bodyDao.insertPhoto(
                     ProgressPhoto(timestamp = now, localDate = today, path = path, pose = pose.name, weightKg = weightKg)
                 )
             }
-        }
 
-        val plan = PlanStore.entity(
-            phase = p.phase,
-            checked = p.checked,
-            built = p.built,
-            details = p.details,
-            rationale = p.rationale,
-            source = p.source,
-            bodyFatEstimate = p.details.bodyFat?.let { (it.low + it.high) / 2.0 }
-        )
-        PlanStore.planDao.activate(plan)
+            val plan = PlanStore.entity(
+                phase = p.phase,
+                checked = p.checked,
+                built = p.built,
+                details = p.details,
+                rationale = p.rationale,
+                source = p.source,
+                bodyFatEstimate = p.details.bodyFat?.let { (it.low + it.high) / 2.0 }
+            )
+            PlanStore.planDao.activate(plan)
+        }
+        attempt { repo.recomputeAdaptiveTdee() }
 
         store.setSex(d.sex)
         d.ageInt?.let { store.setAge(it) }
@@ -798,7 +904,13 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         store.setWeightUnit(d.unit)
         store.setTrainingAge(d.trainingAge)
         store.setPregnancyStatus(d.effectivePregnancy)
-        store.setEdScreen(s.eatingConcern, now)
+        // safety_scoff_positive_response: a lock lasts at least 30 days and lifts only after a
+        // negative re-screen once they have passed. An inherited lock keeps its start date.
+        when {
+            s.newEatingConcern -> store.setEdScreen(true, now)
+            s.eatingConcern -> Unit
+            else -> store.setEdScreen(false, now)
+        }
         store.setHideNumbers(d.hideNumbers)
         store.setGoal(PhaseCopy.goalFor(p.phase))
         store.setRate(p.checked.rateKgPerWeek)
@@ -809,7 +921,10 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
 
         PlanProfileStore.update { old ->
             draftProfile(s, old).copy(
-                photoConsentAt = if (d.photoConsent && d.photos.isNotEmpty()) now else old.photoConsentAt
+                photoConsentAt = if (d.photoConsent && d.photos.isNotEmpty()) now else old.photoConsentAt,
+                lastPhotoEstimateAt = if (s.analysis?.photoEstimated == true) now else old.lastPhotoEstimateAt,
+                // safety_medical_red_flags_stop: training stays locked until clearance is confirmed.
+                trainingHoldAt = if (d.redFlagSymptoms) now else old.trainingHoldAt
             )
         }
 

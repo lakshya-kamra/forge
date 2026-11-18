@@ -1,6 +1,10 @@
 package com.laksh.forge.feature.log
 
+import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.core.content.ContextCompat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -122,7 +126,11 @@ fun LogScreen(
         val uri = captureUri
         if (success && uri != null) {
             if (captureForLabel) vm.analyseLabel(uri) else vm.analysePhoto(uri)
+        } else {
+            // Cancelled: the empty or partial capture file goes now, not at the next launch.
+            ImageUtils.discardCapture(context, uri)
         }
+        captureUri = null
     }
 
     val pickImage = rememberLauncherForActivityResult(
@@ -133,8 +141,14 @@ fun LogScreen(
         }
     }
 
-    fun launchCamera(forLabel: Boolean) {
+    fun launchPicker(forLabel: Boolean) {
         captureForLabel = forLabel
+        pickImage.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+    }
+
+    fun startCapture() {
         val file = ImageUtils.newCaptureFile(context)
         val uri = FileProvider.getUriForFile(
             context,
@@ -142,14 +156,32 @@ fun LogScreen(
             file
         )
         captureUri = uri
-        takePicture.launch(uri)
+        try {
+            takePicture.launch(uri)
+        } catch (e: ActivityNotFoundException) {
+            ImageUtils.discardCapture(context, uri)
+            captureUri = null
+            launchPicker(captureForLabel)
+        } catch (e: SecurityException) {
+            ImageUtils.discardCapture(context, uri)
+            captureUri = null
+            launchPicker(captureForLabel)
+        }
     }
 
-    fun launchPicker(forLabel: Boolean) {
+    // The manifest declares CAMERA (for the in-app pose camera), and Android then refuses
+    // ACTION_IMAGE_CAPTURE with a SecurityException until the permission is granted.
+    val cameraPermission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) startCapture() else launchPicker(captureForLabel)
+    }
+
+    fun launchCamera(forLabel: Boolean) {
         captureForLabel = forLabel
-        pickImage.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
+        val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) ==
+            PackageManager.PERMISSION_GRANTED
+        if (granted) startCapture() else cameraPermission.launch(Manifest.permission.CAMERA)
     }
 
     LaunchedEffect(state.phase) {

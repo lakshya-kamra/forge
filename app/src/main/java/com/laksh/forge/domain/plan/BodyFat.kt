@@ -116,6 +116,23 @@ data class CombinedBodyFat(
             )
             else -> combined
         }
+
+    /**
+     * The range every safety decision uses (guardrail profile, cut-rate cap, cut-allowed and
+     * very-lean checks). photo_bf_accuracy_limits: a photo estimate never unlocks anything, and
+     * safety checks use the photo point estimate minus 6, so the low end is the lowest of the
+     * decision range, the tape range and photo-6. The combined range stays for display only.
+     */
+    val forSafety: BodyFatRange?
+        get() {
+            val base = forDecision ?: return null
+            val low = listOfNotNull(base.low, navy?.low, photo?.let { it.mid - PHOTO_SAFETY_OFFSET }).min()
+            return base.copy(low = max(low, 1.0))
+        }
+
+    companion object {
+        const val PHOTO_SAFETY_OFFSET = 6.0
+    }
 }
 
 object BodyFatCombiner {

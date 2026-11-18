@@ -26,6 +26,8 @@ import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.EmojiEvents
 import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material.icons.outlined.HealthAndSafety
+import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LoadingIndicator
@@ -53,6 +55,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.laksh.forge.data.prefs.WeightUnit
 import com.laksh.forge.domain.exercise.ExerciseCatalog
 import com.laksh.forge.ui.components.EmptyState
+import com.laksh.forge.ui.components.ForgeCard
 import com.laksh.forge.ui.components.Pill
 import com.laksh.forge.util.Dates
 import kotlinx.coroutines.delay
@@ -101,6 +104,20 @@ fun SessionScreen(
                 state.loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     LoadingIndicator(Modifier.size(64.dp))
                 }
+                state.medicalHold -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    // safety_medical_red_flags_stop: no logging until clearance is confirmed.
+                    EmptyState(
+                        icon = Icons.Outlined.HealthAndSafety,
+                        title = "Training is paused",
+                        body = MEDICAL_HOLD_TEXT,
+                        action = {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Pill("Back", filled = true, onClick = onExit)
+                                TextButton(onClick = vm::confirmClearance) { Text("A doctor has cleared me to train") }
+                            }
+                        }
+                    )
+                }
                 state.error != null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     EmptyState(
                         icon = Icons.Outlined.ErrorOutline,
@@ -113,6 +130,11 @@ fun SessionScreen(
                     contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 120.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
+                    if (state.pregnant && !state.pregnancyChecklistDone) {
+                        item(key = "pregnancy", contentType = "notice") {
+                            PregnancyChecklist(onAcknowledge = vm::acknowledgePregnancyChecklist, modifier = Modifier.animateItem())
+                        }
+                    }
                     items(state.slots, key = { it.key }, contentType = { if (it.index >= 0) "slot" else "extra" }) { slot ->
                         SlotCard(
                             slot = slot,
@@ -343,10 +365,57 @@ private fun SummaryDialog(summary: SessionSummary, unit: WeightUnit, onDone: () 
                     }
                     summary.changes.forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
                 }
+                if (summary.guidance.isNotEmpty()) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Outlined.Lightbulb, null, tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(6.dp))
+                        Text("Coaching notes", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                    }
+                    summary.guidance.forEach { Text(it, style = MaterialTheme.typography.bodySmall) }
+                }
             }
         },
         confirmButton = { TextButton(onClick = onDone) { Text("Done") } }
     )
+}
+
+internal const val MEDICAL_HOLD_TEXT =
+    "You reported symptoms that need a doctor's check before you exercise again. If you have chest pain " +
+        "that isn't easing, or you've fainted, call 112 now. Once a doctor has cleared you, confirm it here."
+
+/** ACOG Committee Opinion 804 warning signs (safety_pregnancy_no_deficit), before each session. */
+private val PREGNANCY_SIGNS = listOf(
+    "Vaginal bleeding",
+    "Feeling dizzy or faint",
+    "Shortness of breath before starting exercise",
+    "Chest pain",
+    "Headache",
+    "Muscle weakness",
+    "Calf pain or swelling",
+    "Regular painful contractions of the uterus",
+    "Fluid gushing or leaking from the vagina"
+)
+
+@Composable
+private fun PregnancyChecklist(onAcknowledge: () -> Unit, modifier: Modifier = Modifier) {
+    ForgeCard(modifier, color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f)) {
+        Text("Before you start", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Stop and contact your doctor or midwife if you have any of these, now or during the session:",
+            style = MaterialTheme.typography.bodySmall
+        )
+        Spacer(Modifier.height(6.dp))
+        PREGNANCY_SIGNS.forEach { Text("• $it", style = MaterialTheme.typography.bodySmall) }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            "Avoid lying flat on your back or standing still for long, and avoid overheating.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(Modifier.height(8.dp))
+        Pill("None of these - start", filled = true, onClick = onAcknowledge)
+    }
 }
 
 private class PrHolder {

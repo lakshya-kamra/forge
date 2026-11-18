@@ -2,6 +2,7 @@ package com.laksh.forge.data.backup
 
 import android.content.Context
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.room.withTransaction
 import com.laksh.forge.BuildConfig
 import com.laksh.forge.data.db.ForgeDatabase
@@ -11,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -105,8 +107,11 @@ object BackupManager {
         isLenient = true
     }
 
-    /** A backup bigger than this is not a Forge backup; refuse before reading it into memory. */
+    /** A backup bigger than this is not a Forge backup; refuse it without reading it all into memory. */
     private const val MAX_IMPORT_BYTES = 64L * 1024 * 1024
+
+    /** CSV exports are read whole as text, so their cap is lower to bound the String copies. */
+    private const val MAX_TEXT_IMPORT_BYTES = 16L * 1024 * 1024
 
     private fun db(context: Context) = ForgeDatabase.get(context.applicationContext)
 
@@ -230,9 +235,9 @@ object BackupManager {
 
     /** Reads and validates a Forge backup without touching the database. */
     suspend fun readBackup(context: Context, uri: Uri): ForgeBackup = withContext(Dispatchers.IO) {
-        val text = readText(context, uri)
         val backup = try {
-            json.decodeFromString(ForgeBackup.serializer(), text)
+            // Decoded straight from the stream: no full-file byte array or String copy.
+            openCapped(context, uri, MAX_IMPORT_BYTES).use { json.decodeFromStream(ForgeBackup.serializer(), it) }
         } catch (e: SerializationException) {
             throw IOException("That file isn't a Forge backup (it couldn't be read as one).")
         } catch (e: IllegalArgumentException) {
@@ -555,29 +560,27 @@ object BackupManager {
         out.use { it.write(text.toByteArray(Charsets.UTF_8)) }
     }
 
-    private fun readText(context: Context, uri: Uri): String {
+    /**
+     * Open [uri] for reading, refusing it up front when the provider reports a size over
+     * [limit] and, when it doesn't, as soon as reading passes [limit].
+     */
+    private fun openCapped(context: Context, uri: Uri, limit: Long): java.io.InputStream {
+        val size = runCatching {
+            context.contentResolver.query(uri, arrayOf(OpenableColumns.SIZE), null, null, null)?.use { c ->
+                val i = c.getColumnIndex(OpenableColumns.SIZE)
+                if (c.moveToFirst() && i >= 0 && !c.isNull(i)) c.getLong(i) else null
+            }
+        }.getOrNull()
+        if (size != null && size > limit) throw IOException(CappedInputStream.TOO_LARGE)
         val input = context.contentResolver.openInputStream(uri)
             ?: throw IOException("Couldn't open that file.")
-        return input.use { stream ->
-            val bytes = stream.readNBytesCompat(MAX_IMPORT_BYTES + 1)
-            if (bytes.size > MAX_IMPORT_BYTES) throw IOException("That file is too large to import.")
-            String(bytes, Charsets.UTF_8)
-        }
+        return CappedInputStream(input.buffered(), limit)
     }
 
-    /** InputStream.readNBytes is API 33+; this bounded read works on minSdk 26. */
-    private fun java.io.InputStream.readNBytesCompat(limit: Long): ByteArray {
-        val out = java.io.ByteArrayOutputStream()
-        val buf = ByteArray(64 * 1024)
-        var total = 0L
-        while (total < limit) {
-            val n = read(buf, 0, minOf(buf.size.toLong(), limit - total).toInt())
-            if (n < 0) break
-            out.write(buf, 0, n)
-            total += n
+    private fun readText(context: Context, uri: Uri): String =
+        openCapped(context, uri, MAX_TEXT_IMPORT_BYTES).use { stream ->
+            String(stream.readBytes(), Charsets.UTF_8)
         }
-        return out.toByteArray()
-    }
 
     private val timeFmt = DateTimeFormatter.ofPattern("HH:mm")
     private val dateTimeFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")

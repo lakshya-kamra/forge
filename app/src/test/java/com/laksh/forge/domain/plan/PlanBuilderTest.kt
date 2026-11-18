@@ -84,4 +84,13 @@ class PlanBuilderTest {
         assertThat(PlanBuilder.stepsTarget(30, 9500.0)).isEqualTo(10000)
         assertThat(PlanBuilder.stepsTarget(30, 12000.0)).isEqualTo(12000)
     }
+
+    @Test
+    fun cut_rateIsCappedSoTheProjectedEndBmiStaysHealthy() {
+        val t = PlanBuilder.build(
+            input(Phases.CUT, sex = Sex.FEMALE, weightKg = 49.0, tdee = 1900.0).copy(heightCm = 160.0)
+        )
+        val endKg = 49.0 + t.rateKgPerWeek * t.plannedWeeks
+        assertThat(endKg / (1.6 * 1.6)).isAtLeast(18.5 - 1e-6)
+    }
 }

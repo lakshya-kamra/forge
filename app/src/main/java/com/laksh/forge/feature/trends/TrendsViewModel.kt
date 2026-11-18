@@ -10,6 +10,7 @@ import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.domain.MacroTargets
 import com.laksh.forge.domain.NutritionMath
 import com.laksh.forge.domain.WeightTrend
+import com.laksh.forge.domain.plan.PlanProfileStore
 import com.laksh.forge.domain.plan.PlanTargets
 import com.laksh.forge.ui.components.ChartPoint
 import com.laksh.forge.ui.forgeFactory
@@ -75,13 +76,14 @@ class TrendsViewModel(private val repo: ForgeRepository) : ViewModel() {
             window,
             windowed,
             repo.settingsStore.settings,
-            PlanTargets.observe(repo)
-        ) { w, data, settings, planTargets ->
+            PlanTargets.observe(repo),
+            PlanProfileStore.profile
+        ) { w, data, settings, planTargets, profile ->
             val unit = settings.weightUnit
             val trend = NutritionMath.trend(data.weights)
             val weightKg = data.weights.maxByOrNull { it.timestamp }?.kg ?: 75.0
             val targets = planTargets
-                ?: NutritionMath.targets(settings, weightKg, settings.learnedTdee.takeIf { it > 0 })
+                ?: NutritionMath.targets(settings, weightKg, settings.learnedTdee.takeIf { it > 0 }, profile.kidneyDisease)
             // Days under 400 kcal are almost always partial logs, not real intake.
             val logged = data.totals.filter { it.kcal > 400 }
 

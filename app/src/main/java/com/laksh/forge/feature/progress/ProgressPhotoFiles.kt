@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import com.laksh.forge.util.ImageUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
@@ -30,29 +31,18 @@ object ProgressPhotoFiles {
      * Decode, EXIF-rotate and downscale a picked or captured image into a staging file in the
      * cache, so nothing reaches permanent storage until the person saves.
      */
-    suspend fun stage(context: Context, uri: Uri): String {
+    suspend fun stage(context: Context, uri: Uri): String = try {
         val prepared = ImageUtils.prepare(context, uri, STORE_EDGE)
-        return withContext(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             val file = File(stagingDir(context), "stage_${System.nanoTime()}.jpg")
             FileOutputStream(file).use { prepared.bitmap.compress(Bitmap.CompressFormat.JPEG, 90, it) }
             prepared.bitmap.recycle()
-            discardCameraCapture(context, uri)
             file.absolutePath
         }
-    }
-
-    /**
-     * The in-app camera writes full-resolution captures into the cache; once staged they are
-     * redundant copies of a body photo, so they are removed rather than left for the OS to
-     * evict. Only files inside this app's cache are touched - never a gallery original.
-     */
-    private fun discardCameraCapture(context: Context, uri: Uri) {
-        if (uri.scheme != "file") return
-        val path = uri.path ?: return
-        runCatching {
-            val f = File(path).canonicalFile
-            if (f.path.startsWith(context.cacheDir.canonicalPath)) f.delete()
-        }
+    } finally {
+        // The in-app camera writes full-resolution captures into the cache; staged or not
+        // (a decode failure, a cancelled screen), the body photo must not linger there.
+        withContext(NonCancellable + Dispatchers.IO) { ImageUtils.discardCapture(context, uri) }
     }
 
     /** Move a staged photo into permanent private storage and return its new path. */

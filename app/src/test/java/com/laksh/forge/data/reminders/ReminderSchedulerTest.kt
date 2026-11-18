@@ -1,5 +1,6 @@
 package com.laksh.forge.data.reminders
 
+import androidx.work.ExistingWorkPolicy
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import java.time.ZoneId
@@ -37,5 +38,16 @@ class ReminderSchedulerTest {
         val next = ReminderScheduler.nextOccurrence(now, 2 * 60 + 30)
         assertThat(next.isAfter(now)).isTrue()
         assertThat(next.toLocalDate()).isEqualTo(now.toLocalDate())
+    }
+
+    @Test
+    fun `launch re-anchor keeps a running or due job instead of replacing it`() {
+        assertThat(ReminderScheduler.policyFor(null, 7 * 60)).isEqualTo(ExistingWorkPolicy.KEEP)
+        assertThat(ReminderScheduler.policyFor(7 * 60, 7 * 60)).isEqualTo(ExistingWorkPolicy.KEEP)
+    }
+
+    @Test
+    fun `a changed time replaces the queued job`() {
+        assertThat(ReminderScheduler.policyFor(7 * 60, 8 * 60)).isEqualTo(ExistingWorkPolicy.REPLACE)
     }
 }

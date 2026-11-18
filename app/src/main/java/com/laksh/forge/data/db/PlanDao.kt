@@ -22,6 +22,9 @@ interface PlanDao {
     @Query("SELECT * FROM phase_plan ORDER BY createdAt DESC")
     fun observePlans(): Flow<List<PhasePlan>>
 
+    @Query("SELECT * FROM phase_plan ORDER BY createdAt ASC")
+    suspend fun allPlans(): List<PhasePlan>
+
     @Query("UPDATE phase_plan SET isActive = 0")
     suspend fun clearActivePlan()
 

@@ -223,6 +223,10 @@ fun TodayContent(
     val listState = rememberLazyListState()
     val playIntro = remember { !TodayIntro.played }
     SideEffect { TodayIntro.played = true }
+    // Lazy items are disposed when scrolled away (and hero/tiles when loading flips), so each
+    // item's entrance plays at most once per screen, not every time it comes back into view.
+    val introShown = remember { HashSet<Int>() }
+    fun intro(index: Int): Boolean = playIntro && introShown.add(index)
 
     // A tick when the pull passes the point where letting go will refresh.
     LaunchedEffect(pullState) {
@@ -256,7 +260,7 @@ fun TodayContent(
                     dateLong = state.dateLong,
                     isToday = state.isToday,
                     onShift = onShiftDay,
-                    modifier = Modifier.enterStagger(0, playIntro)
+                    modifier = Modifier.enterStagger(0, intro(0))
                 )
             }
 
@@ -273,21 +277,21 @@ fun TodayContent(
             }
 
             item(key = "hero", contentType = "hero") {
-                HeroCard(state, Modifier.enterStagger(1, playIntro))
+                HeroCard(state, Modifier.enterStagger(1, intro(1)))
             }
 
             if (state.isToday) {
                 item(key = "plan", contentType = "slot") {
-                    Box(Modifier.enterStagger(2, playIntro)) { planSlot() }
+                    Box(Modifier.enterStagger(2, intro(2))) { planSlot() }
                 }
                 item(key = "readiness", contentType = "slot") {
-                    Box(Modifier.enterStagger(3, playIntro)) { readinessSlot() }
+                    Box(Modifier.enterStagger(3, intro(3))) { readinessSlot() }
                 }
             }
 
             item(key = "tiles", contentType = "tiles") {
                 Row(
-                    Modifier.enterStagger(4, playIntro),
+                    Modifier.enterStagger(4, intro(4)),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     WeightTile(

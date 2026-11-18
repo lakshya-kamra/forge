@@ -107,4 +107,22 @@ class NavyBodyFatTest {
         assertThat(wider.low).isWithin(1e-9).of(10.0)
         assertThat(wider.high).isWithin(1e-9).of(30.0)
     }
+
+    @Test
+    fun forSafety_photoNeverRaisesTheLowerBoundAboveTheTape() {
+        // Review case: tape 11-21, photo 22 -> combined low ~14 would unlock the 0.7 %/wk tier.
+        val navy = BodyFatRange(11.0, 21.0, 16.0, BodyFatMethod.NAVY)
+        val photo = BodyFatCombiner.photoRange(22.0, 15.0, 29.0)
+        val c = BodyFatCombiner.combine(navy, photo)
+        assertThat(c.combined!!.low).isGreaterThan(13.0)
+        assertThat(c.forSafety!!.low).isWithin(1e-9).of(11.0)
+        assertThat(PlanBuilder.cutRateCapPct(Sex.MALE, c.forSafety)).isWithin(1e-9).of(0.5)
+    }
+
+    @Test
+    fun forSafety_photoOnlyUsesEstimateMinusSixAtMost() {
+        val photo = BodyFatRange(25.0, 35.0, 30.0, BodyFatMethod.VISUAL_AI)
+        val c = BodyFatCombiner.combine(null, photo)
+        assertThat(c.forSafety!!.low).isWithin(1e-9).of(24.0)
+    }
 }

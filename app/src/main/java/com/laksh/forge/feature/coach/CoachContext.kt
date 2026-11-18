@@ -158,7 +158,10 @@ object CoachContext {
             withTimeoutOrNull(1_500) { PlanTargets.observe(repo).first() }
         }.getOrNull()
         val targets = planTargets ?: weightKg?.let {
-            NutritionMath.targets(s, it, s.learnedTdee.takeIf { t -> t > 0 })
+            NutritionMath.targets(
+                s, it, s.learnedTdee.takeIf { t -> t > 0 },
+                runCatching { PlanProfileStore.current().kidneyDisease }.getOrDefault(false)
+            )
         }
         if (targets != null) {
             appendLine(

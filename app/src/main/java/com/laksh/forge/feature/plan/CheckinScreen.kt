@@ -188,6 +188,27 @@ private fun CheckinForm(
             )
         }
 
+        state.safetyCheck?.let { message ->
+            // safety_low_intake_rapid_loss_checkin: a calm check-in with three ways forward.
+            NoteCard(title = "Checking in", body = message, tone = NoteTone.SUPPORT) {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    OutlinedButton(onClick = vm::dismissSafetyCheck, shapes = ButtonDefaults.shapes()) {
+                        Text("I'm fine, or I've been ill or travelling")
+                    }
+                    if (!state.scoffNeeded) {
+                        OutlinedButton(onClick = vm::startScoff, shapes = ButtonDefaults.shapes()) {
+                            Text("Take the eating check")
+                        }
+                    }
+                    Text(
+                        "To adjust your plan instead, use Re-plan on the Plan screen.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+
         if (state.scoffNeeded) {
             SectionHeader("Quick eating check")
             Text(
@@ -222,6 +243,7 @@ private fun CheckinForm(
             )
         }
         proposal?.notes?.forEach { NoteCard(title = "Worth knowing", body = it, tone = NoteTone.SUPPORT) }
+        state.safetyNotes.forEach { NoteCard(title = "Worth knowing", body = it, tone = NoteTone.SUPPORT) }
 
         state.error?.let { NoteCard(title = "Saving didn't work", body = it, tone = NoteTone.CAUTION) }
 

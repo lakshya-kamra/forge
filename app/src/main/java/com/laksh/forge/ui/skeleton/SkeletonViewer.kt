@@ -236,28 +236,71 @@ fun ExerciseDemo(
     height: Dp = 340.dp,
     fallback: @Composable (String) -> Unit
 ) {
-    val built by produceState<Result<SkeletonScene>?>(null, motion) {
-        value = withContext(Dispatchers.Default) {
-            runCatching { SkeletonScene(motion, primaryMuscles, secondaryMuscles) }
+    // The hero sits in a lazy list: scrolling it away disposes it, so the built scene (and its
+    // controller, below) are cached outside composition and come back on the first frame.
+    val built by produceState(DemoScenes.peek(motion)?.let { Result.success(it) }, motion) {
+        if (value == null) {
+            value = withContext(Dispatchers.Default) {
+                runCatching { DemoScenes.getOrBuild(motion) { SkeletonScene(motion, primaryMuscles, secondaryMuscles) } }
+            }
         }
     }
     val result = built
     when {
-        result == null -> ShimmerBlock(
-            modifier
-                .fillMaxWidth()
-                .height(height),
-            RoundedCornerShape(32.dp)
-        )
+        // Same total height as DemoContent (hero + controls), so nothing below jumps when it lands.
+        result == null -> Column(modifier.fillMaxWidth()) {
+            ShimmerBlock(
+                Modifier
+                    .fillMaxWidth()
+                    .height(height),
+                RoundedCornerShape(32.dp)
+            )
+            Spacer(Modifier.height(12.dp))
+            ShimmerBlock(
+                Modifier
+                    .fillMaxWidth()
+                    .height(DEMO_CONTROLS_HEIGHT),
+                RoundedCornerShape(24.dp)
+            )
+        }
         result.isFailure -> fallback(result.exceptionOrNull()?.message ?: "The 3D demo could not be built.")
         else -> DemoContent(result.getOrThrow(), modifier, height)
+    }
+}
+
+/** Approximate height of the play/scrub/speed row, phase legend and view choices. */
+private val DEMO_CONTROLS_HEIGHT = 138.dp
+
+/**
+ * Built demo scenes and their controllers for the last few exercises opened, so returning to
+ * the hero keeps its orbit, zoom, view and playback position instead of rebuilding.
+ */
+private object DemoScenes {
+    private const val MAX = 4
+    private class Entry(val scene: SkeletonScene) { var controller: DemoController? = null }
+    private val cache = object : LinkedHashMap<ExerciseMotion, Entry>(MAX, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<ExerciseMotion, Entry>?): Boolean = size > MAX
+    }
+
+    fun peek(motion: ExerciseMotion): SkeletonScene? = synchronized(cache) { cache[motion]?.scene }
+
+    fun getOrBuild(motion: ExerciseMotion, build: () -> SkeletonScene): SkeletonScene {
+        peek(motion)?.let { return it }
+        val scene = build()
+        synchronized(cache) { cache.getOrPut(motion) { Entry(scene) } }
+        return scene
+    }
+
+    fun controller(scene: SkeletonScene, create: () -> DemoController): DemoController = synchronized(cache) {
+        val entry = cache.values.firstOrNull { it.scene === scene } ?: return@synchronized create()
+        entry.controller ?: create().also { entry.controller = it }
     }
 }
 
 @Composable
 private fun DemoContent(scene: SkeletonScene, modifier: Modifier, height: Dp) {
     val reduceMotion = LocalReduceMotion.current
-    val ctrl = remember(scene) { DemoController(scene, autoPlay = !reduceMotion) }
+    val ctrl = remember(scene) { DemoScenes.controller(scene) { DemoController(scene, autoPlay = !reduceMotion) } }
     val colors = rememberSkeletonColors()
     val haptics = LocalHapticFeedback.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -581,10 +624,14 @@ private fun phaseColor(kind: PhaseKind): Color = when (kind) {
  * map: the least recently shown preview is dropped first.
  */
 private object ThumbnailScenes {
-    private const val MAX = 24
+    // Larger than the catalog (62 motions): scenes are small, and evicting them made every row
+    // re-solve its pose when scrolled back into view.
+    private const val MAX = 96
     private val cache = object : LinkedHashMap<String, SkeletonScene>(MAX, 0.75f, true) {
         override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, SkeletonScene>?): Boolean = size > MAX
     }
+
+    fun peek(id: String): SkeletonScene? = synchronized(cache) { cache[id] }
 
     fun get(id: String, primary: List<String>): SkeletonScene? {
         synchronized(cache) { cache[id]?.let { return it } }
@@ -606,8 +653,9 @@ fun SkeletonThumbnail(
     modifier: Modifier = Modifier
 ) {
     val colors = rememberSkeletonColors()
-    val scene by produceState<SkeletonScene?>(null, exerciseId) {
-        value = withContext(Dispatchers.Default) { ThumbnailScenes.get(exerciseId, primaryMuscles) }
+    // A cache hit draws on the first frame; only a miss goes to Default.
+    val scene by produceState(ThumbnailScenes.peek(exerciseId), exerciseId) {
+        if (value == null) value = withContext(Dispatchers.Default) { ThumbnailScenes.get(exerciseId, primaryMuscles) }
     }
     Box(
         modifier.drawWithCache {

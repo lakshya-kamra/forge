@@ -12,6 +12,7 @@ import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.wearables.WearableSync
 import com.laksh.forge.domain.MacroTargets
 import com.laksh.forge.domain.NutritionMath
+import com.laksh.forge.domain.plan.PlanProfileStore
 import com.laksh.forge.domain.plan.PlanTargets
 import com.laksh.forge.ui.forgeFactory
 import com.laksh.forge.util.Dates
@@ -91,7 +92,8 @@ private data class Day(
 private data class DayContext(
     val weight: WeightEntry?,
     val settings: ForgeSettings,
-    val planTargets: MacroTargets?
+    val planTargets: MacroTargets?,
+    val kidneyDisease: Boolean = false
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -129,8 +131,9 @@ class TodayViewModel(private val repo: ForgeRepository) : ViewModel() {
         val context = combine(
             repo.weightDao.observeLatest(),
             repo.settingsStore.settings,
-            PlanTargets.observe(repo)
-        ) { weight, settings, plan -> DayContext(weight, settings, plan) }
+            PlanTargets.observe(repo),
+            PlanProfileStore.profile
+        ) { weight, settings, plan, profile -> DayContext(weight, settings, plan, profile.kidneyDisease) }
 
         return combine(
             selectedDate,
@@ -144,7 +147,8 @@ class TodayViewModel(private val repo: ForgeRepository) : ViewModel() {
             val targets = ctx.planTargets ?: NutritionMath.targets(
                 ctx.settings,
                 ctx.weight?.kg ?: 75.0,
-                ctx.settings.learnedTdee.takeIf { it > 0 }
+                ctx.settings.learnedTdee.takeIf { it > 0 },
+                ctx.kidneyDisease
             )
             TodayState(
                 loading = false,

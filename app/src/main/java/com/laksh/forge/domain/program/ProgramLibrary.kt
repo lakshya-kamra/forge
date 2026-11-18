@@ -250,6 +250,13 @@ object ProgramLibrary {
     fun recommend(level: String, goal: String, daysPerWeek: Int?): List<LibraryProgramSummary> =
         rank(programs, level, goal, daysPerWeek).take(3).map { it.toSummary() }
 
+    /** [recommend] limited to programs whose equipment is all in [available] (null = anything). */
+    fun recommend(level: String, goal: String, daysPerWeek: Int?, available: Set<String>?): List<LibraryProgramSummary> =
+        rank(programs.filter { fitsEquipment(it, available) }, level, goal, daysPerWeek).take(3).map { it.toSummary() }
+
+    fun fitsEquipment(p: LibraryProgram, available: Set<String>?): Boolean =
+        available == null || p.equipment.all { it in available }
+
     /** Full ranking, exposed for the library screen and tests. */
     fun rank(
         candidates: List<LibraryProgram>,

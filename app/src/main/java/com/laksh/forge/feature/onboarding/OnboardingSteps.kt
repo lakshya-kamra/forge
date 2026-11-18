@@ -17,6 +17,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -113,7 +114,8 @@ internal fun StepContent(
     step: OnboardingStep,
     state: OnboardingUiState,
     vm: OnboardingViewModel,
-    onCapture: (List<Pose>) -> Unit
+    onCapture: (List<Pose>) -> Unit,
+    onOpenProgram: ((String) -> Unit)? = null
 ) {
     Column(
         Modifier
@@ -132,7 +134,7 @@ internal fun StepContent(
             OnboardingStep.PHOTOS -> PhotosStep(state, vm, onCapture)
             OnboardingStep.ANALYSIS -> AnalysisStep(state, vm)
             OnboardingStep.RECOMMENDATION -> RecommendationStep(state, vm)
-            OnboardingStep.REVIEW -> ReviewStep(state)
+            OnboardingStep.REVIEW -> ReviewStep(state, onOpenProgram)
             OnboardingStep.ACCEPT -> AcceptStep(state)
         }
     }
@@ -630,9 +632,11 @@ private fun PhotosStep(state: OnboardingUiState, vm: OnboardingViewModel, onCapt
             title = "Photo analysis is off during pregnancy",
             body = "You can still save photos for your own record; Forge won't estimate body fat from them."
         )
-        !state.aiConfigured -> NoteCard(
-            title = "Saved for your own record",
-            body = "No AI provider is set up, so photos are kept on this phone without analysis. Your tape measurements still give a body-fat range."
+        !state.aiConfigured -> ConnectAiCard(
+            body = "No AI provider is set up yet, so photos are kept on this phone without analysis. Your tape " +
+                "measurements still give a body-fat range. Add a key from any supported provider to get a photo " +
+                "estimate and an AI-chosen plan.",
+            onConnect = vm::openAiSetup
         )
         state.photoAnalysisAllowed && d.photos.isNotEmpty() -> ForgeCard {
             SwitchRow(
@@ -762,10 +766,20 @@ private fun AnalysisStep(state: OnboardingUiState, vm: OnboardingViewModel) {
     }
     a.photoNote?.let { note ->
         NoteCard(title = "About your photos", body = note) {
-            if (state.draft.photos.isNotEmpty() && state.photoAnalysisAllowed && state.draft.photoConsent && state.aiConfigured) {
+            if (state.draft.photos.isNotEmpty() && state.photoAnalysisAllowed && state.draft.photoConsent &&
+                state.aiConfigured && !a.photoRateLimited
+            ) {
                 OutlinedButton(onClick = vm::retryAnalysis, shapes = ButtonDefaults.shapes()) { Text("Try the photo estimate again") }
             }
         }
+    }
+}
+
+/** Optional: opens Settings > AI on top of onboarding; nothing is required to continue. */
+@Composable
+private fun ConnectAiCard(body: String, onConnect: () -> Unit) {
+    NoteCard(title = "Connect an AI provider (optional)", body = body) {
+        OutlinedButton(onClick = onConnect, shapes = ButtonDefaults.shapes()) { Text("Add an AI key") }
     }
 }
 
@@ -812,6 +826,13 @@ private fun RecommendationStep(state: OnboardingUiState, vm: OnboardingViewModel
             OutlinedButton(onClick = vm::retryPlan, shapes = ButtonDefaults.shapes()) { Text("Try again") }
         }
         return
+    }
+    if (!state.aiConfigured) {
+        ConnectAiCard(
+            body = "This plan comes from Forge's built-in rules. With an AI key, the AI weighs your answers and " +
+                "measurements to pick the phase, always inside the same safety rules.",
+            onConnect = vm::openAiSetup
+        )
     }
     Column(
         Modifier
@@ -862,7 +883,7 @@ private fun RecommendationStep(state: OnboardingUiState, vm: OnboardingViewModel
 // ---------------------------------------------------------------------------- 9 review
 
 @Composable
-private fun ReviewStep(state: OnboardingUiState) {
+private fun ReviewStep(state: OnboardingUiState, onOpenProgram: ((String) -> Unit)?) {
     val p = state.proposal ?: return
     val d = state.draft
     val hide = d.hideNumbers
@@ -926,6 +947,7 @@ private fun ReviewStep(state: OnboardingUiState) {
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(16.dp))
                         .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                        .then(if (onOpenProgram != null) Modifier.clickable { onOpenProgram(prog.id) } else Modifier)
                         .padding(12.dp)
                 ) {
                     Text(prog.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
@@ -934,7 +956,11 @@ private fun ReviewStep(state: OnboardingUiState) {
                 }
             }
             Spacer(Modifier.height(6.dp))
-            Text("Find them in Train → Library.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                if (onOpenProgram != null) "Tap one to see it, or find them later in Train → Library." else "Find them in Train → Library.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 

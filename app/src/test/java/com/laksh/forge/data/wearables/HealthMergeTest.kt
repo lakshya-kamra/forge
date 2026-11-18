@@ -64,4 +64,16 @@ class HealthMergeTest {
         assertThat(row.hrvMs).isEqualTo(45.0)
         assertThat(row.sources).isEqualTo("com.huami.watch.hmwatchmanager,whoop")
     }
+
+    @Test
+    fun aValueTheSourceRetractedIsClearedNotKept() {
+        // A bogus 50,000-step session was synced, then deleted in Health Connect.
+        val existing = HealthDaily(localDate = "2026-11-17", steps = 50_000, recoveryScore = 67.0, syncedAt = 0L, sources = "hc")
+        val row = HealthMerge.merge(
+            "2026-11-17", emptyMap(), existing, 5L, retracted = setOf(HealthField.STEPS)
+        )
+        assertThat(row.steps).isNull()
+        // Fields nobody retracted (a v1 value, say) are still kept.
+        assertThat(row.recoveryScore).isEqualTo(67.0)
+    }
 }

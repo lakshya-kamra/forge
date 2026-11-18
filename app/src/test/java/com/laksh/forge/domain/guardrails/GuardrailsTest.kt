@@ -332,4 +332,24 @@ class GuardrailsTest {
         assertThat(Guardrails.neutralizeLanguage("Have a cheat meal on Sunday")).isEqualTo("Have a flexible meal on Sunday")
         assertThat(Guardrails.neutralizeLanguage("Skip the junk food")).isEqualTo("Skip the higher-energy foods")
     }
+
+    // ------------------------------------------------------------------ projected BMI
+
+    @Test
+    fun cutWhoseEndWeightWouldBeUnderweightIsBlocked() {
+        // 160 cm, 48 kg (BMI 18.75): even 0.25 %/wk for 12 weeks ends below BMI 18.5.
+        val p = person(sex = Sex.FEMALE, heightCm = 160.0, weightKg = 48.0)
+        assertThat(p.bmi).isAtLeast(18.5)
+        assertThat(Guardrails.deficitBlockers(p).map { it.id }).contains("safety_bmi_underweight_no_deficit")
+        assertThat(Phases.CUT).isNotIn(Guardrails.allowedPhases(p))
+    }
+
+    @Test
+    fun slowCutThatStaysHealthyIsAllowedButRateIsCapped() {
+        val p = person(sex = Sex.FEMALE, heightCm = 160.0, weightKg = 49.0)
+        assertThat(Guardrails.deficitBlockers(p)).isEmpty()
+        val cap = Guardrails.maxLossPctForHealthyBmi(p, Guardrails.CUT_PLAN_WEEKS)!!
+        val endKg = 49.0 - cap / 100.0 * 49.0 * Guardrails.CUT_PLAN_WEEKS
+        assertThat(endKg / (1.6 * 1.6)).isWithin(1e-6).of(18.5)
+    }
 }

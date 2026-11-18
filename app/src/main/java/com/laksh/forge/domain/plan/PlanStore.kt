@@ -9,11 +9,15 @@ import com.laksh.forge.data.db.PlanDao
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.prefs.PregnancyStatus
 import com.laksh.forge.domain.NutritionMath
+import com.laksh.forge.domain.guardrails.GuardrailFlag
 import com.laksh.forge.domain.guardrails.GuardrailProfile
 import com.laksh.forge.domain.guardrails.Guardrails
 import com.laksh.forge.domain.guardrails.Phases
 import com.laksh.forge.util.Dates
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.time.LocalDate
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -58,13 +62,44 @@ object PlanStore {
     fun guardrailProfile(s: ForgeSettings, weightKg: Double, bodyFatLow: Double?): GuardrailProfile =
         Guardrails.profileFrom(s, weightKg, if (s.isMinor) null else bodyFatLow)
 
-    /** Guardrails first, then the extra holds this feature knows about (medical, crisis). */
-    fun allowedPhases(profile: GuardrailProfile, plan: PlanProfile, s: ForgeSettings): Set<String> {
+    /**
+     * Guardrails first, then the extra holds this feature knows about (medical, crisis, and the
+     * maintenance weeks owed after a 16-week cut, passed as [newCutBlock]).
+     */
+    fun allowedPhases(
+        profile: GuardrailProfile,
+        plan: PlanProfile,
+        s: ForgeSettings,
+        newCutBlock: GuardrailFlag? = null
+    ): Set<String> {
         var allowed = Guardrails.allowedPhases(profile)
         val noDeficit = plan.medicalHold || plan.crisisLockActive() || s.isMinor ||
-            s.pregnancyStatus != PregnancyStatus.NONE || s.edScreenPositive
+            s.pregnancyStatus != PregnancyStatus.NONE || s.edScreenPositive || newCutBlock != null
         if (noDeficit) allowed = allowed - Phases.CUT
         return allowed
+    }
+
+    /** Today, Trends, the widget and the coach can start observing at once; switch only once. */
+    private val cutLimitLock = Mutex()
+
+    suspend fun cutHistory(): CutHistory = CutHistory.of(planDao.allPlans(), LocalDate.parse(Dates.today()))
+
+    /** Guardrails.newCutFlag for the plan history: non-null (BLOCK) while a new cut must wait. */
+    suspend fun newCutBlock(): GuardrailFlag? = cutHistory().newCutFlag
+
+    /**
+     * nutrition_max_cut_length: end the deficit automatically at 16 weeks, whether or not a
+     * check-in was saved. Runs whenever the active plan is observed.
+     */
+    suspend fun enforceCutLimit(repo: ForgeRepository): Boolean = cutLimitLock.withLock {
+        val plan = planDao.activePlan() ?: return@withLock false
+        if (plan.phase != Phases.CUT || !cutHistory().cutLimitReached) return@withLock false
+        switchToMaintenance(
+            repo,
+            "Your cut has reached 16 weeks, so Forge has moved you to maintenance. Spend at least 4 weeks here " +
+                "before another deficit; it lets hormones, training and hunger settle."
+        )
+        true
     }
 
     fun safetyHolds(s: ForgeSettings, plan: PlanProfile): Set<SafetyHold> = buildSet {
@@ -224,7 +259,7 @@ object PlanStore {
         val profile = PlanProfileStore.current()
         val weightKg = latestWeightKg(repo) ?: plan.details()?.weightKgAtStart ?: return false
         val gp = guardrailProfile(s, weightKg, plan.details()?.bodyFat?.low)
-        if (plan.phase in allowedPhases(gp, profile, s)) return false
+        if (plan.phase in allowedPhases(gp, profile, s, if (plan.phase == Phases.CUT) newCutBlock() else null)) return false
         switchToMaintenance(
             repo,
             "Your details changed in a way that means Forge won't plan a ${PhaseCopy.name(plan.phase).lowercase()} " +

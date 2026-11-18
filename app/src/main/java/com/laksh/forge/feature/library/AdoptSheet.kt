@@ -69,7 +69,8 @@ internal fun AdoptSheet(
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val haptics = LocalHapticFeedback.current
-    var rounding by rememberSaveable { mutableDoubleStateOf(2.5) }
+    // lb lifters default to 5 lb so prescriptions land on loads a pound plate set can make.
+    var rounding by rememberSaveable { mutableDoubleStateOf(Strength.defaultStep(unit)) }
     // Text per field, in the user's display unit, keyed "BASIS|key" like the stored values.
     val text = remember(fields) {
         mutableStateMapOf<String, String>().apply {
@@ -107,15 +108,16 @@ internal fun AdoptSheet(
                     Text("Smallest jump you can load", style = MaterialTheme.typography.labelLarge)
                     Spacer(Modifier.height(6.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        listOf(2.5 to "2.5 kg", 1.25 to "1.25 kg (small plates)").forEach { (v, label) ->
+                        Strength.plateSteps(unit).mapIndexed { i, (v, l) -> v to if (i == 1) "$l (small plates)" else l }
+                            .forEach { (v, label) ->
                             FilterChip(
-                                selected = rounding == v,
+                                selected = Strength.sameStep(rounding, v),
                                 onClick = {
                                     haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
                                     rounding = v
                                 },
                                 label = { Text(label) },
-                                leadingIcon = if (rounding == v) {
+                                leadingIcon = if (Strength.sameStep(rounding, v)) {
                                     { Icon(Icons.Outlined.Check, null, Modifier.size(FilterChipDefaults.IconSize)) }
                                 } else null,
                                 shape = MaterialTheme.shapes.extraLarge
