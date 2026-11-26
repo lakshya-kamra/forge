@@ -1,0 +1,350 @@
+{
+  "meta": {
+    "compiledOn": "2026-11-21",
+    "scope": "Accuracy of vision-language models (VLMs) for meal-photo calorie/macro estimation, nutrition-label reading, and visual body-fat estimation vs DXA. Used to set Forge model-selection guardrails.",
+    "method": "Abstracts retrieved via PubMed E-utilities and arXiv; full text read where open (PMC, arXiv HTML, nature.com). Numbers are copied from the source. Entries flagged 'verification' say how far each was checked.",
+    "caveat": "Studies use different datasets, cuisines, prompts and metrics (MAE, MAPE, MedAPE, sMAPE, RMSLE, CCC), so cross-study numbers are not directly comparable. No study tested Indian home-cooked food with modern VLMs."
+  },
+  "studies": [
+    {
+      "citation": "Vedovelli L, Pugnaloni S, Lanera C, Sabbatini D, Bhuyan MJ, Lorenzoni G, Gregori D. Model architecture dominates nutritional estimation accuracy in vision-language systems. Sci Rep 2026 (online ahead of print). doi:10.1038/s41598-026-58755-w. PMID 42350490",
+      "url": "https://www.nature.com/articles/s41598-026-58755-w",
+      "date": "2026-06-25",
+      "task": "FOOD_PHOTO: energy, carbohydrate, protein and fat from Nutrition5k dish photos plus original smartphone dish photos; benchmarked against professional nutritionists",
+      "modelsTested": [
+        "OpenAI: gpt-5, gpt-5-mini, gpt-5-nano, gpt-5-chat, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-4o, gpt-4o-mini",
+        "Anthropic: claude-opus-4, claude-opus-4.1, claude-sonnet-4, claude-sonnet-4.5, Claude 3.7 Sonnet, Claude 3 Opus, Claude 3 Haiku",
+        "Google: gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.5-pro, gemini-2.0-flash-001, gemma-3-27b-it, gemma-3-12b-it",
+        "Mistral: pixtral-12b, pixtral-large-2411, Mistral Small, Mistral Medium",
+        "Other: qwen3-vl-235b, qwen2.5-vl-32b-instruct, llama-3.2-90b-vision-instruct, llama-4-scout, llama-4-maverick, grok-4, grok-4-fast, ByteDance UI-TARS 1.5-7b",
+        "Single-image only: gpt-5-pro, claude-haiku-4.5, andromeda-alpha; supplementary: gemini-3-pro-preview, gpt-5.1, gpt-5.1-chat",
+        "All accessed via OpenRouter, October 2025 versions"
+      ],
+      "metric": "RMSLE macro-averaged over energy/carb/protein/fat (primary); sMAPE; MAE",
+      "results": "Single-image top 5 (temperature 0.1): GPT-5-chat RMSLE 0.545, sMAPE 45.6%, energy MAE 37.1 kcal; GPT-4o 0.614 / 48.9% / 42.3 kcal; GPT-4.1 0.621 / 49.2% / 43.7 kcal; Gemini 2.5 Flash 0.647 / 50.8% / 45.9 kcal; Gemini 2.0 Flash 0.661 / 51.4% / 47.2 kcal. Best-to-worst model spread 1.35x. Model architecture explained 99.6% of performance variance. Multi-angle photos gave no benefit (RMSLE 0.627 vs 0.623, p=0.182). Prompt strategies had no significant effect after correction. High-quality smartphone photos beat lab images (0.548 vs 0.616, p=0.020). Ingredient descriptions helped a little (0.548 to 0.516, p=0.039). Nutritionists RMSLE 0.176 vs best AI 0.443 on HQ images, and AI protein estimation was 672% worse. Fat, driven by hidden oils, was the main source of dish-level error: difficult-dish fat RMSLE 1.855 vs 0.220 for easy dishes.",
+      "takeaways": "The largest benchmark found. Which model you pick matters far more than prompt tricks or multi-angle capture. Frontier OpenAI and Gemini Flash models led, and cheap Gemini 2.0/2.5 Flash sat in the top 5. Hidden fat and oil are the dominant error, which matters for Indian food cooked in ghee or oil. Nutrition5k cafeteria plates are small, so the low absolute kcal MAE understates error on full meals. Full per-model table (Table 5) not extracted; the rank positions of Claude and open models were not verified.",
+      "verification": "Abstract (PubMed) plus full-text passages read from nature.com HTML"
+    },
+    {
+      "citation": "Coburn B, He J, Rollo ME, Dhaliwal SS, Kerr DA, Zhu F. Evaluating/Comprehensive Evaluation of Large Multimodal Models for Nutrition Analysis: A New Benchmark Enriched with Contextual Metadata. arXiv:2507.07048 (v2)",
+      "url": "https://arxiv.org/abs/2507.07048",
+      "date": "2025-07 (v1); v2 2025-10-03",
+      "task": "FOOD_PHOTO: calories and macros from 806 before-meal images (ACETADA controlled-feeding study, Perth, Australia, dietitian-verified), with and without GPS/timestamp/food-name metadata",
+      "modelsTested": [
+        "GPT-4o",
+        "GPT-4.1",
+        "Claude 3.7 Sonnet (paper also says 'Claude 3 Sonnet' in one place)",
+        "Gemini 2.5 Pro",
+        "Janus-Pro 7B",
+        "Gemma-3-IT 27B",
+        "LLaMA-3.2-Vision-Instruct (size stated inconsistently: 90B in text, 11B model card linked)",
+        "Qwen2.5-VL 72B"
+      ],
+      "metric": "MAE and MAPE for kcal, protein, carbohydrate, fat (absolute error only, no signed bias)",
+      "results": "Baseline calorie MAPE: GPT-4.1 23.29%, Claude 3.7 Sonnet 23.88%, GPT-4o 24.48%, Gemma-3 27B 27.67%, Qwen2.5-VL 72B 33.90%, Gemini 2.5 Pro 34.11%, LLaMA-3.2-Vision 66.22%, Janus-Pro 7B 86.29%. Baseline calorie MAE: GPT-4o 165.77, GPT-4.1 170.02, Claude 3.7 181.68, Gemma-3 187.54, Gemini 2.5 Pro 211.04, Qwen2.5-VL 276.04, Janus-Pro 477.79, LLaMA-3.2-Vision 496.47 kcal. With the best metadata, the closed models reached 153-170 kcal MAE (MAPE 21-28%). Fat MAPE at baseline ranged 32-54% for closed models and up to 201% for LLaMA-3.2-Vision.",
+      "takeaways": "The closed frontier models clustered at about 23-24% calorie MAPE on real mixed meals. Gemma-3 27B was the only open model near them. Small or older open models such as Janus-Pro 7B and LLaMA-3.2-Vision degraded badly, with 66-86% MAPE and implausible fat values. Adding food names or metadata cuts error. Forge should pass the user's own food name or description when it has one.",
+      "verification": "arXiv v2 HTML full text read. The metadata-adjusted values were derived as baseline minus the reported delta."
+    },
+    {
+      "citation": "Rodriguez-Jimenez M, Martin-del-Campo-Becerra GD, Sumalla-Cano S, Crespo-Alvarez J, Elio I. Image-Based Dietary Energy and Macronutrients Estimation with ChatGPT-5: Cross-Source Evaluation Across Escalating Context Scenarios. Nutrients 2025;17(22):3613. doi:10.3390/nu17223613",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12655113/",
+      "date": "2025-11-19",
+      "task": "FOOD_PHOTO: energy and macros for 195 dishes (Allrecipes 96, SNAPMe 74, 25 home-prepared and weighed by a dietitian) under 4 context levels",
+      "modelsTested": [
+        "ChatGPT-5 (Plus web interface, default settings)"
+      ],
+      "metric": "MAE, MAPE, RMSE",
+      "results": "Energy, image only: MAE 123.03 kcal, MAPE 30.51%. Image plus non-visual descriptors: 92.04 kcal / 24.35%. Image plus ingredient list: 53.33 kcal / 13.92%. Ingredient list only: 66.51 kcal / 18.05%. Image-only macro MAPE: protein 42.58%, carbohydrate 41.95%, lipid 52.88%. Signed bias was not reported numerically. Scatter plots showed both over- and underestimation.",
+      "takeaways": "Context roughly halves the error. An ingredient list takes energy MAPE from 31% to 14%. Forge's FOOD_PHOTO prompt should accept optional user text, such as 'paneer butter masala, 1 katori, made with 2 tbsp ghee', and treat it as high-weight evidence.",
+      "verification": "PMC full text (first 100k characters) read"
+    },
+    {
+      "citation": "Fridolfsson J, Sjoberg E, Thiwang M, Pettersson S. Performance Evaluation of 3 Large Language Models for Nutritional Content Estimation from Food Images. Curr Dev Nutr 2025;9(10):107556. doi:10.1016/j.cdnut.2025.107556",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41081011/",
+      "date": "2025-09-09",
+      "task": "FOOD_PHOTO: weight, energy and macros from 52 standardized photos (16 single components, 36 meals, 3 portion sizes)",
+      "modelsTested": [
+        "ChatGPT-4o",
+        "Claude 3.5 Sonnet",
+        "Gemini 1.5 Pro"
+      ],
+      "metric": "MAPE, Pearson r, Bland-Altman bias slope",
+      "results": "Weight MAPE: ChatGPT 36.3%, Claude 37.3%. Energy MAPE 35.8% for both. Gemini 1.5 Pro MAPE 64.2-109.9% across nutrients. r = 0.65-0.81 for ChatGPT and Claude, 0.58-0.73 for Gemini. All models systematically underestimated, and the underestimation grew with portion size (bias slopes -0.23 to -0.50).",
+      "takeaways": "This study directly supports Forge's deliberate high bias. VLMs under-call large portions, which are typical of Indian home servings such as rice, roti stacks and dal. Older Gemini 1.5 Pro was much worse, so check that the model version is current.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "O'Hara C, Kent G, Flynn AC, Gibney ER, Timon CM. An Evaluation of ChatGPT for Nutrient Content Estimation from Meal Photographs. Nutrients 2025;17(4):607. doi:10.3390/nu17040607",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40004936/",
+      "date": "2025-02-07",
+      "task": "FOOD_PHOTO: 114 Irish national-survey meal photos, 16 nutrients; 7 dietitians on 38 photos",
+      "modelsTested": [
+        "ChatGPT-4 (vision)"
+      ],
+      "metric": "Precision of food identification, paired tests, percentage difference, Spearman rs, ICC vs dietitians",
+      "results": "Food identification precision was 93.0%. Weight agreed for small meals (p=0.221) but not for medium or large meals (p<0.001). The model underestimated 11 of 16 nutrients. rs ranged 0.29-0.83. ICC with dietitians ranged 0.31-0.67. A later paper cites this study as MAPE 26.9% with frequent underestimation (secondary citation, not verified).",
+      "takeaways": "The model identifies foods well but estimates portions poorly, with underestimation on bigger plates.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Isobe T, Zhang LW, Murakami H, Kadono M, Aso M, Kayashita A, Kayashita J. Accuracy of AI-Based Nutrient Estimation from Standardized Hospital Meal Images: A Comparison with Registered Dietitians. Nutrients 2026;18(6):966. doi:10.3390/nu18060966",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41901141/",
+      "date": "2026-03-18",
+      "task": "FOOD_PHOTO: 15 weighed Japanese hospital meals photographed under controlled conditions; 10 RDs vs 10 AI models",
+      "modelsTested": [
+        "10 AI models including ChatGPT-4o and Gemini 1.5 Pro (full list not in abstract)"
+      ],
+      "metric": "Pearson r, MAE, Bland-Altman mean bias",
+      "results": "The top models (ChatGPT-4o, Gemini 1.5 Pro) reached r > 0.8 for energy and carbohydrate, frequently within +/-10%. Protein and lipid accuracy was significantly lower in every AI model. All AI models overestimated lipids, with mean bias above +20% (p<0.01).",
+      "takeaways": "The direction of bias is nutrient- and cuisine-dependent. On lean Japanese hospital food, fat was overestimated. Elsewhere, total energy on large or real-world plates was usually underestimated. Forge cannot assume one fixed bias direction per macro.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Gravellier L, Zhang C, Wu Y, et al. (Snyder MP, Wang T). Image-Based Dietary Assessment Using Multimodal Large Language Models: Performance, Limitations, and Clinical Applicability in Diabetes (SeeFood benchmark). medRxiv preprint 2026.10.21.26365949",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13738896/",
+      "date": "2026-10-24",
+      "task": "FOOD_PHOTO: real-world free-living meal photos (SNAPMe). 80-photo screen of 8 models, then 3 finalists on 1,680 photos (275 participant-days)",
+      "modelsTested": [
+        "GPT-4o mini",
+        "GPT-5.2",
+        "Gemini 3 Pro Preview",
+        "Gemini 2.5 Flash-Lite",
+        "Qwen3-VL-8B-Instruct",
+        "Qwen3-VL-32B-Instruct",
+        "Llama-4-Maverick-17B-128E-Instruct-FP8",
+        "Gemma-3n-E4B-it"
+      ],
+      "metric": "MAPE, MAE, signed mean bias, % carbohydrate estimates within +/-10 g",
+      "results": "Finalists on full set: GPT-4o mini calorie MAPE 86.8%, MAE 123 kcal, bias -61 kcal (under). Gemini 2.5 Flash-Lite 132.0%, 128 kcal, +30 kcal (over). Llama 4 Maverick 98.8%, 130 kcal, -46 kcal (under). Overall MAPE across nutrients was 52-90%. Carbohydrate MAE was 13.3 g, and only 57% of meals were within +/-10 g. Drink-only images reached 312% MAPE. Larger portions were increasingly underestimated, and size markers did not help. GPT-5.2 was beaten by GPT-4o mini, and neither size nor recency predicted performance. Gemini 3 Pro had the lowest screening nutrient MAPE (57.6%).",
+      "takeaways": "On messy real-world photos, every model, frontier or cheap, has very large relative error. Cheap models such as GPT-4o mini and Flash-Lite were not clearly worse than flagship ones here. Bias direction depends on the model. This supports Forge's deterministic clamps and high-bias rule over trusting any model. Drinks need a separate ask-the-user path.",
+      "verification": "Abstract (PubMed) plus PMC full text read. Preprint, not peer-reviewed."
+    },
+    {
+      "citation": "Sterling S, Berube LT, Glenn AJ, Shaukat A, Barua S, Grams ME, Tsirigos A. Vision-Language Models for Image-Based Dietary Assessment: A Benchmark of Accuracy, Cost, and Prompt Strategies Across Ten Models. bioRxiv preprint 2026.07.26.740845",
+      "url": "https://doi.org/10.64898/2026.07.26.740845",
+      "date": "2026-07-29",
+      "task": "FOOD_PHOTO: 3,229 Nutrition5k overhead images. Calorie and weight estimation plus ingredient recognition.",
+      "modelsTested": [
+        "Gemini 2.0 Flash",
+        "Gemini 2.5 Flash",
+        "Gemini 3.0 Flash",
+        "Gemini 3.1 Flash Lite",
+        "GPT-4o",
+        "GPT-4o-mini",
+        "GPT-5 Mini",
+        "Claude Haiku 4.5",
+        "Qwen2-VL-7B (open)",
+        "FatSecret API (commercial food recognition)"
+      ],
+      "metric": "Lin's CCC and MAE for calories, Jaccard for ingredients, cost per 1K images",
+      "results": "Gemini 3.0 Flash was best: CCC 0.767, MAE 80.7 kcal. Gemini 3.1 Flash Lite reached CCC 0.754 with the best ingredient Jaccard (0.655) at $0.59/1K images. Gemini 2.0 Flash reached CCC 0.742 at $0.10/1K images. Human re-annotation found Nutrition5k labels omit components, so the corrected Jaccard for Gemini 2.0 Flash rises from 0.62 to about 0.82. Per-model figures for GPT, Claude Haiku 4.5 and Qwen2-VL-7B were not available in the abstract.",
+      "takeaways": "Cheap Gemini Flash-tier models are competitive on calorie estimation at very low cost. The costs above are the authors' figures, not provider list prices.",
+      "verification": "Abstract only (PubMed). Preprint. Per-model values for the non-Gemini models are unverified."
+    },
+    {
+      "citation": "Nakagawa S, Yamamoto A. Prompt Engineering and Model Selection for LLM-Based Nutritional Estimation from Food Images: A Multi-Dataset Investigation. Nutrients 2026;18(12):2017. doi:10.3390/nu18122017",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42356404/",
+      "date": "2026-06-21",
+      "task": "FOOD_PHOTO and packaged food: 691 Japanese meal photos (NutriImage), SNAPMe, and about 1,000 Japanese packaged-food images (JBFD). Energy, protein, fat, carbohydrate, salt.",
+      "modelsTested": [
+        "Claude Haiku 4.5",
+        "Claude Sonnet 4.6",
+        "Claude Opus 4.6"
+      ],
+      "metric": "R2, MedAPE, MAE",
+      "results": "With a visual-estimation prompt on JBFD, energy R2 was 0.23 for Haiku and 0.60 for Sonnet. Sonnet and Opus substantially outperformed Haiku on every dataset, and Sonnet vs Opus differed by only 1-3 points of MedAPE. On SNAPMe, Sonnet's energy MAE was 116.9 kcal vs 123.0 for ChatGPT-5 in the Rodriguez-Jimenez study, protein 5.9 vs 7.9 g, and fat 6.6 vs 8.7 g. Salt MedAPE was 34-64%. Prompt design helped only with a capable model.",
+      "takeaways": "This is the clearest evidence that small or cheap tiers degrade. Haiku-class models lost a lot of accuracy, while mid-tier Sonnet roughly matched Opus. For FOOD_PHOTO, use at least a mid-tier model, not the cheapest tier.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Marchetti T, Capezzone S, Esposito R, De Spirito M, Maulucci G. Benchmarking Open-Source Vision-Language Models for Food Image Recognition and Portion Size Estimation. Nutrients 2026;18(21):3582. doi:10.3390/nu18213582",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13764829/",
+      "date": "2026-10-29",
+      "task": "Food recognition (F1) and portion weight (grams). 26 local open-weight configurations vs 5 proprietary baselines. No calorie metric.",
+      "modelsTested": [
+        "Open (Ollama tags): qwen2.5vl:3b/7b, qwen3-vl:2b/4b/8b, qwen3.5:4b/9b, minicpm-v:8b, minicpm-v4.5:8b, minicpm-v4.6 (1.3B), llama3.2-vision:11b, mistral-small3.1:24b, ministral-3:3b/8b/14b, gemma3:4b/12b, gemma4:12b, gemma4:e4b, llava:7b/13b, llava-phi3:3.8b, llava-llama3:8b, bakllava:7b, moondream:1.8b, granite3.2-vision:2b",
+        "Proprietary as reported by the paper: GPT-4o, GPT-4.1, Claude Sonnet 5, GPT-5.2, GPT-5.5"
+      ],
+      "metric": "Recognition F1, portion NMAE (g), signed error by portion quartile",
+      "results": "Proprietary: GPT-4o F1 0.77 / NMAE 58 g, GPT-4.1 0.75 / 63 g, Claude Sonnet 5 0.71 / 62 g, GPT-5.5 0.66 / 65 g, GPT-5.2 0.67 / 69 g. Best open: qwen3.5:9b NMAE 70 g, minicpm-v4.5:8b 73 g, qwen3.5:4b 78 g, qwen2.5vl:7b 80 g (best open F1 0.68). moondream:1.8b, bakllava:7b, granite3.2-vision:2b and llava-llama3:8b were at about 129 g, which the authors treat as no usable estimate. For portions above 187 g, all representative models under-predicted (median -33 to -94 g). Beverages were under-estimated (ratio 0.71) and soups over-estimated (1.16).",
+      "takeaways": "Recent 4-9B Qwen and MiniCPM models come within about 20-35% of frontier portion error. Older LLaVA-family and sub-2B models are unusable. Large-portion underestimation appears in every model family. Model names are as the paper reports them and were not independently checked against provider catalogs.",
+      "verification": "PMC full text (first 100k characters) read"
+    },
+    {
+      "citation": "Nakagawa S, Yamamoto A. On-Device Dietary Self-Monitoring With Open-Weight Vision-Language Models: Model Selection and Evaluation on Three Public Datasets. JMIR Biomedical Engineering preprint 116178 (open peer review Nov 2026 - Jan 2027)",
+      "url": "https://preprints.jmir.org/preprint/116178",
+      "date": "2026-11",
+      "task": "FOOD_PHOTO energy, on-device feasibility: 15 open-weight VLMs (2-32B) on SNAPMe, ACETADA and Nutrition5k (2,868 images), with 6 commercial reference models",
+      "modelsTested": [
+        "15 open-weight VLMs 2-32B (names not retrieved)",
+        "6 commercial reference models (names not retrieved)"
+      ],
+      "metric": "MedAPE for energy",
+      "results": "A 4-bit 4B model had energy MedAPE of about 36% on SNAPMe, 38% on Nutrition5k and 44% on ACETADA. An 8B model was best on multi-item ACETADA trays at 23.9%. Giving the true food weight as text helped the 4B model, but overstated weight or container weight hurt.",
+      "takeaways": "On-device 4-8B VLMs may be feasible as a fallback, and could suit a Dimensity 9400 phone, though this paper tested a tablet or server. Their accuracy depends on the dataset.",
+      "verification": "Only a web-search summary of the abstract was seen. The JMIR page showed a maintenance notice. All numbers are UNVERIFIED."
+    },
+    {
+      "citation": "Chen YJ, Chang CC, Hoang YN, et al., Chang JS. Customized multimodal Diabot-GPT-4o enhances accuracy of image-based dietary assessments in dietetic trainees in Taiwan: validation against weighed food records. Am J Clin Nutr 2025;122(6):1836-1849. doi:10.1016/j.ajcnut.2025.10.013",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41138916/",
+      "date": "2025-10-24",
+      "task": "FOOD_PHOTO, free-living: 714 images from 3-day weighed food records of 57 young adults (Asian mixed dishes)",
+      "modelsTested": [
+        "GPT-4o (plain)",
+        "GPT-4o plus food name",
+        "Diabot (customized GPT-4o)",
+        "Diabot plus food name"
+      ],
+      "metric": "Bland-Altman equivalence at +/-10/15/20%, CV, Spearman rho, Lin CCC",
+      "results": "From images alone, the customized bot recognized 74% of food items vs 59% for plain GPT-4o. All configurations were equivalent for portion (+/-10-15%), energy (+/-10-20%, CV 14%) and carbohydrate (+/-15-20%), but less consistent for fat (CV 24%) and protein (CV 18%). Supplying the food name improved accuracy. Errors came from portion size, hidden food, weak prompts, and omission or intrusion of items.",
+      "takeaways": "On group-level Asian mixed meals, a customized prompt plus a user-supplied food name brings energy within about +/-10-20%. The figures are group-level equivalence, not per-meal accuracy.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Lian X, Lian W, Phua HP, et al., Dalan R. Comparative accuracy of automated carbohydrate estimation using NutriDish and ChatGPT-5 against dietitian-derived reference values. Front Nutr 2026;13:1927840. doi:10.3389/fnut.2026.1927840",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42871627/",
+      "date": "2026-09-29",
+      "task": "FOOD_PHOTO carbohydrate: 150 Singapore multicultural food items (hawker centres, homes, packaged), including some with nutrition labels in frame",
+      "modelsTested": [
+        "ChatGPT-5",
+        "NutriDish (purpose-built AI app)"
+      ],
+      "metric": "MAE, MAPE, % within +/-10 g, Bland-Altman",
+      "results": "ChatGPT-5: MAE 8.7 +/- 7.4 g, MAPE 32.9%, 69.3% within +/-10 g. NutriDish: 5.9 g, 22.1%, 80.7%. Composite meals were worse than simple foods. When a nutrition label was the size reference, MAE was 2.7 g (MAPE 9.0%). Coins as the reference gave the worst results (MAPE 48.1%).",
+      "takeaways": "This is the closest study to South-Asian-style mixed cuisine (multicultural Singapore). A general VLM does markedly worse than a purpose-built app on composite dishes. When a nutrition label is visible, error drops sharply, so Forge's LABEL path should be preferred for packaged food.",
+      "verification": "PubMed abstract. The study has a commercial partnership with the NutriDish developer."
+    },
+    {
+      "citation": "Lane DR, Ji Y, Otaki N, et al., Waki K. Using a Fine-Tuned Commercial Artificial Intelligence Model to Assess Nutrients from Photographs of Japanese Meals. J Diabetes Sci Technol 2026. doi:10.1177/19322968261462556",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42410932/",
+      "date": "2026-07-06",
+      "task": "FOOD_PHOTO: Japanese meals. GPT-4o fine-tuned on 912 photos, evaluated on 105, vs 27 non-fine-tuned models and a dietitian.",
+      "modelsTested": [
+        "Fine-tuned GPT-4o",
+        "27 non-fine-tuned models including GPT-5.1 (minimal reasoning) and GPT-4o"
+      ],
+      "metric": "ICC",
+      "results": "Non-fine-tuned models did poorly on fiber, did well on carbohydrate, protein and energy, and varied on salt and fat. GPT-5.1 (minimal reasoning) and GPT-4o were strong. The fine-tuned GPT-4o beat the dietitian on every nutrient (fiber ICC 0.79 vs 0.68).",
+      "takeaways": "Cuisine-specific fine-tuning closes the gap, which suggests generic models are weaker on under-represented cuisines. Not actionable for Forge, since Forge does not fine-tune, but relevant to the Indian-food gap. The authors hold commercial interests.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Romero-Tapiador S, Tolosana R, Lacruz-Pleguezuelos B, et al., Morales A. Are Vision-Language Models Ready for Dietary Assessment? Exploring the Next Frontier in AI-Powered Food Image Recognition. CVPR Workshops 2025; arXiv:2504.06925",
+      "url": "https://arxiv.org/abs/2504.06925",
+      "date": "2025-04-09",
+      "task": "Food recognition only (FoodNExTDB, 9,263 expert-labelled images, 10 categories / 62 subcategories / 9 cooking styles)",
+      "modelsTested": [
+        "ChatGPT, Gemini, Claude, Moondream, DeepSeek, LLaVA (exact versions not retrieved)"
+      ],
+      "metric": "Expert-Weighted Recall (EWR)",
+      "results": "Closed models beat open ones and exceeded 90% EWR on single-product images. All models struggled with cooking style and with telling apart visually similar foods.",
+      "takeaways": "Cooking method (fried vs grilled, ghee vs no ghee) is a known blind spot. Forge should ask about cooking method or fat added, not infer it.",
+      "verification": "arXiv abstract only"
+    },
+    {
+      "citation": "Assiri FY, Alahmadi MD, Almuashi MA, Almansour AM. Extract Nutritional Information from Bilingual Food Labels Using Large Language Models. J Imaging 2025;11(8):271. doi:10.3390/jimaging11080271",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12387780/",
+      "date": "2025-08-13",
+      "task": "LABEL: extract nutrition elements and values from 294 English/Arabic product labels",
+      "modelsTested": [
+        "GPT-4o",
+        "GPT-4V",
+        "Gemini (gemini-pro-vision API)"
+      ],
+      "metric": "Jaccard index, % correct, incorrect count; before and after rule-based post-processing",
+      "results": "English element names after post-processing: Jaccard GPT-4o 0.994, GPT-4V 0.992, Gemini 0.956. English element plus value pairs, raw then post-processed: GPT-4V 0.810 to 0.836 (90.1% correct), GPT-4o 0.735 to 0.795 (87.3%), Gemini 0.633 to 0.745 (83.2%). Arabic pairs after post-processing: 0.648-0.725. Errors were synonyms ('total carbs', 'energy'), units or %DV mixed into values, decimal-separator confusion, zeros returned as 'false', merged or misaligned columns, and missing rows.",
+      "takeaways": "Even on English labels, about 10-17% of element-value pairs were wrong or missing with 2024-era models. Forge's LABEL job must use a strict per-field JSON schema with units separated, run an Atwater cross-check (4/4/9 kcal per g vs stated energy), and show a confirm screen. Newer models are probably better but untested here. No 2025-2026 benchmark of current models on nutrition-panel OCR was found.",
+      "verification": "PMC full text read"
+    },
+    {
+      "citation": "Hsuan CF, Lee YJ, Hsu HC, Ouyang CM, Yeh WC, Tang WH. Comparison of Accuracy in the Evaluation of Nutritional Labels on Commercial Ready-to-Eat Meal Boxes Between Professional Nutritionists and Chatbots. Nutrients 2025;17(19):3044. doi:10.3390/nu17193044",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41097121/",
+      "date": "2025-09-24",
+      "task": "Meal estimation compared against official nutrition labels: 8 Taiwanese convenience-store meals, 5 chatbots queried repeatedly vs 4 dietitians",
+      "modelsTested": [
+        "ChatGPT-4o",
+        "Claude 3.7",
+        "Grok 3",
+        "Gemini (version not stated)",
+        "Copilot"
+      ],
+      "metric": "Accuracy vs label, intra/inter-assay CV",
+      "results": "Accuracy vs label for calories, protein, fat, saturated fat and carbohydrate was 70-90% across models. ChatGPT-4o had CV under 15% for calories and macros, and the others were consistent mainly for calories and protein. Every model underestimated sodium, with CV 20-70%. Saturated fat was severely underestimated.",
+      "takeaways": "Repeated queries give different answers, so Forge should use temperature 0 or low and, optionally, average 2-3 samples for FOOD_PHOTO. Micronutrients such as sodium are unreliable from photos. Only 8 meals were tested.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Majmudar MD, Chandra S, Yakkala K, et al., Stanford FC. Smartphone camera based assessment of adiposity: a validation study. NPJ Digit Med 2022;5:79. doi:10.1038/s41746-022-00628-3",
+      "url": "https://doi.org/10.1038/s41746-022-00628-3",
+      "date": "2022-06-29",
+      "task": "BODY: %body fat from 2 smartphone photos vs DXA (n=134 adults, BMI 18.5-51.6, standardized capture)",
+      "modelsTested": [
+        "Visual Body Composition (VBC) purpose-built CNN (Amazon Halo). Not a general LLM."
+      ],
+      "metric": "MAE vs DXA, Lin CCC, Bland-Altman",
+      "results": "MAE 2.16 +/- 1.54 %BF. CCC 0.96 overall (women 0.93, men 0.94). Bias -0.42% (not significant). LoA -5.5 to +4.7 %BF. It beat every BIA and ADP device tested.",
+      "takeaways": "This is the best-case ceiling for photo body fat, reached with a dedicated model and standardized poses. A general VLM on casual photos should be assumed worse. It supports the +/-6 point display range in guardrail photo_bf_accuracy_limits.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Ferreira TJ, Salvador IC, Pessanha CR, et al., Pierucci APTR. Advances in the estimation of body fat percentage using an artificial intelligence 2D-photo method. NPJ Digit Med 2025;8:43. doi:10.1038/s41746-024-01380-6",
+      "url": "https://doi.org/10.1038/s41746-024-01380-6",
+      "date": "2025-01-18",
+      "task": "BODY: AI-2D photo %BF vs DXA, alongside skinfolds, A-mode ultrasound and BIA",
+      "modelsTested": [
+        "Purpose-built AI-2D photo method (not a general LLM)"
+      ],
+      "metric": "Lin CCC, Bland-Altman, error analyses",
+      "results": "AI-2D photos had the highest agreement with DXA (CCC >= 0.96). InBody-270 and Omron HBF-514 BIA reached CCC 0.90-0.95. The guardrail file gives n=1273 (not re-checked in the abstract).",
+      "takeaways": "Dedicated photo models can match DXA at group level. This does not transfer to GPT, Gemini or Claude.",
+      "verification": "PubMed abstract"
+    },
+    {
+      "citation": "Reynolds T, Gerard J, et al. (Kino Vision, Inc.). Validation of a Smartphone-Image-Based Computer-Vision Model for Lean Mass and Body Fat Estimation Against Dual-Energy X-ray Absorptiometry. medRxiv preprint 2026.06.15.26355736",
+      "url": "https://www.medrxiv.org/content/10.64898/2026.06.15.26355736v1",
+      "date": "2026-06-16",
+      "task": "BODY: smartphone-image %BF and lean mass vs DXA, held-out n=195 adults",
+      "modelsTested": [
+        "Proprietary computer-vision model (architecture not stated), with weight, height, age and sex inputs"
+      ],
+      "metric": "Lin CCC (MAE and LoA reported in the full text but not retrieved)",
+      "results": "%BF CCC 0.930 with routine inputs added.",
+      "takeaways": "Vendor-authored preprint. It again shows that a purpose-built model is required for DXA-grade agreement.",
+      "verification": "medRxiv abstract page. Preprint with a vendor conflict of interest."
+    },
+    {
+      "citation": "Riedl A. Informal test of GPT-4o body-fat estimation from photos (X/Twitter posts, May 2025)",
+      "url": "https://x.com/AnnaLeptikon/status/1923114810025332811",
+      "date": "2025-05",
+      "task": "BODY: GPT-4o %BF from images in a published visual guide",
+      "modelsTested": [
+        "GPT-4o"
+      ],
+      "metric": "Median absolute error vs the guide's labelled values (not DXA)",
+      "results": "Reported median absolute error of 2.4 points for men and 5.7 points for women. In one example, GPT-4o said 11.2% against a DXA reading of 10.6%.",
+      "takeaways": "Anecdotal and not peer-reviewed, with non-DXA ground truth for most images. Error was more than twice as large for women. It does not count as validation. No peer-reviewed study of a general-purpose LLM/VLM estimating body fat from photos vs DXA was found as of 2026-11-21.",
+      "verification": "Only seen via a search-result summary. UNVERIFIED and anecdotal."
+    },
+    {
+      "citation": "Jin S, Zhang J, Zhang X, et al., Yan R. DiningBench: A Hierarchical Multi-view Benchmark for Perception and Reasoning in the Dietary Domain. ACL 2026 Main; arXiv:2604.10425",
+      "url": "https://arxiv.org/abs/2604.10425",
+      "date": "2026-04-12",
+      "task": "Food perception plus nutrition reasoning: 3,021 dishes, about 5.27 images each, 29 open and proprietary VLMs",
+      "modelsTested": [
+        "29 VLMs (names not retrieved from the abstract)"
+      ],
+      "metric": "Task accuracy / nutrition error (details not retrieved)",
+      "results": "The abstract says current VLMs struggle significantly with fine-grained visual discrimination and precise nutritional reasoning. A search snippet said Gemini-3-Flash-Preview led at 81.83% accuracy and GPT-4o had a 42.43% error on nutrition estimation. Those snippet numbers are UNVERIFIED.",
+      "takeaways": "Supporting evidence only.",
+      "verification": "arXiv abstract. Specific numbers unverified."
+    }
+  ],
+  "evidenceGaps": [
+    "No peer-reviewed study evaluating modern VLMs on Indian home-cooked meals (dal, sabzi, roti, rice, curries with ghee or oil, thalis) was found via PubMed, arXiv or web search. The nearest are multicultural Singapore (Lian 2026), Taiwan (Chen 2025) and Japan (Isobe 2026, Lane 2026).",
+    "No peer-reviewed validation of a general-purpose LLM/VLM (GPT, Gemini, Claude, Qwen, Llama) for body-fat estimation vs DXA.",
+    "No 2025-2026 benchmark of current frontier or small models on English nutrition-panel transcription. The best available (Assiri 2025) used GPT-4V, GPT-4o and gemini-pro-vision.",
+    "Few studies report signed bias. Where reported, total energy is mostly underestimated, increasingly so with portion size. Lipids were overestimated on lean Japanese hospital food, and one Flash-Lite model overestimated.",
+    "No study measured JSON-schema validity or refusal rates for food tasks. One paper (arXiv 2601.04491, not verified) noted that Gemini sometimes refused mass or volume estimation."
+  ],
+  "summary": "Across 2025-2026 studies, frontier VLMs estimate meal energy from a single photo with about 24-36% MAPE on curated mixed-meal sets. Examples: GPT-4.1, Claude 3.7 Sonnet and GPT-4o at about 23-24% on ACETADA; ChatGPT-5 30.5% on 195 dishes; GPT-4o and Claude 3.5 Sonnet 35.8% on standardized photos. On free-living real-world photos (SNAPMe) error reaches 52-90%+ MAPE for every model tested, and protein and fat are much worse than energy or carbohydrate. Professional nutritionists still beat the best VLM by about 2.5x (RMSLE 0.176 vs 0.443). Model choice dominates: it explained 99.6% of variance, while prompt tricks and multi-angle photos did not help. User-supplied context, such as an ingredient list, food name or cooking method, roughly halves error (ChatGPT-5 MAPE 30.5% to 13.9%). The dominant bias is underestimation that grows with portion size, seen in Fridolfsson 2025, O'Hara 2025, SeeFood 2026 and Marchetti 2026. Hidden fat and oil is the largest single error source, although lipids were overestimated on lean Japanese hospital meals. This supports Forge's deliberate high bias and deterministic clamps. Small or cheap models: Claude Haiku 4.5 degraded sharply vs Sonnet 4.6 (energy R2 0.23 vs 0.60), while Sonnet was within 1-3 points of Opus. Old or small open models collapsed: Janus-Pro 7B 86% and LLaMA-3.2-Vision 66% calorie MAPE, and sub-2B and LLaVA-era models gave no usable portions. Some cheap tiers held up well: Gemini 2.0/2.5/3.1 Flash(-Lite) and GPT-4o-mini, with GPT-4o-mini best in SeeFood and Gemini 3.1 Flash Lite at CCC 0.754 on Nutrition5k. Recent open 4-9B models (Qwen3.5 4B/9B, MiniCPM-V 4.5, Qwen2.5-VL 7B) came within about 20-35% of frontier portion error, and Gemma-3 27B was near frontier on calories. Label reading: 2024-era models got about 83-90% of English nutrient element-value pairs right after post-processing, with errors in units, synonyms, decimals and column alignment. Labels must therefore be schema-validated, Atwater-checked and user-confirmed, and visible labels make estimates far more accurate (carbohydrate MAE 2.7 g). Body fat: purpose-built photo CNNs reach about 2.2-point MAE vs DXA (LoA -5.5 to +4.7) under standardized capture. No peer-reviewed validation exists for general LLM/VLM body-fat estimation, only anecdotes, which supports Forge's +/-6-point range and its 'rough, unvalidated' label. No study covers Indian home food, so Forge should treat ghee or oil and portion size as user-confirmed inputs."
+}

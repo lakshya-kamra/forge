@@ -23,7 +23,7 @@ object ReminderNotifications {
     fun ensureChannel(context: Context) {
         val channel = NotificationChannelCompat.Builder(CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_DEFAULT)
             .setName("Reminders")
-            .setDescription("Weigh-in, food logging and training-day reminders you switched on in Forge.")
+            .setDescription("Weigh-in, food logging, training-day and monthly progress-photo reminders you switched on in Forge.")
             .build()
         NotificationManagerCompat.from(context).createNotificationChannel(channel)
     }
@@ -53,13 +53,20 @@ object ReminderNotifications {
 
     // Permission is checked by canPost() right before notify(); the catch covers a revoke
     // racing between the check and the call.
+    fun post(context: Context, type: ReminderType, title: String, text: String, deepLink: String) =
+        post(context, type.notificationId, title, text, deepLink)
+
+    /**
+     * For reminders outside [ReminderType] (the monthly photo nudge): a separate id keeps
+     * the daily reminders' exhaustive `when`s elsewhere in the app untouched.
+     */
     @SuppressLint("MissingPermission")
-    fun post(context: Context, type: ReminderType, title: String, text: String, deepLink: String) {
+    fun post(context: Context, notificationId: Int, title: String, text: String, deepLink: String) {
         ensureChannel(context)
         if (!canPost(context)) return
         val pending = PendingIntent.getActivity(
             context,
-            type.notificationId,
+            notificationId,
             DeepLinks.intent(context, deepLink),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -76,7 +83,7 @@ object ReminderNotifications {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
         try {
-            NotificationManagerCompat.from(context).notify(type.notificationId, notification)
+            NotificationManagerCompat.from(context).notify(notificationId, notification)
         } catch (e: SecurityException) {
             // Permission revoked between the check and the post; nothing useful to do.
         }

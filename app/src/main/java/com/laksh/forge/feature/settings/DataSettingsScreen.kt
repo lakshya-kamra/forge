@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.MonitorWeight
 import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Schedule
@@ -81,6 +82,7 @@ import com.laksh.forge.data.backup.StorageReport
 import com.laksh.forge.data.backup.StorageUsage
 import com.laksh.forge.data.backup.WorkoutImportPreview
 import com.laksh.forge.data.reminders.ReminderNotifications
+import com.laksh.forge.data.reminders.ProgressPhotoReminder
 import com.laksh.forge.data.reminders.ReminderType
 import com.laksh.forge.ui.components.ForgeCard
 import com.laksh.forge.ui.components.Pill
@@ -136,15 +138,22 @@ fun DataSettingsScreen(
         onPauseOrDispose { }
     }
     var pendingReminder by rememberSaveable { mutableStateOf<ReminderType?>(null) }
+    // The monthly photo reminder isn't a ReminderType (see ProgressPhotoReminder), so it has
+    // its own pending flag for the permission round trip.
+    var pendingPhotoReminder by rememberSaveable { mutableStateOf(false) }
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         val type = pendingReminder
+        val photo = pendingPhotoReminder
         pendingReminder = null
+        pendingPhotoReminder = false
         permissionGranted = granted
         canPost = ReminderNotifications.canPost(context)
         if (granted && type != null) {
             vm.setReminderEnabled(type, true)
+        } else if (granted && photo) {
+            vm.setProgressPhotoReminder(true)
         } else if (!granted) {
             vm.showError("Reminders need notification permission. You can allow it for Forge in system settings.")
         }
@@ -158,6 +167,17 @@ fun DataSettingsScreen(
             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         } else {
             vm.setReminderEnabled(type, on)
+        }
+    }
+    val onTogglePhotoReminder: (Boolean) -> Unit = { on ->
+        if (state.settings.haptics) {
+            haptics.performHapticFeedback(if (on) HapticFeedbackType.ToggleOn else HapticFeedbackType.ToggleOff)
+        }
+        if (on && ReminderNotifications.needsRuntimePermission() && !permissionGranted) {
+            pendingPhotoReminder = true
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            vm.setProgressPhotoReminder(on)
         }
     }
 
@@ -346,7 +366,8 @@ fun DataSettingsScreen(
 
             // ---------------------------------------------------- reminders
             item(key = "h_reminders", contentType = "header") { SectionHeader("REMINDERS", Modifier.animateItem()) }
-            val anyOn = ReminderType.entries.any { it.isEnabled(state.settings) }
+            val anyOn = ReminderType.entries.any { it.isEnabled(state.settings) } ||
+                ProgressPhotoReminder.isEnabled(state.settings)
             if (anyOn && !canPost) {
                 item(key = "notif_off", contentType = "status") {
                     ForgeCard(Modifier.animateItem(), color = MaterialTheme.colorScheme.errorContainer) {
@@ -388,6 +409,13 @@ fun DataSettingsScreen(
                         modifier = Modifier.animateItem()
                     )
                 }
+            }
+            item(key = "rem_progress_photos", contentType = "reminder") {
+                ProgressPhotoReminderCard(
+                    enabled = state.settings.progressPhotoReminder,
+                    onToggle = onTogglePhotoReminder,
+                    modifier = Modifier.animateItem()
+                )
             }
             item(key = "rem_note", contentType = "note") {
                 Text(
@@ -529,6 +557,42 @@ private fun timeLabel(minutes: Int): String {
     return remember(minutes, is24) {
         LocalTime.of(minutes / 60, minutes % 60)
             .format(DateTimeFormatter.ofPattern(if (is24) "HH:mm" else "h:mm a", Locale.getDefault()))
+    }
+}
+
+@Composable
+private fun ProgressPhotoReminderCard(
+    enabled: Boolean,
+    onToggle: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ForgeCard(modifier) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                Modifier
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.Outlined.PhotoCamera,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text("Monthly progress photos", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                Text(
+                    "First Sunday of each month, 8 am - front, side, back. Photos stay in your gallery.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Switch(checked = enabled, onCheckedChange = onToggle)
+        }
     }
 }
 

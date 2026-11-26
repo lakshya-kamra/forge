@@ -19,6 +19,8 @@ object DeepLinks {
     const val TRAIN = "forge://train"
     const val TOOLS = "forge://tools"
     const val SETTINGS_DATA = "forge://settings/data"
+    /** The monthly progress-photo reminder: the Progress screen, opened on its Photos tab. */
+    const val PROGRESS = "forge://progress/photos"
 
     /** Pattern for navDeepLink; [session] builds a concrete link. */
     const val SESSION_PATTERN = "forge://session/{sessionId}"

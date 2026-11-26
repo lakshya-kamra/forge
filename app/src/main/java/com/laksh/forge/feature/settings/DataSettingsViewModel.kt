@@ -254,6 +254,17 @@ class DataSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
         }
     }
 
+    fun setProgressPhotoReminder(on: Boolean) = viewModelScope.launch {
+        try {
+            repo.settingsStore.setProgressPhotoReminder(on)
+            ReminderScheduler.sync(app)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            transient.update { it.copy(error = e.message ?: "Couldn't update that reminder.") }
+        }
+    }
+
     fun setReminderTime(type: ReminderType, minutesOfDay: Int) = viewModelScope.launch {
         try {
             ReminderPrefsStore.setTime(app, type, minutesOfDay)

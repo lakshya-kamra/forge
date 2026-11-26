@@ -1,18 +1,17 @@
 package com.laksh.forge.feature.progress
 
-import android.net.Uri
+import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,11 +24,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.AddAPhoto
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.PhotoCamera
 import androidx.compose.material.icons.outlined.PhotoLibrary
+import androidx.compose.material.icons.outlined.SaveAlt
 import androidx.compose.material.icons.outlined.Straighten
+import androidx.compose.material.icons.outlined.ViewColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -55,28 +55,28 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
 import com.laksh.forge.data.db.BodyMeasurement
-import com.laksh.forge.data.db.ProgressPhoto
 import com.laksh.forge.data.prefs.Sex
+import com.laksh.forge.data.reminders.ReminderNotifications
+import com.laksh.forge.domain.plan.BodyFatMethod
 import com.laksh.forge.domain.plan.MeasurementGuides
+import com.laksh.forge.domain.plan.PhotoBodyFat
 import com.laksh.forge.domain.plan.PhotoProtocol
 import com.laksh.forge.domain.plan.Pose
 import com.laksh.forge.feature.plan.BulletList
 import com.laksh.forge.feature.plan.ConnectedChoice
 import com.laksh.forge.feature.plan.Expandable
 import com.laksh.forge.feature.plan.MeasurementInput
+import com.laksh.forge.feature.plan.NoteCard
 import com.laksh.forge.feature.plan.PlanScaffold
+import com.laksh.forge.feature.plan.SwitchRow
 import com.laksh.forge.feature.plan.plusContent
 import com.laksh.forge.ui.components.ChartPoint
 import com.laksh.forge.ui.components.EmptyState
@@ -84,30 +84,53 @@ import com.laksh.forge.ui.components.ForgeCard
 import com.laksh.forge.ui.components.LineChart
 import com.laksh.forge.ui.components.SectionHeader
 import com.laksh.forge.util.Dates
-import java.io.File
 
 private enum class ProgressTab(val label: String) { MEASUREMENTS("Measurements"), PHOTOS("Photos") }
 
 /** Chart selection: a tape site, or the Navy body-fat trend. */
 private const val BODY_FAT_KEY = "BODY_FAT"
 
+/** A saved AI photo estimate: a body-fat number with no tape sites. */
+private fun BodyMeasurement.isPhotoEstimate(): Boolean =
+    bodyFatMethod == BodyFatMethod.VISUAL_AI.dbValue && MeasureSite.entries.none { it.read(this) != null }
+
+/**
+ * Tape measurements, and progress photos that Forge never stores: the person keeps their own
+ * in their gallery, and Compare reads them back in memory only.
+ *
+ * [startOnPhotos] is set when the monthly photo reminder opens this screen. [onOpenAiSetup] and
+ * [onOpenProfile] are optional so the screen works before the nav host passes them.
+ */
 @Composable
-fun ProgressScreen(onBack: () -> Unit) {
+fun ProgressScreen(
+    onBack: () -> Unit,
+    startOnPhotos: Boolean = false,
+    onOpenAiSetup: (() -> Unit)? = null,
+    onOpenProfile: (() -> Unit)? = null
+) {
     val vm: ProgressViewModel = viewModel(factory = ProgressViewModel.Factory)
     val state by vm.state.collectAsStateWithLifecycle()
     val busy by vm.busy.collectAsStateWithLifecycle()
     val message by vm.message.collectAsStateWithLifecycle()
+    val exported by vm.legacyExported.collectAsStateWithLifecycle()
     val haptics = LocalHapticFeedback.current
+    val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
 
-    var tab by rememberSaveable { mutableStateOf(ProgressTab.MEASUREMENTS) }
+    var tab by rememberSaveable { mutableStateOf(if (startOnPhotos) ProgressTab.PHOTOS else ProgressTab.MEASUREMENTS) }
     var editing by remember { mutableStateOf<MeasurementDraft?>(null) }
     var capturing by rememberSaveable { mutableStateOf(false) }
-    var viewing by remember { mutableStateOf<ProgressPhoto?>(null) }
-    var pendingGalleryUri by remember { mutableStateOf<Uri?>(null) }
+    var comparing by rememberSaveable { mutableStateOf(false) }
+    var confirmLegacyDelete by remember { mutableStateOf(false) }
+    var deletingEstimate by remember { mutableStateOf<BodyMeasurement?>(null) }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) pendingGalleryUri = uri
+    // Android 8-9 have no permission-free way into the shared Pictures folder, so the person
+    // picks a folder once for the export instead.
+    val folderPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { tree ->
+        if (tree != null) vm.exportLegacy(tree)
+    }
+    val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (!granted) vm.message.value = "Notifications are off for Forge, so the reminder can't show. You can allow them in system settings."
     }
 
     LaunchedEffect(message) {
@@ -120,9 +143,13 @@ fun ProgressScreen(onBack: () -> Unit) {
     if (capturing) {
         PoseCaptureScreen(
             poses = Pose.entries,
-            onCaptured = { pose, uri -> vm.addPhoto(pose, uri) },
+            onCaptured = { pose, uri -> vm.saveCaptureToGallery(pose, uri) },
             onClose = { capturing = false }
         )
+        return
+    }
+    if (comparing) {
+        PhotoCompareScreen(onClose = { comparing = false }, onOpenAiSetup = onOpenAiSetup, onOpenProfile = onOpenProfile)
         return
     }
 
@@ -154,7 +181,7 @@ fun ProgressScreen(onBack: () -> Unit) {
                         Row(Modifier.animateItem(), verticalAlignment = Alignment.CenterVertically) {
                             LoadingIndicator(Modifier.size(28.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text("Saving...", style = MaterialTheme.typography.bodySmall)
+                            Text("Working...", style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }
@@ -162,13 +189,34 @@ fun ProgressScreen(onBack: () -> Unit) {
                     ProgressTab.MEASUREMENTS -> measurementItems(
                         state = state,
                         onAdd = { editing = MeasurementDraft() },
-                        onEdit = { editing = MeasurementDraft.from(it) }
+                        onEdit = { m -> if (m.isPhotoEstimate()) deletingEstimate = m else editing = MeasurementDraft.from(m) }
                     )
                     ProgressTab.PHOTOS -> photoItems(
                         state = state,
-                        onCapture = { capturing = true },
-                        onGallery = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
-                        onView = { viewing = it }
+                        busy = busy,
+                        exported = exported,
+                        onOpenCamera = {
+                            try {
+                                context.startActivity(Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA))
+                            } catch (e: ActivityNotFoundException) {
+                                vm.message.value = "No camera app was found on this phone."
+                            } catch (e: SecurityException) {
+                                vm.message.value = "The camera app couldn't be opened."
+                            }
+                        },
+                        onPoseGuide = { capturing = true },
+                        onCompare = { comparing = true },
+                        onReminder = { on ->
+                            if (on && !ReminderNotifications.permissionGranted(context)) {
+                                notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                            vm.setPhotoReminder(on)
+                        },
+                        onExportLegacy = {
+                            haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                            if (GalleryPhotos.canSaveDirectly) vm.exportLegacy() else folderPicker.launch(null)
+                        },
+                        onDeleteLegacy = { confirmLegacyDelete = true }
                     )
                 }
             }
@@ -191,24 +239,40 @@ fun ProgressScreen(onBack: () -> Unit) {
         )
     }
 
-    pendingGalleryUri?.let { uri ->
-        PosePickerDialog(
-            onPick = { pose ->
-                vm.addPhoto(pose, uri)
-                pendingGalleryUri = null
+    deletingEstimate?.let { m ->
+        AlertDialog(
+            onDismissRequest = { deletingEstimate = null },
+            title = { Text("Delete this photo estimate?") },
+            text = { Text("This removes the AI body-fat estimate saved for ${Dates.dayLabel(m.localDate)}. It can't be undone.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    vm.deleteMeasurement(m)
+                    deletingEstimate = null
+                }) { Text("Delete") }
             },
-            onDismiss = { pendingGalleryUri = null }
+            dismissButton = { TextButton(onClick = { deletingEstimate = null }) { Text("Cancel") } }
         )
     }
 
-    viewing?.let { photo ->
-        PhotoViewer(
-            photo = photo,
-            onDelete = {
-                vm.deletePhoto(photo)
-                viewing = null
+    if (confirmLegacyDelete) {
+        val n = state.legacy.count
+        AlertDialog(
+            onDismissRequest = { confirmLegacyDelete = false },
+            title = { Text("Delete $n photo${if (n == 1) "" else "s"} from Forge?") },
+            text = {
+                Text(
+                    if (exported) "The copies you saved to your gallery stay. This removes Forge's copies and can't be undone."
+                    else "You haven't saved these to your gallery yet. Deleting removes them from this phone for good."
+                )
             },
-            onDismiss = { viewing = null }
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmLegacyDelete = false
+                    haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                    vm.deleteLegacy()
+                }) { Text("Delete") }
+            },
+            dismissButton = { TextButton(onClick = { confirmLegacyDelete = false }) { Text("Cancel") } }
         )
     }
 }
@@ -268,23 +332,26 @@ private fun androidx.compose.foundation.lazy.LazyListScope.measurementItems(
                     modifier = Modifier.weight(1f)
                 )
                 if (state.showBodyFat) {
-                    state.navy.firstOrNull { it.timestamp == m.timestamp }?.let {
-                        Text(
-                            "tape BF ~${"%.0f".format(it.pct)}%",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                    val photoPct = m.bodyFatPct?.takeIf { m.bodyFatMethod == BodyFatMethod.VISUAL_AI.dbValue }
+                    val text = when {
+                        photoPct != null -> "photo BF ~${PhotoBodyFat.label(PhotoBodyFat.range(photoPct))}"
+                        else -> state.navy.firstOrNull { it.timestamp == m.timestamp }?.let { "tape BF ~${"%.0f".format(it.pct)}%" }
+                    }
+                    text?.let {
+                        Text(it, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
             Spacer(Modifier.height(4.dp))
+            val sites = MeasureSite.entries.mapNotNull { site ->
+                site.read(m)?.let { v ->
+                    val label = if (site == MeasureSite.WAIST) waistLabel(state.settings.sex) else site.label
+                    "$label ${"%.1f".format(v)}"
+                }
+            }
             Text(
-                MeasureSite.entries.mapNotNull { site ->
-                    site.read(m)?.let { v ->
-                        val label = if (site == MeasureSite.WAIST) waistLabel(state.settings.sex) else site.label
-                        "$label ${"%.1f".format(v)}"
-                    }
-                }.joinToString(" · ") + " cm",
+                if (sites.isNotEmpty()) sites.joinToString(" · ") + " cm"
+                else "AI photo estimate - approximate, compare trends not single numbers",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -435,21 +502,52 @@ private fun MeasurementSheet(
 
 private fun androidx.compose.foundation.lazy.LazyListScope.photoItems(
     state: ProgressUiState,
-    onCapture: () -> Unit,
-    onGallery: () -> Unit,
-    onView: (ProgressPhoto) -> Unit
+    busy: Boolean,
+    exported: Boolean,
+    onOpenCamera: () -> Unit,
+    onPoseGuide: () -> Unit,
+    onCompare: () -> Unit,
+    onReminder: (Boolean) -> Unit,
+    onExportLegacy: () -> Unit,
+    onDeleteLegacy: () -> Unit
 ) {
-    item(key = "p_actions", contentType = "action") {
-        Row(Modifier.animateItem(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            FilledTonalButton(onClick = onCapture, shapes = ButtonDefaults.shapes(), modifier = Modifier.weight(1f)) {
-                Icon(Icons.Outlined.PhotoCamera, null)
-                Spacer(Modifier.width(8.dp))
-                Text("Take photos")
+    if (!state.legacy.isEmpty) {
+        item(key = "p_legacy", contentType = "legacy") {
+            LegacyPhotosCard(state.legacy.count, exported, busy, onExportLegacy, onDeleteLegacy, Modifier.animateItem())
+        }
+    }
+    item(key = "p_yours", contentType = "intro") {
+        ForgeCard(Modifier.animateItem()) {
+            Text("Your photos stay yours", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "Forge doesn't store progress photos. Take them with your phone's camera and keep them in your gallery - " +
+                    "an album called \"Progress\" works well. Same pose, light and time each month makes them comparable.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                FilledTonalButton(onClick = onOpenCamera, shapes = ButtonDefaults.shapes(), modifier = Modifier.weight(1f)) {
+                    Icon(Icons.Outlined.PhotoCamera, null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Open camera")
+                }
+                if (GalleryPhotos.canSaveDirectly) {
+                    OutlinedButton(onClick = onPoseGuide, enabled = !busy, shapes = ButtonDefaults.shapes(), modifier = Modifier.weight(1f)) {
+                        Icon(Icons.Outlined.Add, null)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Pose guide")
+                    }
+                }
             }
-            OutlinedButton(onClick = onGallery, shapes = ButtonDefaults.shapes(), modifier = Modifier.weight(1f)) {
-                Icon(Icons.Outlined.PhotoLibrary, null)
-                Spacer(Modifier.width(8.dp))
-                Text("From gallery")
+            if (GalleryPhotos.canSaveDirectly) {
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    "The pose guide draws an outline to line you up and saves each shot straight to ${GalleryPhotos.albumLabel} in your gallery.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
@@ -458,178 +556,75 @@ private fun androidx.compose.foundation.lazy.LazyListScope.photoItems(
             Expandable("How to take comparable photos") { BulletList(PhotoProtocol.steps) }
         }
     }
-    if (state.photoDays.isEmpty()) {
-        item(key = "p_empty", contentType = "empty") {
-            EmptyState(
-                icon = Icons.Outlined.AddAPhoto,
-                title = "No progress photos yet",
-                body = "Optional, private and never backed up. Take front, side and back about once a month with the pose guide.",
-                modifier = Modifier.animateItem()
+    item(key = "p_reminder", contentType = "reminder") {
+        ForgeCard(Modifier.animateItem()) {
+            SwitchRow(
+                title = "Monthly reminder",
+                subtitle = "First Sunday of each month, 8 am: front, side and back.",
+                checked = state.settings.progressPhotoReminder,
+                onCheckedChange = onReminder
             )
         }
-        return
     }
-    if (state.photoDays.size >= 2) {
-        item(key = "p_compare", contentType = "compare") { CompareCard(state.photoDays, Modifier.animateItem()) }
-    }
-    item(key = "p_header", contentType = "header") { SectionHeader("Timeline", Modifier.animateItem()) }
-    items(state.photoDays, key = { "p_${it.date}" }, contentType = { "photoDay" }) { day ->
+    item(key = "p_compare", contentType = "compare") {
         ForgeCard(Modifier.animateItem()) {
-            Text(Dates.dayLabel(day.date), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
-            Spacer(Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Pose.entries.forEach { pose ->
-                    Thumb(day.byPose[pose], pose.label, onView, Modifier.weight(1f))
-                }
-            }
-            if (day.other.isNotEmpty()) {
-                Spacer(Modifier.height(8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    day.other.take(3).forEach { Thumb(it, "Extra", onView, Modifier.weight(1f)) }
-                    repeat(3 - day.other.take(3).size) { Spacer(Modifier.weight(1f)) }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun Thumb(photo: ProgressPhoto?, label: String, onView: (ProgressPhoto) -> Unit, modifier: Modifier) {
-    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .aspectRatio(3f / 4f)
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .then(if (photo != null) Modifier.clickable { onView(photo) } else Modifier),
-            contentAlignment = Alignment.Center
-        ) {
-            if (photo != null) {
-                AsyncImage(
-                    model = File(photo.path),
-                    contentDescription = "$label photo",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            } else {
-                Text("-", color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        }
-        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
-}
-
-@Composable
-private fun CompareCard(days: List<PhotoDay>, modifier: Modifier) {
-    // Defaults: oldest vs newest, the comparison people almost always want first.
-    var beforeChoice by rememberSaveable { mutableStateOf(days.last().date) }
-    var afterChoice by rememberSaveable { mutableStateOf(days.first().date) }
-    var pose by rememberSaveable { mutableStateOf(Pose.FRONT) }
-    var mode by rememberSaveable { mutableStateOf(CompareMode.SLIDER) }
-    val dates = days.map { it.date }
-    val beforeDate = if (beforeChoice in dates) beforeChoice else days.last().date
-    val afterDate = if (afterChoice in dates) afterChoice else days.first().date
-
-    ForgeCard(modifier) {
-        Text("Compare", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
-        Spacer(Modifier.height(8.dp))
-        ConnectedChoice(Pose.entries, pose, { it.label }, { pose = it })
-        Spacer(Modifier.height(8.dp))
-        DateChips("Before", dates, beforeDate) { beforeChoice = it }
-        DateChips("After", dates, afterDate) { afterChoice = it }
-        Spacer(Modifier.height(8.dp))
-        ConnectedChoice(CompareMode.entries, mode, { it.label }, { mode = it })
-        Spacer(Modifier.height(12.dp))
-        val before = days.firstOrNull { it.date == beforeDate }?.byPose?.get(pose)
-        val after = days.firstOrNull { it.date == afterDate }?.byPose?.get(pose)
-        PhotoCompareView(before, after, mode)
-        if (before == null || after == null) {
-            Spacer(Modifier.height(6.dp))
+            Text("Compare photos", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.height(4.dp))
             Text(
-                "One of these days has no ${pose.label.lowercase()} photo.",
+                "Pick photos from your gallery to see them side by side or under a slider. They're read into memory " +
+                    "for this screen only - nothing is copied into Forge." +
+                    (if (state.showBodyFat) " You can also ask the AI for an approximate body-fat change." else ""),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
-    }
-}
-
-@Composable
-private fun DateChips(label: String, dates: List<String>, selected: String, onSelect: (String) -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(label, style = MaterialTheme.typography.labelLarge, modifier = Modifier.width(56.dp))
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            items(dates, key = { it }) { date ->
-                FilterChip(selected = date == selected, onClick = { onSelect(date) }, label = { Text(Dates.shortLabel(date)) })
+            Spacer(Modifier.height(12.dp))
+            Button(onClick = onCompare, shapes = ButtonDefaults.shapes(), modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Outlined.ViewColumn, null)
+                Spacer(Modifier.width(8.dp))
+                Text("Compare photos")
             }
         }
     }
 }
 
+/**
+ * One-time card for photos Forge v2.0 stored. Nothing is deleted until the person taps
+ * Delete and confirms; saving first is offered but never required.
+ */
 @Composable
-private fun PosePickerDialog(onPick: (Pose) -> Unit, onDismiss: () -> Unit) {
-    var pose by remember { mutableStateOf(Pose.FRONT) }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Which pose is this?") },
-        text = {
-            Column {
-                Text("Photos are compared pose by pose.", style = MaterialTheme.typography.bodySmall)
-                Spacer(Modifier.height(10.dp))
-                ConnectedChoice(Pose.entries, pose, { it.label }, { pose = it })
-            }
+private fun LegacyPhotosCard(
+    count: Int,
+    exported: Boolean,
+    busy: Boolean,
+    onExport: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier
+) {
+    val photos = "$count progress photo${if (count == 1) "" else "s"}"
+    NoteCard(
+        title = "Forge no longer keeps photos",
+        body = if (exported) {
+            "Saved to your gallery. You can now delete Forge's copies of your $photos."
+        } else {
+            "You have $photos saved in Forge from an earlier version. Save them to your gallery " +
+                "(${if (GalleryPhotos.canSaveDirectly) GalleryPhotos.albumLabel else "a folder you choose"}) to keep them, then delete them from Forge."
         },
-        confirmButton = { TextButton(onClick = { onPick(pose) }) { Text("Save") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } }
-    )
-}
-
-@Composable
-private fun PhotoViewer(photo: ProgressPhoto, onDelete: () -> Unit, onDismiss: () -> Unit) {
-    var confirm by remember { mutableStateOf(false) }
-    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .clip(RoundedCornerShape(28.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainer)
-                .padding(16.dp)
-        ) {
-            Text(
-                "${Pose.from(photo.pose)?.label ?: "Photo"} · ${Dates.dayLabel(photo.localDate)}",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(Modifier.height(10.dp))
-            AsyncImage(
-                model = File(photo.path),
-                contentDescription = "Progress photo",
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(3f / 4f)
-                    .clip(RoundedCornerShape(20.dp))
-            )
-            Spacer(Modifier.height(10.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                TextButton(onClick = { confirm = true }) {
-                    Icon(Icons.Outlined.Delete, null, Modifier.size(18.dp))
+        icon = Icons.Outlined.PhotoLibrary,
+        modifier = modifier
+    ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+            if (!exported) {
+                Button(onClick = onExport, enabled = !busy, shapes = ButtonDefaults.shapes()) {
+                    Icon(Icons.Outlined.SaveAlt, null, Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("Delete")
+                    Text("Save to gallery")
                 }
-                TextButton(onClick = onDismiss) { Text("Close") }
+            }
+            TextButton(onClick = onDelete, enabled = !busy) {
+                Icon(Icons.Outlined.Delete, null, Modifier.size(18.dp))
+                Spacer(Modifier.width(6.dp))
+                Text("Delete from Forge")
             }
         }
-    }
-    if (confirm) {
-        AlertDialog(
-            onDismissRequest = { confirm = false },
-            title = { Text("Delete this photo?") },
-            text = { Text("It's removed from this phone permanently.") },
-            confirmButton = { TextButton(onClick = { confirm = false; onDelete() }) { Text("Delete") } },
-            dismissButton = { TextButton(onClick = { confirm = false }) { Text("Cancel") } }
-        )
     }
 }

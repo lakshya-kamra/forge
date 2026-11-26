@@ -17,6 +17,7 @@ import com.laksh.forge.data.ai.MultiProviderAi
 import com.laksh.forge.data.ai.ProviderRegistry
 import com.laksh.forge.data.ai.ProviderSpec
 import com.laksh.forge.data.ai.SecretStore
+import com.laksh.forge.data.ai.TierPreset
 import com.laksh.forge.data.ai.visionByDefault
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.remote.CostTier
@@ -74,6 +75,13 @@ data class AiSettingsUiState(
     val jobs: List<AiJobRow> = emptyList(),
     val tiers: List<AiTierOption> = emptyList(),
     val estimate: CostEstimator.Estimate? = null,
+    /**
+     * The tier really in force for [provider]: settings.tier, or Economy when the saved tier is
+     * one this provider doesn't offer (Ultra-cheap after leaving OpenRouter).
+     */
+    val selectedTier: CostTier = CostTier.BALANCED,
+    /** The hand-picked routing behind [selectedTier], when the provider has one. */
+    val preset: TierPreset? = null,
     /** Per-task overrides for [provider], keyed by Task name or [ModelOverrides.DEFAULT_KEY]. */
     val overrides: Map<String, String> = emptyMap(),
     val models: AiModelsState = AiModelsState.Idle
@@ -152,6 +160,7 @@ class AiSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
                 return@launch
             }
             val (provider, baseUrl) = resolved
+            var tierNote = ""
             runCatching {
                 val previous = store.settings.first()
                 SecretStore.put(AiKeys.API_KEY, key)
@@ -161,6 +170,15 @@ class AiSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
                     store.setModelOverridesJson("")
                     store.setCustomBaseUrl("")
                     transient.update { it.copy(models = AiModelsState.Idle) }
+                    // A provider with a researched preset starts on it (OpenRouter: Ultra-cheap).
+                    // Only on a switch, so re-saving the same key never undoes the user's choice.
+                    val defaultTier = ModelRouter.defaultTierFor(provider)
+                    if (defaultTier != null && defaultTier != previous.tier) {
+                        store.setTier(defaultTier)
+                        tierNote = provider.preset(defaultTier.name)?.let { "Using the ${it.title} setup. " }.orEmpty()
+                    } else if (defaultTier == null && previous.tier.name == ModelRouter.ULTRA_CHEAP) {
+                        store.setTier(CostTier.BALANCED)
+                    }
                 }
                 if (provider.isCustom) store.setCustomBaseUrl(baseUrl)
                 // The v1 plaintext slot must never hold a key again.
@@ -174,7 +192,7 @@ class AiSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
             refreshKey()
             _events.trySend(AiSettingsEvent.KeySaved)
             // Saving is only half the answer; show whether the key actually works.
-            runTest(prefix = "Saved for ${provider.shortName}. ")
+            runTest(prefix = "Saved for ${provider.shortName}. $tierNote")
         }
     }
 
@@ -341,8 +359,8 @@ class AiSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
         }
         if (rejectedBy.size == candidates.size) {
             throw AiException(
-                "${rejectedBy.joinToString(" and ")} didn't accept this key. If it belongs to another provider, " +
-                    "pick it under Provider and save again."
+                "Couldn't recognise this key - pick your provider below and save again " +
+                    "(${rejectedBy.joinToString(" and ")} didn't accept it). Command Code keys always need picking."
             )
         }
         throw lastError ?: AiException("Couldn't confirm the provider. Pick it under Provider and save again.")
@@ -375,10 +393,11 @@ class AiSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
         val overrides = provider?.let { ModelOverrides.parse(s.modelOverridesJson, it.id) } ?: emptyMap()
         val today = LocalDate.now()
 
-        val jobs = provider?.let { p -> SETTINGS_TASKS.map { task -> jobRow(p, s.tier, task, overrides, today) } }
+        val selected = provider?.let { ModelRouter.effectiveCostTier(it, s.tier) } ?: s.tier
+        val jobs = provider?.let { p -> SETTINGS_TASKS.map { task -> jobRow(p, selected, task, overrides, today) } }
             ?: emptyList()
         val tiers = provider?.let { p ->
-            CostTier.entries.map { tier ->
+            ModelRouter.tiersFor(p).map { tier ->
                 AiTierOption(tier, CostEstimator.monthly(p, tier, overrides, today).totalUsd?.let(CostEstimator::formatUsd))
             }
         } ?: emptyList()
@@ -393,7 +412,9 @@ class AiSettingsViewModel(private val repo: ForgeRepository) : ViewModel() {
             status = t.status,
             jobs = jobs,
             tiers = tiers,
-            estimate = provider?.let { CostEstimator.monthly(it, s.tier, overrides, today) },
+            estimate = provider?.let { CostEstimator.monthly(it, selected, overrides, today) },
+            selectedTier = selected,
+            preset = provider?.preset(selected.name),
             overrides = overrides,
             models = t.models
         )

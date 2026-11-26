@@ -176,6 +176,6 @@ object PhotoProtocol {
         "Minimal, form-fitting clothing - the same outfit every time - with no shoes, watch or jewellery.",
         "Front, side and back. Relaxed, arms slightly away from the body, breathing normally, no flexing.",
         "About once a month, plus at the start and end of each phase.",
-        "Photos are optional and stay on this phone. Skip them any time they don't feel good to take."
+        "Photos are optional and yours to keep: Forge doesn't store them. Keep them in your gallery - an album called \"Progress\" works well. Skip them any time they don't feel good to take."
     )
 }

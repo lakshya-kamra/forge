@@ -177,6 +177,26 @@ object AiHttp {
     fun errorFor(providerName: String, code: Int, raw: String?, retryAfter: String? = null): AiException {
         val detail = errorDetail(raw)
         val suffix = detail?.let { ": $it" } ?: ""
+        val errorCode = errorCode(raw)
+        // Codes that mean "your account or the privacy rule stopped this", not "bad request":
+        // each gets a message that says what to change, and none is retried with fewer params.
+        when (errorCode) {
+            ZDR_NO_PROVIDERS -> return AiException(
+                "$providerName has no zero-data-retention route for this model, so nothing was sent. " +
+                    "Pick another model in Settings → AI → Advanced.",
+                httpCode = code, errorCode = errorCode
+            )
+            UPGRADE_REQUIRED -> return AiException(
+                "$providerName needs credits for API calls ($code). Add pay-as-you-go credits, or use a plan " +
+                    "with API access (GOAT, Pro, Max or Team); the Go plan's allowance doesn't pay for API requests.",
+                httpCode = code, errorCode = errorCode
+            )
+            REGION_UNAVAILABLE -> return AiException(
+                "$providerName doesn't serve this model in your region ($code). Pick another model in " +
+                    "Settings → AI → Advanced.",
+                httpCode = code, errorCode = errorCode
+            )
+        }
         return when (code) {
             400, 422 -> AiException("$providerName rejected the request ($code)$suffix", httpCode = code)
             401 -> AiException("$providerName rejected the API key (401). Check it in Settings → AI.", httpCode = code)
@@ -217,6 +237,25 @@ object AiHttp {
         } ?: return null
         val message = messageIn(obj["error"]) ?: messageIn(obj["message"]) ?: messageIn(obj["detail"])
         return message?.trim()?.replace(Regex("\\s+"), " ")?.take(220)
+    }
+
+    /** Command Code gateway error codes (commandcode.ai/docs/provider-api, 2026-11-25). */
+    const val ZDR_NO_PROVIDERS = "cmd_zdr_no_providers"
+    const val UPGRADE_REQUIRED = "upgrade_required"
+    const val REGION_UNAVAILABLE = "model_region_unavailable"
+
+    /**
+     * The machine-readable code in an error body: `{"error":{"code"|"type"}}` or a top-level
+     * `code`. Null when there is none.
+     */
+    fun errorCode(raw: String?): String? {
+        if (raw.isNullOrBlank()) return null
+        val root = runCatching { AiJson.json.parseToJsonElement(raw) }.getOrNull() as? JsonObject ?: return null
+        val err = root["error"] as? JsonObject
+        return sequenceOf(err?.get("code"), err?.get("type"), root["code"])
+            .mapNotNull { (it as? JsonPrimitive)?.contentOrNull?.takeIf { c -> c.isNotBlank() } }
+            .firstOrNull { it == ZDR_NO_PROVIDERS || it == UPGRADE_REQUIRED || it == REGION_UNAVAILABLE }
+            ?: (err?.get("code") as? JsonPrimitive)?.contentOrNull
     }
 
     private fun messageIn(el: JsonElement?): String? = when (el) {

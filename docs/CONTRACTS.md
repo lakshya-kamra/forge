@@ -95,6 +95,8 @@ Exact Material 3 Expressive signatures: `docs/research/m3e_api.md` (when present
   haptic feedback (`LocalHapticFeedback`) on meaningful actions, edge-to-edge insets handled.
 - Every screen has real empty, loading and error states. Errors show the exception message.
 - Comments explain *why*, not what — match the existing code's style.
-- Privacy: body/progress photos stay in app-private storage, are excluded from backup, and are
-  only ever sent to an AI provider after an explicit user action on that screen.
+- Privacy: Forge never stores progress photos. People keep them in their own gallery; Compare
+  reads them through the Photo Picker into memory only, and they are sent to an AI provider
+  only after an explicit per-use consent on that screen, then discarded. Meal photos stay in
+  app-private storage, excluded from backup.
 - Safety: anything that sets calories, rates, phases or training load goes through `Guardrails`.

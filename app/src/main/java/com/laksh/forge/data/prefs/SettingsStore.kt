@@ -105,7 +105,12 @@ data class ForgeSettings(
     val lastWhoopSync: Long = 0L,
     val weighInReminder: Boolean = false,
     val mealReminder: Boolean = false,
-    val workoutReminder: Boolean = false
+    val workoutReminder: Boolean = false,
+    /**
+     * Monthly "time for progress photos" nudge. Unset reads as on for anyone who finished the
+     * v2 onboarding (they were shown the photo protocol), off for everyone else.
+     */
+    val progressPhotoReminder: Boolean = false
 ) {
     val hasApiKey: Boolean get() = aiConfigured || apiKey.isNotBlank()
     val isMinor: Boolean get() = age < 18
@@ -159,6 +164,7 @@ class SettingsStore(private val context: Context) {
         val weighInReminder = booleanPreferencesKey("reminder_weigh_in")
         val mealReminder = booleanPreferencesKey("reminder_meal")
         val workoutReminder = booleanPreferencesKey("reminder_workout")
+        val progressPhotoReminder = booleanPreferencesKey("reminder_progress_photos")
     }
 
     private inline fun <reified T : Enum<T>> enumOr(raw: String?, default: T): T =
@@ -210,7 +216,8 @@ class SettingsStore(private val context: Context) {
             lastWhoopSync = p[K.lastWhoopSync] ?: 0L,
             weighInReminder = p[K.weighInReminder] ?: false,
             mealReminder = p[K.mealReminder] ?: false,
-            workoutReminder = p[K.workoutReminder] ?: false
+            workoutReminder = p[K.workoutReminder] ?: false,
+            progressPhotoReminder = p[K.progressPhotoReminder] ?: ((p[K.onboardingVersion] ?: 0) >= 2)
         )
     }
 
@@ -261,6 +268,7 @@ class SettingsStore(private val context: Context) {
     suspend fun setWeighInReminder(v: Boolean) = edit { it[K.weighInReminder] = v }
     suspend fun setMealReminder(v: Boolean) = edit { it[K.mealReminder] = v }
     suspend fun setWorkoutReminder(v: Boolean) = edit { it[K.workoutReminder] = v }
+    suspend fun setProgressPhotoReminder(v: Boolean) = edit { it[K.progressPhotoReminder] = v }
 
     private suspend fun edit(block: (MutablePreferences) -> Unit) {
         context.dataStore.edit(block)

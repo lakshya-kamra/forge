@@ -4,7 +4,15 @@ import com.laksh.forge.data.remote.Task
 import java.time.LocalDate
 
 /** Wire protocol a provider speaks. Everything except Anthropic goes through the OpenAI shape. */
-enum class ProviderKind { ANTHROPIC, OPENAI_COMPATIBLE }
+enum class ProviderKind {
+    ANTHROPIC,
+    OPENAI_COMPATIBLE,
+    /**
+     * A gateway that serves Claude models on an Anthropic Messages endpoint and everything else
+     * on Chat Completions, under one key (Command Code). Each call picks its wire by model.
+     */
+    COMMAND_CODE
+}
 
 /** How a provider is asked for JSON output. */
 enum class JsonMode {
@@ -42,6 +50,11 @@ enum class TrainingRisk {
     MAY_TRAIN,
     /** A router: the upstream provider's policy applies. */
     DEPENDS_ON_ROUTE,
+    /**
+     * Forge asks for zero data retention and no prompt training on every request, and the
+     * provider refuses rather than falls back when a model has no such route.
+     */
+    ZDR_ENFORCED,
     /** Forge's verified research does not cover it. */
     UNKNOWN
 }
@@ -83,7 +96,9 @@ data class ModelSpec(
     val preview: Boolean = false,
     /** One line worth showing next to the model (price caveats, preview status). */
     val note: String? = null,
-    val priceChanges: List<PriceChange> = emptyList()
+    val priceChanges: List<PriceChange> = emptyList(),
+    /** On a [ProviderKind.COMMAND_CODE] gateway: served on the Anthropic Messages endpoint. */
+    val anthropicWire: Boolean = false
 ) {
     val displayName: String get() = label ?: id
 
@@ -100,6 +115,27 @@ data class ModelSpec(
  * the provider with a no-cost GET /models probe before saving.
  */
 data class KeyPattern(val regex: Regex, val confident: Boolean)
+
+/**
+ * A hand-picked model per task that replaces the job/tier search for one tier. Used where the
+ * research names a specific setup (OpenRouter's "Ultra-cheap") or the provider's routing is
+ * fixed (Command Code), because job-level routing can't split COACH from PLAN, which share
+ * [Job.COACH] but deserve different models.
+ *
+ * @param tierKey the [com.laksh.forge.data.remote.CostTier] name this preset answers for, or
+ *   [EVERY_TIER]. A name rather than the enum, so a preset can name a tier (ULTRA_CHEAP) that
+ *   lands in CostTier separately.
+ */
+data class TierPreset(
+    val tierKey: String,
+    val title: String,
+    val blurb: String,
+    val models: Map<Task, String>
+) {
+    companion object {
+        const val EVERY_TIER = "*"
+    }
+}
 
 data class ProviderSpec(
     val id: String,
@@ -134,11 +170,28 @@ data class ProviderSpec(
     val dataPolicy: DataPolicy,
     val models: List<ModelSpec>,
     /** Whether a custom base URL (Advanced) may replace [baseUrl]. */
-    val allowsBaseUrlOverride: Boolean = true
+    val allowsBaseUrlOverride: Boolean = true,
+    /** Anthropic Messages path on a [ProviderKind.COMMAND_CODE] gateway (relative to [baseUrl]). */
+    val messagesPath: String? = null,
+    /**
+     * OpenRouter: send `provider: {zdr: true, data_collection: "deny"}` on every request, so only
+     * zero-retention endpoints that don't keep or train on prompts are used. No fallback.
+     */
+    val enforceZdr: Boolean = false,
+    val presets: List<TierPreset> = emptyList(),
+    /** What the user must have on the provider's side before calls succeed (credits, a plan). */
+    val billingNote: String? = null
 ) {
     val isCustom: Boolean get() = id == ProviderRegistry.CUSTOM_ID
     val hasVision: Boolean get() = models.any { it.vision }
     fun model(id: String): ModelSpec? = models.firstOrNull { it.id == id }
+
+    /** The preset for a tier: one made for that tier, else one that covers every tier. */
+    fun preset(tierKey: String): TierPreset? =
+        presets.firstOrNull { it.tierKey == tierKey } ?: presets.firstOrNull { it.tierKey == TierPreset.EVERY_TIER }
+
+    /** One routing whatever the tier, so Settings shows it instead of a tier picker. */
+    val hasFixedRouting: Boolean get() = presets.any { it.tierKey == TierPreset.EVERY_TIER }
 }
 
 /** What a [Task] needs from a model. Kept next to the registry so routing and costing agree. */

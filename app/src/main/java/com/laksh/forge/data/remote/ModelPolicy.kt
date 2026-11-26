@@ -27,6 +27,11 @@ enum class Task {
  * is rare but consequential. So labels always use the economy pick, whatever the tier.
  */
 enum class CostTier(val label: String, val blurb: String) {
+    ULTRA_CHEAP(
+        "Ultra-cheap",
+        "Open models for photos and labels, a small Claude for the coach and plans, with zero data " +
+            "retention enforced. Only offered where Forge has a researched preset (OpenRouter)."
+    ),
     ECONOMY(
         "Economy",
         "The cheapest capable model for every job. Pennies a month; estimates get slightly rougher."
@@ -50,8 +55,8 @@ enum class CostTier(val label: String, val blurb: String) {
         }.getOrDefault(HAIKU)
 
     /**
-     * Rough monthly figure at Anthropic prices (~4 photo logs, ~3 coach messages and 1 label a
-     * day), computed from the registry rather than hand-typed so it can't drift from the prices.
+     * Rough monthly figure at Anthropic prices (the usage in [CostEstimator.ASSUMPTIONS]), computed
+     * from the registry rather than hand-typed so it can't drift from the prices.
      */
     val roughMonthly: String
         get() {

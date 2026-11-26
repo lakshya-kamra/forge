@@ -1,5 +1,6 @@
 package com.laksh.forge.data.ai
 
+import com.laksh.forge.data.remote.Task
 import java.time.LocalDate
 
 /**
@@ -13,6 +14,12 @@ import java.time.LocalDate
 object ProviderRegistry {
 
     const val CUSTOM_ID = "custom"
+
+    const val GEMMA_4_31B = "google/gemma-4-31b-it"
+    /** OpenRouter's id for Claude Haiku 5.5 (closed.json notes; /models/anthropic/claude-haiku-5.5). */
+    const val HAIKU_5_5_OPENROUTER = "anthropic/claude-haiku-5.5"
+    const val CC_SONNET_4_6 = "claude-sonnet-4-6"
+    const val CC_DEEPSEEK_V4_FLASH = "deepseek/deepseek-v4-flash"
 
     private val ALL_JOBS = setOf(Job.PHOTO, Job.LABEL, Job.COACH, Job.PDF)
 
@@ -169,13 +176,15 @@ object ProviderRegistry {
         imageStyle = ImageStyle.OPENAI_OBJECT,
         extraHeaders = mapOf("X-OpenRouter-Title" to "Forge"),
         requireParameters = true,
+        // Verified field names (openrouter.ai/docs/features/provider-routing, 2026-11-25):
+        // provider.zdr (boolean) and provider.data_collection ("allow" | "deny").
+        enforceZdr = true,
         dataPolicy = DataPolicy(
-            summary = "Each upstream provider has its own data policy, which OpenRouter shows per endpoint. " +
-                "In OpenRouter's privacy settings you can exclude providers that train on prompts (paid and " +
-                "free models have separate settings) or require zero data retention.",
-            risk = TrainingRisk.DEPENDS_ON_ROUTE,
-            warning = "Before sending photos, open OpenRouter's privacy settings and exclude providers that " +
-                "train on prompts."
+            summary = "Forge sends zero data retention (zdr) and data_collection: deny with every request, so " +
+                "OpenRouter only routes to endpoints that don't keep your prompts or train on them. If a model " +
+                "has no such endpoint the request fails with a clear message instead of falling back. Your " +
+                "OpenRouter privacy settings still apply on top and can only make this stricter.",
+            risk = TrainingRisk.ZDR_ENFORCED
         ),
         models = listOf(
             ModelSpec(
@@ -203,8 +212,113 @@ object ProviderRegistry {
             ModelSpec(
                 id = "openai/gpt-6.2-astra", jobs = ALL_JOBS, tier = ModelTier.MAX, vision = true,
                 jsonSchema = true, schemaEnforced = false, inPerM = 8.00, outPerM = 40.00
+            ),
+            // The two Ultra-cheap models (docs/research/model_eval/report.md, grades.json). Listed
+            // after the economy models above so the Economy tier's picks are unchanged.
+            // Price: cheapest ZDR endpoint with structured outputs (open.json, CoreWeave 2026-11-21);
+            // both ids were in OpenRouter's /api/v1/endpoints/zdr list on 2026-11-25.
+            ModelSpec(
+                id = GEMMA_4_31B, label = "Gemma 4 31B", jobs = setOf(Job.PHOTO, Job.LABEL),
+                tier = ModelTier.ECONOMY, vision = true, jsonSchema = true, schemaEnforced = false,
+                inPerM = 0.10, outPerM = 0.34,
+                note = "Price of the cheapest zero-retention endpoint; others cost a little more."
+            ),
+            // closed.json: "OpenRouter lists anthropic/claude-haiku-5.5 at the same price" as Anthropic.
+            ModelSpec(
+                id = HAIKU_5_5_OPENROUTER, label = "Claude Haiku 5.5", jobs = ALL_JOBS,
+                tier = ModelTier.ECONOMY, vision = true, jsonSchema = true, schemaEnforced = false,
+                inPerM = 0.10, outPerM = 0.50,
+                note = "This price applies up to 100K prompt tokens."
+            )
+        ),
+        presets = listOf(
+            TierPreset(
+                tierKey = ModelRouter.ULTRA_CHEAP,
+                title = "Ultra-cheap",
+                blurb = "Gemma 4 31B reads meal photos, labels and body check-ins; Claude Haiku 5.5 does the " +
+                    "coach, planning and program import. The cheapest setup in Forge's model research that " +
+                    "passes every job, with zero data retention on every request. Recommended for OpenRouter.",
+                models = mapOf(
+                    Task.FOOD_PHOTO to GEMMA_4_31B,
+                    Task.LABEL to GEMMA_4_31B,
+                    Task.BODY to GEMMA_4_31B,
+                    Task.COACH to HAIKU_5_5_OPENROUTER,
+                    Task.PLAN to HAIKU_5_5_OPENROUTER,
+                    Task.PROGRAM to HAIKU_5_5_OPENROUTER,
+                    // The key test only needs an answer; the cheapest model gives one.
+                    Task.PING to GEMMA_4_31B
+                )
             )
         )
+    )
+
+    /**
+     * Command Code's provider API (commandcode.ai/docs/provider-api and docs/resources/pricing-limits,
+     * read 2026-11-25). Claude on /messages, open models on /chat/completions, one Bearer key.
+     * `x-cmd-zdr: 1` goes on every request: zero data retention, no prompt training, no fallback
+     * to a non-ZDR upstream. The key format is undocumented, so it is never auto-detected.
+     */
+    val commandCode = ProviderSpec(
+        id = "commandcode",
+        name = "Command Code",
+        shortName = "Command Code",
+        kind = ProviderKind.COMMAND_CODE,
+        keyPatterns = emptyList(),
+        keyHint = "Command Code doesn't publish a key format, so Forge can't recognise it: pick Command Code " +
+            "here. Pay-as-you-go needs Command Code credits, or a plan with API access.",
+        baseUrl = "https://api.commandcode.ai/provider/v1",
+        chatPath = "/chat/completions",
+        modelsPath = "/models",
+        messagesPath = CommandCodeProvider.DEFAULT_MESSAGES_PATH,
+        // Undocumented on /chat/completions: try it, then fall back down the usual ladder.
+        jsonMode = JsonMode.JSON_SCHEMA,
+        sendStrict = false,
+        imageStyle = ImageStyle.OPENAI_OBJECT,
+        maxTokensParam = "max_tokens",
+        extraHeaders = mapOf("x-cmd-zdr" to "1"),
+        dataPolicy = DataPolicy(
+            summary = "Forge sends x-cmd-zdr: 1 with every request, so Command Code only uses upstreams with " +
+                "zero data retention and no training on your prompts, and never falls back to others. A model " +
+                "with no such upstream is refused, and Forge asks you to pick another. Claude models are " +
+                "zero-retention on Command Code's Anthropic account anyway.",
+            risk = TrainingRisk.ZDR_ENFORCED
+        ),
+        billingNote = "Pay-as-you-go uses Command Code credits at the underlying API price, with no markup. " +
+            "GOAT, Pro, Max and Team plans include API access against plan credits. On Go, the allowance " +
+            "doesn't pay for API calls, so add credits.",
+        models = listOf(
+            ModelSpec(
+                id = CC_SONNET_4_6, label = "Claude Sonnet 4.6", jobs = ALL_JOBS, tier = ModelTier.BALANCED,
+                vision = true, jsonSchema = true, schemaEnforced = false, inPerM = 3.00, outPerM = 15.00,
+                anthropicWire = true,
+                note = "Command Code's list price; billed from your credits or plan."
+            ),
+            // No vision (report.md), so a scanned PDF falls back to Sonnet.
+            ModelSpec(
+                id = CC_DEEPSEEK_V4_FLASH, label = "DeepSeek V4 Flash", jobs = setOf(Job.COACH, Job.PDF),
+                tier = ModelTier.ECONOMY, vision = false, jsonSchema = false, schemaEnforced = false,
+                inPerM = 0.30, outPerM = 1.20,
+                note = "Peak price shown (01-04 and 06-10 UTC on weekdays); off-peak is \$0.15/\$0.60."
+            )
+        ),
+        presets = listOf(
+            TierPreset(
+                tierKey = TierPreset.EVERY_TIER,
+                title = "Command Code routing",
+                blurb = "Claude Sonnet 4.6 reads photos, labels and body check-ins and runs the coach; " +
+                    "DeepSeek V4 Flash builds plans and imports programs. Change any job under Advanced.",
+                models = mapOf(
+                    Task.FOOD_PHOTO to CC_SONNET_4_6,
+                    Task.LABEL to CC_SONNET_4_6,
+                    Task.BODY to CC_SONNET_4_6,
+                    Task.COACH to CC_SONNET_4_6,
+                    Task.PLAN to CC_DEEPSEEK_V4_FLASH,
+                    Task.PROGRAM to CC_DEEPSEEK_V4_FLASH,
+                    Task.PING to CC_DEEPSEEK_V4_FLASH
+                )
+            )
+        ),
+        allowsBaseUrlOverride = false
     )
 
     val groq = ProviderSpec(
@@ -444,7 +558,7 @@ object ProviderRegistry {
     )
 
     val all: List<ProviderSpec> = listOf(
-        anthropic, openai, gemini, openrouter, groq, xai, mistral, deepseek, together, custom
+        anthropic, openai, gemini, openrouter, commandCode, groq, xai, mistral, deepseek, together, custom
     )
 
     /** Providers with no documented key format; an unrecognised key is probed against these. */

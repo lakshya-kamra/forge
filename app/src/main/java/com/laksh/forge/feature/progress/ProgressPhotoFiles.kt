@@ -1,96 +1,48 @@
 package com.laksh.forge.feature.progress
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import com.laksh.forge.util.ImageUtils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileOutputStream
 
 /**
- * Progress photos on disk. They live only in app-private storage (filesDir/progress_photos,
- * which the backup rules do not include) and are only ever read back for an analysis the
- * person explicitly starts.
+ * What Forge v2.0 left on disk. Since v2.1 Forge never keeps progress photos (people keep
+ * their own in their gallery), so the only jobs left here are finding the old files - for the
+ * one-time "save them to your gallery / delete from Forge" card - and removing them once the
+ * person taps delete. Nothing in this object ever writes a photo.
  */
 object ProgressPhotoFiles {
 
-    /** Stored resolution: enough to compare definition month to month without bloating storage. */
-    private const val STORE_EDGE = 1600
+    /** v2.0 kept saved photos here (app-private, never backed up). */
+    fun legacyDir(context: Context): File = File(context.filesDir, "progress_photos")
 
-    /** Sent to the AI: full body at this size reads fine and keeps image tokens modest. */
-    private const val ANALYSIS_EDGE = 1024
+    /** v2.0 onboarding staged photos here before saving them. */
+    private fun stagingDir(context: Context): File = File(context.cacheDir, "progress_staging")
 
-    private fun stagingDir(context: Context) = File(context.cacheDir, "progress_staging").apply { mkdirs() }
-    private fun photoDir(context: Context) = File(context.filesDir, "progress_photos").apply { mkdirs() }
+    /** Every legacy photo file still on disk, oldest first; empty when there are none. */
+    suspend fun legacyFiles(context: Context): List<File> = withContext(Dispatchers.IO) {
+        legacyDir(context).listFiles()?.filter { it.isFile }?.sortedBy { it.lastModified() }.orEmpty()
+    }
+
+    fun exists(path: String?): Boolean = !path.isNullOrBlank() && File(path).isFile
 
     /**
-     * Decode, EXIF-rotate and downscale a picked or captured image into a staging file in the
-     * cache, so nothing reaches permanent storage until the person saves.
+     * Remove every legacy photo file and the folders that held them. Only ever called from an
+     * explicit "Delete from Forge" confirmation. Returns how many files were removed.
      */
-    suspend fun stage(context: Context, uri: Uri): String = try {
-        val prepared = ImageUtils.prepare(context, uri, STORE_EDGE)
-        withContext(Dispatchers.IO) {
-            val file = File(stagingDir(context), "stage_${System.nanoTime()}.jpg")
-            FileOutputStream(file).use { prepared.bitmap.compress(Bitmap.CompressFormat.JPEG, 90, it) }
-            prepared.bitmap.recycle()
-            file.absolutePath
-        }
-    } finally {
-        // The in-app camera writes full-resolution captures into the cache; staged or not
-        // (a decode failure, a cancelled screen), the body photo must not linger there.
-        withContext(NonCancellable + Dispatchers.IO) { ImageUtils.discardCapture(context, uri) }
+    suspend fun deleteAllLegacy(context: Context): Int = withContext(Dispatchers.IO) {
+        var removed = 0
+        legacyDir(context).listFiles()?.forEach { if (it.delete()) removed++ }
+        legacyDir(context).delete()
+        clearStagingNow(context)
+        removed
     }
 
-    /** Move a staged photo into permanent private storage and return its new path. */
-    suspend fun commit(context: Context, stagedPath: String): String = withContext(Dispatchers.IO) {
-        val src = File(stagedPath)
-        if (!src.exists()) throw IllegalStateException("A staged photo went missing before it could be saved.")
-        if (src.parentFile == photoDir(context)) return@withContext src.absolutePath
-        val dest = File(photoDir(context), "progress_${System.currentTimeMillis()}_${src.nameWithoutExtension.takeLast(6)}.jpg")
-        if (!src.renameTo(dest)) {
-            src.copyTo(dest, overwrite = true)
-            src.delete()
-        }
-        dest.absolutePath
-    }
+    /** Staged files from an abandoned v2.0 onboarding are cache leftovers; nobody chose to keep them. */
+    suspend fun clearStaging(context: Context) = withContext(Dispatchers.IO) { clearStagingNow(context) }
 
-    /** Stage and commit in one go, for the Progress screen where saving is immediate. */
-    suspend fun importPhoto(context: Context, uri: Uri): String = commit(context, stage(context, uri))
-
-    /** A downscaled JPEG for one analysis call. The bitmap is discarded straight after. */
-    suspend fun base64ForAnalysis(path: String): String = withContext(Dispatchers.IO) {
-        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        BitmapFactory.decodeFile(path, bounds)
-        var sample = 1
-        var longEdge = maxOf(bounds.outWidth, bounds.outHeight)
-        while (longEdge / 2 >= ANALYSIS_EDGE) {
-            longEdge /= 2
-            sample *= 2
-        }
-        val decoded = BitmapFactory.decodeFile(path, BitmapFactory.Options().apply { inSampleSize = sample })
-            ?: throw IllegalArgumentException("A photo could not be read for analysis.")
-        val edge = maxOf(decoded.width, decoded.height)
-        val scaled = if (edge > ANALYSIS_EDGE) {
-            val r = ANALYSIS_EDGE.toFloat() / edge
-            Bitmap.createScaledBitmap(decoded, (decoded.width * r).toInt().coerceAtLeast(1), (decoded.height * r).toInt().coerceAtLeast(1), true)
-                .also { if (it != decoded) decoded.recycle() }
-        } else decoded
-        try {
-            ImageUtils.toBase64Jpeg(scaled, 85)
-        } finally {
-            scaled.recycle()
-        }
-    }
-
-    fun delete(path: String?) = ImageUtils.deletePhoto(path)
-
-    /** Drop any staged photos left behind by an abandoned onboarding. */
-    suspend fun clearStaging(context: Context) = withContext(Dispatchers.IO) {
+    private fun clearStagingNow(context: Context) {
         stagingDir(context).listFiles()?.forEach { it.delete() }
-        Unit
+        stagingDir(context).delete()
     }
 }

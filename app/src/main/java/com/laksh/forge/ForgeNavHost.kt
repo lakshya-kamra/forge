@@ -3,6 +3,7 @@ package com.laksh.forge
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -143,7 +144,19 @@ fun ForgeNavHost(nav: NavHostController, modifier: Modifier = Modifier) {
             )
         }
         composable(Routes.WEARABLES) { WearablesScreen(onBack = back) }
-        composable(Routes.PROGRESS) { ProgressScreen(onBack = back) }
+        composable(
+            Routes.PROGRESS,
+            deepLinks = listOf(navDeepLink { uriPattern = DeepLinks.PROGRESS })
+        ) { entry ->
+            ProgressScreen(
+                onBack = back,
+                // Only the monthly progress-photo reminder deep-links here, so a deep-link launch
+                // opens the Photos tab.
+                startOnPhotos = entry.arguments?.containsKey(NavController.KEY_DEEP_LINK_INTENT) == true,
+                onOpenAiSetup = { nav.navigate(Routes.SETTINGS_AI) },
+                onOpenProfile = { nav.navigate(Routes.SETTINGS_PROFILE) }
+            )
+        }
         composable(Routes.PLAN) {
             PlanScreen(
                 onBack = back,

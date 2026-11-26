@@ -22,7 +22,8 @@ import java.util.concurrent.TimeUnit
  * job reschedules itself for the following day after it runs. One-time jobs rather than a
  * 24 h periodic job because periodic work drifts and can't be pinned to a time of day.
  * WorkManager persists the queue, so reminders survive reboots and app updates without a
- * boot receiver.
+ * boot receiver. The monthly progress-photo reminder ([ProgressPhotoReminder]) is kept in
+ * step from here too, so the app shell still only calls [start].
  */
 object ReminderScheduler {
 
@@ -51,6 +52,11 @@ object ReminderScheduler {
         }
             .onEach { (enabled, prefs) -> apply(app, enabled, prefs) }
             .launchIn(scope)
+        ForgeApp.instance.repository.settingsStore.settings
+            .map { ProgressPhotoReminder.isEnabled(it) }
+            .distinctUntilChanged()
+            .onEach { on -> ProgressPhotoReminder.apply(app, on) }
+            .launchIn(scope)
     }
 
     /** One-shot version of [start]: read the current settings and (re)schedule. */
@@ -59,6 +65,7 @@ object ReminderScheduler {
         val settings = ForgeApp.instance.repository.settings()
         val prefs = ReminderPrefsStore.current(app)
         apply(app, ReminderType.entries.associateWith { it.isEnabled(settings) }, prefs)
+        ProgressPhotoReminder.apply(app, ProgressPhotoReminder.isEnabled(settings))
     }
 
     /** Minutes-of-day last scheduled per reminder in this process; absent means not yet applied. */
@@ -128,6 +135,7 @@ object ReminderScheduler {
 
     fun cancelAll(context: Context) {
         ReminderType.entries.forEach { WorkManager.getInstance(context).cancelUniqueWork(workName(it)) }
+        ProgressPhotoReminder.cancel(context)
     }
 
     /** Settings toggles + prefs as one snapshot, for screens that need both. */

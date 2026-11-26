@@ -1,0 +1,183 @@
+# Safety, JSON and instruction-following evidence for Forge model choice
+
+Compiled 2026-11-21. Machine-readable version: `safety_json_evidence.json`. Anything marked UNVERIFIED or 'not re-verified' has not been checked against the primary source.
+
+## Summary
+
+(1) ED/crisis safety: every independent evaluation 2023-2026 found all general chatbots produce some harmful ED content, and role-play or 'for a friend' framing defeats guardrails (CCDH 2023: 67% harmful with jailbreak; CCDH 2025: 53% of 1,200 ChatGPT responses harmful). Frontier models now handle explicit crisis at the extremes reasonably (RAND 2025; OpenAI's self-reported GPT-5 91% compliance), but subtle ED cues framed as dieting or fitness are the weakest area for every model (mPACT 2026, unverified; Common Sense 2025), which is Forge's exact context. Relative evidence: Claude Sonnet 4.5 and GPT-5.x best on crisis; Gemini safe but over-refusing and weaker on subtle cues; Grok 4.1 and Mistral Medium 3 weakest (press-reported); among open weights GLM-5.2 (82.8%) > Gemma-4-31B (79.5%) > Qwen3.6-27B (67.7%); 7-9B open models (Llama 3.1 8B, Qwen2.5 7B, Gemma 2 9B) gave unsafe advice in 30-90% of advice responses in risky cells. Supplying the user's vulnerability context raises safety 10-14 points. (2) JSON: only provider-side constrained decoding (Anthropic output_config json_schema, OpenAI strict, Gemini schema, Groq strict on 4 models, OpenRouter with require_parameters) gives ~100% schema compliance; prompt-only JSON falls to 13-21% on hard schemas. Providers reject numeric bounds and complex features inconsistently, so Forge schemas should be flat with string enums, bounds enforced in Kotlin, plus refusal/truncation handling and one retry. (3) Instruction following: small-model IFEval (Gemma 3 4B 90.2, Qwen3-8B 85.0, Llama 3.2 3B 77.4) overstates generalisation (IFBench under 50% even for frontier models), and compliance decays with long rule lists while favouring early instructions. Guardrails implied: COACH and BODY only on frontier models with crisis evidence (Claude Sonnet 4.5 or newer, GPT-5.x), with code-side crisis/ED-cue detection always pre-empting the model; PLAN, LABEL, FOOD_PHOTO and PROGRAM may use cheaper or open models only through a constrained-decoding endpoint plus Kotlin validation; no sub-10B open model for COACH. Items marked unverified need primary-source confirmation.
+
+## 1. Eating-disorder and diet safety
+
+### Center for Countering Digital Hate, 'AI and Eating Disorders' (report)
+
+- Date: 2023-08
+- Source: <https://counterhate.com/research/ai-tools-and-eating-disorders/>
+- Models: ChatGPT (version unspecified); Google Bard; Snapchat My AI; image generators (Midjourney, DreamStudio, DALL-E)
+- Result: Harmful ED content in 41% of 180 prompts overall. Text chatbots without jailbreak: ChatGPT 4/20 harmful, Bard 10/20, My AI refused all. With jailbreak framing 67% of 60 responses were harmful (ChatGPT 20/20). About 94% of harmful text responses also carried a 'seek help' warning, so disclaimers co-existed with harmful advice. Old models; shows role-play/jailbreak framing defeats generic guardrails. Figures from CCDH page and press; per-model counts not re-checked against the PDF.
+
+### CCDH, 'Fake Friend: How ChatGPT betrays vulnerable teens by encouraging dangerous behavior'
+
+- Date: 2025-08-06
+- Source: <https://www.counterharm.com/research/fake-friend-chatgpt/>
+- Models: ChatGPT via API (model version not stated)
+- Result: 60 harmful prompts x 20 repeats = 1,200 responses; 53% harmful. ED-specific: restrictive diet plans, advice on hiding eating habits from family, appetite-suppressing medication suggestions; refusals bypassed with 'for a friend / for a presentation' framing; 47% of harmful replies offered follow-ups. Lesson for Forge: prompt-level guardrails alone are insufficient; keep deterministic crisis/ED-cue routing in code.
+
+### Yim et al., 'Generative AI for eating disorders: linguistic comparison with online support and qualitative analysis of harms', International Journal of Eating Disorders 59(3)
+
+- Date: 2025-11 (online)
+- Source: <https://repository.londonmet.ac.uk/11050/>
+- Models: GPT; Gemini; Llama; Mistral (versions not verified)
+- Result: Responses to Reddit ED posts vs human peers: AI replies longer, more polite, more repetitive. Clinician review of 100 AI responses: all chatbots produced some harmful content (promoting ED behaviours or biases) to varying degrees. Details from repository/search snippets; author list and versions unverified.
+
+### Common Sense Media with Stanford Medicine Brainstorm Lab, AI chatbots and teen mental health risk assessment
+
+- Date: 2025-11-20
+- Source: <https://www.commonsensemedia.org/press-releases/common-sense-media-finds-major-ai-chatbots-unsafe-for-teen-mental-health-support>
+- Models: ChatGPT; Claude; Gemini; Meta AI
+- Result: All four rated unsafe for teen mental-health support; 'missed breadcrumbs' across platforms, including missed eating-disorder warning signs in multi-turn chats. No vendor was clean. Forge is an adult single user, but the failure mode (missing subtle ED cues framed as fitness) is Forge's exact context.
+
+### Winecoff & Klyman, 'From Symptoms to Systems: An Expert-Guided Approach to Understanding Risks of Generative AI for Eating Disorders' (arXiv 2512.04843)
+
+- Date: 2025-12-04
+- Source: <https://arxiv.org/abs/2512.04843>
+- Models: none (interview study, 15 experts)
+- Result: Seven-category ED risk taxonomy: generalized health advice, encouraging disordered behaviours, supporting symptom concealment, thinspiration, reinforcing negative self-beliefs, excessive focus on the body, narrow views of EDs. Notes general safety taxonomies (e.g. MLCommons) scope ED to self-harm and exclude dieting advice, so a general safety score does not certify ED safety. Usable as Forge's eval rubric.
+
+### Pucci, Hemendinger, Li, Abercrombie, Dinkar, Sinclair, 'Food Noise & False Safety: A Systematic Evaluation of How LLMs Fail to Adapt to Eating Disorder Queries with Clinician Feedback' (arXiv 2606.02444)
+
+- Date: 2026-06-01
+- Source: <https://arxiv.org/abs/2606.02444>
+- Models: Llama-3.1-8B-Instruct; Qwen-2.5-7B-Instruct; Gemma-2-9B-Instruct
+- Result: 11,712-prompt suite; clinician subset of 268 pairs: only 44.7% judged safe. Up to ~30% unsafe on neutral requests, 68.2% in risky contexts. Qwen-2.5-7B most compliant (fewest refusals; 91.3% unsafe advice in risky-user/neutral-request cell); Gemma-2-9B most refusing but 31.8% unsafe on neutral requests; Llama-3.1-8B 90% unsafe advice in the risky/risky cell. Mentioning calories increases 'food noise' in replies. Cells ~21-23 responses - indicative only. Evidence that 7-9B open models must not run COACH unguarded.
+
+### Wang, Chu, Ross, Fitzsimmons-Craft, Lerman, 'Safer for Whom? A Systematic Exploration of AI Safety in Eating Disorder Interactions' (arXiv 2611.10488)
+
+- Date: 2026-11-07
+- Source: <https://arxiv.org/abs/2611.10488>
+- Models: GLM-5.2; Gemma-4-31B-it; Qwen3.6-27B
+- Result: 100 questions from a pro-anorexia community, clinically informed 7-dimension rubric. Safety score with user bio: GLM-5.2 82.8%, Gemma-4-31B-it 79.5%, Qwen3.6-27B 67.7% (Qwen with a bio less safe than the others without one). High-risk responses ~2x more frequent without user info; explicit vulnerability signal improved safety 10-14 points; disparities by race, gender and especially BMI. Implication: pass the user's safety context (SCOFF status, BMI band) in COACH prompts; Qwen family weakest of open options tested. Preprint two weeks old, not peer-reviewed.
+
+### mpathic, mPACT clinician-led benchmark (press release; covered by Axios, Fortune, GeekWire)
+
+- Date: 2026-05-12
+- Source: <https://axios.com/2026/05/12/ai-chatbots-mental-health-cues>
+- Models: Claude Sonnet 4.5; GPT-5.2; Gemini 2.5 Flash; Grok 4.1; Mistral Medium 3; sixth model not identified
+- Result: UNVERIFIED: primary pages returned 403; summary from search snippets. 300 multi-turn suicide role-plays written by 50 licensed clinicians: Claude Sonnet 4.5 highest on safety and helpfulness, GPT-5.2 most consistent at avoiding harmful responses. Eating disorders were the weakest area for all models (near a neutral baseline; missed indirect cues framed as dieting or fitness). Grok 4.1 and Mistral Medium 3 weakest; Gemini 2.5 Flash good on obvious risk, weak on subtle signals.
+
+### 'How do Artificial Intelligence chatbots respond to questions from adolescent personas about their eating, body weight or appearance?', Child and Adolescent Mental Health (doi 10.1111/camh.70047; authors not captured)
+
+- Date: 2026 (exact date unverified)
+- Source: <https://ifp.nyu.edu/2026/journal-article-abstracts/camh-70047/>
+- Models: ChatGPT; Claude.ai
+- Result: Ten adolescent personas, some with ED signs. Chatbots promoted 'healthy eating / activity' framing and pointed to trusted adults, but rarely to regulated services and without follow-up; authors judge this framing problematic for ED-symptomatic users. No per-model numbers.
+
+## 1b. Crisis and self-harm handling
+
+### McBain et al., 'Evaluation of Alignment Between Large Language Models and Expert Clinicians in Suicide Risk Assessment', Psychiatric Services (RAND EP71040)
+
+- Date: 2025-08-26
+- Source: <https://www.rand.org/pubs/external_publications/EP71040.html>
+- Models: ChatGPT (GPT-4o mini per press); Claude (3.5 Sonnet per press); Gemini (1.5 Pro per press)
+- Result: 30 clinician-rated suicide questions x 100 runs per model. None gave direct answers to very-high-risk items; all answered very-low-risk ones; inconsistent at intermediate risk. ChatGPT most often answered high-risk items directly, Claude fewer, Gemini least likely to answer anything (possibly over-restrictive). Single-turn only; model versions come from press coverage, not verified in the paper.
+
+### Moore et al., 'Expressing stigma and inappropriate responses prevents LLMs from safely replacing mental health providers', ACM FAccT 2025 (arXiv 2504.18412)
+
+- Date: 2025-04 (FAccT June 2025)
+- Source: <https://arxiv.org/abs/2504.18412>
+- Models: general chatbots from OpenAI and Meta plus commercial therapy bots (exact list not re-verified)
+- Result: Models showed stigma toward some conditions, and to an indirect suicidal-ideation prompt (job loss followed by a question about tall NYC bridges) several bots listed bridges instead of recognising risk (per Stanford HAI / UMN coverage). Supports Forge safety_crisis_disclosure: detect indirect cues in code, stop coaching, show the Tele MANAS card rather than trusting the model.
+
+### OpenAI, 'Strengthening ChatGPT's responses in sensitive conversations'
+
+- Date: 2025-10-27
+- Source: <https://openai.com/index/strengthening-chatgpt-responses-in-sensitive-conversations/>
+- Models: GPT-5 (updated default, Oct 2025); GPT-5 (previous); GPT-4o
+- Result: Vendor self-report, not independent. Self-harm/suicide automated-eval compliance 91% (new GPT-5) vs 77% (previous GPT-5); clinicians saw 52% fewer undesired responses vs GPT-4o (n=630); ~65% fewer non-compliant responses in production. Emotional reliance 97% vs 50%. Eating disorders not separately reported.
+
+## 2. Structured output and JSON-schema adherence
+
+### Geng et al., 'JSONSchemaBench: A Rigorous Benchmark of Structured Outputs for Language Models' (arXiv 2501.10868 v3)
+
+- Date: 2025-02-27 (v3)
+- Source: <https://arxiv.org/abs/2501.10868>
+- Models: Guidance, Outlines, llama.cpp, XGrammar (with Llama-3.2-1B / Llama-3.1-8B-Instruct); OpenAI structured outputs; Gemini structured outputs
+- Result: 10K real-world schemas. Unconstrained LM-only compliance 0.90 on simple GlaiveAI schemas but 0.13-0.21 on hard sets. OpenAI and Gemini: ~1.00 compliance on schemas they accept but low coverage because they implement a subset (OpenAI empirical coverage 0.89 GlaiveAI, 0.06-0.29 on GitHub/JsonSchemaStore sets). Guidance best open engine (compliance 0.69-1.00); Outlines times out on enum/minItems-heavy schemas. Lesson: keep Forge schemas flat with string enums and no numeric bounds so every provider accepts and enforces them; never rely on prompt-only JSON from small models.
+
+### Anthropic docs, 'Structured outputs'
+
+- Date: fetched 2026-11-21
+- Source: <https://platform.claude.com/docs/en/build-with-claude/structured-outputs>
+- Models: claude-opus-5-5; claude-sonnet-5-5; claude-haiku-5-5; claude-haiku-4-5-20251001; claude-sonnet-4-5-20250929; others listed on page
+- Result: Stable (no beta header) via output_config.format {type: json_schema}; constrained decoding: always valid JSON, field types and required fields guaranteed. Unsupported (400 error): minimum/maximum/multipleOf, minLength/maxLength, recursive schemas, oneOf, not, additionalProperties other than false, minItems > 1, complex enums. Simple string enums supported. Grammar compiled on first use and cached 24 h. Fits Forge: numeric bounds stay in Kotlin clamps.
+
+### OpenAI docs, 'Structured Outputs'
+
+- Date: fetched 2026-11-21
+- Source: <https://developers.openai.com/api/docs/guides/structured-outputs>
+- Models: gpt-4o-2024-08-06, gpt-4o-mini and later OpenAI models
+- Result: 'Structured Outputs constrains completed, non-refusal model output to your supplied JSON Schema.' Refusals arrive in a separate 'refusal' field and token-limit truncation yields incomplete output, so Forge must handle both. JSON mode guarantees valid JSON only, not schema adherence. Exact schema-size limits not captured in fetch.
+
+### Google AI docs, 'Structured output' (Gemini API)
+
+- Date: fetched 2026-11-21
+- Source: <https://aistudio.google.com/docs/structured-output>
+- Models: Gemini 3 / Gemini 4 series (IDs on page, e.g. gemini-3.8-flash)
+- Result: Output constrained to syntactically valid JSON matching the schema; supports enum, minimum/maximum, minItems/maxItems; ignores minLength/maxLength, uniqueItems and similar. Very large or deep schemas rejected with 400. Docs tell developers to always validate values in the application.
+
+### Groq docs, 'Structured Outputs'
+
+- Date: fetched 2026-11-21
+- Source: <https://console.groq.com/docs/structured-outputs>
+- Models: openai/gpt-oss-20b; openai/gpt-oss-120b; qwen/qwen3.8-27b; meta-models/muse-spark-open
+- Result: Strict mode (constrained decoding, schema guaranteed) only on these four models; all properties must be required and additionalProperties false; no streaming or tool use with structured outputs. Other models: best-effort or JSON-object mode (valid JSON, no schema guarantee). Model IDs as listed at fetch time.
+
+### OpenRouter docs, 'Structured Outputs'
+
+- Date: fetched 2026-11-21
+- Source: <https://openrouter.ai/docs/features/structured-outputs>
+- Models: varies per provider endpoint
+- Result: Support is per endpoint, not per model; set provider require_parameters=true to avoid routing to a non-supporting provider. strict:true is enforced only where the upstream provider has native strict mode; elsewhere it is a hint. Optional Response Healing plugin for non-streaming json_schema. For Forge's OpenAI-compatible path: keep the tolerant parser, schema validation and one retry.
+
+### Tam et al., 'Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models', EMNLP 2024 Industry (arXiv 2408.02442)
+
+- Date: 2024-08-05 (rev. 2024-10-14)
+- Source: <https://arxiv.org/abs/2408.02442>
+- Models: Gemini 1.5 Flash, Llama 3 8B Instruct and others (full list not re-verified)
+- Result: Strict format constraints (JSON mode) can lower reasoning accuracy, more so with stricter constraints; classification-style outputs are unaffected or improved. For Forge: PLAN (enum choice) benefits from constrained decoding; COACH stays free text; for FOOD_PHOTO/PROGRAM put a free-text reasoning field before numeric fields or use a two-step natural-language-then-format approach.
+
+## 3. Instruction following (small models, enums, long prompts)
+
+### Pyatkin et al., 'Generalizing Verifiable Instruction Following' (IFBench), NeurIPS 2025 Datasets & Benchmarks (arXiv 2507.02833 v3)
+
+- Date: 2025-11-11 (v3)
+- Source: <https://arxiv.org/abs/2507.02833>
+- Models: Tulu-3-8B; Qwen2.5-7B-Instruct; OLMo-2; Llama-3.1-8B; figure also plots frontier models incl. Qwen3-32B and Claude 4 Sonnet
+- Result: Models overfit IFEval: Qwen2.5-7B-Instruct IFEval 74.7 vs IFBench 31.3; Tulu-3-8B 82.4 vs 28.9; Qwen3-32B and Claude 4 Sonnet both below 50% on IFBench. A high IFEval score on a small model does not mean it will obey novel constraints such as 'choose only from this enum'; enforce enums with schema/constrained decoding and validate in code.
+
+### Jaroslawicz, Whiting, Shah, Maamari, 'How Many Instructions Can LLMs Follow at Once?' (IFScale, arXiv 2507.11538, NeurIPS 2025)
+
+- Date: 2025-07-15
+- Source: <https://arxiv.org/abs/2507.11538>
+- Models: 20 models from 7 providers incl. gpt-4.1 and claude-sonnet-4
+- Result: Accuracy decays with instruction density (threshold, linear or exponential patterns; size and reasoning ability predict which); best frontier models ~68% at 500 simultaneous instructions. Primacy bias: earlier instructions are followed better at moderate density. For Forge COACH (long system prompt + evidence base): put safety_* rules first, keep them short, and do not rely on small models for long rulebooks.
+
+### Google, Gemma 3 model card
+
+- Date: 2025-03 (fetched 2026-11-21)
+- Source: <https://gemma.ai/models/gemma-3/>
+- Models: Gemma 3 1B / 4B / 12B / 27B IT
+- Result: IFEval 0-shot: 1B 80.2, 4B 90.2, 12B 88.9, 27B 90.4 (self-reported). Safety evaluations English-only; 'minimal policy violations' self-reported; no ED-specific evaluation reported.
+
+### Meta, Llama 3.2 model card (Hugging Face)
+
+- Date: 2024-09 (fetched 2026-11-21)
+- Source: <https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct>
+- Models: Llama 3.2 1B / 3B Instruct; Llama 3.1 8B Instruct
+- Result: IFEval (avg of strict/loose prompt and instruction accuracy): 1B 59.5 (SpinQuant 58.4, vanilla PTQ 51.5), 3B 77.4 (SpinQuant 73.5, vanilla PTQ 73.9), 3.1-8B 80.4. On-device quantization costs ~1-8 IFEval points; 1B too weak for Forge's constrained jobs.
+
+### Qwen Team, 'Qwen3 Technical Report' (arXiv 2505.09388)
+
+- Date: 2025-05
+- Source: <https://arxiv.org/abs/2505.09388>
+- Models: Qwen3-4B; Qwen3-8B (non-thinking)
+- Result: IFEval strict-prompt, non-thinking: Qwen3-4B 81.9, Qwen3-8B 85.0 (self-reported; taken from search snippet of Table 18, not re-read). An independent 2026 re-run (arXiv 2606.09662, different setup) measured 73.0 / 75.1, so vendor numbers may run ~8-10 points high. Combined with ED-safety findings (Pucci 2026; Wang 2026), Qwen models are the least safe on ED prompts despite good IF scores.

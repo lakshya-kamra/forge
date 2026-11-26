@@ -9,12 +9,17 @@ import com.laksh.forge.data.db.BodyMeasurement
 import com.laksh.forge.data.db.ProgressPhoto
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.prefs.Sex
+import androidx.room.withTransaction
+import com.laksh.forge.data.db.ForgeDatabase
 import com.laksh.forge.domain.plan.NavyBodyFat
 import com.laksh.forge.domain.plan.PlanStore
 import com.laksh.forge.domain.plan.Pose
 import com.laksh.forge.feature.onboarding.attempt
 import com.laksh.forge.ui.forgeFactory
 import com.laksh.forge.util.Dates
+import com.laksh.forge.util.ImageUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +28,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import kotlin.math.roundToInt
 
 /** Every tape site Forge tracks, with how to read it off a row. */
@@ -36,9 +46,13 @@ enum class MeasureSite(val label: String, val read: (BodyMeasurement) -> Double?
     CALF("Calf", { it.calfCm })
 }
 
-/** A day's photos keyed by pose, for the timeline and the compare picker. */
-data class PhotoDay(val date: String, val byPose: Map<Pose, ProgressPhoto>, val other: List<ProgressPhoto>) {
-    val all: List<ProgressPhoto> get() = byPose.values.toList() + other
+/**
+ * Photos Forge v2.0 stored before it stopped keeping them. [rows] are database entries
+ * (their files may or may not still exist); [orphanFiles] are files no row points to.
+ */
+data class LegacyPhotos(val rows: List<ProgressPhoto> = emptyList(), val orphanFiles: List<File> = emptyList()) {
+    val count: Int get() = rows.size + orphanFiles.size
+    val isEmpty: Boolean get() = count == 0
 }
 
 data class NavyPoint(val timestamp: Long, val date: String, val pct: Double)
@@ -82,7 +96,7 @@ data class ProgressUiState(
     val loading: Boolean = true,
     val settings: ForgeSettings = ForgeSettings(),
     val measurements: List<BodyMeasurement> = emptyList(),
-    val photoDays: List<PhotoDay> = emptyList(),
+    val legacy: LegacyPhotos = LegacyPhotos(),
     val navy: List<NavyPoint> = emptyList(),
     val error: String? = null
 ) {
@@ -97,35 +111,37 @@ class ProgressViewModel(private val repo: ForgeRepository) : ViewModel() {
     val busy = MutableStateFlow(false)
     val message = MutableStateFlow<String?>(null)
 
+    /** Set after a successful export, so the legacy card can move on to "delete from Forge". */
+    val legacyExported = MutableStateFlow(false)
+
+    private val orphanFiles = MutableStateFlow<List<File>>(emptyList())
+
     val state: StateFlow<ProgressUiState> = combine(
         PlanStore.bodyDao.observeMeasurements(),
         PlanStore.bodyDao.observePhotos(),
+        orphanFiles,
         repo.settingsStore.settings
-    ) { measurements, photos, settings ->
+    ) { measurements, photos, orphans, settings ->
         ProgressUiState(
             loading = false,
             settings = settings,
             measurements = measurements,
-            photoDays = group(photos),
+            legacy = LegacyPhotos(photos, orphans.filter { f -> photos.none { File(it.path) == f } }),
             navy = navySeries(measurements, settings)
         )
     }
         .catch { e -> emit(ProgressUiState(loading = false, error = e.message ?: "Couldn't load your progress.")) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProgressUiState())
 
-    private fun group(photos: List<ProgressPhoto>): List<PhotoDay> =
-        photos.groupBy { it.localDate }
-            .toSortedMap(compareByDescending { it })
-            .map { (date, list) ->
-                val byPose = mutableMapOf<Pose, ProgressPhoto>()
-                val other = mutableListOf<ProgressPhoto>()
-                // Newest first, so a retake on the same day wins the pose slot.
-                list.sortedByDescending { it.timestamp }.forEach { p ->
-                    val pose = Pose.from(p.pose)
-                    if (pose != null && pose !in byPose) byPose[pose] = p else other += p
-                }
-                PhotoDay(date, byPose, other)
-            }
+    init {
+        refreshOrphans()
+        // v2.0 onboarding could leave staged body photos in the cache; nobody chose to keep those.
+        viewModelScope.launch { runCatching { ProgressPhotoFiles.clearStaging(ForgeApp.instance) } }
+    }
+
+    private fun refreshOrphans() = viewModelScope.launch {
+        orphanFiles.value = runCatching { ProgressPhotoFiles.legacyFiles(ForgeApp.instance) }.getOrDefault(emptyList())
+    }
 
     /**
      * Navy estimate per measurement day using today's height and sex, bias-corrected the same
@@ -176,25 +192,94 @@ class ProgressViewModel(private val repo: ForgeRepository) : ViewModel() {
             .onFailure { e -> message.value = e.message ?: "Couldn't delete." }
     }
 
-    fun addPhoto(pose: Pose, uri: Uri) = viewModelScope.launch {
+    fun setPhotoReminder(on: Boolean) = viewModelScope.launch {
+        attempt { repo.settingsStore.setProgressPhotoReminder(on) }
+            .onSuccess { message.value = if (on) "Monthly photo reminder on - first Sunday of each month" else "Monthly photo reminder off" }
+            .onFailure { e -> message.value = e.message ?: "Couldn't change the reminder." }
+    }
+
+    /**
+     * A pose-guide capture goes straight into the person's gallery (Android 10+), then the
+     * temporary capture file is deleted - success or not - so Forge keeps nothing.
+     */
+    fun saveCaptureToGallery(pose: Pose, uri: Uri) = viewModelScope.launch {
         busy.value = true
-        attempt {
-            val path = ProgressPhotoFiles.importPhoto(ForgeApp.instance, uri)
-            val now = System.currentTimeMillis()
-            val weight = repo.weightDao.observeLatest().first()?.kg
-            PlanStore.bodyDao.insertPhoto(
-                ProgressPhoto(timestamp = now, localDate = Dates.today(), path = path, pose = pose.name, weightKg = weight)
-            )
-        }.onFailure { e -> message.value = e.message ?: "That photo couldn't be saved." }
+        try {
+            attempt {
+                val path = uri.path ?: throw IllegalStateException("The camera didn't return a photo.")
+                if (GalleryPhotos.canSaveDirectly) {
+                    GalleryPhotos.saveToGallery(
+                        ForgeApp.instance,
+                        File(path),
+                        GalleryPhotos.displayName(LocalDate.now(), pose.label),
+                        System.currentTimeMillis()
+                    )
+                } else {
+                    throw IllegalStateException("Saving to the gallery needs Android 10 or newer - use your camera app instead.")
+                }
+            }.onSuccess { message.value = "${pose.label} photo saved to ${GalleryPhotos.albumLabel}" }
+                .onFailure { e -> message.value = e.message ?: "That photo couldn't be saved to your gallery." }
+        } finally {
+            withContext(NonCancellable + Dispatchers.IO) { ImageUtils.discardCapture(ForgeApp.instance, uri) }
+            busy.value = false
+        }
+    }
+
+    /**
+     * Copy every v2.0 photo into the gallery album, dated by when it was taken. [tree] is the
+     * folder picked on Android 8-9; null uses MediaStore. Nothing is deleted here.
+     */
+    fun exportLegacy(tree: Uri? = null) = viewModelScope.launch {
+        if (busy.value) return@launch
+        busy.value = true
+        val legacy = state.value.legacy
+        var saved = 0
+        var failed = 0
+        val zone = ZoneId.systemDefault()
+        suspend fun save(file: File, date: LocalDate, label: String, takenAt: Long) {
+            attempt {
+                val name = GalleryPhotos.displayName(date, label)
+                when {
+                    tree != null -> GalleryPhotos.saveToFolder(ForgeApp.instance, tree, file, name, takenAt)
+                    GalleryPhotos.canSaveDirectly -> GalleryPhotos.saveToGallery(ForgeApp.instance, file, name, takenAt)
+                    else -> throw IllegalStateException("Choose a folder to save to first.")
+                }
+            }.onSuccess { saved++ }.onFailure { failed++ }
+        }
+        legacy.rows.forEach { row ->
+            if (!ProgressPhotoFiles.exists(row.path)) return@forEach
+            val date = runCatching { LocalDate.parse(row.localDate) }
+                .getOrElse { Instant.ofEpochMilli(row.timestamp).atZone(zone).toLocalDate() }
+            save(File(row.path), date, Pose.from(row.pose)?.label ?: "photo", row.timestamp)
+        }
+        legacy.orphanFiles.forEach { f ->
+            save(f, Instant.ofEpochMilli(f.lastModified()).atZone(zone).toLocalDate(), "photo", f.lastModified())
+        }
+        message.value = when {
+            saved == 0 && failed == 0 -> "There were no photo files left to save."
+            failed == 0 -> "Saved $saved photo${if (saved == 1) "" else "s"} to ${if (tree != null) "the folder you chose" else GalleryPhotos.albumLabel}"
+            else -> "Saved $saved, but $failed couldn't be saved. Your photos are still in Forge - try again."
+        }
+        if (failed == 0) legacyExported.value = true
         busy.value = false
     }
 
-    fun deletePhoto(p: ProgressPhoto) = viewModelScope.launch {
+    /** Remove every v2.0 photo row and file. Only reachable from an explicit confirmation. */
+    fun deleteLegacy() = viewModelScope.launch {
+        if (busy.value) return@launch
+        busy.value = true
         attempt {
-            PlanStore.bodyDao.deletePhoto(p)
-            ProgressPhotoFiles.delete(p.path)
-        }.onSuccess { message.value = "Photo deleted" }
-            .onFailure { e -> message.value = e.message ?: "Couldn't delete the photo." }
+            val rows = PlanStore.bodyDao.observePhotos().first()
+            ForgeDatabase.get(ForgeApp.instance).withTransaction { rows.forEach { PlanStore.bodyDao.deletePhoto(it) } }
+            withContext(Dispatchers.IO) { rows.forEach { ImageUtils.deletePhoto(it.path) } }
+            ProgressPhotoFiles.deleteAllLegacy(ForgeApp.instance)
+            rows.size
+        }.onSuccess { n ->
+            message.value = if (n > 0) "Removed $n photo${if (n == 1) "" else "s"} from Forge" else "Removed the photos from Forge"
+            legacyExported.value = false
+        }.onFailure { e -> message.value = e.message ?: "Couldn't remove the photos." }
+        refreshOrphans().join()
+        busy.value = false
     }
 
     fun consumeMessage() { message.value = null }

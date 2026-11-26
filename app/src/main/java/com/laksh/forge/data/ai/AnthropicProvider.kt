@@ -31,14 +31,36 @@ import okhttp3.RequestBody.Companion.toRequestBody
  * - no temperature / top_p / top_k (400 on this API version);
  * - JSON via output_config.format json_schema, never forced tool_choice (400 on Opus/Sonnet 5.5);
  * - images go before the text block in the user turn.
+ *
+ * The same code also speaks to gateways that relay the Messages format (Command Code's
+ * /messages): [baseUrl]/[messagesPath] replace Anthropic's address, [bearerAuth] sends the key
+ * as `Authorization: Bearer`, and [spec]'s extra headers (Command Code's `x-cmd-zdr: 1`) go on
+ * every request.
+ *
+ * @param gateway true for a relay. A relay may not pass every Messages field through, so a 400
+ *   is retried once "lean": no output_config (effort, json_schema) and no server-side fallback,
+ *   with the schema carried in the system prompt instead and the answer parsed tolerantly.
  */
-class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthropic) : AiProvider {
+class AnthropicProvider(
+    override val spec: ProviderSpec = ProviderRegistry.anthropic,
+    private val baseUrl: String = spec.baseUrl,
+    private val messagesPath: String = spec.chatPath,
+    private val modelsPath: String = spec.modelsPath,
+    private val bearerAuth: Boolean = false,
+    private val gateway: Boolean = false
+) : AiProvider {
 
     private val name get() = spec.shortName
 
     override suspend fun complete(key: String, request: AiRequest): Completion = withContext(Dispatchers.IO) {
-        val payload = body(request, stream = false)
-        val raw = AiHttp.execute(name) { post(key, request.model, payload, stream = false) }
+        val raw = try {
+            AiHttp.execute(name) { post(key, request.model, body(request, stream = false), stream = false) }
+        } catch (e: AiException) {
+            if (!retryLean(e)) throw e
+            AiHttp.execute(name) {
+                post(key, request.model, body(request, stream = false, lean = true), stream = false)
+            }
+        }
         val obj = runCatching { AiJson.json.parseToJsonElement(raw).jsonObject }
             .getOrElse { throw AiException("Malformed response from $name.") }
 
@@ -54,8 +76,14 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
     }
 
     override fun stream(key: String, request: AiRequest): Flow<String> = flow {
-        val payload = body(request, stream = true)
-        val response = AiHttp.openStream(name) { post(key, request.model, payload, stream = true) }
+        val response = try {
+            AiHttp.openStream(name) { post(key, request.model, body(request, stream = true), stream = true) }
+        } catch (e: AiException) {
+            if (!retryLean(e)) throw e
+            AiHttp.openStream(name) {
+                post(key, request.model, body(request, stream = true, lean = true), stream = true)
+            }
+        }
         var stopReason: String? = null
         response.use { r ->
             val source = r.body?.source() ?: throw AiException("Empty response stream from $name.")
@@ -101,7 +129,7 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
     }.flowOn(Dispatchers.IO)
 
     override suspend fun listModels(key: String): List<String> = withContext(Dispatchers.IO) {
-        val raw = AiHttp.execute(name) { get(key, AiHttp.joinUrl(spec.baseUrl, spec.modelsPath) + "?limit=1000") }
+        val raw = AiHttp.execute(name) { get(key, AiHttp.joinUrl(baseUrl, modelsPath) + "?limit=1000") }
         val root = runCatching { AiJson.json.parseToJsonElement(raw).jsonObject }.getOrNull()
         (root?.get("data") as? JsonArray).orEmpty()
             .mapNotNull { ((it as? JsonObject)?.get("id") as? JsonPrimitive)?.contentOrNull }
@@ -110,26 +138,35 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
     }
 
     override suspend fun probe(key: String): Boolean = withContext(Dispatchers.IO) {
-        AiHttp.probe(name) { get(key, AiHttp.joinUrl(spec.baseUrl, spec.modelsPath) + "?limit=1") }
+        AiHttp.probe(name) { get(key, AiHttp.joinUrl(baseUrl, modelsPath) + "?limit=1") }
     }
 
     // ---------------------------------------------------------------- request building
 
-    private fun body(req: AiRequest, stream: Boolean): JsonObject = buildJsonObject {
+    /** Only a relay gets the lean retry; Anthropic itself documents every field Forge sends. */
+    private fun retryLean(e: AiException): Boolean =
+        gateway && e.httpCode == 400 && e.errorCode != AiHttp.ZDR_NO_PROVIDERS
+
+    /** The request [complete] would send first (or its lean retry). For tests of the wire format. */
+    internal fun buildRequest(key: String, request: AiRequest, stream: Boolean = false, lean: Boolean = false): Request =
+        post(key, request.model, body(request, stream, lean), stream)
+
+    private fun body(req: AiRequest, stream: Boolean, lean: Boolean = false): JsonObject = buildJsonObject {
         put("model", req.model)
         put("max_tokens", req.maxTokens)
-        val effort = supportsEffort(req.model, req.modelSpec != null)
-        if (effort || req.json != null) putJsonObject("output_config") {
+        val effort = !lean && supportsEffort(req.model, req.modelSpec != null)
+        val schema = req.json?.takeIf { !lean }
+        if (effort || schema != null) putJsonObject("output_config") {
             // Older models (Sonnet/Haiku 4.5 from the model list) reject effort with a 400.
             if (effort) put("effort", effortFor(req.task))
-            req.json?.let { j ->
+            schema?.let { j ->
                 putJsonObject("format") {
                     put("type", "json_schema")
                     put("schema", j.schema)
                 }
             }
         }
-        if (hasServerFallback(req.model)) put("fallbacks", "default")
+        if (sendsServerFallback(req.model)) put("fallbacks", "default")
         if (stream) put("stream", true)
 
         // The coach resends the same long context every turn, so its system block and the
@@ -137,11 +174,14 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
         // instead of billed at full input price. One-shot jobs don't reuse a prefix, so
         // marking them would only pay the cache-write premium.
         val cache = req.task == Task.COACH
-        if (req.system.isNotBlank()) {
+        // A lean request loses the enforced schema, so the prompt has to carry it.
+        val leanSchema = if (lean) req.json?.let { AiPrompts.schemaInstructions(it.schema) } else null
+        val system = (req.system + leanSchema.orEmpty()).trim()
+        if (system.isNotEmpty()) {
             putJsonArray("system") {
                 addJsonObject {
                     put("type", "text")
-                    put("text", req.system)
+                    put("text", system)
                     if (cache) putJsonObject("cache_control") { put("type", "ephemeral") }
                 }
             }
@@ -187,12 +227,13 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
 
     private fun post(key: String, model: String, body: JsonObject, stream: Boolean): Request =
         Request.Builder()
-            .url(AiHttp.joinUrl(spec.baseUrl, spec.chatPath))
-            .addHeader("x-api-key", key)
+            .url(AiHttp.joinUrl(baseUrl, messagesPath))
+            .auth(key)
             .addHeader("anthropic-version", API_VERSION)
             .addHeader("content-type", "application/json")
             .apply {
-                if (hasServerFallback(model)) addHeader("anthropic-beta", FALLBACK_BETA)
+                // The beta header travels only with the field it enables (never on a lean retry).
+                if (body.containsKey("fallbacks")) addHeader("anthropic-beta", FALLBACK_BETA)
                 if (stream) addHeader("accept", "text/event-stream")
             }
             .post(body.toString().toRequestBody(AiHttp.jsonMedia))
@@ -201,10 +242,15 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
     private fun get(key: String, url: String): Request =
         Request.Builder()
             .url(url)
-            .addHeader("x-api-key", key)
+            .auth(key)
             .addHeader("anthropic-version", API_VERSION)
             .get()
             .build()
+
+    private fun Request.Builder.auth(key: String): Request.Builder = apply {
+        if (bearerAuth) addHeader("Authorization", "Bearer $key") else addHeader("x-api-key", key)
+        spec.extraHeaders.forEach { (k, v) -> addHeader(k, v) }
+    }
 
     /**
      * Effort per job: transcription and quick estimates need little, coaching and document
@@ -222,6 +268,9 @@ class AnthropicProvider(override val spec: ProviderSpec = ProviderRegistry.anthr
 
     private fun hasServerFallback(model: String): Boolean =
         model.startsWith("claude-opus-5-5") || model.startsWith("claude-sonnet-5-5")
+
+    /** The fallback is an Anthropic beta; a relay isn't documented to honour it. */
+    private fun sendsServerFallback(model: String): Boolean = !gateway && hasServerFallback(model)
 
     private fun refusal(task: Task): AiException = AiRefusal(
         when (task) {

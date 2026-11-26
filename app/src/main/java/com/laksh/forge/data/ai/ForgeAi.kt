@@ -18,11 +18,14 @@ sealed interface AiPart {
  * Thrown for every AI failure; [message] is always safe to show to the user.
  * [httpCode] is set when the provider answered with an HTTP error, so callers (and the
  * OpenAI-compatible provider's parameter fallback) can tell "bad request" from "bad key".
+ * [errorCode] is the provider's machine-readable code when it sends one (e.g. Command Code's
+ * `cmd_zdr_no_providers`), so a 422 that is a policy refusal isn't mistaken for a bad parameter.
  */
 open class AiException(
     message: String,
     val retryable: Boolean = false,
-    val httpCode: Int? = null
+    val httpCode: Int? = null,
+    val errorCode: String? = null
 ) : Exception(message)
 
 /**

@@ -1,6 +1,9 @@
 package com.laksh.forge.feature.onboarding
 
+import android.graphics.Bitmap
 import android.net.Uri
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.laksh.forge.ForgeApp
@@ -9,7 +12,6 @@ import androidx.room.withTransaction
 import com.laksh.forge.data.db.BodyMeasurement
 import com.laksh.forge.data.db.ForgeDatabase
 import com.laksh.forge.data.db.WeightEntry
-import com.laksh.forge.data.db.ProgressPhoto
 import com.laksh.forge.data.prefs.ForgeSettings
 import com.laksh.forge.data.prefs.PregnancyStatus
 import com.laksh.forge.data.prefs.Sex
@@ -46,7 +48,12 @@ import com.laksh.forge.domain.plan.edScreenLockActive
 import com.laksh.forge.domain.plan.libraryEquipment
 import com.laksh.forge.domain.program.LibraryProgramSummary
 import com.laksh.forge.domain.program.ProgramLibrary
+import com.laksh.forge.feature.progress.GalleryPhotos
 import com.laksh.forge.feature.progress.ProgressPhotoFiles
+import com.laksh.forge.util.ImageUtils
+import kotlinx.coroutines.NonCancellable
+import java.io.File
+import java.time.LocalDate
 import com.laksh.forge.ui.forgeFactory
 import com.laksh.forge.util.Dates
 import kotlinx.coroutines.CancellationException
@@ -72,6 +79,15 @@ enum class OnboardingStep(val label: String) {
     RECOMMENDATION("Recommendation"),
     REVIEW("Your plan"),
     ACCEPT("Start")
+}
+
+/**
+ * A photo held in memory for the one onboarding estimate - never written to disk. A plain
+ * class on purpose: identity equality makes a retake a different photo set, so a cached
+ * estimate is never reused for new photos, without comparing pixels.
+ */
+class HeldPhoto(val bitmap: Bitmap) {
+    val image: ImageBitmap = bitmap.asImageBitmap()
 }
 
 /** Everything typed so far. Numbers stay as text so half-typed input is never reformatted. */
@@ -110,9 +126,11 @@ data class OnboardingDraft(
     val arm: String = "",
     val thigh: String = "",
 
-    /** Staged (cache) file paths per pose; moved to private storage only on accept. */
-    val photos: Map<Pose, String> = emptyMap(),
-    val photoConsent: Boolean = false
+    /** In-memory photos per pose, used only for the estimate; Forge never saves them. */
+    val photos: Map<Pose, HeldPhoto> = emptyMap(),
+    val photoConsent: Boolean = false,
+    /** Pose-guide shots are also copied to the person's own gallery (Pictures/Forge Progress). */
+    val saveCapturesToGallery: Boolean = false
 ) {
     val ageInt: Int? get() = age.toIntOrNull()
     val heightD: Double? get() = heightCm.toDoubleOrNull()
@@ -414,24 +432,41 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
 
     // ------------------------------------------------------------------ photos
 
+    /**
+     * Decode a picked or captured photo into memory at analysis size. A pose-guide capture is a
+     * temporary cache file: it is optionally copied to the person's gallery, then deleted
+     * whatever happens, so onboarding leaves no photo in Forge's storage.
+     */
     fun addPhoto(pose: Pose, uri: Uri) {
         viewModelScope.launch {
             _state.update { it.copy(photoBusy = true, photoError = null) }
-            attempt { ProgressPhotoFiles.stage(app, uri) }
-                .onSuccess { path ->
-                    val old = _state.value.draft.photos[pose]
-                    ProgressPhotoFiles.delete(old)
-                    _state.update { it.copy(photoBusy = false, draft = it.draft.copy(photos = it.draft.photos + (pose to path))) }
+            val isCapture = uri.scheme == "file"
+            try {
+                attempt { GalleryPhotos.load(app, uri, ANALYSIS_EDGE) }
+                    .onSuccess { loaded ->
+                        _state.update {
+                            it.copy(photoBusy = false, draft = it.draft.copy(photos = it.draft.photos + (pose to HeldPhoto(loaded.bitmap))))
+                        }
+                    }
+                    .onFailure { e -> _state.update { it.copy(photoBusy = false, photoError = e.message ?: "That photo couldn't be used.") } }
+                if (isCapture && _state.value.draft.saveCapturesToGallery && GalleryPhotos.canSaveDirectly) {
+                    val path = uri.path
+                    if (path != null) {
+                        attempt {
+                            GalleryPhotos.saveToGallery(app, File(path), GalleryPhotos.displayName(LocalDate.now(), pose.label), System.currentTimeMillis())
+                        }.onFailure { e ->
+                            _state.update { it.copy(photoError = "The photo is ready for the estimate, but saving it to your gallery didn't work: ${e.message ?: "unknown error"}") }
+                        }
+                    }
                 }
-                .onFailure { e -> _state.update { it.copy(photoBusy = false, photoError = e.message ?: "That photo couldn't be used.") } }
+            } finally {
+                withContext(NonCancellable + Dispatchers.IO) { ImageUtils.discardCapture(app, uri) }
+                _state.update { it.copy(photoBusy = false) }
+            }
         }
     }
 
-    fun removePhoto(pose: Pose) {
-        val path = _state.value.draft.photos[pose]
-        ProgressPhotoFiles.delete(path)
-        edit { it.copy(photos = it.photos - pose) }
-    }
+    fun removePhoto(pose: Pose) = edit { it.copy(photos = it.photos - pose) }
 
     fun clearPhotoError() = _state.update { it.copy(photoError = null) }
 
@@ -511,25 +546,29 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         val cached = photoEstimate?.takeIf { it.key == photoKey }
         when {
             d.photos.isEmpty() -> Unit
-            !s.photoAnalysisAllowed -> photoNote = "Photo analysis is off for you right now; your photos are saved for your own record only."
-            !d.photoConsent -> photoNote = "You didn't allow photo analysis, so your photos are saved for your own record only."
+            !s.photoAnalysisAllowed -> photoNote = "Photo analysis is off for you right now, so the photos weren't used. Forge didn't keep them."
+            !d.photoConsent -> photoNote = "You didn't allow photo analysis, so the photos weren't used. Forge didn't keep them."
             cached != null -> {
                 photo = cached.range
                 confidence = cached.confidence
                 issues = cached.issues
                 estimated = true
             }
-            !repo.ai.isConfigured -> photoNote = "No AI provider is set up, so your photos are saved without analysis."
+            !repo.ai.isConfigured -> photoNote = "No AI provider is set up, so the photos weren't used. Forge didn't keep them."
             System.currentTimeMillis() - s.lastPhotoEstimateAt < minGapMs -> {
-                photoNote = "Forge allows one photo estimate every 14 days, so this time your photos are saved without analysis."
+                photoNote = "Forge allows one photo estimate every 14 days, so this time the photos weren't used."
                 rateLimited = true
             }
             else -> {
                 val settings = draftSettings(s)
                 val weightKg = d.weightKg ?: 70.0
                 attempt {
-                    val images = d.photos.entries.sortedBy { it.key.ordinal }
-                        .map { (pose, path) -> pose to ProgressPhotoFiles.base64ForAnalysis(path) }
+                    // The base64 copies live only for this call; the in-memory bitmaps go when
+                    // onboarding ends.
+                    val images = withContext(Dispatchers.Default) {
+                        d.photos.entries.sortedBy { it.key.ordinal }
+                            .map { (pose, held) -> pose to ImageUtils.toBase64Jpeg(held.bitmap, 85) }
+                    }
                     PlanAi.estimateBodyFat(
                         ai = repo.ai,
                         profile = PlanStore.guardrailProfile(settings, weightKg, null),
@@ -829,7 +868,8 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         viewModelScope.launch {
             _state.update { it.copy(saving = true, saveError = null) }
             attempt { save(s, p) }
-                .onSuccess { _state.update { it.copy(saving = false, done = true) } }
+                // The estimate is done with; drop the in-memory photos now rather than with the screen.
+                .onSuccess { _state.update { it.copy(saving = false, done = true, draft = it.draft.copy(photos = emptyMap())) } }
                 .onFailure { e -> _state.update { it.copy(saving = false, saveError = e.message ?: "Saving failed - please try again.") } }
         }
     }
@@ -841,17 +881,8 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
         val weightKg = d.weightKg ?: throw IllegalStateException("Your weight is missing.")
         val store = repo.settingsStore
 
-        // Files first, recorded in the draft as they move: commit() is idempotent for a photo
-        // already in private storage, so a retry after a later failure finds every file again.
-        val committed = if (s.showPhotoStep) {
-            d.photos.entries.sortedBy { it.key.ordinal }.map { (pose, staged) ->
-                val path = ProgressPhotoFiles.commit(app, staged)
-                if (path != staged) {
-                    _state.update { it.copy(draft = it.draft.copy(photos = it.draft.photos + (pose to path))) }
-                }
-                pose to path
-            }
-        } else emptyList()
+        // Photos are deliberately absent: they were only ever used for the estimate, and
+        // Forge doesn't keep progress photos.
 
         // Every row in one transaction: a failure leaves nothing behind, so a retry can't
         // duplicate the start weight (which would skew adaptive TDEE) or the measurement.
@@ -883,12 +914,6 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
                         bodyFatMethod = if (navy != null) "NAVY" else null,
                         note = d.cm(d.healthWaist)?.let { "Health-site waist ${it} cm" }
                     )
-                )
-            }
-
-            committed.forEach { (pose, path) ->
-                PlanStore.bodyDao.insertPhoto(
-                    ProgressPhoto(timestamp = now, localDate = today, path = path, pose = pose.name, weightKg = weightKg)
                 )
             }
 
@@ -941,17 +966,19 @@ class OnboardingViewModel(private val repo: ForgeRepository) : ViewModel() {
     }
 
     override fun onCleared() {
-        // Abandoned staged photos are cache files; clear them so nothing lingers.
-        if (!_state.value.done) {
-            val context = ForgeApp.instance
-            CoroutineScope(Dispatchers.IO).launch {
-                runCatching { ProgressPhotoFiles.clearStaging(context) }
-            }
+        // Held photos go with this view model. v2.0 could leave staged photos in the cache;
+        // clear any leftovers so nothing lingers.
+        val context = ForgeApp.instance
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching { ProgressPhotoFiles.clearStaging(context) }
         }
         super.onCleared()
     }
 
     companion object {
+        /** Photo long edge for the estimate: full body reads fine and keeps image tokens modest. */
+        const val ANALYSIS_EDGE = 1024
+
         val Factory = forgeFactory { OnboardingViewModel(it) }
     }
 }

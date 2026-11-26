@@ -1,19 +1,26 @@
 package com.laksh.forge.feature.progress
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.snapping.SnapPosition
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ImageNotSupported
@@ -38,58 +45,60 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.laksh.forge.data.db.ProgressPhoto
-import com.laksh.forge.util.Dates
-import java.io.File
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 enum class CompareMode(val label: String) { SIDE_BY_SIDE("Side by side"), SLIDER("Slider") }
 
-/** Two photos of the same pose from different dates, side by side or under a drag divider. */
+private val photoDateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.getDefault())
+
+/** Progress photos are months apart, so the year is always shown. */
+fun photoDateLabel(date: LocalDate?): String = date?.format(photoDateFormat) ?: "No date"
+
+/**
+ * Every chosen photo in date order, two to a screen width; with more than two the row swipes
+ * and snaps a photo at a time, so any neighbouring pair lines up side by side.
+ */
 @Composable
-fun PhotoCompareView(
-    before: ProgressPhoto?,
-    after: ProgressPhoto?,
-    mode: CompareMode,
-    modifier: Modifier = Modifier
-) {
-    when (mode) {
-        CompareMode.SIDE_BY_SIDE -> Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            LabelledPhoto(before, "Before", Modifier.weight(1f))
-            LabelledPhoto(after, "After", Modifier.weight(1f))
+fun SideBySideStrip(photos: List<SessionPhoto>, modifier: Modifier = Modifier) {
+    BoxWithConstraints(modifier.fillMaxWidth()) {
+        val gap = 8.dp
+        val itemWidth = (maxWidth - gap) / 2
+        val listState = rememberLazyListState()
+        LazyRow(
+            state = listState,
+            // Start, not centre: with two photos per width, centring one would cut both neighbours.
+            flingBehavior = rememberSnapFlingBehavior(lazyListState = listState, snapPosition = SnapPosition.Start),
+            horizontalArrangement = Arrangement.spacedBy(gap),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(photos, key = { it.id }, contentType = { "photo" }) { photo ->
+                LabelledPhoto(photo, Modifier.width(itemWidth).animateItem())
+            }
         }
-        CompareMode.SLIDER -> SliderCompare(before, after, modifier)
     }
 }
 
 @Composable
-private fun LabelledPhoto(photo: ProgressPhoto?, label: String, modifier: Modifier) {
+private fun LabelledPhoto(photo: SessionPhoto, modifier: Modifier) {
     Column(modifier) {
         Box(
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(3f / 4f)
                 .clip(RoundedCornerShape(20.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-            contentAlignment = Alignment.Center
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
-            if (photo != null) {
-                AsyncImage(
-                    model = File(photo.path),
-                    contentDescription = "$label photo from ${Dates.shortLabel(photo.localDate)}",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            } else {
-                Icon(Icons.Outlined.ImageNotSupported, "No photo for this pose", tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
+            Image(
+                bitmap = photo.image,
+                contentDescription = "Progress photo from ${photoDateLabel(photo.date)}",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
         }
         Spacer(Modifier.height(4.dp))
-        Text(
-            "$label · ${photo?.let { Dates.shortLabel(it.localDate) } ?: "-"}",
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold
-        )
+        Text(photoDateLabel(photo.date), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold)
     }
 }
 
@@ -98,7 +107,7 @@ private fun LabelledPhoto(photo: ProgressPhoto?, label: String, modifier: Modifi
  * divider position is read only in the draw phase, so dragging redraws without recomposing.
  */
 @Composable
-private fun SliderCompare(before: ProgressPhoto?, after: ProgressPhoto?, modifier: Modifier) {
+fun SliderCompare(before: SessionPhoto?, after: SessionPhoto?, modifier: Modifier = Modifier) {
     var fraction by remember { mutableFloatStateOf(0.5f) }
     val haptics = LocalHapticFeedback.current
     val lineColor = Color.White
@@ -110,9 +119,7 @@ private fun SliderCompare(before: ProgressPhoto?, after: ProgressPhoto?, modifie
                 .clip(RoundedCornerShape(24.dp))
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                 .pointerInput(Unit) {
-                    detectTapGestures { pos ->
-                        fraction = (pos.x / size.width).coerceIn(0f, 1f)
-                    }
+                    detectTapGestures { pos -> fraction = (pos.x / size.width).coerceIn(0f, 1f) }
                 }
                 .pointerInput(Unit) {
                     detectHorizontalDragGestures(
@@ -122,20 +129,24 @@ private fun SliderCompare(before: ProgressPhoto?, after: ProgressPhoto?, modifie
                         change.consume()
                         fraction = (change.position.x / size.width).coerceIn(0f, 1f)
                     }
-                }
+                },
+            contentAlignment = Alignment.Center
         ) {
+            if (before == null && after == null) {
+                Icon(Icons.Outlined.ImageNotSupported, "No photos chosen", tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
             if (after != null) {
-                AsyncImage(
-                    model = File(after.path),
-                    contentDescription = "After, ${Dates.shortLabel(after.localDate)}",
+                Image(
+                    bitmap = after.image,
+                    contentDescription = "After, ${photoDateLabel(after.date)}",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
             }
             if (before != null) {
-                AsyncImage(
-                    model = File(before.path),
-                    contentDescription = "Before, ${Dates.shortLabel(before.localDate)}",
+                Image(
+                    bitmap = before.image,
+                    contentDescription = "Before, ${photoDateLabel(before.date)}",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
@@ -150,28 +161,8 @@ private fun SliderCompare(before: ProgressPhoto?, after: ProgressPhoto?, modifie
                 drawCircle(lineColor, radius = 14.dp.toPx(), center = Offset(x, size.height / 2f))
                 drawCircle(Color.Black.copy(alpha = 0.35f), radius = 5.dp.toPx(), center = Offset(x, size.height / 2f))
             }
-            Text(
-                before?.let { "Before · ${Dates.shortLabel(it.localDate)}" } ?: "No before photo",
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.White,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(10.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.Black.copy(alpha = 0.45f))
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            )
-            Text(
-                after?.let { "After · ${Dates.shortLabel(it.localDate)}" } ?: "No after photo",
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.White,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(10.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.Black.copy(alpha = 0.45f))
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            )
+            CornerLabel(before?.let { "Before · ${photoDateLabel(it.date)}" } ?: "No before photo", Modifier.align(Alignment.TopStart))
+            CornerLabel(after?.let { "After · ${photoDateLabel(it.date)}" } ?: "No after photo", Modifier.align(Alignment.TopEnd))
         }
         Spacer(Modifier.height(6.dp))
         Text(
@@ -180,4 +171,19 @@ private fun SliderCompare(before: ProgressPhoto?, after: ProgressPhoto?, modifie
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
+}
+
+/** White on a scrim: the photo underneath can be any colour, so theme colours can't be relied on. */
+@Composable
+private fun CornerLabel(text: String, modifier: Modifier) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelMedium,
+        color = Color.White,
+        modifier = modifier
+            .padding(10.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color.Black.copy(alpha = 0.45f))
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+    )
 }

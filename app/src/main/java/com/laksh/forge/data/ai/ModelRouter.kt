@@ -53,10 +53,45 @@ object ModelOverrides {
 }
 
 /**
- * Chooses a model per task for a provider: user override first, then the tier map from
- * providers.json, respecting vision. Pure, so the whole routing table is unit-testable.
+ * Chooses a model per task for a provider: user override first, then the provider's preset for
+ * the tier (a hand-picked model per task), then the tier map from providers.json, respecting
+ * vision. Pure, so the whole routing table is unit-testable.
  */
 object ModelRouter {
+
+    /**
+     * Name of the Ultra-cheap [CostTier]. Tiers are matched by name here so routing and presets
+     * work (and compile) whether or not CostTier.ULTRA_CHEAP has landed yet; see
+     * docs/contracts/requests/2.1-ai-providers.md.
+     */
+    const val ULTRA_CHEAP = "ULTRA_CHEAP"
+
+    /** CostTier.ULTRA_CHEAP, or null until that enum entry exists. */
+    val ultraCheapTier: CostTier? get() = CostTier.entries.firstOrNull { it.name == ULTRA_CHEAP }
+
+    /**
+     * The tiers worth offering for [provider], cheapest first. Ultra-cheap only where the
+     * provider has a preset for it; nothing to choose where its routing is fixed.
+     */
+    fun tiersFor(provider: ProviderSpec): List<CostTier> {
+        if (provider.hasFixedRouting) return emptyList()
+        val hasUltra = provider.presets.any { it.tierKey == ULTRA_CHEAP }
+        val tiers = CostTier.entries.filter { it.name != ULTRA_CHEAP || hasUltra }
+        return tiers.sortedBy { if (it.name == ULTRA_CHEAP) -1 else it.ordinal }
+    }
+
+    /** The tier to switch to when the user moves to [provider], or null to keep theirs. */
+    fun defaultTierFor(provider: ProviderSpec): CostTier? =
+        if (provider.presets.any { it.tierKey == ULTRA_CHEAP }) ultraCheapTier else null
+
+    /**
+     * The tier that is really in force: a tier the provider doesn't offer (Ultra-cheap after
+     * switching away from OpenRouter) behaves as Economy, its nearest sibling.
+     */
+    fun effectiveCostTier(provider: ProviderSpec, tier: CostTier): CostTier {
+        val offered = tiersFor(provider)
+        return if (offered.isEmpty() || tier in offered) tier else CostTier.ECONOMY
+    }
 
     /** Tier order to search. Each tier falls back toward cheaper models before dearer ones. */
     private fun searchOrder(tier: ModelTier): List<ModelTier> = when (tier) {
@@ -65,18 +100,23 @@ object ModelRouter {
         ModelTier.MAX -> listOf(ModelTier.MAX, ModelTier.BALANCED, ModelTier.ECONOMY)
     }
 
-    fun tierOf(cost: CostTier): ModelTier = when (cost) {
-        CostTier.ECONOMY -> ModelTier.ECONOMY
-        CostTier.BALANCED -> ModelTier.BALANCED
-        CostTier.MAXIMUM -> ModelTier.MAX
+    fun tierOf(cost: CostTier): ModelTier = modelTierFor(cost.name)
+
+    /** Ultra-cheap (and anything unknown) searches like Economy when a provider has no preset for it. */
+    private fun modelTierFor(tierKey: String): ModelTier = when (tierKey) {
+        CostTier.BALANCED.name -> ModelTier.BALANCED
+        CostTier.MAXIMUM.name -> ModelTier.MAX
+        else -> ModelTier.ECONOMY
     }
 
     /**
      * Transcription (labels) and the key test gain nothing from a bigger model, so they always
      * use the economy pick, matching Forge's original Anthropic policy (Haiku at every tier).
      */
-    fun effectiveTier(task: Task, tier: CostTier): ModelTier =
-        if (task == Task.LABEL || task == Task.PING) ModelTier.ECONOMY else tierOf(tier)
+    fun effectiveTier(task: Task, tier: CostTier): ModelTier = effectiveTier(task, tier.name)
+
+    private fun effectiveTier(task: Task, tierKey: String): ModelTier =
+        if (task == Task.LABEL || task == Task.PING) ModelTier.ECONOMY else modelTierFor(tierKey)
 
     /**
      * @param needsVision true when this call carries an image.
@@ -85,6 +125,15 @@ object ModelRouter {
     fun pick(
         provider: ProviderSpec,
         tier: CostTier,
+        task: Task,
+        overrides: Map<String, String>,
+        needsVision: Boolean
+    ): ModelPick = pickFor(provider, tier.name, task, overrides, needsVision)
+
+    /** [pick] by tier name, so tests and presets can name a tier the enum may not have yet. */
+    fun pickFor(
+        provider: ProviderSpec,
+        tierKey: String,
         task: Task,
         overrides: Map<String, String>,
         needsVision: Boolean
@@ -108,8 +157,15 @@ object ModelRouter {
             )
         }
 
+        // A preset names the model per task outright. It is skipped only when this call carries
+        // an image the preset's model can't read (a scanned program PDF on a text model).
+        provider.preset(tierKey)?.models?.get(task)?.let { id ->
+            val spec = provider.model(id)
+            if (!needsVision || spec?.vision != false) return ModelPick(id, spec, overridden = false, note = note)
+        }
+
         val job = task.job
-        val order = searchOrder(effectiveTier(task, tier))
+        val order = searchOrder(effectiveTier(task, tierKey))
         fun eligible(m: ModelSpec) = !needsVision || m.vision
 
         // Prefer a model the research assigns to this job, in tier order...

@@ -24,9 +24,34 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.Dispatchers
 import kotlin.math.roundToInt
 
-/** How the user is logging. LABEL reads a printed nutrition panel directly with vision. */
+/**
+ * How the user is logging. LABEL reads a printed nutrition panel directly with vision.
+ * QUICK is typed numbers with no AI at all; it sits second so it is one tap from the default,
+ * for the meal that was eaten before anyone thought to photograph it.
+ */
 enum class LogMode(val label: String) {
-    PHOTO("Photo"), BARCODE("Barcode"), LABEL("Label"), MANUAL("Describe")
+    PHOTO("Photo"), QUICK("Quick add"), BARCODE("Barcode"), LABEL("Label"), MANUAL("Describe")
+}
+
+/**
+ * The Quick add form, held in the view model so switching tabs or rotating keeps what was
+ * typed. Numbers stay as raw text: parsing happens on save and in the hint, never per keystroke
+ * into a Double that would mangle "12." mid-entry.
+ */
+data class QuickAddForm(
+    val name: String = "",
+    val kcal: String = "",
+    val protein: String = "",
+    val carbs: String = "",
+    val fat: String = "",
+    val fibre: String = "",
+    val moreOpen: Boolean = false,
+    /** Validation is only shown after a save attempt, so an empty form doesn't start out red. */
+    val attempted: Boolean = false
+) {
+    val nameProblem: QuickAddProblem? get() = QuickAddMath.validateName(name)
+    val kcalProblem: QuickAddProblem? get() = QuickAddMath.validateKcal(kcal)
+    val isValid: Boolean get() = nameProblem == null && kcalProblem == null
 }
 
 enum class Phase { IDLE, WORKING, RESULT, ERROR, SAVED }
@@ -44,6 +69,7 @@ data class LogState(
     val mealSlot: String = Dates.mealSlotNow(),
     val hint: String = "",
     val manualText: String = "",
+    val quick: QuickAddForm = QuickAddForm(),
     /** Set when a barcode scan misses, so the UI can offer the label-photo fallback. */
     val missingBarcode: String? = null,
     val savedName: String? = null,
@@ -60,14 +86,24 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
     val state: StateFlow<LogState> = _state.asStateFlow()
 
     init {
+        // Observed rather than read once: a key added in Settings while this screen sits on the
+        // back stack should light up the AI modes (and drop the "no key" hints) on return.
         viewModelScope.launch {
-            val s = repo.settings()
-            _state.update {
-                it.copy(
-                    hasApiKey = s.hasApiKey,
-                    safetyMarginPct = s.safetyMarginPct,
-                    storePhotos = s.storePhotos
-                )
+            var first = true
+            repo.settingsStore.settings.collect { s ->
+                val ready = aiReady(s)
+                _state.update {
+                    // With no AI at all, open on the one mode that works rather than a camera
+                    // that can only fail. Only on first load, and only if nothing was touched.
+                    val openOnQuick = first && !ready && it.mode == LogMode.PHOTO && it.phase == Phase.IDLE
+                    it.copy(
+                        mode = if (openOnQuick) LogMode.QUICK else it.mode,
+                        hasApiKey = ready,
+                        safetyMarginPct = s.safetyMarginPct,
+                        storePhotos = s.storePhotos
+                    )
+                }
+                first = false
             }
         }
     }
@@ -99,10 +135,81 @@ class LogViewModel(private val repo: ForgeRepository) : ViewModel() {
     /** Clears a save error shown on the review card without leaving the review. */
     fun clearError() = _state.update { it.copy(error = null) }
 
+    // ---------------------------------------------------------------- quick add
+
+    fun updateQuick(transform: (QuickAddForm) -> QuickAddForm) =
+        _state.update { it.copy(quick = transform(it.quick), error = null) }
+
+    fun setQuickName(v: String) = updateQuick { it.copy(name = v.take(80)) }
+    fun setQuickKcal(v: String) = updateQuick { it.copy(kcal = QuickAddMath.sanitizeKcal(v)) }
+    fun setQuickProtein(v: String) = updateQuick { it.copy(protein = QuickAddMath.sanitize(v)) }
+    fun setQuickCarbs(v: String) = updateQuick { it.copy(carbs = QuickAddMath.sanitize(v)) }
+    fun setQuickFat(v: String) = updateQuick { it.copy(fat = QuickAddMath.sanitize(v)) }
+    fun setQuickFibre(v: String) = updateQuick { it.copy(fibre = QuickAddMath.sanitize(v)) }
+    fun toggleQuickMore() = updateQuick { it.copy(moreOpen = !it.moreOpen) }
+
+    /**
+     * Logs exactly what was typed: no AI, no network, and no safety margin - the margin exists to
+     * offset a model's tendency to under-count, and padding a person's own number would just
+     * make it wrong. rawKcal stays null so the entry never claims padding was applied.
+     *
+     * Returns false when validation failed, so the screen can move focus to the bad field.
+     */
+    fun saveQuickAdd(): Boolean {
+        val s = _state.value
+        if (s.saving) return false
+        val form = s.quick
+        if (!form.isValid) {
+            _state.update { it.copy(quick = it.quick.copy(attempted = true)) }
+            return false
+        }
+        val kcal = QuickAddMath.parse(form.kcal) ?: return false
+        _state.update { it.copy(saving = true, error = null) }
+
+        viewModelScope.launch {
+            runCatching {
+                val est = FoodEstimate(
+                    name = form.name.trim(),
+                    servingDesc = "As entered",
+                    kcal = kcal,
+                    proteinG = QuickAddMath.parse(form.protein) ?: 0.0,
+                    carbsG = QuickAddMath.parse(form.carbs) ?: 0.0,
+                    fatG = QuickAddMath.parse(form.fat) ?: 0.0,
+                    fiberG = QuickAddMath.parse(form.fibre) ?: 0.0,
+                    confidence = "",
+                    note = ""
+                )
+                val id = repo.logEstimate(
+                    est = est,
+                    rawKcal = null,
+                    photoPath = null,
+                    mealSlot = s.mealSlot,
+                    source = "MANUAL"
+                )
+                // "confidence" is the model's self-rating; a typed number has none. Best effort:
+                // the meal is already logged, and an empty string reads the same in every view.
+                runCatching {
+                    repo.foodDao.byId(id)?.let { repo.foodDao.update(it.copy(confidence = null)) }
+                }
+                runCatching { repo.recomputeAdaptiveTdee() }
+                est.name
+            }.onSuccess { name ->
+                _state.update { it.copy(phase = Phase.SAVED, saving = false, savedName = name) }
+            }.onFailure { e ->
+                // The form stays filled in; the card shows the message.
+                _state.update { it.copy(saving = false, error = e.message ?: "Couldn't save that entry.") }
+            }
+        }
+        return true
+    }
+
     fun reset() = _state.update {
         LogState(
             mode = it.mode,
             mealSlot = it.mealSlot,
+            // Discarding a photo estimate shouldn't wipe a half-typed Quick add on another tab;
+            // only a completed save starts the form over.
+            quick = if (it.phase == Phase.SAVED) QuickAddForm() else it.quick,
             hasApiKey = it.hasApiKey,
             safetyMarginPct = it.safetyMarginPct,
             storePhotos = it.storePhotos

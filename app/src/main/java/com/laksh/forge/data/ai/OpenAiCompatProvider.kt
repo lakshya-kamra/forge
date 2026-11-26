@@ -60,23 +60,45 @@ class OpenAiCompatProvider(
             }
             return@withContext parseCompletion(raw)
         }
-        throw lastError ?: AiException("$name rejected the request.")
+        throw lastError?.let { explainZdr(it) } ?: AiException("$name rejected the request.")
     }
 
     /**
      * Errors worth retrying with fewer optional parameters. OpenRouter answers 404 when no
      * upstream endpoint supports every parameter sent (require_parameters), so it counts too.
      */
-    private fun isParameterRejection(e: AiException): Boolean =
-        e.httpCode == 400 || e.httpCode == 422 || (spec.requireParameters && e.httpCode == 404)
+    private fun isParameterRejection(e: AiException): Boolean {
+        // A gateway refusing for privacy (no zero-retention route) would refuse every level too.
+        if (e.errorCode == AiHttp.ZDR_NO_PROVIDERS) return false
+        return e.httpCode == 400 || e.httpCode == 422 || (spec.requireParameters && e.httpCode == 404)
+    }
+
+    /**
+     * With ZDR enforced, OpenRouter answers 404 when the model has no zero-retention endpoint
+     * (or none that also supports the parameters sent). The generic "couldn't find that model"
+     * would send the user hunting for a typo, so say what actually happened.
+     */
+    private fun explainZdr(e: AiException): AiException =
+        if (spec.enforceZdr && e.httpCode == 404) {
+            AiException(
+                "$name found no zero-data-retention endpoint for this model, so nothing was sent " +
+                    "(Forge never falls back to endpoints that keep or train on prompts). Pick another " +
+                    "model in Settings → AI → Advanced.",
+                httpCode = 404
+            )
+        } else e
 
     override fun stream(key: String, request: AiRequest): Flow<String> = flow {
         checkImages(request)
         val response = try {
             AiHttp.openStream(name) { post(key, body(request, Level.FULL, stream = true), stream = true) }
         } catch (e: AiException) {
-            if (!isParameterRejection(e)) throw e
-            AiHttp.openStream(name) { post(key, body(request, Level.LOOSE, stream = true), stream = true) }
+            if (!isParameterRejection(e)) throw explainZdr(e)
+            try {
+                AiHttp.openStream(name) { post(key, body(request, Level.LOOSE, stream = true), stream = true) }
+            } catch (e2: AiException) {
+                throw explainZdr(e2)
+            }
         }
         response.use { r ->
             val source = r.body?.source() ?: throw AiException("Empty response stream from $name.")
@@ -124,6 +146,10 @@ class OpenAiCompatProvider(
 
     // ---------------------------------------------------------------- request building
 
+    /** The first (fullest) request [complete] would send. For tests of the wire format. */
+    internal fun buildRequest(key: String, request: AiRequest, stream: Boolean = false): Request =
+        post(key, body(request, Level.FULL, stream), stream)
+
     private fun checkImages(request: AiRequest) {
         val images = request.turns.flatMap { t -> t.parts.filterIsInstance<AiPart.Image>() }
         if (images.isEmpty()) return
@@ -156,8 +182,22 @@ class OpenAiCompatProvider(
         } else if (useObjectFormat) {
             putJsonObject("response_format") { put("type", "json_object") }
         }
-        if (spec.requireParameters && (useSchemaFormat || useObjectFormat)) {
-            putJsonObject("provider") { put("require_parameters", true) }
+        // OpenRouter provider preferences, one object: ZDR on every request (the user's account
+        // setting is OR-combined with this, so it can only tighten), and require_parameters
+        // whenever a response_format is sent so an endpoint that would ignore it is skipped.
+        val requireParams = spec.requireParameters && (useSchemaFormat || useObjectFormat)
+        if (spec.enforceZdr || requireParams) {
+            putJsonObject("provider") {
+                if (spec.enforceZdr) {
+                    put("zdr", true)
+                    put("data_collection", "deny")
+                    // Body photos are the most sensitive input Forge sends. DeepInfra is on
+                    // OpenRouter's ZDR list, but its terms carve out Google-family models
+                    // ambiguously (docs/research/model_eval), so Gemma body photos skip it.
+                    if (req.task == Task.BODY) putJsonArray("ignore") { add(JsonPrimitive("deepinfra")) }
+                }
+                if (requireParams) put("require_parameters", true)
+            }
         }
 
         if (level == Level.FULL) {

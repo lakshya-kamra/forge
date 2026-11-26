@@ -1,6 +1,7 @@
 package com.laksh.forge.feature.progress
 
 import android.Manifest
+import com.laksh.forge.ui.components.SecureWindow
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.BackHandler
@@ -93,7 +94,9 @@ import kotlinx.coroutines.launch
  * app cannot draw a guide, and matching framing month to month is what makes photos
  * comparable (guardrails.final.json photo_capture_standardisation).
  *
- * Captures go to a cache file; [onCaptured] receives its Uri and the caller stages or saves it.
+ * Captures go to a temporary cache file; [onCaptured] receives its Uri, and the caller must
+ * delete it (ImageUtils.discardCapture) once it has read it into memory or copied it to the
+ * person's gallery - Forge itself keeps no progress photos.
  */
 @Composable
 fun PoseCaptureScreen(
@@ -102,6 +105,7 @@ fun PoseCaptureScreen(
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    SecureWindow()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val haptics = LocalHapticFeedback.current
@@ -127,7 +131,7 @@ fun PoseCaptureScreen(
             EmptyState(
                 icon = Icons.Outlined.PhotoCamera,
                 title = "Camera access needed",
-                body = "Forge uses the camera only while this screen is open. Photos are saved in the app's private storage on this phone.",
+                body = "Forge uses the camera only while this screen is open, and doesn't keep the photos itself.",
                 modifier = Modifier.align(Alignment.Center),
                 action = { Pill("Allow camera", filled = true, onClick = { permissionLauncher.launch(Manifest.permission.CAMERA) }) }
             )

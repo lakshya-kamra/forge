@@ -62,6 +62,8 @@ object AiProviders {
     /** @param baseUrlOverride the Advanced/Custom base URL, already normalised; blank = provider default. */
     fun create(spec: ProviderSpec, baseUrlOverride: String = ""): AiProvider = when (spec.kind) {
         ProviderKind.ANTHROPIC -> AnthropicProvider(spec)
+        // Hybrid gateway; its address is fixed (allowsBaseUrlOverride = false).
+        ProviderKind.COMMAND_CODE -> CommandCodeProvider(spec)
         ProviderKind.OPENAI_COMPATIBLE -> {
             val base = baseUrlOverride.takeIf { it.isNotBlank() && spec.allowsBaseUrlOverride } ?: spec.baseUrl
             if (base.isBlank()) {

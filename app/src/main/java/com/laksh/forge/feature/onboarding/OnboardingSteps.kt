@@ -1,6 +1,7 @@
 package com.laksh.forge.feature.onboarding
 
 import androidx.activity.compose.rememberLauncherForActivityResult
+import com.laksh.forge.ui.components.SecureWindow
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -16,6 +17,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -73,7 +75,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.Morph
-import coil.compose.AsyncImage
 import com.laksh.forge.data.prefs.PregnancyStatus
 import com.laksh.forge.data.prefs.Sex
 import com.laksh.forge.data.prefs.TrainingAge
@@ -102,10 +103,10 @@ import com.laksh.forge.feature.plan.RangeBar
 import com.laksh.forge.feature.plan.SupportResources
 import com.laksh.forge.feature.plan.SwitchRow
 import com.laksh.forge.feature.plan.TargetsRow
+import com.laksh.forge.feature.progress.GalleryPhotos
 import com.laksh.forge.ui.components.ForgeCard
 import com.laksh.forge.ui.components.SectionHeader
 import com.laksh.forge.util.Dates
-import java.io.File
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -196,7 +197,7 @@ private fun WelcomeStep(state: OnboardingUiState) {
         Spacer(Modifier.height(12.dp))
         WelcomeRow(Icons.Outlined.Straighten, "Ranges, not false precision", "Body-fat estimates are shown as likely ranges because every method has real error.")
         Spacer(Modifier.height(12.dp))
-        WelcomeRow(Icons.Outlined.Lock, "Private by default", "Your answers, measurements and photos stay on this phone. Photos are only sent for analysis if you say so.")
+        WelcomeRow(Icons.Outlined.Lock, "Private by default", "Your answers and measurements stay on this phone. Forge never keeps photos, and sends them for analysis only if you say so.")
     }
 }
 
@@ -580,6 +581,7 @@ private fun MeasurementsStep(state: OnboardingUiState, vm: OnboardingViewModel) 
 
 @Composable
 private fun PhotosStep(state: OnboardingUiState, vm: OnboardingViewModel, onCapture: (List<Pose>) -> Unit) {
+    SecureWindow()
     val d = state.draft
     var pickingFor by rememberSaveable { mutableStateOf<Pose?>(null) }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -590,15 +592,46 @@ private fun PhotosStep(state: OnboardingUiState, vm: OnboardingViewModel, onCapt
 
     StepHeader(
         "Progress photos",
-        "Optional. Front, side and back photos show change far better than the scale. They're saved in Forge's private storage on this phone."
+        "Optional. Front, side and back photos show change far better than the scale. Forge doesn't keep them: " +
+            "take them with your phone's camera and keep them in your gallery - an album called \"Progress\" works " +
+            "well - with the same pose, light and time each month."
     )
     Expandable("How to take comparable photos") { BulletList(PhotoProtocol.steps) }
+
+    // Photos here exist only to be analysed once. Where no analysis can run, picking them
+    // would achieve nothing, so the step explains instead of offering slots.
+    when {
+        d.effectivePregnancy == PregnancyStatus.PREGNANT -> {
+            NoteCard(
+                title = "Photo analysis is off during pregnancy",
+                body = "Keep taking photos for your own record in your gallery if you like; Forge won't estimate body fat from them."
+            )
+            return
+        }
+        !state.photoAnalysisAllowed -> {
+            NoteCard(
+                title = "Photo analysis isn't available right now",
+                body = "Your tape measurements still give a body-fat range. Any photos you take are yours to keep in your gallery.",
+                tone = NoteTone.SUPPORT
+            )
+            return
+        }
+        !state.aiConfigured -> {
+            ConnectAiCard(
+                body = "Photos can give a one-time body-fat estimate with an AI key from any supported provider. Without one, " +
+                    "your tape measurements still give a body-fat range. Forge only analyses photos - it never stores them.",
+                onConnect = vm::openAiSetup
+            )
+            return
+        }
+        else -> Unit
+    }
 
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         Pose.entries.forEach { pose ->
             PoseSlot(
                 pose = pose,
-                path = d.photos[pose],
+                photo = d.photos[pose],
                 onCamera = { onCapture(listOf(pose)) },
                 onGallery = {
                     pickingFor = pose
@@ -618,6 +651,14 @@ private fun PhotosStep(state: OnboardingUiState, vm: OnboardingViewModel, onCapt
         Spacer(Modifier.width(8.dp))
         Text(if (d.photos.isEmpty()) "Take all three with the pose guide" else "Take the rest with the pose guide")
     }
+    if (GalleryPhotos.canSaveDirectly) {
+        SwitchRow(
+            title = "Also save pose-guide shots to my gallery",
+            subtitle = "Into ${GalleryPhotos.albumLabel}, so you have this month's set to compare later.",
+            checked = d.saveCapturesToGallery,
+            onCheckedChange = { v -> vm.edit { it.copy(saveCapturesToGallery = v) } }
+        )
+    }
     if (state.photoBusy) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             LoadingIndicator(Modifier.size(28.dp))
@@ -627,42 +668,32 @@ private fun PhotosStep(state: OnboardingUiState, vm: OnboardingViewModel, onCapt
     }
     state.photoError?.let { NoteCard(title = "That photo didn't work", body = it, tone = NoteTone.CAUTION) }
 
-    when {
-        d.effectivePregnancy == PregnancyStatus.PREGNANT -> NoteCard(
-            title = "Photo analysis is off during pregnancy",
-            body = "You can still save photos for your own record; Forge won't estimate body fat from them."
-        )
-        !state.aiConfigured -> ConnectAiCard(
-            body = "No AI provider is set up yet, so photos are kept on this phone without analysis. Your tape " +
-                "measurements still give a body-fat range. Add a key from any supported provider to get a photo " +
-                "estimate and an AI-chosen plan.",
-            onConnect = vm::openAiSetup
-        )
-        state.photoAnalysisAllowed && d.photos.isNotEmpty() -> ForgeCard {
+    if (d.photos.isNotEmpty()) {
+        ForgeCard {
             SwitchRow(
-                title = "Use these photos for one body-fat estimate",
+                title = "Send these photos for one body-fat estimate",
                 subtitle = null,
                 checked = d.photoConsent,
                 onCheckedChange = { v -> vm.edit { it.copy(photoConsent = v) } }
             )
             Spacer(Modifier.height(6.dp))
             Text(
-                "Your photos stay on this phone. If you turn this on, they're sent to " +
+                "If you turn this on, the photos are sent once to " +
                     (state.bodyModel.ifBlank { "your AI provider" }) +
-                    " only for this one analysis, and the answer is a body-fat range - nothing else. Estimates from " +
-                    "photos are rough and not scientifically validated. The AI is instructed never to comment on appearance.",
+                    " and then discarded - Forge never saves them, on this phone or anywhere else. The answer is a " +
+                    "body-fat range and nothing else. Estimates from photos are rough and not scientifically validated, " +
+                    "and the AI is instructed never to comment on appearance.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        else -> Unit
     }
 }
 
 @Composable
 private fun PoseSlot(
     pose: Pose,
-    path: String?,
+    photo: HeldPhoto?,
     onCamera: () -> Unit,
     onGallery: () -> Unit,
     onRemove: () -> Unit,
@@ -677,9 +708,9 @@ private fun PoseSlot(
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh),
             contentAlignment = Alignment.Center
         ) {
-            if (path != null) {
-                AsyncImage(
-                    model = File(path),
+            if (photo != null) {
+                Image(
+                    bitmap = photo.image,
                     contentDescription = "${pose.label} photo",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
@@ -1004,14 +1035,13 @@ private fun AcceptStep(state: OnboardingUiState) {
     }
     StepHeader("Ready to start", "Here's what Forge will save on this phone.")
     val measurements = listOf(d.waist, d.neck, d.hips, d.chest, d.arm, d.thigh).count { d.cm(it) != null }
-    val photos = if (state.showPhotoStep) d.photos.size else 0
     ForgeCard {
         BulletList(
             buildList {
                 add("Your ${PhaseCopy.name(state.proposal?.phase ?: "").lowercase()} plan and daily targets")
                 add("Today's weight")
                 if (measurements > 0) add("$measurements tape measurement${if (measurements == 1) "" else "s"}")
-                if (photos > 0) add("$photos progress photo${if (photos == 1) "" else "s"} in private storage (not backed up)")
+                // Photos are deliberately not in this list: Forge used them for the estimate only.
                 add("Your answers, so the plan can be re-checked safely later")
             }
         )

@@ -98,10 +98,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.laksh.forge.data.ai.AiKeys
+import com.laksh.forge.data.ai.CommandCodeProvider
 import com.laksh.forge.data.ai.CostEstimator
 import com.laksh.forge.data.ai.KeyDetection
 import com.laksh.forge.data.ai.KeyDetector
 import com.laksh.forge.data.ai.ModelOverrides
+import com.laksh.forge.data.ai.ModelRouter
+import com.laksh.forge.data.ai.ProviderKind
 import com.laksh.forge.data.ai.ProviderRegistry
 import com.laksh.forge.data.ai.ProviderSpec
 import com.laksh.forge.data.ai.TrainingRisk
@@ -496,7 +499,12 @@ private fun KeyCard(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     ProviderChip("Auto-detect", selected = choice == AiKeys.AUTO) { onChoice(AiKeys.AUTO) }
-                    ProviderRegistry.all.forEach { spec ->
+                    // An unrecognised key most likely belongs to a provider with no published
+                    // format, so those move to the front where they're seen first.
+                    val ordered = if (detection is KeyDetection.Unknown) {
+                        ProviderRegistry.all.sortedBy { if (it.keyPatterns.isEmpty() && !it.isCustom) 0 else 1 }
+                    } else ProviderRegistry.all
+                    ordered.forEach { spec ->
                         ProviderChip(spec.shortName, selected = choice == spec.id) { onChoice(spec.id) }
                     }
                 }
@@ -618,7 +626,8 @@ private fun detectionUi(detection: KeyDetection, choice: String): DetectionUi? {
         KeyDetection.Empty -> DetectionUi(
             "Recognises Anthropic, OpenAI, Gemini, OpenRouter, Groq and xAI keys by shape",
             DetectionUi.Tone.NEUTRAL,
-            "Mistral, Together and DeepSeek keys are confirmed online. Anything else: pick the provider."
+            "Mistral, Together and DeepSeek keys are confirmed online. Command Code and anything else: " +
+                "pick the provider below."
         )
         is KeyDetection.Match ->
             if (detection.confident) DetectionUi("Detected: ${detection.provider.name}", DetectionUi.Tone.GOOD, detection.note)
@@ -629,11 +638,13 @@ private fun detectionUi(detection: KeyDetection, choice: String): DetectionUi? {
             DetectionUi.Tone.MAYBE,
             "Forge will ask each one (no tokens spent) when you save, or pick the provider below."
         )
+        // Command Code (and others) publish no key format, so an unknown shape is normal for
+        // them: lead with what to do, not with a failure.
         is KeyDetection.Unknown -> DetectionUi(
-            "Unrecognised format",
+            "Couldn't recognise this key - pick your provider below",
             DetectionUi.Tone.MAYBE,
-            "Forge will try ${detection.probeCandidates.joinToString(" and ") { it.shortName }} when you save. " +
-                "For any other provider, pick it below."
+            "Command Code keys can't be recognised by shape, so pick Command Code. If you leave Auto-detect " +
+                "on, Forge tries ${detection.probeCandidates.joinToString(" and ") { it.shortName }} when you save."
         )
         is KeyDetection.Rejected -> DetectionUi("Can't use this key", DetectionUi.Tone.BAD, detection.reason)
     }
@@ -722,6 +733,7 @@ private fun PrivacyCard(provider: ProviderSpec, modifier: Modifier = Modifier) {
                     TrainingRisk.FREE_TIER_TRAINS -> "Free tier trains on your data"
                     TrainingRisk.MAY_TRAIN -> "May be trained on"
                     TrainingRisk.DEPENDS_ON_ROUTE -> "Depends on the upstream provider"
+                    TrainingRisk.ZDR_ENFORCED -> "Zero data retention on every request"
                     TrainingRisk.UNKNOWN -> "Not covered by Forge's research"
                 },
                 style = MaterialTheme.typography.titleSmall,
@@ -755,52 +767,85 @@ private fun PrivacyCard(provider: ProviderSpec, modifier: Modifier = Modifier) {
 // Tier and cost
 // =====================================================================================
 
+/** Four labels must fit one connected row on a phone, so Ultra-cheap's button says "Ultra". */
+private fun tierButtonLabel(tier: CostTier): String =
+    if (tier.name == ModelRouter.ULTRA_CHEAP) "Ultra" else tier.label
+
 @Composable
 private fun TierCard(
     state: AiSettingsUiState,
     onTier: (CostTier) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val selected = state.settings.tier
+    val selected = state.selectedTier
+    val tiers = state.tiers
+    val preset = state.preset
+    val provider = state.provider
     val colors = MaterialTheme.colorScheme
     ForgeCard(modifier = modifier, contentPadding = PaddingValues(20.dp)) {
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)
-        ) {
-            CostTier.entries.forEachIndexed { i, tier ->
-                ToggleButton(
-                    checked = selected == tier,
-                    onCheckedChange = { if (it) onTier(tier) },
-                    shapes = when (i) {
-                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        CostTier.entries.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
-                    },
-                    contentPadding = PaddingValues(horizontal = 8.dp),
-                    modifier = Modifier
-                        .weight(1f)
-                        .semantics { role = Role.RadioButton }
-                ) {
-                    Text(tier.label, style = MaterialTheme.typography.labelLarge, maxLines = 1)
+        if (tiers.isNotEmpty()) {
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)
+            ) {
+                tiers.forEachIndexed { i, option ->
+                    val tier = option.tier
+                    ToggleButton(
+                        checked = selected == tier,
+                        onCheckedChange = { if (it) onTier(tier) },
+                        shapes = when (i) {
+                            0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                            tiers.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                            else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                        },
+                        contentPadding = PaddingValues(horizontal = 6.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .semantics { role = Role.RadioButton }
+                    ) {
+                        Text(tierButtonLabel(tier), style = MaterialTheme.typography.labelLarge, maxLines = 1)
+                    }
                 }
             }
+            // Each tier's monthly figure under its button, so the choice is made with the price in view.
+            Row(Modifier.fillMaxWidth().padding(top = 6.dp)) {
+                tiers.forEach { option ->
+                    Text(
+                        option.monthly?.let { "≈$it/mo" } ?: "price ?",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (option.tier == selected) colors.primary else colors.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+            Spacer(Modifier.height(12.dp))
         }
-        // Each tier's monthly figure under its button, so the choice is made with the price in view.
-        Row(Modifier.fillMaxWidth().padding(top = 6.dp)) {
-            CostTier.entries.forEach { tier ->
-                val monthly = state.tiers.firstOrNull { it.tier == tier }?.monthly
-                Text(
-                    monthly?.let { "≈$it/mo" } ?: "price ?",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (tier == selected) colors.primary else colors.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
-                )
+
+        // The preset's own name and reasoning beat the generic tier blurb: they say which model
+        // does which job and why.
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                preset?.title ?: selected.label,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f, fill = false)
+            )
+            if (preset != null && selected.name == ModelRouter.ULTRA_CHEAP) {
+                Spacer(Modifier.width(8.dp))
+                Pill("Recommended", color = colors.primary, filled = true, icon = Icons.Rounded.AutoAwesome)
             }
         }
-        Spacer(Modifier.height(12.dp))
-        Text(selected.blurb, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+        Spacer(Modifier.height(4.dp))
+        Text(preset?.blurb ?: selected.blurb, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+        if (provider?.dataPolicy?.risk == TrainingRisk.ZDR_ENFORCED) {
+            Spacer(Modifier.height(10.dp))
+            Pill("Zero data retention enforced", color = colors.secondary, filled = false, icon = Icons.Rounded.Shield)
+        }
+        provider?.billingNote?.let { note ->
+            Spacer(Modifier.height(10.dp))
+            Text(note, style = MaterialTheme.typography.bodySmall, color = colors.tertiary)
+        }
 
         Spacer(Modifier.height(18.dp))
         val estimate = state.estimate
@@ -836,6 +881,11 @@ private fun TierCard(
         Spacer(Modifier.height(16.dp))
         HorizontalDivider(color = colors.outlineVariant)
         Spacer(Modifier.height(8.dp))
+        Text(
+            "Which model does each job",
+            style = MaterialTheme.typography.labelMedium,
+            color = colors.onSurfaceVariant
+        )
         state.jobs.forEach { row -> JobRowView(row) }
     }
 }
@@ -1110,12 +1160,17 @@ private fun ModelPickerSheet(
                     } else {
                         items(filtered, key = { "m-$it" }, contentType = { "model" }) { id ->
                             val spec = provider.model(id)
+                            // On Command Code the wire matters: it decides which endpoint Forge calls.
+                            val wire = if (provider.kind == ProviderKind.COMMAND_CODE) {
+                                if (CommandCodeProvider.usesMessages(id, spec)) "Messages API" else "Chat Completions"
+                            } else null
+                            val known = spec?.let {
+                                (if (it.vision) "Reads images" else "Text only") + " · " +
+                                    CostEstimator.priceLabel(it, today)
+                            }
                             ModelOption(
                                 title = id,
-                                subtitle = spec?.let {
-                                    (if (it.vision) "Reads images" else "Text only") + " · " +
-                                        CostEstimator.priceLabel(it, today)
-                                },
+                                subtitle = listOfNotNull(wire, known).joinToString(" · ").ifEmpty { null },
                                 selected = current == id,
                                 monospace = true,
                                 onClick = { onPick(id) },

@@ -1,0 +1,1007 @@
+{
+  "_meta": {
+    "generated": "2026-11-21",
+    "scope": "Open-weight LLM/VLM options for Forge. Prices USD per 1M text tokens; image-token pricing not included. 'native' = host lists structured_outputs (json_schema) for that endpoint.",
+    "guardrailFit": "Photos: only on-device runtimes, DeepInfra direct (non-Google models; Gemma via DeepInfra direct is ambiguous under DeepInfra's 'Google models' clause), Groq/Fireworks/Together with ZDR, or OpenRouter with ZDR enforced satisfy the no-train rule. JSON: pick 'native' hosts and keep Forge's tolerant extraction. Safe language (safety_messaging_no_praise_for_restriction, safety_messaging_no_body_shaming, safety_crisis_disclosure, photo_no_attractiveness_commentary) must stay enforced by Forge's blocklist + regenerate filter for every model; no model here has published eating-disorder safe-messaging evals (UNVERIFIED for all). Fireworks/Together direct-API ZDR terms were not re-verified on 2026-11-21.",
+    "shortlist": {
+      "FOOD_PHOTO_LABEL_cheap_private_hosted": [
+        "deepseek/deepseek-v4.1-flash-1017 (OpenRouter ZDR)",
+        "z-ai/glm-5.3-flash (OpenRouter ZDR)",
+        "google/gemma-4-26b-a4b-it (OpenRouter ZDR or DeepInfra direct)"
+      ],
+      "LABEL_ocr_strength": [
+        "qwen/qwen3-vl-235b-a22b-instruct",
+        "google/gemma-4-31b-it"
+      ],
+      "BODY": [
+        "google/gemma-4-31b-it",
+        "qwen/qwen3.8-27b"
+      ],
+      "COACH": [
+        "deepseek/deepseek-v4.1-flash-1017",
+        "openai/gpt-oss-120b",
+        "deepseek/deepseek-v4-pro (premium)"
+      ],
+      "PLAN_PROGRAM": [
+        "openai/gpt-oss-120b",
+        "deepseek/deepseek-v4-flash",
+        "openai/gpt-oss-20b (cheapest)"
+      ],
+      "onDevice_zero_cost": [
+        "Gemma 4 E2B via LiteRT-LM (2.58 GB)",
+        "Gemma 4 E4B via LiteRT-LM (3.66 GB, litert-community/gemma-4-E4B-it-litert-lm)",
+        "Qwen3-VL-2B/4B via llama.cpp (fallback)"
+      ]
+    },
+    "accuracyEvidence": "OmniFood-Bench (arXiv 2607.08423) reports catastrophic mass-estimation failure across 6 VLMs incl. qwen3-vl-8B, gpt-5.1, gemini-3-flash. No per-model Nutrition5k calorie MAE found for open-weight models. Forge's deterministic clamps and high bias remain required.",
+    "openRouterPrivacyHowTo": "Add \"provider\": {\"zdr\": true, \"require_parameters\": true} to the request body, or enable ZDR in OpenRouter account privacy settings (account setting is OR-combined with the per-request flag). Forge currently sends a plain OpenAI body, so use the account setting unless the provider object is added.",
+    "notCovered": "Kimi-VL, MiMo-VL (7B), DeepSeek-VL/VL2 and Qwen3.5 small (2B/4B) VL were not found on the reachable hosts and were not benchmarked on-device; omitted rather than guessed."
+  },
+  "models": [
+    {
+      "provider": "OpenRouter (ZDR: NextBit; alt DeepInfra direct)",
+      "modelId": "google/gemma-4-26b-a4b-it",
+      "family": "Gemma 4",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.0675,
+      "outPerM": 0.225,
+      "priceSource": "OpenRouter endpoints/ZDR API 2026-11-21: NextBit (bf16) $0.0675/$0.225 with structured_outputs. DeepInfra direct id google/gemma-4-26B-A4B-it $0.07/$0.34 (DeepInfra models API).",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "MoE 25.2B total / ~3.8B active (OpenRouter description). Cheapest credible vision model for FOOD_PHOTO/LABEL. Also reachable as openai-compatible: https://api.deepinfra.com/v1/openai with model google/gemma-4-26B-A4B-it (DeepInfra: inputs not stored on disk, not logged, not used for training; json_schema supported). Avoid the ':free' variant (no structured_outputs; free-tier policy). Data policy 'no-train' holds only when OpenRouter is forced to ZDR endpoints (provider.zdr=true per request, or ZDR / 'deny training providers' in account privacy settings); the price quoted is the cheapest endpoint in OpenRouter's ZDR list (/api/v1/endpoints/zdr, 2026-11-21) that also lists structured_outputs. Without ZDR, routing may hit non-ZDR hosts (Novita, Chutes, Baidu, Alibaba, Z.AI, Moonshot, Xiaomi were absent from the ZDR list). Food-calorie accuracy UNVERIFIED. CAVEAT (verification 2026-11-21): DeepInfra's data-privacy page carves out 'Google models' (Google stores outputs, logs prompts for abuse detection, Google training policy applies). DeepInfra also resells Gemini, so the clause most likely targets Gemini, but it does not say whether self-hosted google/gemma-* ids are exempt - treat DeepInfra-direct Gemma as UNVERIFIED for the photo no-train rule and prefer the OpenRouter ZDR route.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/api/v1/models/google/gemma-4-26b-a4b-it/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://docs.deepinfra.com/account/data-privacy",
+        "https://docs.deepinfra.com/chat/structured-outputs",
+        "https://huggingface.co/api/models/google/gemma-4-26B-A4B-it"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "26B MoE too large; use Gemma 4 E2B/E4B entries."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: CoreWeave; alt DeepInfra direct)",
+      "modelId": "google/gemma-4-31b-it",
+      "family": "Gemma 4",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.1,
+      "outPerM": 0.34,
+      "priceSource": "OpenRouter ZDR list 2026-11-21: CoreWeave (fp4) $0.10/$0.34. DeepInfra direct: google/gemma-4-31B-it $0.20/$0.40; google/gemma-4-31B-it-turbo $0.09/$0.34.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "30.7B dense multimodal with configurable thinking; one step above 26B-A4B for LABEL/BODY. Some endpoints cap completion at 16384 tokens. Data policy 'no-train' holds only when OpenRouter is forced to ZDR endpoints (provider.zdr=true per request, or ZDR / 'deny training providers' in account privacy settings); the price quoted is the cheapest endpoint in OpenRouter's ZDR list (/api/v1/endpoints/zdr, 2026-11-21) that also lists structured_outputs. Without ZDR, routing may hit non-ZDR hosts (Novita, Chutes, Baidu, Alibaba, Z.AI, Moonshot, Xiaomi were absent from the ZDR list). Also in ZDR list: PrimeIntellect fp8 $0.114/$0.192 (max completion 16384). CAVEAT (verification 2026-11-21): DeepInfra's data-privacy page carves out 'Google models' (Google stores outputs, logs prompts for abuse detection, Google training policy applies). DeepInfra also resells Gemini, so the clause most likely targets Gemini, but it does not say whether self-hosted google/gemma-* ids are exempt - treat DeepInfra-direct Gemma as UNVERIFIED for the photo no-train rule and prefer the OpenRouter ZDR route.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/api/v1/models/google/gemma-4-31b-it/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/google/gemma-4-31B-it"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra) / DeepInfra direct",
+      "modelId": "google/gemma-3-27b-it",
+      "family": "Gemma 3",
+      "openWeights": true,
+      "license": "Gemma Terms of Use (gated on HF)",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 131072,
+      "inPerM": 0.064,
+      "outPerM": 0.128,
+      "priceSource": "OpenRouter ZDR list: DeepInfra $0.064/$0.128. DeepInfra direct google/gemma-3-27b-it $0.08/$0.16.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed; superseded by Gemma 4",
+      "notes": "Only advantage is price; Gemma 4 26B-A4B is newer at about the same cost. CAVEAT (verification 2026-11-21): DeepInfra's data-privacy page carves out 'Google models' (Google stores outputs, logs prompts for abuse detection, Google training policy applies). DeepInfra also resells Gemini, so the clause most likely targets Gemini, but it does not say whether self-hosted google/gemma-* ids are exempt - treat DeepInfra-direct Gemma as UNVERIFIED for the photo no-train rule and prefer the OpenRouter ZDR route.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/api/v1/models/google/gemma-3-27b-it/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/google/gemma-3-27b-it"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "On-device (LiteRT-LM Android Kotlin SDK)",
+      "modelId": "litert-community/gemma-4-E2B-it-litert-lm (file gemma-4-E2B-it.litertlm)",
+      "family": "Gemma 4 (edge)",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "prompt_only",
+      "contextTokens": null,
+      "inPerM": 0.0,
+      "outPerM": 0.0,
+      "priceSource": "Free, local. Model file 2.58 GB (LiteRT-LM Gemma 4 page).",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "not reachable (needs in-app LiteRT-LM: com.google.ai.edge.litertlm:litertlm-android; not an HTTP endpoint)",
+      "deprecation": "none; MediaPipe LLM Inference API is maintenance-only, LiteRT-LM is its successor",
+      "notes": "Best zero-cost, fully private option for FOOD_PHOTO/LABEL/BODY. HF google/gemma-4-E2B-it is any-to-any; the litert-community card says vision and audio encoders load on demand. Kotlin API accepts Content.ImageFile. No json_schema-constrained decoding found in LiteRT-LM, so rely on Forge's tolerant JSON extraction plus code clamps. Calorie accuracy of a ~2B-effective model UNVERIFIED and likely below hosted 26B+ models.",
+      "sources": [
+        "https://developers.google.com/edge/litert-lm/models/gemma-4.md.txt",
+        "https://developers.google.com/edge/litert-lm/overview",
+        "https://developers.google.com/edge/litert-lm/android",
+        "https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm",
+        "https://huggingface.co/api/models/google/gemma-4-E2B-it"
+      ],
+      "onDevice": {
+        "feasible": true,
+        "runtime": "LiteRT-LM (CPU or GPU backend; HF repo NPU builds exist only for Google Tensor G5/G6, Qualcomm QCS8275 (IoT) and Intel LNL/PTL - none for MediaTek)",
+        "notes": "Published Android numbers (Samsung S26 Ultra, not Dimensity): GPU prefill 3808 tok/s, decode 52 tok/s, TTFT 0.3 s, peak CPU mem 676 MB; CPU decode 47 tok/s, peak 1733 MB. Dimensity 9400 speed UNVERIFIED. Vision-encoder latency per photo not published."
+      }
+    },
+    {
+      "provider": "On-device (LiteRT-LM Android Kotlin SDK)",
+      "modelId": "litert-community/gemma-4-E4B-it-litert-lm (file gemma-4-E4B-it.litertlm)",
+      "family": "Gemma 4 (edge)",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "prompt_only",
+      "contextTokens": null,
+      "inPerM": 0.0,
+      "outPerM": 0.0,
+      "priceSource": "Free, local. Model file 3.65 GB (LiteRT-LM Gemma 4 page).",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "not reachable (in-app LiteRT-LM integration required)",
+      "deprecation": "none",
+      "notes": "Larger edge model, expected better quality than E2B (not independently verified for food). Repo verified on HF: gemma-4-E4B-it.litertlm 3,659,530,240 B plus a -gpu variant (3.31 GB); no NPU builds.",
+      "sources": [
+        "https://developers.google.com/edge/litert-lm/models/gemma-4.md.txt",
+        "https://developers.google.com/edge/litert-lm/overview",
+        "https://huggingface.co/api/models/google/gemma-4-E4B-it",
+        "https://huggingface.co/api/models/litert-community/gemma-4-E4B-it-litert-lm/tree/main"
+      ],
+      "onDevice": {
+        "feasible": true,
+        "runtime": "LiteRT-LM (GPU recommended)",
+        "notes": "S26 Ultra: GPU prefill 1293 tok/s, decode 22 tok/s, TTFT 0.8 s, peak CPU mem 710 MB; CPU decode 18 tok/s, peak 3283 MB. Dimensity 9400 UNVERIFIED. ~300-token JSON answer is roughly 15 s at ~20 tok/s."
+      }
+    },
+    {
+      "provider": "On-device (LiteRT-LM)",
+      "modelId": "google/gemma-3n-E4B-it-litert-lm",
+      "family": "Gemma 3n",
+      "openWeights": true,
+      "license": "Gemma Terms of Use (gated)",
+      "vision": true,
+      "jsonSchema": "prompt_only",
+      "contextTokens": null,
+      "inPerM": 0.0,
+      "outPerM": 0.0,
+      "priceSource": "Free, local.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "not reachable (in-app runtime)",
+      "deprecation": "superseded by Gemma 4 E2B/E4B (faster on same runtime, Apache-2.0)",
+      "notes": "Works but Gemma 4 edge models are faster and have a simpler license.",
+      "sources": [
+        "https://developers.google.com/edge/litert-lm/overview",
+        "https://huggingface.co/google/gemma-3n-E4B-it-litert-lm",
+        "https://huggingface.co/api/models/google/gemma-3n-E4B-it"
+      ],
+      "onDevice": {
+        "feasible": true,
+        "runtime": "LiteRT-LM",
+        "notes": "S24 Ultra: E4B CPU 74/9 tok/s prefill/decode, GPU 548/9; E2B CPU 111/16, GPU 816/16. No memory figures. Dimensity UNVERIFIED."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra) / DeepInfra direct",
+      "modelId": "meta-llama/llama-4-scout",
+      "family": "Llama 4",
+      "openWeights": true,
+      "license": "Llama 4 Community License (HF: other, gated)",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 327680,
+      "inPerM": 0.08,
+      "outPerM": 0.24,
+      "priceSource": "OpenRouter ZDR list: DeepInfra $0.08/$0.24. DeepInfra direct meta-llama/Llama-4-Scout-17B-16E-Instruct $0.10/$0.30.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed; only DeepInfra hosts it on OpenRouter",
+      "notes": "DeepInfra endpoint lists structured_outputs but not response_format on OpenRouter - test json_schema first. April 2025 model; newer Gemma 4 / Qwen VL cost the same.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/api/v1/models/meta-llama/llama-4-scout/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/meta-llama/Llama-4-Scout-17B-16E-Instruct"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (Parasail, ZDR)",
+      "modelId": "meta-llama/llama-4-maverick",
+      "family": "Llama 4",
+      "openWeights": true,
+      "license": "Llama 4 Community License (gated)",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 524288,
+      "inPerM": 0.35,
+      "outPerM": 1.0,
+      "priceSource": "OpenRouter endpoints 2026-11-21: single provider Parasail $0.35/$1.00.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "single host left; delisting risk",
+      "notes": "Not cost-competitive; skip.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/meta-llama/llama-4-maverick/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://huggingface.co/api/models/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (Mistral, ZDR)",
+      "modelId": "mistralai/mistral-small-2603",
+      "family": "Mistral Small 4",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.15,
+      "outPerM": 0.6,
+      "priceSource": "OpenRouter endpoints 2026-11-21: Mistral $0.15/$0.60 (in ZDR list).",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none; current Mistral Small",
+      "notes": "Weights: mistralai/Mistral-Small-4-119B-2603 (Apache-2.0). Direct Mistral API id mistral-small-2603 confirmed on the docs.mistral.ai model page (v26.03, 256k context, Structured Outputs listed, $0.15 and $0.6 per M tokens shown unlabeled - presumably in/out). Mistral's own API training/retention terms not checked here, so use the OpenRouter ZDR route for photos.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/api/v1/models/mistralai/mistral-small-2603/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://docs.mistral.ai/getting-started/models/models_overview/",
+        "https://huggingface.co/api/models/mistralai/Mistral-Small-4-119B-2603",
+        "https://docs.mistral.ai/models/mistral-small-4-0-26-03"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra) / DeepInfra direct",
+      "modelId": "mistralai/mistral-small-3.2-24b-instruct",
+      "family": "Mistral Small 3.2",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 128000,
+      "inPerM": 0.06,
+      "outPerM": 0.16,
+      "priceSource": "OpenRouter ZDR list: DeepInfra $0.06/$0.16. DeepInfra direct mistralai/Mistral-Small-3.2-24B-Instruct-2506 $0.075/$0.20.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "On Mistral's API mistral-small-2506 deprecated 2026-04-30, retired 2026-07-31; DeepInfra still hosts the weights",
+      "notes": "Cheap, non-thinking (short outputs); older vision quality.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/mistralai/mistral-small-3.2-24b-instruct/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://docs.mistral.ai/getting-started/models/models_overview/"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra) / DeepInfra direct",
+      "modelId": "qwen/qwen3-vl-235b-a22b-instruct",
+      "family": "Qwen3-VL",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.2,
+      "outPerM": 0.88,
+      "priceSource": "OpenRouter ZDR list and DeepInfra models API (Qwen/Qwen3-VL-235B-A22B-Instruct): $0.20/$0.88.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Document/OCR-strong VLM; good LABEL candidate. Non-thinking Instruct variant keeps output tokens low.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/qwen/qwen3-vl-235b-a22b-instruct/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/Qwen/Qwen3-VL-235B-A22B-Instruct"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra) / DeepInfra direct",
+      "modelId": "qwen/qwen3-vl-30b-a3b-instruct",
+      "family": "Qwen3-VL",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.15,
+      "outPerM": 0.6,
+      "priceSource": "OpenRouter ZDR list: DeepInfra $0.15/$0.60; DeepInfra direct Qwen/Qwen3-VL-30B-A3B-Instruct same.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Mid-size VL option; max completion 16384 on OpenRouter.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/qwen/qwen3-vl-30b-a3b-instruct/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/Qwen/Qwen3-VL-30B-A3B-Instruct"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (Parasail, ZDR)",
+      "modelId": "qwen/qwen3-vl-8b-instruct",
+      "family": "Qwen3-VL",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.25,
+      "outPerM": 0.75,
+      "priceSource": "OpenRouter endpoints 2026-11-21: single provider Parasail $0.25/$0.75.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "single host",
+      "notes": "Hosted price exceeds larger models; useful mainly as an on-device quality proxy. OmniFood-Bench (arXiv 2607.08423) evaluated qwen3-vl-8B among 6 VLMs and reports 'catastrophic failure in mass estimation' - supports Forge's clamp + bias-high design.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/qwen/qwen3-vl-8b-instruct/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://huggingface.co/api/models/Qwen/Qwen3-VL-8B-Instruct",
+        "https://arxiv.org/abs/2607.08423"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "On-device (llama.cpp + mmproj)",
+      "modelId": "Qwen/Qwen3-VL-2B-Instruct (GGUF Q4_K_M + mmproj Q8_0)",
+      "family": "Qwen3-VL (small)",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "prompt_only",
+      "contextTokens": null,
+      "inPerM": 0.0,
+      "outPerM": 0.0,
+      "priceSource": "Free, local.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "not reachable (requires bundling llama.cpp via JNI)",
+      "deprecation": "none",
+      "notes": "Fallback on-device path. llama.cpp grammar/JSON-schema sampling could give constrained JSON on-device (not tested in Forge; marked prompt_only). Qwen3-VL-4B-Instruct (Apache-2.0) is the higher-quality sibling.",
+      "sources": [
+        "https://learn.arm.com/learning-paths/mobile-graphics-and-gaming/ai-portal-mobile-vision-language/3-run-model/",
+        "https://huggingface.co/qualcomm/Qwen3-VL-2B-Instruct",
+        "https://huggingface.co/qualcomm/Qwen3-VL-4B-Instruct",
+        "https://huggingface.co/api/models/Qwen/Qwen3-VL-2B-Instruct",
+        "https://www.mediatek.com/products/smartphones/mediatek-dimensity-9400"
+      ],
+      "onDevice": {
+        "feasible": true,
+        "runtime": "llama.cpp (CPU; MediaTek GPU/NPU offload not verified)",
+        "notes": "Arm example on ASUS ROG Phone 6D (llama.cpp CPU, Q4_K_M + Q8_0 mmproj): image+prompt evaluation 25.1 s, then 93 tokens at 14.89 tok/s (example, not a benchmark). Qualcomm vendor cards, Snapdragon 8 Elite for Galaxy: 2B via GENIEX_LLAMACPP q4_0 response rate 37-46 tok/s at 512 ctx and 11-23 tok/s at 4096 ctx; 4B is listed only via GENIEX_QAIRT w4a16 (Qualcomm NPU stack) ~21 tok/s at 512 and ~16 tok/s at 4096. No Dimensity 9400 measurement found - UNVERIFIED; MediaTek only claims '>50 tokens MLLM generation' without model/runtime."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra) / DeepInfra direct",
+      "modelId": "qwen/qwen3.6-35b-a3b",
+      "family": "Qwen3.6",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.08,
+      "outPerM": 0.76,
+      "priceSource": "OpenRouter ZDR list: DeepInfra $0.08/$0.76; DeepInfra direct Qwen/Qwen3.6-35B-A3B $0.10/$0.95.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Hybrid thinking model; disable or cap reasoning for JSON jobs or output cost rises.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/qwen/qwen3.6-35b-a3b/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/Qwen/Qwen3.6-35B-A3B"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: Near AI; alt DeepInfra)",
+      "modelId": "qwen/qwen3.8-27b",
+      "family": "Qwen3.8",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.04,
+      "outPerM": 1.35,
+      "priceSource": "OpenRouter ZDR list 2026-11-21: Near AI $0.04/$1.35; DeepInfra $0.15/$1.875 (DeepInfra direct Qwen/Qwen3.8-27B $0.20/$2.50). Groq lists qwen/qwen3.8-27b at $0.80/$4.00 (image support not stated). Cerebras id qwen-3.8-27b (price not on its models page). Groq context 131,072. OpenRouter also lists Cerebras (fp16) $0.99/$1.49 in the ZDR set, without structured_outputs.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Newest open dense VLM in the family (HF created 2026-08-05). Thinking-capable; output price dominates, so cap reasoning. All-rounder candidate (vision + COACH).",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/qwen/qwen3.8-27b/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://console.groq.com/docs/models",
+        "https://inference-docs.cerebras.ai/models/overview",
+        "https://huggingface.co/api/models/Qwen/Qwen3.8-27B"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (Alibaba only)",
+      "modelId": "qwen/qwen3.8-flash",
+      "family": "Qwen3.8",
+      "openWeights": false,
+      "license": "OpenRouter maps it to HF Qwen/Qwen3.8-Flash-Next, license 'other' - open-weight status UNCLEAR",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 1000000,
+      "inPerM": 0.15,
+      "outPerM": 0.47,
+      "priceSource": "OpenRouter endpoints 2026-11-21: Alibaba $0.15/$0.47.",
+      "dataPolicy": "unclear",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Only Alibaba hosts it and it is not in OpenRouter's ZDR list -> excluded for photos under Forge's no-train rule.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/qwen/qwen3.8-flash/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://huggingface.co/api/models/Qwen/Qwen3.8-Flash-Next"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra) / DeepInfra direct",
+      "modelId": "qwen/qwen3.5-397b-a17b",
+      "family": "Qwen3.5",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.36,
+      "outPerM": 2.4,
+      "priceSource": "OpenRouter ZDR list: DeepInfra $0.36/$2.40; DeepInfra direct Qwen/Qwen3.5-397B-A17B $0.45/$3.00.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Flagship-size open VLM; overkill for Forge at this price.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/qwen/qwen3.5-397b-a17b/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/Qwen/Qwen3.5-397B-A17B"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: Sail Research; alt DeepInfra)",
+      "modelId": "deepseek/deepseek-v4.1-flash-1017",
+      "family": "DeepSeek V4.1",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 1048576,
+      "inPerM": 0.04,
+      "outPerM": 0.1,
+      "priceSource": "OpenRouter ZDR list 2026-11-21: Sail Research $0.04/$0.10; DeepInfra $0.078/$0.235. DeepInfra direct deepseek-ai/DeepSeek-V4.1-Flash-1017 $0.20/$0.60. Undated alias deepseek/deepseek-v4.1-flash: DeepInfra (ZDR) $0.112/$0.336.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "DeepSeek first-party now serves 'deepseek-flash' from V4.1-Flash-1017; legacy names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted there but those models are retired and requests are served by V4.1-Flash-1017",
+      "notes": "Cheapest ZDR vision model found and a strong text model: one model could cover FOOD_PHOTO, LABEL, PLAN, COACH and PROGRAM. Sail Research is a small host - pin DeepInfra as fallback. DeepSeek first-party API training/retention policy NOT verified here; do not send photos there. Food accuracy UNVERIFIED. OpenRouter ZDR list also has Particle AI $0.03/$0.275 (lower input, higher output).",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/api/v1/models/deepseek/deepseek-v4.1-flash-1017/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash-1017"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: Relace; alt DeepInfra)",
+      "modelId": "z-ai/glm-5.3-flash",
+      "family": "GLM-5.3",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 1048576,
+      "inPerM": 0.04,
+      "outPerM": 0.078,
+      "priceSource": "OpenRouter ZDR list 2026-11-21: Relace $0.04/$0.078 (structured_outputs); DeepInfra $0.101/$0.335; Fireworks/Together/Z.AI $0.15/$0.50. DeepInfra direct zai-org/GLM-5.3-Flash $0.15/$0.50.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Native multimodal (text/image/video), MIT. Very cheap ZDR route; Relace is a small host, verify uptime/quality before pinning. Reasoning model - cap reasoning for JSON jobs.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/z-ai/glm-5.3-flash/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/zai-org/GLM-5.3-Flash"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (Novita / Z.AI)",
+      "modelId": "z-ai/glm-4.6v",
+      "family": "GLM-V",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": true,
+      "jsonSchema": "json_mode",
+      "contextTokens": 131072,
+      "inPerM": 0.3,
+      "outPerM": 0.9,
+      "priceSource": "OpenRouter endpoints 2026-11-21: Novita and Z.AI $0.30/$0.90; neither lists structured_outputs.",
+      "dataPolicy": "unclear",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed (older z-ai/glm-4.5v expires 2026-12-31 on OpenRouter)",
+      "notes": "No ZDR endpoint and no json_schema -> fails Forge's photo no-train rule. Superseded by GLM-5.3-Flash.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/z-ai/glm-4.6v/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://openrouter.ai/api/v1/models",
+        "https://huggingface.co/api/models/zai-org/GLM-4.6V"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra/Cohere) / DeepInfra direct",
+      "modelId": "xiaomi/mimo-v2.6-flash",
+      "family": "MiMo",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 1048576,
+      "inPerM": 0.14,
+      "outPerM": 0.28,
+      "priceSource": "OpenRouter ZDR list: DeepInfra and Cohere $0.14/$0.28; DeepInfra direct XiaomiMiMo/MiMo-V2.6-Flash same.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "309B MoE / 15B active, omni-modal. OpenRouter maps to HF XiaomiMiMo/MiMo-V2.6-Flash-RL. DeepInfra 1-day uptime on OpenRouter 91.8%. Older MiMo-VL 7B models not found on these hosts.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/xiaomi/mimo-v2.6-flash/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/XiaomiMiMo/MiMo-V2.6-Flash-RL"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DigitalOcean/DeepInfra)",
+      "modelId": "moonshotai/kimi-k2.6",
+      "family": "Kimi K",
+      "openWeights": true,
+      "license": "HF license 'other' (modified-MIT per prior knowledge - UNVERIFIED)",
+      "vision": true,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.57,
+      "outPerM": 2.4,
+      "priceSource": "OpenRouter ZDR list: DigitalOcean $0.57/$2.40; DeepInfra $0.60/$2.80. DeepInfra direct moonshotai/Kimi-K2.6 $0.75/$3.50.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Coding/agent-tuned and far pricier than DeepSeek V4.1 Flash for Forge's jobs. Kimi K3 / K3.1 Pro are $3/$15-class at standard hosts (Together/Fireworks/Moonshot) - not justified.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/moonshotai/kimi-k2.6/endpoints",
+        "https://openrouter.ai/api/v1/models/moonshotai/kimi-k3/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/moonshotai/Kimi-K2.6"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra/Fireworks) / DeepInfra direct",
+      "modelId": "deepseek/deepseek-v4-flash",
+      "family": "DeepSeek V4",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 1048576,
+      "inPerM": 0.07,
+      "outPerM": 0.14,
+      "priceSource": "OpenRouter ZDR list 2026-11-21: Fireworks $0.07/$0.14 (cheapest ZDR endpoint with structured_outputs), DeepInfra fp8 $0.072/$0.144. DeepInfra direct deepseek-ai/DeepSeek-V4-Flash $0.09/$0.18.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "Retired on DeepSeek's first-party API (name still accepted, served by V4.1-Flash-1017); third-party hosts still serve these weights",
+      "notes": "284B MoE / 13B active, 1M context. Cheap COACH/PROGRAM model; V4.1-Flash-1017 is now similar in price and adds vision.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/deepseek/deepseek-v4-flash/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: DeepInfra)",
+      "modelId": "deepseek/deepseek-v4-pro",
+      "family": "DeepSeek V4",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 1048576,
+      "inPerM": 1.04,
+      "outPerM": 2.08,
+      "priceSource": "OpenRouter ZDR list: DeepInfra $1.04/$2.08 (that tier lists structured_outputs but not response_format; the $1.30/$2.60 tier lists both).",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "1.6T MoE / 49B active. Premium open text model for COACH if Flash's tone falls short.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/deepseek/deepseek-v4-pro/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Pro"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (DeepInfra, in ZDR set) / DeepInfra direct",
+      "modelId": "z-ai/glm-5.2",
+      "family": "GLM-5",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 1048576,
+      "inPerM": 0.45,
+      "outPerM": 1.44,
+      "priceSource": "OpenRouter endpoints: DeepInfra fp4 $0.45/$1.44. DeepInfra direct zai-org/GLM-5.2 $0.75/$2.40.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Strong reasoning; cheapest tier is fp4-quantized.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/z-ai/glm-5.2/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/zai-org/GLM-5.2"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (DeepInfra/Fireworks, in ZDR set)",
+      "modelId": "z-ai/glm-5.3",
+      "family": "GLM-5",
+      "openWeights": true,
+      "license": "HF license 'other' - terms UNVERIFIED",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 1048576,
+      "inPerM": 0.45,
+      "outPerM": 2.0,
+      "priceSource": "OpenRouter endpoints: DeepInfra fp4 $0.45/$2.00; Fireworks $0.70/$2.20; Z.AI/Together $1.40/$4.40. DeepInfra direct zai-org/GLM-5.3 $0.90/$4.00.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none listed",
+      "notes": "Agentic/coding flagship; no advantage for Forge over cheaper options.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models/z-ai/glm-5.3/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/zai-org/GLM-5.3"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "Groq (direct)",
+      "modelId": "openai/gpt-oss-120b",
+      "family": "gpt-oss",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 131072,
+      "inPerM": 0.15,
+      "outPerM": 0.6,
+      "priceSource": "Groq models page: $0.15/$0.60. Cheaper: OpenRouter ZDR Near AI $0.03/$0.15 (same id openai/gpt-oss-120b); DeepInfra direct $0.037/$0.17.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://api.groq.com/openai/v1",
+      "deprecation": "none (Groq production model)",
+      "notes": "Groq: no retention by default except up to 30 days of logs for reliability/abuse; ZDR toggle in Data Controls; training not addressed on that page (no-train inferred from no-retention default). Very fast. Text-only -> PLAN/PROGRAM/COACH. gpt-oss-safeguard-20b ($0.075/$0.30 on Groq) could serve as the cheap safety-classifier pass for the no-praise-for-restriction / no-body-shaming filters.",
+      "sources": [
+        "https://console.groq.com/docs/models",
+        "https://console.groq.com/docs/your-data",
+        "https://openrouter.ai/api/v1/models/openai/gpt-oss-120b/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/openai/gpt-oss-120b"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "Cerebras (direct)",
+      "modelId": "gpt-oss-120b",
+      "family": "gpt-oss",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 131072,
+      "inPerM": 0.35,
+      "outPerM": 0.75,
+      "priceSource": "OpenRouter endpoints list Cerebras (fp16) $0.35/$0.75; Cerebras models page gives id and ~3000 tok/s but no price.",
+      "dataPolicy": "unclear",
+      "howForgeReachesIt": "openai-compatible: https://api.cerebras.ai/v1",
+      "deprecation": "none listed",
+      "notes": "Fastest option (~3000 tok/s); context 65k free / 131k paid. Base URL verified from the Cerebras quickstart curl (api.cerebras.ai/v1/chat/completions). Direct price is not on the Cerebras models page (OpenRouter's Cerebras endpoint: $0.35/$0.75, fp16). Cerebras privacy policy and help center say inference inputs and outputs are not retained; no explicit primary-source no-training statement found, so dataPolicy stays 'unclear'. Cerebras is in OpenRouter's ZDR set.",
+      "sources": [
+        "https://inference-docs.cerebras.ai/models/overview",
+        "https://openrouter.ai/api/v1/models/openai/gpt-oss-120b/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://inference-docs.cerebras.ai/quickstart",
+        "https://www.cerebras.ai/privacy-policy",
+        "https://cerebras-inference.help.usepylon.com/articles/1811589793-does-cerebras-retain-my-data"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "OpenRouter (ZDR: AkashML/DeepInfra) / Groq",
+      "modelId": "openai/gpt-oss-20b",
+      "family": "gpt-oss",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 131072,
+      "inPerM": 0.018,
+      "outPerM": 0.09,
+      "priceSource": "OpenRouter ZDR list: AkashML $0.018/$0.09, DeepInfra $0.024/$0.112. Groq $0.075/$0.30.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://openrouter.ai/api/v1",
+      "deprecation": "none",
+      "notes": "21B MoE / 3.6B active. Cheapest text option; adequate for PLAN (pick from allowed list) and PROGRAM extraction; coaching tone likely weaker than 120B (UNVERIFIED).",
+      "sources": [
+        "https://console.groq.com/docs/models",
+        "https://openrouter.ai/api/v1/models/openai/gpt-oss-20b/endpoints",
+        "https://openrouter.ai/api/v1/endpoints/zdr",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/openai/gpt-oss-20b"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "DeepInfra (direct)",
+      "modelId": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "family": "Qwen3",
+      "openWeights": true,
+      "license": "Apache-2.0 (not re-checked on HF)",
+      "vision": false,
+      "jsonSchema": "native",
+      "contextTokens": 262144,
+      "inPerM": 0.09,
+      "outPerM": 0.55,
+      "priceSource": "DeepInfra models API: $0.09/$0.55. OpenRouter id qwen/qwen3-235b-a22b-2507 lists $0.14/$0.80 as catalog price.",
+      "dataPolicy": "no-train",
+      "howForgeReachesIt": "openai-compatible: https://api.deepinfra.com/v1/openai",
+      "deprecation": "none listed",
+      "notes": "Non-thinking instruct -> low output cost, decent COACH option. Older than Qwen3.6/3.8.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://docs.deepinfra.com/account/data-privacy",
+        "https://docs.deepinfra.com/chat/structured-outputs"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "n/a",
+        "notes": "Too large for a phone (needs tens to hundreds of GB)."
+      }
+    },
+    {
+      "provider": "none found",
+      "modelId": "OpenGVLab/InternVL3_5-8B",
+      "family": "InternVL",
+      "openWeights": true,
+      "license": "Apache-2.0",
+      "vision": true,
+      "jsonSchema": "prompt_only",
+      "contextTokens": null,
+      "inPerM": null,
+      "outPerM": null,
+      "priceSource": "No endpoint in OpenRouter or DeepInfra catalogs (2026-11-21).",
+      "dataPolicy": "unclear",
+      "howForgeReachesIt": "not reachable",
+      "deprecation": "n/a",
+      "notes": "Would need self-hosting; Android runtime support not verified.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://huggingface.co/api/models/OpenGVLab/InternVL3_5-8B"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "unverified",
+        "notes": "No verified Android runtime or benchmark found."
+      }
+    },
+    {
+      "provider": "none found",
+      "modelId": "microsoft/Phi-4-multimodal-instruct",
+      "family": "Phi",
+      "openWeights": true,
+      "license": "MIT",
+      "vision": true,
+      "jsonSchema": "prompt_only",
+      "contextTokens": null,
+      "inPerM": null,
+      "outPerM": null,
+      "priceSource": "Not hosted on OpenRouter/DeepInfra; only text microsoft/phi-4 is (DeepInfra $0.07/$0.14, 16k ctx).",
+      "dataPolicy": "unclear",
+      "howForgeReachesIt": "not reachable",
+      "deprecation": "n/a",
+      "notes": "LiteRT-LM lists only phi-4-mini (text) for Android: S24 Ultra CPU 67/7 tok/s, GPU 314/10.",
+      "sources": [
+        "https://openrouter.ai/api/v1/models",
+        "https://api.deepinfra.com/v1/openai/models",
+        "https://developers.google.com/edge/litert-lm/overview",
+        "https://huggingface.co/api/models/microsoft/Phi-4-multimodal-instruct"
+      ],
+      "onDevice": {
+        "feasible": false,
+        "runtime": "LiteRT-LM (phi-4-mini, text only)",
+        "notes": "No multimodal Phi build in the LiteRT-LM model list."
+      }
+    }
+  ],
+  "verification": {
+    "checkedAt": "2026-11-21",
+    "method": "OpenRouter /api/v1/models, /api/v1/models/{id}/endpoints and /api/v1/endpoints/zdr; DeepInfra /v1/openai/models and data-privacy doc; Groq models and your-data docs; Cerebras models and quickstart; Mistral model page; DeepSeek quick-start; Hugging Face model API; LiteRT-LM docs; arXiv abstract.",
+    "changes": [
+      "google/gemma-4-26b-a4b-it: inPerM 0.068 -> 0.0675 (exact OpenRouter NextBit ZDR price); added DeepInfra 'Google models' privacy caveat.",
+      "google/gemma-4-31b-it: price confirmed (CoreWeave fp4 $0.10/$0.34, ZDR, structured_outputs); noted fp4 quantization and PrimeIntellect alternative; added DeepInfra Google-models caveat.",
+      "google/gemma-3-27b-it: confirmed; added DeepInfra Google-models caveat.",
+      "Gemma 4 E2B LiteRT-LM: runtime note corrected - NPU builds are Tensor G5/G6, Qualcomm QCS8275, Intel LNL/PTL (was 'Qualcomm only'); still none for MediaTek. File size 2,588,147,712 B and S26 Ultra figures confirmed.",
+      "Gemma 4 E4B: modelId was 'repo name UNVERIFIED'; now verified as litert-community/gemma-4-E4B-it-litert-lm (file gemma-4-E4B-it.litertlm, 3.66 GB).",
+      "google/gemma-3n-E4B-it-litert-lm: repo exists (gated, Gemma license); S24 Ultra figures match LiteRT-LM overview table.",
+      "mistralai/mistral-small-2603: direct api.mistral.ai id 'mistral-small-2603' now VERIFIED on Mistral's model page (was UNVERIFIED).",
+      "Qwen3-VL-2B on-device: Qualcomm figures corrected (2B 37-46 tok/s at 512 ctx, not 41-43; the 4B figure is the QAIRT w4a16 NPU runtime, not llama.cpp q4_0).",
+      "qwen/qwen3.8-27b: confirmed Near AI $0.04/$1.35 (ZDR, structured_outputs), Groq qwen/qwen3.8-27b $0.80/$4.00 (preview), Cerebras id qwen-3.8-27b; added Cerebras-on-OpenRouter price.",
+      "deepseek/deepseek-v4.1-flash-1017: confirmed (Sail Research $0.04/$0.10 ZDR, DeepInfra $0.0784/$0.2352, DeepInfra direct $0.20/$0.60, image input); deprecation wording fixed (legacy names still accepted, redirected); sources now point at the -1017 OpenRouter endpoint and HF deepseek-ai/DeepSeek-V4.1-Flash-1017.",
+      "deepseek/deepseek-v4-flash: price 0.072/0.144 -> 0.07/0.14 (Fireworks is the cheapest ZDR endpoint with structured_outputs); deprecation wording fixed.",
+      "Cerebras gpt-oss-120b: id confirmed; base URL https://api.cerebras.ai/v1 now verified (was UNVERIFIED); data-policy note updated (non-retention stated, no-training not stated, so still 'unclear').",
+      "openai/gpt-oss-120b (Groq), openai/gpt-oss-20b, openai/gpt-oss-safeguard-20b: Groq ids and prices confirmed on console.groq.com/docs/models; Groq your-data page confirmed (no retention by default, logs up to 30 days for reliability/abuse, ZDR toggle, training not addressed).",
+      "Confirmed unchanged (id live on OpenRouter endpoints API and/or DeepInfra models API; price, image input, structured_outputs and ZDR membership as stated): meta-llama/llama-4-scout, meta-llama/llama-4-maverick, mistralai/mistral-small-3.2-24b-instruct (Mistral deprecation dates match docs), qwen/qwen3-vl-235b-a22b-instruct, qwen/qwen3-vl-30b-a3b-instruct, qwen/qwen3-vl-8b-instruct, qwen/qwen3.6-35b-a3b, qwen/qwen3.8-flash (no ZDR endpoint), qwen/qwen3.5-397b-a17b, z-ai/glm-5.3-flash, z-ai/glm-4.6v (no ZDR, no structured_outputs; glm-4.5v expiration 2026-12-31 confirmed), xiaomi/mimo-v2.6-flash, moonshotai/kimi-k2.6, deepseek/deepseek-v4-pro, z-ai/glm-5.2, z-ai/glm-5.3, Qwen/Qwen3-235B-A22B-Instruct-2507, OpenGVLab/InternVL3_5-8B and microsoft/Phi-4-multimodal-instruct (HF repos exist; still not hosted on OpenRouter/DeepInfra).",
+      "arXiv 2607.08423 (OmniFood-Bench) confirmed: abstract names gpt-5.1, gemini-3-flash and qwen3-vl-8B among 6 VLMs and reports catastrophic failure in mass estimation.",
+      "OpenRouter provider.zdr / data_collection / require_parameters confirmed in provider-selection docs; per-request zdr is OR-combined with account and guardrail ZDR settings.",
+      "_meta: guardrailFit now flags the DeepInfra Google-models ambiguity and that Fireworks/Together direct ZDR terms were not re-verified; shortlist E4B entry names the verified repo. Guardrail rule ids cited in _meta exist in guardrails.final.json."
+    ],
+    "removed": []
+  }
+}

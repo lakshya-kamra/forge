@@ -15,9 +15,11 @@ import java.util.Locale
  */
 object CostEstimator {
 
-    const val PHOTOS_PER_DAY = 4
+    // Labels are nearly as frequent as meals: people photograph the packaging of most things
+    // they didn't cook, so the old one-a-day figure under-stated the bill.
+    const val PHOTOS_PER_DAY = 5
+    const val LABELS_PER_DAY = 3
     const val COACH_PER_DAY = 3
-    const val LABELS_PER_DAY = 1
     private const val DAYS_PER_MONTH = 30.4
 
     /** One kind of call: how often it happens and roughly what it sends and receives. */
@@ -42,9 +44,10 @@ object CostEstimator {
 
     /** The assumptions in one sentence, for the UI. */
     val ASSUMPTIONS =
-        "Assumes $PHOTOS_PER_DAY meal photos, $COACH_PER_DAY coach messages and $LABELS_PER_DAY label a day " +
-            "(~1.9K in / 0.7K out tokens per photo, ~4K / 0.5K per coach message, ~2.5K / 0.3K per label), " +
-            "no caching discount. Program import, body check-ins and planning are occasional and not included."
+        "Assumes about $PHOTOS_PER_DAY meal photos, $LABELS_PER_DAY nutrition labels and $COACH_PER_DAY coach " +
+            "messages a day (labels add up because packaging gets photographed too): ~1.9K in / 0.7K out tokens " +
+            "per photo, ~2.5K / 0.3K per label, ~4K / 0.5K per coach message, no caching discount. Program " +
+            "import, body check-ins and planning are occasional and not included."
 
     data class Line(
         val task: Task,
@@ -66,10 +69,18 @@ object CostEstimator {
         tier: CostTier,
         overrides: Map<String, String>,
         date: LocalDate
+    ): Estimate = monthlyFor(provider, tier.name, overrides, date)
+
+    /** [monthly] by tier name (see [ModelRouter.pickFor]). */
+    fun monthlyFor(
+        provider: ProviderSpec,
+        tierKey: String,
+        overrides: Map<String, String>,
+        date: LocalDate
     ): Estimate {
         val lines = usage.map { u ->
             val pick = runCatching {
-                ModelRouter.pick(provider, tier, u.task, overrides, needsVision = u.defaultImageTokens > 0)
+                ModelRouter.pickFor(provider, tierKey, u.task, overrides, needsVision = u.defaultImageTokens > 0)
             }.getOrNull()
             val spec = pick?.spec
             val cost = if (spec == null) null else {
